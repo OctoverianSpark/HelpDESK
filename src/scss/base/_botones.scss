@@ -1,0 +1,50 @@
+.boton-morado-block{
+    @include boton($morado,block);
+}
+
+.boton-morado-inline{
+    @include boton($morado,inline-block);
+    margin: 1rem;
+}
+.boton-morado-titles{
+    @include boton($morado,inline-block);
+    margin: 4rem
+}
+
+.boton-azul-block{
+    @include boton($azulFuerte,block);
+    margin:1rem 1rem;
+    
+}
+.boton-azul-inline{
+    @include boton($azulFuerte,block);
+    margin:1rem 1rem;
+    
+}
+
+.boton-google-inline{
+    @include boton($morado,inline);
+    display: flex;
+    justify-content: space-around;
+    font-size: 2.2rem;
+    color: $blanco;
+    width: 100%;
+    border-radius: 2rem;
+    i{
+        font-size: 3.8rem;
+        letter-spacing: -1px;
+    }
+
+
+}
+
+.boton-rojo-block{
+    @include boton($rojo,block);
+    margin:1rem 1rem;
+    height: 4.5rem;
+}
+.boton-rojo-inline{
+    @include boton($rojo,inline-block);
+    margin:1rem 1rem;
+    height: 4.5rem;
+}

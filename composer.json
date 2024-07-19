@@ -1,0 +1,28 @@
+{
+    "name": "jean.pr/help-desk",
+    "description": "HelpDesk 2.5",
+    "type": "project",
+    "authors": [
+        {
+            "name": "OctoverianSpark",
+            "email": "jeanpaul.hero2@gmail.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^3.7",
+        "howyi/clickup-php": "^1.0",
+        "google/apiclient": "^2.16",
+        "adldap/adldap": "5.0.0.x-dev",
+        "phpmailer/phpmailer": "^6.9",
+        "phpoffice/phpword": "^1.2",
+        "dompdf/dompdf": "^3.0"
+    
+    },
+    "autoload": {
+        "psr-4": {
+            "Models\\":"./models",
+            "Controllers\\":"./controllers",
+            "MVC\\":"./"
+        }
+    }
+}

@@ -1,0 +1,100 @@
+<?php
+
+
+namespace MVC;
+
+
+
+class Router{
+
+    public $rutasGET = [];
+    public $rutasPOST = [];
+
+    public function get($url,$fn){
+        $this->rutasGET[$url] = $fn;
+    }
+    public function post($url,$fn){
+        $this->rutasPOST[$url] = $fn;
+    }
+
+    public function comprobarRutas(){
+
+        session_start();
+        $auth = $_SESSION["login"] ?? null;
+        $admin = $_SESSION["admin"] ?? null;
+
+        $rutas_protegidas = ["/","/tickets/crear","/ticket","tickets/ver","/equipos",];
+
+        $rutas_admin = ["/admin","/admin/inventario","/admin/inventario/crear","/admin/inventario/actualizar","/admin/inventario/eliminar","/admin/tickets","/admin/tickets/ver","/admin/encuestas","/admin/encuestas/ver","/admin/entradas","/admin/entradas/ver","/admin/entradas/crear"];
+
+
+        
+
+        $urlActual = $_SERVER["PATH_INFO"] ?? "/";
+        $metodo = $_SERVER["REQUEST_METHOD"];
+        
+        if(!$auth && !str_contains($urlActual,"/login") ){
+            if(!str_contains($urlActual,"/redirect")){
+                header("Location: /login");
+
+            }
+        }
+        if(in_array($urlActual,$rutas_protegidas) && !$auth){
+            header("Location: /login");
+        }
+
+        if(in_array($urlActual,$rutas_admin)&& !$admin){
+            header("Location: /login");
+        }
+
+
+
+        if ($metodo === "GET") {
+            $fn = $this->rutasGET[$urlActual] ?? null;
+        }else{
+            
+            $fn = $this->rutasPOST[$urlActual] ?? null;
+        }
+
+
+
+        if ($fn) {
+            call_user_func($fn,$this);
+        }else{
+            echo "Pagina no Encontrada";
+        }
+
+
+        
+
+    }   
+
+
+
+
+    public function render($view,$datos =[]){
+
+
+
+        foreach ($datos as $key => $value) {
+            $$key = $value;
+        }
+        ob_start();
+        include __DIR__ ."/views/$view.php";
+        $contenido = ob_get_clean();
+        include __DIR__ ."/views/layout.php";
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+?>

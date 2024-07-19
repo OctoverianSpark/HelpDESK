@@ -1,0 +1,146 @@
+.container-create{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6rem;
+    max-width: 100%;
+}
+
+.info{
+    padding: 0 2rem;
+    margin: 1rem;
+    width: 50%;
+    height: 50%;
+
+    background-color: $blanco;
+    border-radius: 2rem;
+
+    ul{
+        text-align: justify;
+        line-height: 2.1;
+        li{
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+    }
+
+    h2{
+        margin-top: -10rem;
+        margin-bottom: 6rem;
+
+        &::after{
+            content: "";
+            display: block;
+            background-color: $morado;
+            color: $morado;
+            width: 100%;
+            text-align: center;
+            height: .5rem;
+        }
+    }
+}
+
+
+.formulario{
+
+    max-width: 60%;
+
+    h1{
+        text-align: center;
+    }
+
+    fieldset{
+        border: 2px solid $morado;
+        border-radius: 2rem;
+        padding: 2rem 3rem;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        gap: 1rem;
+
+
+        legend{
+            color: $morado;
+            font-weight: 600;
+            letter-spacing: 2px;
+
+        }
+    
+        input:not([type="file"]),select,textarea{
+            height: 3rem;
+            border: none;
+            width: 100%;
+            border-radius: 2rem;
+
+        }
+
+        input[type="file"]{
+            &::file-selector-button{
+                @include boton($morado,inline-block);
+                margin-top: -1rem;
+                justify-content: center;
+                flex-direction: row;
+            }
+        }
+        label{
+            font-size: 2rem;
+            display: inline-block;
+        }
+        textarea{
+            height: 10rem;
+            padding: 1rem;
+
+            &::-webkit-resizer{
+                display: none;
+            }
+        }
+        input{
+            padding: 1rem;
+        }
+        #otro,label[for="otro"]{
+            display: none;
+        }
+
+        
+        
+    }
+}
+
+
+
+.container-formulario-casos{
+    
+    gap: 2rem;
+    margin: 2rem;
+    border-radius: 2rem;
+
+}
+
+
+.container-categories{
+    @include grid(3,4rem);
+}
+
+.categories-selected{
+    
+    background-color: $celesteOscuro;
+    border-radius: 2rem;
+    max-width: 100%;
+    height: 30rem;
+    display: flex;
+    flex-direction: column;
+    p{
+        text-align: center;
+        margin-top: -1rem;
+    }
+    li{
+        text-align: center;
+        margin-top: 2rem;
+
+        &:first-of-type{
+            margin-top: 0;
+        }
+    }
+}
+
+

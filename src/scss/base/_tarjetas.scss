@@ -1,0 +1,47 @@
+.container{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    margin: 0 auto;
+}
+
+.info-index{
+    @include grid(2,2rem);
+
+}
+.blue-card{
+    background-color: $azulPalido;
+    border-radius: 2rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    h2,h3,p{
+        color: $blanco;
+        text-align: center;
+        line-height: 2;
+        line-height: 2;
+    }
+    p{
+        
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+
+    span{
+        font-weight: 800;
+        font-size: 1.7rem;
+        padding: 1rem;
+    }
+
+    h2{
+        margin-top: -2rem;
+        margin-bottom: -1rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    img{
+        margin: 2rem auto;
+        width: 30rem;
+        border-radius: 2rem;
+    }
+    
+}

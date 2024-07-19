@@ -1,0 +1,154 @@
+table.tickets-table{
+
+    max-width: 90%;
+    margin: 4rem auto;
+    border: 1px solid black;
+    border-spacing: 0;
+    thead{
+        
+        background-color: $morado;
+        color: $blanco;
+        height: 5rem;
+
+    
+    }
+
+    th{
+        border: .5px solid black;
+        padding: 1rem;
+        
+    }
+    td{
+        border: 1px solid black;
+        text-transform: initial;
+        padding: .5rem;
+
+
+        
+    }
+
+    tr{
+        background-color: rgba($azulPalido,.2);
+        transition: .2s;
+        text-align: center;
+        cursor: pointer;
+        &:nth-child(even){
+            background-color: rgba($morado,.2);
+        }
+
+        &:hover{
+            background-color: rgba($negro,.2);
+            transition: .2s;
+        }
+
+        img{
+            border-radius: 2rem;
+            max-width: 10rem;
+        }
+    }
+}
+
+table.tabla-encuestas{
+    max-width: 90%;
+    margin: 4rem auto;
+    border: 1px solid black;
+    border-spacing: 0;
+    thead{
+        
+        background-color: $morado;
+        color: $blanco;
+        height: 5rem;
+
+    
+    }
+
+    th{
+        border: .5px solid black;
+        padding: 1rem;
+        
+    }
+    td{
+        border: 1px solid black;
+        text-transform: initial;
+        padding: .5rem;
+
+
+        
+    }
+
+    tr{
+        background-color: rgba($azulPalido,.2);
+        transition: .2s;
+        text-align: center;
+        cursor: pointer;
+        &:nth-child(even){
+            background-color: rgba($morado,.2);
+        }
+
+        &:hover{
+            background-color: rgba($negro,.2);
+            transition: .2s;
+        }
+
+    }
+}
+
+table.table-inventario{
+    border: 1px $negro solid;
+    border-spacing: 0;
+    text-align: center;
+    width: 90%;
+    margin: 4rem auto;
+
+    thead{
+        background-color: $morado;
+        color: $blanco;
+    }
+
+    td,th{
+        
+        padding: 1rem 2rem;
+        border: 1px solid $negro;
+    }
+
+    tr{
+        
+        overflow-y: scroll;
+        background-color: rgba($azulPalido,.2);
+        transition: .7s;
+        &:nth-child(even){
+            background-color: rgba($morado,.2);
+
+        }
+
+        &:hover{
+            background-color: rgba($negro,.3);
+
+        }
+
+
+    }
+}
+
+
+table.tabla-ordenes{
+    
+    border: 1px $negro solid;
+    border-spacing: 0;
+    text-align: center;
+    width: 90%;
+    margin: 4rem auto;
+    
+
+    th{
+        background-color: $morado;
+        color: $blanco;
+        border:1px solid $negro ;
+        height: 5rem;
+    }
+    td{
+        border: 1px solid $negro;
+    }
+}
+
+

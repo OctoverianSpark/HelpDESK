@@ -1,0 +1,19 @@
+.alerta{
+    text-align: center;
+    color: $blanco;
+    margin: 3rem;
+    padding: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 800;
+    font-family: $fuente_principal;
+    border-radius: 2rem;
+    &.exito{
+        background-color: $morado;
+        
+    }
+
+    &.error{
+        background-color: $rojo;
+    }
+}
