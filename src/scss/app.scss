@@ -1,3 +1,7 @@
+
+
+
+
 /* Base */
 @import "base/variables";
 @import "base/normalize";
@@ -25,6 +29,7 @@
 /*Internals*/
 @import "internas/entrada/formulario";
 @import "internas/entrada";
+@import "internas/tickets";
 @import "internas/tickets/gestionar";
 @import "internas/tickets/encuesta";
 @import "internas/inventario/orden";

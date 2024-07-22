@@ -1,3 +1,17 @@
+/* Fonts */
+@font-face {
+    font-family: Pangram;
+    src:
+        url('../fonts/Pangram-Regular.otf'),
+        url('../fonts/Pangram-Black.otf'), 
+        url('../fonts/Pangram-Bold.otf'),
+        url('../fonts/Pangram-ExtraBold.otf'),
+        url('../fonts/Pangram-ExtraLight.otf'),
+        url('../fonts/Pangram-Light.otf'),
+        url('../fonts/Pangram-Medium.otf'),
+}
+
+
 html {
     font-size: 62.5%;
     box-sizing: border-box;

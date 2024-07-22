@@ -1,6 +1,6 @@
 
 
-<main>  
+<main class="contenedor-data">  
 
     <?php if ($resultado): ?>
         
@@ -11,7 +11,7 @@
 
     <?php endif ?>
 
-    <table class="tickets-table seccion contenido-centrado">
+    <table class="tickets-table">
 
         <thead>
             <th>ID</th>

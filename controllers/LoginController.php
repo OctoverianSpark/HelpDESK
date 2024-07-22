@@ -15,7 +15,6 @@ use Google_Service_Oauth2;
 class LoginController{
     
     public static function login(Router $router){
-
         if($_SERVER["REQUEST_METHOD"] === "POST"){
 
             $ad = new ActiveDirectory($_POST["login"]);
@@ -68,7 +67,7 @@ class LoginController{
         // init configuration 
         $clientID = '955799568045-v3rim16b2uh01eop27g5a1v2dk73umnu.apps.googleusercontent.com';
         $clientSecret = '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';
-        $redirectUri = 'http://'.$_SERVER["HTTP_HOST"] . '/redirect';
+        $redirectUri = 'http://helpdesk.asistentevirtualsas.com/redirect';
         
         // create Client Request to access Google API 
         $client = new Google_Client();
@@ -95,13 +94,15 @@ class LoginController{
         }
         session_start();
 
-        $_SESSION["nombre"] = $name;
+
+        $_SESSION["name"] = $name;
         $_SESSION["email"] = $email;
         $_SESSION["picture"] = $picture;
         $_SESSION["log_type"] = "email";
         $_SESSION["login"] = true;
         $_SESSION["admin"] = admin();
         
+
         header("Location: /");
 
         // now you can use this profile info to create account in your website and make user logged in. 

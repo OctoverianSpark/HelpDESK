@@ -1,41 +1,41 @@
 <main class="contenedor-ticket">
 <h1>Administrador de Tickets</h1>
-    
-<div class="container-filters">
-    <form method="get" class="form-search">
-        <input type="hidden" name="type" value="tecnico_id">
-        <div class="container-input-search" id="queryCont">
-            <label for="queryText">Tecnico Asignado</label>
-            <select type="text" name="query" id="queryText">
-                <?php foreach($tecnicos as $tecnico): ?>
-                    <option value="<?php echo $tecnico->id ?>" <?php echo ($_GET["query"] === $tecnico->id)? "selected":"" ?>  ><?php echo $tecnico->nombre . " " . $tecnico->apellido ?></option>
-                <?php endforeach ?>
-            </select>
-        </div>
+        
+    <div class="container-filters">
+        <form method="get" class="form-search">
+            <input type="hidden" name="type" value="tecnico_id">
+            <div class="container-input-search" id="queryCont">
+                <label for="queryText">Tecnico Asignado</label>
+                <select type="text" name="query" id="queryText">
+                    <?php foreach($tecnicos as $tecnico): ?>
+                        <option value="<?php echo $tecnico->id ?>" <?php echo ($_GET["query"] === $tecnico->id)? "selected":"" ?>  ><?php echo $tecnico->nombre . " " . $tecnico->apellido ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
 
-        <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
+            <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
 
-    </form>
-    <form method="get" class="form-search">
+        </form>
+        <form method="get" class="form-search">
 
-        <div class="container-input-search">
-            <label for="typeOf">Tipo</label>
-            <select name="type" id="typeOf">
-                <option value="usuario" <?php echo ($_GET["type"] === "usuario")? "selected":"" ?>>Nombre del Usuario</option>
-                <option value="categoria" <?php echo ($_GET["type"] === "categoria")? "selected":"" ?>>Categoria del Ticket</option>
-                <option value="subcategoria" <?php echo ($_GET["type"] === "subcategoria")? "selected":"" ?>>Subcategoria</option>
-                <option value="estado" <?php echo ($_GET["type"] === "estado")? "selected":"" ?>>Estado</option>
-            </select>
-        </div>
-        <div class="container-input-search" id="queryCont">
-            <label for="queryText">Que deseas buscar?</label>
-            <input type="text" name="query" id="queryText">
-        </div>
+            <div class="container-input-search">
+                <label for="typeOf">Tipo</label>
+                <select name="type" id="typeOf">
+                    <option value="usuario" <?php echo ($_GET["type"] === "usuario")? "selected":"" ?>>Nombre del Usuario</option>
+                    <option value="categoria" <?php echo ($_GET["type"] === "categoria")? "selected":"" ?>>Categoria del Ticket</option>
+                    <option value="subcategoria" <?php echo ($_GET["type"] === "subcategoria")? "selected":"" ?>>Subcategoria</option>
+                    <option value="estado" <?php echo ($_GET["type"] === "estado")? "selected":"" ?>>Estado</option>
+                </select>
+            </div>
+            <div class="container-input-search" id="queryCont">
+                <label for="queryText">Que deseas buscar?</label>
+                <input type="text" name="query" id="queryText">
+            </div>
 
-        <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
+            <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
 
-    </form>
-</div>
+        </form>
+    </div>
 
 
 
@@ -47,7 +47,7 @@
     
         <?php endif ?>
     
-        <table class="tickets-table seccion contenido-centrado">
+        <table class="tickets-table">
     
             <thead>
                 <th>ID</th>
