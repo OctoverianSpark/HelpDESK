@@ -36,7 +36,7 @@ class Encuestas extends ActiveRecord{
         $this->calidad = $args["calidad"] ?? null;
         $this->comentarios =$args["comentarios"];
         $this->creado = date("Y/m/d h:i:s");
-        $this->creado = date_add(date_create_from_format("Y/m/d h:i:s",date("Y/m/d h:i:s")),date_interval_create_from_date_string('24 hour'));
+        $this->vencimiento = date_format(date_add(date_create_from_format("Y/m/d h:i:s",date("Y/m/d h:i:s")),date_interval_create_from_date_string('24 hour')),"Y/m/d h:i:s");
         $this->estado = $args["estado"] ?? "pendiente";
         $this->promedio = $args["promedio"];
 

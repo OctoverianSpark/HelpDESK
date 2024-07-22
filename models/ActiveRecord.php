@@ -145,9 +145,11 @@ class ActiveRecord{
         $sanitizado= [];
 
         foreach($atributos as $key => $value){
+            
             $sanitizado[$key] = self::$db->escape_string($value);
-        }
+          
 
+        }
         return $sanitizado;
     }
     public function actualizar(){
