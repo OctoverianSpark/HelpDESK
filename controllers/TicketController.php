@@ -113,15 +113,14 @@ class TicketController{
 
                         if($tickets->estado === "en proceso"){
                             $_POST["tickets"]["fecha_completacion"] = date("Y-m-d h:i:s");
-                            $completedTime = ((strtotime($tickets->fecha_asignada)-strtotime(date("Y-m-d h:i:s")) )) /1000;
-                            debuguear($completedTime);
+                            $completedTime = (strtotime(date("Y-m-d h:i:s")) - (strtotime($tickets->fecha_asignada))) /1000;
                             $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
                         
                             
                         }else if($tickets->estado === "pendiente"){
                             
                             $_POST["tickets"]["fecha_completacion"] = date("Y-m-d h:i:s");
-                            $completedTime = ((strtotime($tickets->fecha_asignada)-strtotime(date("Y-m-d h:i:s")) )) /1000;
+                            $completedTime = (strtotime($_POST["tickets"]["fecha_completacion"]) - (strtotime($tickets->fecha_pendiente))) /1000;
                             $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
                         }
 
