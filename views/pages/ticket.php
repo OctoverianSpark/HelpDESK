@@ -1,7 +1,7 @@
 <main class="contenedor-ticket">
         
     <?php if (!is_null($tickets)) : ?>
-                    <h1><?php echo s($tickets->subcategoria) ?></h1>
+                    <h1 class="title"><?php echo s($tickets->subcategoria) ?></h1>
                     <div class="destacada">
                         <img src="/referencias/<?php echo $tickets->imagen ?>" width="200" alt="Sin">
                     </div>

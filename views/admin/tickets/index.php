@@ -56,6 +56,7 @@
                 <th>Categoria</th>
                 <th>Asunto</th>
                 <th>Descripcion</th>
+                <th>Anydesk</th>
                 <th>Tecnico Asignado</th>
                 <th>Estado del Ticket</th>
                 <th>Referencia</th>
@@ -70,6 +71,7 @@
                                 <td><?php echo s($ticket->categoria) ?></td>
                                 <td><?php echo s($ticket->subcategoria) ?></td>
                                 <td><?php echo s($ticket->descripcion) ?></td>
+                                <td><?php echo s($ticket->anydesk) ?></td>
                                 <td><?php echo s($ticket->tecnico) ?></td>
                                 <td><?php echo ucwords(s($ticket->estado)) ?></td>
                                 <td><img src="/referencias/<?php echo $ticket->imagen ?>" alt="Sin Referencia"></td>

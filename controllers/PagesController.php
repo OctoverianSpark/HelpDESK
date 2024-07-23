@@ -28,25 +28,25 @@ class PagesController{
     public static function index(Router $router){
 
 
-        $tickets = Tickets::findJoinbyUser($_SESSION["name"],1);
+        $tickets = Tickets::findJoinbyUser($_SESSION["name"],1)?? [];
+        $tickets = array_shift($tickets);
+        if(!empty($tickets)){
+            
+            $encuestas = Encuestas::findPendingsByUser($tickets->id)??[];
+        }
 
-        
+        $novedades = Entradas::getNovedades(2);
+        $recomendaciones = Entradas::getRecomendaciones(2);
 
-        $encuestas = Encuestas::findPendings();
-
-        $novedades = Entradas::getNovedades();
-        $recomendaciones = Entradas::getRecomendaciones();
-
-        $novedad = $novedades[random_int(0,(count($novedades)-1<0))] ?? [];
-        $recomendacion = $recomendaciones[random_int(0,(count($recomendaciones)-1<0))] ?? [];
-
+        $count = 0;
         
 
         $router->render("pages/index",[
             "tickets"=>$tickets,
             "encuestas"=>$encuestas,
-            "novedad"=>$novedad,
-            "recomendacion"=>$recomendacion
+            "novedades"=>$novedades,
+            "recomendaciones"=>$recomendaciones,
+            "count"=>$count
         ]);
 
         
@@ -60,13 +60,15 @@ class PagesController{
 
         $ticket = new Tickets;
         $tecnicos  = Tecnicos::all();
+        $inventario = Inventario::getInventory("nombre",$_SESSION["name"]);
+        $inventario =array_shift($inventario);
         $selectedCat = $_GET["cat"] ?? null;
         $cats =["Red","Equipo","Aplicaciones"];
         $subcats = Subcats::getSubs($selectedCat);
         $allsubcats = Subcats::all();
         $limite = 3;
         $errores = Tickets::getErrores();
-        $apps = Apps::all();
+        $apps = Apps::all();   
         
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -125,6 +127,7 @@ class PagesController{
 
 
         $router->render("pages/crear",[
+            "inventario"=>$inventario,
             "tecnicos"=>$tecnicos,
             "subcats" => $subcats,
             "allsubcats"=>$allsubcats,
@@ -187,12 +190,21 @@ class PagesController{
 
     public static function encuesta(Router $router){
 
+
+
+
         $id =validarID();
 
         $encuesta = Encuestas::findJoin($id);
         $ticket= Tickets::findJoin($encuesta->ticket_id);
         
-    
+        
+        if($encuesta->estado==="completada"){
+            header("Location: /");
+
+        }
+
+
 
         if($_SERVER["REQUEST_METHOD"] === "POST"){
             
@@ -200,6 +212,8 @@ class PagesController{
             $encuestas = new Encuestas($_POST["encuesta"]);
 
             $encuestas->guardar();
+
+            header("Location: /");
         }
 
         $router->render("pages/encuesta",[

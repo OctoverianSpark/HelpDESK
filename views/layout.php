@@ -63,9 +63,10 @@
     
     <?php echo $contenido;?>
     <footer class="footer">
-        <div class="imagen-logo">
-            
-        </div>
+        <a href="/" class= "logo">
+            <h1 class= "logo-title">HELP<span>DESK</span></h1>
+        </a>
+        <p>ASISTENTE VIRTUAL S.A.S &copy;</p>
     </footer>
 
     <script src="/build/js/bundle.min.js"></script>

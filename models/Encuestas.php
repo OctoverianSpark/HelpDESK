@@ -72,22 +72,29 @@ class Encuestas extends ActiveRecord{
 
 
 
-    public static function findPendings($limit=1){
+    public static function findPendings($limit=1,$where=null){
         $actualDate = date("Y-m-d H:i:s");
 
 
-        $query = "SELECT * FROM " . static::$tabla . " WHERE creado >= '$actualDate' AND estado is null order by creado LIMIT " . $limit;
+        $query = "SELECT * FROM " . static::$tabla . " WHERE vencimiento <= '$actualDate' AND estado = 'pendiente' ";
 
         
-
         $resultado = self::consultarSQL($query);
 
-        if(!$limit){
-            return array_shift($resultado);
-            
-        }
         return $resultado;
 
+    }
+
+    public static function findPendingsByUser($ticket_id){
+        $actualDate = date("Y-m-d H:i:s");
+
+
+        $query = "SELECT * FROM " . static::$tabla . " WHERE ticket_id=$ticket_id";
+
+        
+        $resultado = self::consultarSQL($query);
+
+        return array_shift( $resultado );
     }
 
     protected static function allPendings(){

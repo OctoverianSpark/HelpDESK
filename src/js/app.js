@@ -2,7 +2,6 @@
 
 
 function EventListeners() {
-    
     if (location.href.match("/tickets/crear")) {
         llamarOtro();
     }else if (location.href.match("/admin/inventario/crear") || location.href.match("/admin/inventario/actualizar")) {
@@ -16,6 +15,7 @@ function EventListeners() {
     }
     
 }
+
 
 
 function check(){

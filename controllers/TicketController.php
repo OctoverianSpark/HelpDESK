@@ -23,7 +23,6 @@ class TicketController{
 
         $tickets = Tickets::filter($_GET["type"],$_GET["query"]);
         $tecnicos = Tecnicos::all();
-
         $router->render("admin/tickets/index",[
             "tickets" => $tickets,
             "tecnicos"=>$tecnicos
@@ -83,6 +82,7 @@ class TicketController{
                                 
                             $_POST["tickets"]["fecha_asignada"] = date("Y-m-d h:i:s");
                             $asignTime = (strtotime($_POST["tickets"]["fecha_asignada"]) - (strtotime($tickets->fecha))) /1000;
+                            $asignTime =  ($asignTime <0)?$asignTime * -1:$asignTime *1;
                             $_POST["tickets"]["tiempo_en_asignar"] = $asignTime;
                         }else{
                                 
@@ -101,6 +101,7 @@ class TicketController{
                         }else if($tickets->estado === "en proceso"){
                             $_POST["tickets"]["fecha_pendiente"] = date("Y-m-d h:i:s");
                             $pendingTime = (strtotime($_POST["tickets"]["fecha_pendiente"]) - (strtotime($tickets->fecha_asignada))) /1000;
+                            $pendingTime = ($pendingTime <0)?$pendingTime * -1:$pendingTime *1;
                             $_POST["tickets"]["tiempo_en_pendiente"] = $pendingTime;
                             
                         }
@@ -114,7 +115,7 @@ class TicketController{
                         if($tickets->estado === "en proceso"){
                             $_POST["tickets"]["fecha_completacion"] = date("Y-m-d h:i:s");
                             $completedTime = ((strtotime($tickets->fecha_asignada)-strtotime(date("Y-m-d h:i:s")) )) /1000;
-                            debuguear($completedTime);
+                            $completedTime =  ($completedTime <0)?$completedTime * -1:$completedTime *1;
                             $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
                         
                             
@@ -122,6 +123,7 @@ class TicketController{
                             
                             $_POST["tickets"]["fecha_completacion"] = date("Y-m-d h:i:s");
                             $completedTime = ((strtotime($tickets->fecha_asignada)-strtotime(date("Y-m-d h:i:s")) )) /1000;
+                            $completedTime =  ($completedTime <0)?$completedTime * -1:$completedTime *1;
                             $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
                         }
 
