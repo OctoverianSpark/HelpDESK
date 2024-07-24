@@ -10,12 +10,12 @@
 @import "base/globales";
 @import "base/botones";
 @import "base/tabla";
-@import "base/tarjetas";
 @import "base/alertas";
 
 
 /*UX-UI*/
 
+@import "layout/tarjetas";
 @import "layout/header";
 @import "layout/footer";
 @import "layout/formulario";

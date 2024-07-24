@@ -6,4 +6,16 @@
         color: $blanco;
         text-align: center;
     }
+
+    
+    .logo-title{
+        margin: 0 auto;
+        font-weight: 800;
+        color: $blanco;
+        font-size: 4.9rem;
+        span{
+            color: $celeste;
+            font-size: 3.8rem;
+        }
+    }
 }

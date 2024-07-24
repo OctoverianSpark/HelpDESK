@@ -1,40 +1,39 @@
-<h1>Crear</h1>
 
 
 
 <?php foreach($errores as $error): ?>
-            <p class="alerta error"><?php echo $error ?></p>
-
-<?php endforeach ?>
-
-
-<?php if(!$selectedCat){ ?>
-    <a href="/" class="boton-morado-inline">Volver</a>
-
+    <p class="alerta error"><?php echo $error ?></p>
     
-    <div class="container-categories">
-
-    <?php foreach ($cats as $cat):?>
-            <?php $limite = 3?>
-            <div class="categories-selected seccion">
-                <a class="boton-azul-block" href="?cat=<?php echo $cat ?>"><?php echo $cat ?></a>
-                <p>Casos relacionados:</p>
-                <?php foreach($allsubcats as $subcat){ ?>
+    <?php endforeach ?>
+    
+    
+    <?php if(!$selectedCat){ ?>
+        <a href="/" class="boton-morado-inline">Volver</a>
+        
+        
+        <div class="container-categories">
+            
+            <?php foreach ($cats as $cat):?>
+                <?php $limite = 3?>
+                <div class="categories-selected seccion">
+                    <a class="boton-azul-block" href="?cat=<?php echo $cat ?>"><?php echo $cat ?></a>
+                    <p>Casos relacionados:</p>
+                    <?php foreach($allsubcats as $subcat){ ?>
                         <?php if($limite === 0) break ?>
                         <?php if($subcat->subcategoria === "Otro...") continue;?>
                         <?php if ($subcat->categoria === $cat) { ?>
                             <li><?php echo $subcat->subcategoria; ?></li>
-                        <?php $limite--; }?>
-                <?php } ?>
-            </div>
-    <?php endforeach ?>
+                            <?php $limite--; }?>
+                            <?php } ?>
+                        </div>
+                        <?php endforeach ?>
     </div>
 
-
-<?php } else if(in_array($selectedCat,$cats)){  ?>
-
-    <div class="container-create">
-        <div class="info">
+    
+    <?php } else if(in_array($selectedCat,$cats)){  ?>
+        
+        <div class="container-create">
+            <div class="info">
             <h2>Creando un Ticket</h2>
 
             <ul>
@@ -46,6 +45,8 @@
             </ul>
         </div>
         <form action="/tickets/crear" method="post" enctype = "multipart/form-data" class="formulario" id="tik-form"> 
+        <h1 class="title-tickets">Crear</h1>
+
             <input type="hidden" value="<?php echo $selectedCat ?>" name="tickets[categoria]">
             <div class="container-formulario-casos">
                 <fieldset class="usuario">
@@ -55,9 +56,9 @@
                 </fieldset>
                 <fieldset class="general">
                     <legend>Informacion General</legend>
-
-                        <label for="subcategoria">Asunto</label>
-                        <select name="tickets[subcategoria]" id="subcategoria">
+                    
+                    <label for="subcategoria">Asunto</label>
+                    <select name="tickets[subcategoria]" id="subcategoria">
                             <?php foreach($subcats as $subcat){ ?>
                                 <option value="<?php echo s($subcat->subcategoria) ?>"><?php echo s($subcat->subcategoria)?></option>
                             <?php } ?>
@@ -67,18 +68,18 @@
                             <select id="apps" name="tickets[selected_app]">
                                 <?php foreach($apps as $app):?>
                                     <option value="<?php echo $app->app ?>"><?php echo $app->app ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        <?php endif?>
-                        <label for="otro"></label>
-                        <input id="otro" type="text" placeholder="">
-                        <label for="descripcion">Descripcion</label>
-                        <textarea name="tickets[descripcion]" id="descripcion"></textarea>
-                        <?php if($selectedCat === "Aplicaciones"):?>
-                            <label for="anydesk">AnyDesk</label>
-                            <input type="text" id="anydesk" name="tickets[anydesk]">
+                                    <?php endforeach ?>
+                                </select>
+                                <?php endif?>
+                                <label for="otro"></label>
+                                <input id="otro" type="text" placeholder="">
+                                <label for="descripcion">Descripcion</label>
+                                <textarea name="tickets[descripcion]" id="descripcion"></textarea>
+                                <?php if($selectedCat === "Aplicaciones"):?>
+                                    <label for="anydesk">AnyDesk</label>
+                                    <input type="text" id="anydesk" name="tickets[anydesk]" value="<?php echo $inventario->anydesk?>">
                         <?php endif ?>
-
+                        
                 </fieldset>
 
                 <fieldset>

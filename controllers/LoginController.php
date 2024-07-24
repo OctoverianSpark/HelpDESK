@@ -32,7 +32,7 @@ class LoginController{
                     $_SESSION["login"]=true;
                     $_SESSION["log_type"] = "user";
                     $_SESSION["username"] = $_POST["login"]["user"];
-                    $_SESSION["name"] = $userData->nombre . " " . $userData->apellido;
+                    $_SESSION["name"] = (!empty($userData))? $userData->nombre . " " . $userData->apellido : "" ;
                     $_SESSION["admin"] = admin();
 
                     header("Location: /");

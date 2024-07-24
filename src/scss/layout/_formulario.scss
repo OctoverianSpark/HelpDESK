@@ -4,12 +4,14 @@
     justify-content: center;
     gap: 6rem;
     max-width: 100%;
+
 }
 
 .info{
     padding: 0 2rem;
     margin: 1rem;
-    width: 50%;
+    margin-top: 10%;
+    width: 60%;
     height: 50%;
 
     background-color: $blanco;
@@ -40,15 +42,15 @@
     }
 }
 
+.title-tickets{
+    text-align: center;
+}
 
 .formulario{
 
     max-width: 60%;
 
-    h1{
-        text-align: center;
-    }
-
+    margin-right: 5%;
     fieldset{
         border: 2px solid $morado;
         border-radius: 2rem;
