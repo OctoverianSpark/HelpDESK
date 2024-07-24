@@ -113,7 +113,7 @@ class Tickets extends ActiveRecord{
             $resultado = static::getJoin();
             
         }else{
-            $query = "SELECT " . static::$tabla . ".id ,fecha,usuario, ". static::$tabla .".categoria,subcategoria, CONCAT(nombre,' ', apellido) as tecnico,descripcion,estado,imagen FROM ". static::$tabla;
+            $query = "SELECT " . static::$tabla . ".id ,fecha,usuario, ". static::$tabla .".categoria,subcategoria, CONCAT(nombre,' ', apellido) as tecnico,anydesk,descripcion,estado,imagen FROM ". static::$tabla;
             $query .= " INNER JOIN tecnico on tecnico_id = tecnico.id";
             $query .= " WHERE $column LIKE '%$param%'";
             $resultado = self::consultarSQL($query);

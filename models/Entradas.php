@@ -43,25 +43,25 @@ class Entradas extends ActiveRecord{
     public static function getNovedades($limit = 0){
 
         $query = "SELECT * FROM " . self::$tabla . " WHERE tipo = 'novedad' and mostrar='si'";
-        
-        $resultado = self::consultarSQL($query);
-        
         if($limit >0){
             $query .= " LIMIT $limit";
         }
 
+        
+        $resultado = self::consultarSQL($query);
+        
         return $resultado;
 
     }
     public static function getRecomendaciones($limit = 0){
 
         $query = "SELECT * FROM " . self::$tabla . " WHERE tipo = 'recomendacion' and mostrar='si'";
-        
-        $resultado = self::consultarSQL($query);
-        
         if($limit >0){
             $query .= " LIMIT $limit";
         }
+        
+        $resultado = self::consultarSQL($query);
+        
 
         return $resultado;
 
