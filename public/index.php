@@ -48,6 +48,7 @@ use Models\Encuestas;
     /* Portal */
     
     $router->get("/admin",[AdminController::class,"index"]);
+    $router->post("/admin",[AdminController::class,"index"]);
 
     /* * Inventario * */
     $router->get("/admin/inventario",[InventoryController::class,"index"]);

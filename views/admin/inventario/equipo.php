@@ -23,7 +23,7 @@
                 <div class="container-periferal-data">
             <?php foreach($perifericos as $periferico): ?>
                 <div class="data-perifericos">
-                    <h2><?php echo $periferico->tipo ?></h2>
+                    <h2><?php echo strtoupper($periferico->tipo) ?></h2>
                     <h2><?php echo "MARCA: ".$periferico->marca ?></h2>
                     <h2><?php echo "MODELO: ".$periferico->modelo ?></h2>
                     <h2><?php echo "COLOR: ".$periferico->color ?></h2>

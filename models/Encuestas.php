@@ -158,7 +158,7 @@ class Encuestas extends ActiveRecord{
 
     
     public static function findJoin($id){
-        $query = "SELECT " . static::$tabla . ".id, ticket_id,resolucion,asertividad,rapidez,calidad,promedio,". static::$tabla .".comentarios,creado,vencimiento,". static::$tabla .".estado, subcategoria, usuario  FROM ". static::$tabla;
+        $query = "SELECT " . static::$tabla . ".*  FROM ". static::$tabla;
         $query .= " INNER JOIN tickets on ticket_id = tickets.id WHERE ticket_id = $id";
 
 

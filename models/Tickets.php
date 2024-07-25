@@ -56,7 +56,7 @@ class Tickets extends ActiveRecord{
     }
 
     public static function getJoin($limite = 0){
-        $query = "SELECT " . static::$tabla . ".id ,fecha,usuario, ". static::$tabla .".categoria,subcategoria,anydesk, CONCAT(nombre,' ', apellido) as tecnico,descripcion,estado,imagen FROM ". static::$tabla;
+        $query = "SELECT " . static::$tabla . ".*,CONCAT(nombre,' ', apellido) as tecnico FROM ". static::$tabla;
         $query .= " INNER JOIN tecnico on tecnico_id = tecnico.id";
         if ($limite >0){
             $query .= " LIMIT $limite";
@@ -70,7 +70,7 @@ class Tickets extends ActiveRecord{
 
     public static function findJoin($id){
 
-        $query = "SELECT " . static::$tabla . ".id ,fecha,usuario, ". static::$tabla .".categoria,subcategoria, CONCAT(nombre,' ', apellido) as tecnico,descripcion,estado,imagen FROM ". static::$tabla;
+        $query = "SELECT " . static::$tabla . ".*, CONCAT(nombre,' ', apellido) as tecnico FROM ". static::$tabla;
         $query .= " INNER JOIN tecnico on tecnico_id = tecnico.id";
         $query .= " WHERE " . static::$tabla .".id = $id";
         $resultado = self::consultarSQL($query);
