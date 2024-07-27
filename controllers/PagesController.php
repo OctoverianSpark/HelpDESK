@@ -94,7 +94,7 @@ class PagesController{
             
             if (empty($errores)) {
 
-                $notificaciones = new Notificaciones($destinatario = "admin");
+                $notificaciones = new Notificaciones(null,"Se ha creado un nuevo ticket","Creado Por: " . $_POST["tickets"]["usuario"],"admin","no");
                 $nombreImagen = md5(uniqid(rand(),true)) . ".png";
 
                 if($_FILES["tickets"]["tmp_name"]["imagen"]){
