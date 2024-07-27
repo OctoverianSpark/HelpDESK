@@ -99,7 +99,7 @@
 
 <?php 
     if(!empty($notificacion)){
-        $notificaciones->setShowed();
+        $notificaciones->setShowed($notificacion->id);
     }
 
  

@@ -20,8 +20,8 @@ class  Notificaciones extends ActiveRecord{
         $this->mostrado  = $mostrado;
     }
 
-    public function setShowed(){
-        $query = "UPDATE ". static::$tabla . " SET mostrado = 'si' WHERE id = $this->id";
+    public function setShowed($id){
+        $query = "UPDATE ". static::$tabla . " SET mostrado = 'si' WHERE id = $id";
 
 
         self::$db->query($query);
