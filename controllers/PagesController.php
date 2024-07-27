@@ -31,13 +31,14 @@ class PagesController{
 
         $tickets = Tickets::findJoinbyUser($_SESSION["name"],1)?? [];
         $tickets = array_shift($tickets);
+
         if(!empty($tickets)){
             
             $encuestas = Encuestas::findPendingsByUser($tickets->id)??[];
         }
-
-        $novedades = Entradas::getNovedades(2);
-        $recomendaciones = Entradas::getRecomendaciones(2);
+        $entradas = Entradas::randomizeEntries(2);
+        $novedades = $entradas["novedades"] ;
+        $recomendaciones = $entradas["recomendaciones"];
 
         $count = 0;
         

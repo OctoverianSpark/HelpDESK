@@ -67,8 +67,69 @@ class Entradas extends ActiveRecord{
 
     }
 
-    
+    public static function randomizeEntries($limit = 0){
 
+        $noveltiesCount = count(static::getNovedades()) - 1;
+        $recomendationsCount = count(static::getRecomendaciones()) - 1;
+
+
+        $allNovelties = static::getNovedades();
+        $allRecoms = static::getRecomendaciones();
+        
+
+
+        $recomendations = [];
+        $novelties = [];
+        $i = 1;
+
+        do{ 
+            $novIndex = rand(0,$noveltiesCount);
+            $recIndex = rand(0,$recomendationsCount);
+            
+            
+            $noveltie = $allNovelties[$novIndex];
+            $recomendation = $allRecoms[$recIndex];
+
+
+
+
+
+
+            $novelties[] = $noveltie;
+
+
+            $recomendations[] = $recomendation;
+
+            
+
+            unset($allNovelties[$novIndex]);
+            unset($allRecoms[$recIndex]);
+
+            sort($allNovelties);
+            sort($allRecoms);
+
+
+
+
+            $recomendationsCount--;
+            $noveltiesCount--;
+
+            $i++;
+        }while($i <= $limit);
+
+        
+        $result = ["recomendaciones"=>$recomendations,
+                   "novedades"=>$novelties];
+
+
+        return $result;
+
+
+    }
+
+
+
+    
 
 
 }
