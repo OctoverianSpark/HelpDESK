@@ -26,13 +26,15 @@ class LoginController{
             }
             else{
 
+                $adData = $ad->consultData();
                 $userData = Inventario::getInventory("usuarioPC",$_POST["login"]["user"]);
                 $userData=array_shift($userData);
+
                 if($auth){
                     $_SESSION["login"]=true;
                     $_SESSION["log_type"] = "user";
                     $_SESSION["username"] = $_POST["login"]["user"];
-                    $_SESSION["name"] = (!empty($userData))? $userData->nombre . " " . $userData->apellido : "" ;
+                    $_SESSION["name"] = (!empty($adData))? $adData["displayname"] :$userData->nombre . " " . $userData->apellido ;
                     $_SESSION["admin"] = admin();
 
                     header("Location: /");

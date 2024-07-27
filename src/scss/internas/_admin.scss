@@ -1,0 +1,30 @@
+.exports-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.container-exports{
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+
+
+    label{
+        letter-spacing: 1px;
+        font-size: 2rem;
+        font-weight: 700;
+        color: darken($morado,20);
+    }
+
+    select{
+        border-radius: 2rem;
+        padding: .4rem;
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+}

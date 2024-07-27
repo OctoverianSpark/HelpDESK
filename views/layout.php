@@ -1,5 +1,7 @@
 <?php 
 
+    use Models\Notificaciones;
+
     if (!isset($_SESSION)) {
         session_start();
         
@@ -13,9 +15,22 @@
 
     $url = $_SERVER["REQUEST_URI"];
 
+    if($admin){
 
+        $notificacion = Notificaciones::getUnshowed("user");
+        
+        
+    }else{
+        $notificacion = Notificaciones::getUnshowed($_SESSION["name"]);
+
+    }
+
+    $notificaciones = new Notificaciones($notificacion->id);
 
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,6 +42,11 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+    <?php if(!empty($notificacion)): ?>
+        <input type="hidden" id="not-id" value="<?php echo $notificacion->id ?>">
+        <input type="hidden" id="not-titulo" value="<?php echo $notificacion->titulo ?>">
+        <input type="hidden" id="not-content" value="<?php echo $notificacion->contenido ?>">
+    <?php endif ?>
     <header class="header">
         <div class="barra">
             <?php if($auth){ ?>
@@ -73,3 +93,14 @@
 </body>
 
 </html>
+
+
+
+
+<?php 
+    if(!empty($notificacion)){
+        $notificaciones->setShowed();
+    }
+
+ 
+?>

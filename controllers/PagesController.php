@@ -15,6 +15,7 @@ use Models\Inventario;
 use Models\Perifericos;
 use Models\Entradas;
 use Models\Comments;
+use Models\Notificaciones;
 
 
 
@@ -92,7 +93,7 @@ class PagesController{
             
             if (empty($errores)) {
 
-
+                $notificaciones = new Notificaciones($destinatario = "admin");
                 $nombreImagen = md5(uniqid(rand(),true)) . ".png";
 
                 if($_FILES["tickets"]["tmp_name"]["imagen"]){
@@ -109,6 +110,7 @@ class PagesController{
 
                 $ticket->guardar();
                 notificacion();
+                $notificaciones->guardar();
 
                 
                 header("Location: /tickets/ver?resultado=1");

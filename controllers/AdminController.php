@@ -140,6 +140,8 @@ class AdminController{
                     $spreadsheet->getActiveSheet()->setCellValue("E$i",$encuesta->rapidez);
                     $spreadsheet->getActiveSheet()->setCellValue("F$i",$encuesta->calidad);
                     $spreadsheet->getActiveSheet()->setCellValue("G$i",$encuesta->promedio);
+                    $spreadsheet->getActiveSheet()->setCellValue("H$i",$encuesta->creado);
+                    $spreadsheet->getActiveSheet()->setCellValue("I$i",$encuesta->estado);
 
 
                     

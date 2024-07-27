@@ -1,7 +1,52 @@
+function checkPermission(){
+    if(!"serviceWorker" in navigator){
+        throw Error("serviceWorker is not allowed")
+    }
+}
+
+
+const registerSW = async ()=>{
+
+    const registration = await navigator.serviceWorker.register("/sw.js")
+      
+    return registration
+}
+  
+const requestNofitications = async () =>{
+    const permit = await Notification.requestPermission()
+    if(permit !== "granted"){
+        throw new Error("Not allowed")
+    }else{
+        new Notification("Hello World")
+    }
+}
+
+
+
+
+const main = async () =>{
+    checkPermission()
+
+
+    const title = document.querySelector("#not-titulo")
+    const content = document.querySelector("#not-content")
+
+    const reg = await registerSW()
+
+    if(title && content){
+        reg.showNotification(title.value,{
+            "body":content.value
+        })
+
+    }
+
+}
 
 
 
 function EventListeners() {
+    main()
+
     if (location.href.match("/tickets/crear")) {
         llamarOtro();
     }else if (location.href.match("/admin/inventario/crear") || location.href.match("/admin/inventario/actualizar")) {
@@ -15,7 +60,6 @@ function EventListeners() {
     }
     
 }
-
 
 
 function check(){

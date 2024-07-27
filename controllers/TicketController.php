@@ -12,6 +12,7 @@ use Models\Tecnicos;
 use Models\Inventario;
 use Models\Comments;
 use Models\Encuestas;
+use Models\Notificaciones;
 
 class TicketController{
 
@@ -68,6 +69,7 @@ class TicketController{
             if(isset($_POST["tickets"])){
                 
 
+
                 $tecnico = Tecnicos::find($_POST["tickets"]["tecnico_id"]);
                 switch($_POST["tickets"]["estado"]){
 
@@ -79,16 +81,19 @@ class TicketController{
                         break;
                     case "en proceso":
                         if($tickets->estado =="sin asignar"){
+
+                            
                                 
                             $_POST["tickets"]["fecha_asignada"] = date("Y-m-d h:i:s");
                             $asignTime = (strtotime($_POST["tickets"]["fecha_asignada"]) - (strtotime($tickets->fecha))) /1000;
                             $asignTime =  ($asignTime <0)?$asignTime * -1:$asignTime *1;
                             $_POST["tickets"]["tiempo_en_asignar"] = $asignTime;
                         }else{
-                                
+                            
                             $_POST["tickets"]["fecha_asignada"] = null;
                             $_POST["tickets"]["tiempo_en_asignar"] = 0;
                         }
+                        $notificaciones = new Notificaciones(null,"Tu ticket ha sido asignado","Para mas informacion verificalo en tu tabla de tickets",$tickets->usuario);
 
 
                         break;
@@ -97,6 +102,7 @@ class TicketController{
                         if($tickets->estado === "sin asignar"){
                             $_POST["tickets"]["fecha_pendiente"] = null;
                             $_POST["tickets"]["tiempo_en_pendiente"] = 0;
+
                             
                         }else if($tickets->estado === "en proceso"){
                             $_POST["tickets"]["fecha_pendiente"] = date("Y-m-d h:i:s");
@@ -105,11 +111,13 @@ class TicketController{
                             $_POST["tickets"]["tiempo_en_pendiente"] = $pendingTime;
                             
                         }
+                        $notificaciones = new Notificaciones(null,"Tu ticket ha sido suspendido hasta nuevo aviso","Para mas informacion verificalo en tu tabla de tickets",$tickets->usuario);
 
 
 
                         break;
                     case "completado":
+                        $notificaciones = new Notificaciones(null,"Tu ticket fue completado","Para mas informacion verificalo en tu tabla de tickets",$tickets->usuario);
 
 
                         if($tickets->estado === "en proceso"){
@@ -131,8 +139,6 @@ class TicketController{
 
                         $_POST["encuesta"]["ticket_id"] = $id;
                         $encuesta = new Encuestas($_POST["encuesta"]);
-
-
                         $encuesta->guardar();
 
                         break;
@@ -150,8 +156,12 @@ class TicketController{
 
 
                 $ticket = new Tickets($_POST["tickets"]);
-                $ticket->guardar();
 
+                
+                $ticket->guardar();
+                $notificaciones->guardar();
+
+                
                 if($_POST["tickets"]["estado"] === "en proceso"){
                     asignado($tecnico,$tickets);
                 }
