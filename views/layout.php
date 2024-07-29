@@ -16,8 +16,7 @@
     $url = $_SERVER["REQUEST_URI"];
 
     if($admin){
-
-        $notificacion = Notificaciones::getUnshowed("user");
+        $notificacion = Notificaciones::getUnshowed("admin");
         
         
     }else{
