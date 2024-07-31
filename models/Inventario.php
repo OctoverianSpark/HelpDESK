@@ -116,7 +116,6 @@ class Inventario extends ActiveRecord{
         if ($column == "nombre") {
             $query  = "SELECT * FROM ". static::$tabla . " WHERE CONCAT(nombre,' ',apellido) LIKE '%$param%'";
             $resultado = self::consultarSQL($query);
-    
             return $resultado;
             
 

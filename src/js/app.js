@@ -51,16 +51,47 @@ function EventListeners() {
         llamarOtro();
     }else if (location.href.match("/admin/inventario/crear") || location.href.match("/admin/inventario/actualizar")) {
         añadirPeriferico();
-    }else if (location.href.match("/orden")) {
-        check();
     }else if (location.href.match("/encuesta")) {
         tickChange()
     }else if(location.href.match("/admin/entradas")){
         checkSubmit()
+    }else if(location.href.match("/admin/inventario/ordenes")){
+        orderMode()
+    }else if (location.href.match("/orden")) {
+        check();
+
     }
     
 }
 
+function orderMode(){
+
+    const orderTypeSelector = document.querySelector("#orders-type")
+
+    const manualForm = document.querySelector("#order-manual")
+    const requestForm = document.querySelector("#order-requested")
+
+    manualForm.style.display = "block"
+
+    orderTypeSelector.addEventListener("input",e =>{
+
+
+
+        if(e.target.value === "manual"){
+            manualForm.style.display = "block"
+            requestForm.style.display = "none"
+        }else if(e.target.value==="request"){
+            requestForm.style.display = "block"
+            manualForm.style.display = "none"
+
+        }
+
+
+    })
+    
+
+
+}
 
 function check(){
     const check = document.querySelector("#accept")

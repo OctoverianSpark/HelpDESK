@@ -4,15 +4,21 @@ use PHPMailer\PHPMailer\PHPMailer;
 function conectarCorreo(){
 
     
+    $user ="helperbot@asistentevirtualsas.com";
+    $password = "Venezu22366792@@";
+
+
     $mail = new PHPMailer();
     $mail->isSMTP();
     $mail->Host = "smtp.gmail.com";
     $mail->SMTPAuth = true;
-    $mail->Username = "helperbot@asistentevirtualsas.com";
-    $mail->Password = "Venezu22366792@@";
+    $mail->Username = $user;
+    $mail->Password = $password;
     $mail->SMTPSecure = "tls";
     $mail->Port = 587;
 
+
+    $mail->setFrom($user,"Equipo de Asistente Virtual S.A.S");
 
     return $mail;
 
@@ -31,7 +37,7 @@ function asignado($tecnico,$tickets){
     $mail->Body = "<h1>Te han asignado un ticket</h1>";
     $mail->Body .= "<h2>ID del ticket: $tickets->id</h2>";
     $mail->Body .= "<h2>Generado Por: $tickets->usuario</h2>";
-    $mail->Body .= "<a href='http://". $_SERVER["HTTP_HOST"] ."/ticket?id=$tickets->id' style='background-color:#4600ff;border:none;border-radius:2rem;color:#fff;display:inline-block;font-weight:600;margin-top:2.5rem;padding:1rem 3rem;text-align:center;text-decoration:none'>Ir al ticket</a>";
+    $mail->Body .= "<a href='http://". $_SERVER["HTTP_ORIGIN"] ."/ticket?id=$tickets->id' style='background-color:#4600ff;border:none;border-radius:2rem;color:#fff;display:inline-block;font-weight:600;margin-top:2.5rem;padding:1rem 3rem;text-align:center;text-decoration:none'>Ir al ticket</a>";
     $mail->Body .= "<br>";
     $mail->Body .= "</body>";
 

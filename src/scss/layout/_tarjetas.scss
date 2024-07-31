@@ -1,6 +1,6 @@
 #slider{
     width: 80%;
-    height: 60rem;
+    height: 70rem;
     margin: auto;
     margin-top: 5%;
     margin-bottom: 5%;
@@ -31,6 +31,7 @@
 }
 .tarjeta{
     @include grid(2,2rem);
+    height: 70rem;
     place-items: center;
 }
 
