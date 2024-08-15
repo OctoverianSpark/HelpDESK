@@ -53,6 +53,7 @@
                 <th>Modelo</th>
                 <th>Color</th>
                 <th>Serial</th>
+                <th>Anydesk</th>
                 <th>Acciones</th>
             </thead>
             <tbody>
@@ -66,6 +67,7 @@
                         <td><?php echo $equipo->modelo ?></td>
                         <td><?php echo $equipo->color ?></td>
                         <td><?php echo $equipo->serial ?></td>
+                        <td><?php echo $equipo->anydesk ?></td>
                         <td>
                             <div class="inventory-actions">
                                 <a href="/admin/inventario/actualizar?id=<?php echo $equipo->id ?>" class="boton-azul-block">Actualizar</a>
