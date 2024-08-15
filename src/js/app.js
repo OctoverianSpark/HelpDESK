@@ -4,7 +4,6 @@ function checkPermission(){
     }
 }
 
-
 const registerSW = async ()=>{
 
     const registration = await navigator.serviceWorker.register("/sw.js")
@@ -45,8 +44,6 @@ const main = async () =>{
 
 
 function EventListeners() {
-    main()
-
     if (location.href.match("/tickets/crear")) {
         llamarOtro();
     }else if (location.href.match("/admin/inventario/crear") || location.href.match("/admin/inventario/actualizar")) {
