@@ -64,7 +64,7 @@ class TicketController{
                     "titulo" =>"Han actualizado tu ticket",
                     "contenido"=>"Tu tarea ha recibido un comentario",
                     "destinatario"=>$tickets->usuario,
-                    "url"=>$_SERVER["HTTP_HOST"] . "/ticket?id=".$id
+                    "url"=>"/ticket?id=".$id
                 ];
                 $notificaciones = new Notificaciones($notificacion);
                 $notificaciones->guardar();
@@ -109,7 +109,7 @@ class TicketController{
                             "titulo"=>"Ticket Asignado",
                             "contenido"=>"El tecnico asignado a tu ticket fue " . $_POST["tickets"]["tecnico_asignado"],
                             "destinatario"=>$_POST["tickets"]["usuario"],
-                            "url"=>$_SERVER["HTTP_HOST"] . "/ticket?id=".$id
+                            "url"=>"/ticket?id=".$id
                         ];
 
                         break;
@@ -135,7 +135,7 @@ class TicketController{
                             "titulo"=>"Ticket Suspendido",
                             "contenido"=>"El ticket fue suspendido, entra a la vista detallada para validar la razon de la suspension",
                             "destinatario"=>$_POST["tickets"]["usuario"],
-                            "url"=>$_SERVER["HTTP_HOST"] . "/ticket?id=".$id
+                            "url"=>"/ticket?id=".$id
                         ];
                         break;
                     case "completado":
@@ -168,7 +168,7 @@ class TicketController{
                             "titulo"=>"Ticket Completado",
                             "contenido"=>"El ticket fue completado, entra a el para realizar la encuesta de satisfaccion",
                             "destinatario"=>$_POST["tickets"]["usuario"],
-                            "url"=>$_SERVER["HTTP_HOST"] . "/ticket?id=".$id
+                            "url"=>"/ticket?id=".$id
                         ];
 
                         $_POST["encuesta"]["ticket_id"] = $id;

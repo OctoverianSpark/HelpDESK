@@ -98,7 +98,7 @@ class PagesController{
                     "titulo"=>"Ticket Creado por " . $_SESSION["name"],
                     "contenido"=>"Asunto: " . $_POST["tickets"]["subcategoria"],
                     "destinatario"=>"admin",
-                    "url"=>$_SERVER["HTTP_HOST"] . "/admin/tickets" 
+                    "url"=>"/admin/tickets" 
                 ];
 
                 $nombreImagen = md5(uniqid(rand(),true)) . ".png";
