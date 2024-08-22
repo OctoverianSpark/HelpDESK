@@ -11,12 +11,61 @@
 .mainCards{
     overflow-x: hidden;
 }
-.title{
-    font-size: 6rem;
-    font-family: Pangram-Black;
-    color: darken($morado,20);
-    letter-spacing: 3px;
+
+
+
+.drop-notificaciones{
+    position: absolute;
+    top: 6rem;
+    right: 6rem;
+    border-radius: 1rem;
+    background-color: $blanco;
+    max-height: 60vh;
+    width: 40rem;
+    overflow-y: scroll;
+
+
+
+    .notification{
+       border-bottom: 1px solid #e1e1e1; 
+       
+    }
+
+    a{
+        
+       display: flex;
+       align-items: center;
+       justify-content: flex-start;
+       gap: 1rem;
+    }
+
+    .prompt-title{
+        font-size: 1.9rem;
+        text-wrap: wrap;
+        color: $morado;
+        font-family: Pangram-Black;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .prompt-text{
+        color: darken($azul,20);
+        text-transform: uppercase;
+        font-family: Pangram-Bold;
+        text-align: justify;
+    }
+
+    #notification-icon{
+        font-size: 3.5rem;
+        color: darken($azul,20);
+        padding: 1rem;
+        margin-left: 2rem;
+        border-right: 2px solid #e1e1e1;
+    }
+
 }
+
+
 
 
 #contenedor{
@@ -135,3 +184,7 @@
 
 
 }
+
+
+
+

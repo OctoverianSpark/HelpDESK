@@ -10,6 +10,56 @@
     @include boton($morado,inline-block);
     margin: 4rem
 }
+.boton-notificaciones{
+    font-size: 3.1rem;
+    position: absolute;
+    right: 3%;
+    top: 0%;
+
+    button{
+        
+        @include boton(transparent,inline-block);
+
+        position: relative;
+
+        i{
+            position: absolute
+        }
+
+
+        #bell{
+            inset: 0
+        }
+
+        #quantity{
+            top: -1rem;
+            right: 0;
+            transform: scale(.5);
+            color: rgb(236, 83, 83)
+        }
+    }
+
+
+}
+
+
+.boton-close{
+    @include boton(transparent,inline-block);
+    color: $blanco;
+    font-size: 4rem;
+    position:absolute;
+    top: 0;
+    right: 0;
+}
+
+.boton-flecha-link{
+    @include boton($morado,inline-block);
+    margin-top: -1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    font-size: 1.8rem;
+}
 
 .boton-azul-block{
     @include boton($azulFuerte,block);

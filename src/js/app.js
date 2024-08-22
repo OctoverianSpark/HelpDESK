@@ -1,52 +1,8 @@
-function checkPermission(){
-    if(!"serviceWorker" in navigator){
-        throw Error("serviceWorker is not allowed")
-    }
-}
 
-const registerSW = async ()=>{
-
-    const registration = await navigator.serviceWorker.register("/sw.js")
-      
-    return registration
-}
-  
-const requestNofitications = async () =>{
-    const permit = await Notification.requestPermission()
-    if(permit !== "granted"){
-        throw new Error("Not allowed")
-    }else{
-        new Notification("Hello World")
-    }
-}
-
-
-
-
-const main = async () =>{
-    checkPermission()
-
-
-    const title = document.querySelector("#not-titulo")
-    const content = document.querySelector("#not-content")
-
-    const reg = await registerSW()
-
-    if(title && content){
-        reg.showNotification(title.value,{
-            "body":content.value
-        })
-
-    }
-
-}
-
-
+Notification.requestPermission()
 
 function EventListeners() {
-    if (location.href.match("/tickets/crear")) {
-        llamarOtro();
-    }else if (location.href.match("/admin/inventario/crear") || location.href.match("/admin/inventario/actualizar")) {
+    if (location.href.match("/admin/inventario/crear") || location.href.match("/admin/inventario/actualizar")) {
         añadirPeriferico();
     }else if (location.href.match("/encuesta")) {
         tickChange()
@@ -58,8 +14,126 @@ function EventListeners() {
         check();
 
     }
+    llamarOtro();
+    cancelForm();
+    notifications();
+    openDrop()
     
 }
+
+
+
+function cancelForm(){
+
+
+    const submitForm = document.querySelector("input[type='submit']")
+    const form = document.querySelector("form")
+
+
+    if(form){
+
+
+        form.addEventListener("submit",e=>{
+            
+
+            submitForm.disabled = true
+
+            
+        })
+
+
+        
+
+    }
+
+
+
+}
+
+
+
+async function notifications(){
+   
+        const botonNotis = document.querySelector(".boton-notificaciones")
+        const bell = document.querySelector("#bell")
+        const quantity = document.querySelector("#quantity")
+
+        const data = await fetch("/notificaciones")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.text();
+        })
+        .then(data => {
+            if (data) {
+                return JSON.parse(data);
+            } else {
+                throw new Error('Empty response');
+            }
+        })
+        .then(jsonData => {
+            bell.classList.add("bx-tada")
+            quantity.classList.add(`bi-${jsonData.length}-circle-fill`)
+                
+            if (Notification.permission === "granted") {
+                
+                jsonData.forEach(
+                    info=>{
+                        let push = new Notification(
+                            info.titulo,
+                            {
+                                body:info.contenido
+                            }
+                        )
+    
+                        push.addEventListener("click",e=>{
+                            location.href = info.url
+                        })
+                    }
+                )
+        
+            }
+        })
+        .catch(error => console.error('Error:', error));
+
+    
+    
+
+
+
+
+}
+
+
+function openDrop(){
+    const drop = document.querySelector(".drop-notificaciones")
+    const notificaciones = document.querySelector(".boton-notificaciones")
+    let down = true
+    notificaciones.addEventListener("click",e=>{
+        
+        if(down){
+            drop.style.display = "block"
+            drop.classList.add("in")
+            down=false
+        }else{
+            drop.style.display = "none"
+            drop.classList.add("out")
+            down=true
+        }
+
+
+    })
+
+
+
+
+
+    
+
+    
+}
+
 
 function orderMode(){
 
@@ -164,26 +238,35 @@ function llamarOtro() {
     const apps = document.querySelector("#apps")
     const subcat = document.querySelector("#subcategoria")
 
-    subcat.addEventListener("change", e=>{
-        if (e.target.value === "Otro...") {
-            otroText.style.display="block";
-            otroLbl.style.display="block";
-            otroLbl.textContent = "Define lo que presenta tu computador"
-            otroText.setAttribute("name","tickets[subcategoria]")
-        }else{
-            e.preventDefault()
-        }
-    })
-    apps.addEventListener("change",e=>{
-        if (e.target.value === "Otro...") {
-            otroText.style.display="block";
-            otroLbl.style.display="block";
-            otroLbl.textContent = "Nombre de la aplicacion"
-            otroText.setAttribute("name","tickets[selected_app]")
-        }else{
-            e.preventDefault()
-        }
-    })
+
+
+    if(subcat){
+        subcat.addEventListener("change", e=>{
+            if (e.target.value === "Otro...") {
+                otroText.style.display="block";
+                otroLbl.style.display="block";
+                otroLbl.textContent = "Define lo que presenta tu computador"
+                otroText.setAttribute("name","tickets[subcategoria]")
+            }else{
+                e.preventDefault()
+            }
+        })
+
+    }
+
+    if (apps) {
+        apps.addEventListener("change",e=>{
+            if (e.target.value === "Otro...") {
+                otroText.style.display="block";
+                otroLbl.style.display="block";
+                otroLbl.textContent = "Nombre de la aplicacion"
+                otroText.setAttribute("name","tickets[selected_app]")
+            }else{
+                e.preventDefault()
+            }
+        })
+        
+    }
 
 }
 

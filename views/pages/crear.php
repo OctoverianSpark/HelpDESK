@@ -1,4 +1,4 @@
-
+<h1 class="title">Creacion de Ticket</h1>
 
 
 <?php foreach($errores as $error): ?>
@@ -34,7 +34,7 @@
         
         <div class="container-create">
             <div class="info">
-            <h2>Creando un Ticket</h2>
+            <h2 class="subtitle">Creando un Ticket</h2>
 
             <ul>
                 <li>1. Selecciona el asunto que encaje con el problema de tu equipo</li>
@@ -45,7 +45,7 @@
             </ul>
         </div>
         <form action="/tickets/crear" method="post" enctype = "multipart/form-data" class="formulario" id="tik-form"> 
-        <h1 class="title-tickets">Crear</h1>
+        <h1 class="subtitle">Formulario</h1>
 
             <input type="hidden" value="<?php echo $selectedCat ?>" name="tickets[categoria]">
             <div class="container-formulario-casos">
@@ -87,6 +87,7 @@
                         <label for="imagen">Referencias del Ticket</label>
                         <input type="file" id="imagen" name="tickets[imagen]" accept="image/jpeg , image/png">
                 </fieldset>
+
                 <input type="submit" value="Enviar Ticket" class="boton-morado-block">
 
             </div>

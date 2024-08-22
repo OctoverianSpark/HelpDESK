@@ -1,6 +1,6 @@
 <main>
 
-    <h1>Actualizar <?php echo (isset($_GET["type"]))?$_GET["type"]:$entrada->tipo ?></h1>
+    <h1 class="title">Actualizar <?php echo (isset($_GET["type"]))?$_GET["type"]:$entrada->tipo ?></h1>
     <form method="post" enctype="multipart/form-data" class="form-entry">
 
 

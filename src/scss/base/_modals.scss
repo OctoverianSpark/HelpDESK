@@ -1,0 +1,65 @@
+
+
+.modal-notifications{
+    padding: 1rem;
+
+    background-color: $blanco;
+
+    border-radius: 2rem;
+    width: 25%;
+    height: 60%;
+    overflow-y: scroll;
+
+    text-align: center;
+
+    
+    
+    &::-webkit-scrollbar {
+        width: 5px;
+        }
+        
+    &::-webkit-scrollbar-track {
+        background: rgba($morado,.1);
+        }
+        
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba($morado,.6);
+        border-radius: .5rem;
+        border: 3px solid rgba($morado,.1);
+        }
+        
+
+}
+
+
+.modal-title{
+     font-size: 3rem;
+     font-family: Pangram-Black;
+     color: $morado;
+     font-weight: 700;
+     padding: 1rem;
+}
+
+.modal-content{
+    font-size: 1.8rem;
+    font-weight: 600;
+    font-family: Pangram-Bold;
+    color: $azulFuerte;
+}
+
+
+.container-modal-content{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: rgba($morado,.5);
+    gap: 2rem;
+    margin: 1rem;
+    border-radius: 2rem;
+
+    
+}
+

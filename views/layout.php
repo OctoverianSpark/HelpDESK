@@ -15,17 +15,6 @@
 
     $url = $_SERVER["REQUEST_URI"];
 
-    if($admin){
-        $notificacion = Notificaciones::getUnshowed("admin");
-        
-        
-    }else{
-        $notificacion = Notificaciones::getUnshowed($_SESSION["name"]);
-
-    }
-
-    $notificaciones = new Notificaciones($notificacion->id);
-
 ?>
 
 
@@ -39,13 +28,9 @@
     <title>HelpDesk</title>
     <link rel="stylesheet" href="/build/css/app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-    <?php if(!empty($notificacion)): ?>
-        <input type="hidden" id="not-id" value="<?php echo $notificacion->id ?>">
-        <input type="hidden" id="not-titulo" value="<?php echo $notificacion->titulo ?>">
-        <input type="hidden" id="not-content" value="<?php echo $notificacion->contenido ?>">
-    <?php endif ?>
     <header class="header">
         <div class="barra">
             <?php if($auth){ ?>
@@ -69,16 +54,27 @@
                             <a href="/tickets/ver" class="nav_link">Ver Mis Tickets</a>
                             <a href="/equipos" class="nav_link">Activos Asociados a Mi</a>
                             <a href="/logout" class="nav_link">Cerrar Sesion</a>
-                        <?php } ?>
-                    </ul>
-                </nav>
+                            <?php } ?>
+                        </ul>
+                    </nav>
+
+                    <div class="boton-notificaciones">
+                        <button><i id="bell" class="bx bxs-bell"></i><i id="quantity"class="bi"></i></button>   
+                    </div>
             <?php }else{?>
                 <h1 class= "logo-title">HELP<span>DESK</span></h1>
             <?php }?>
         </div>
+
+
+        <?php ?>
+
+
     </header>
 
-
+    
+    <?php include "../includes/templates/notifications.php" ?>
+    <?php include "../includes/templates/toasts.php" ?>
     
     <?php echo $contenido;?>
     <footer class="footer">
@@ -94,12 +90,3 @@
 </html>
 
 
-
-
-<?php 
-    if(!empty($notificacion)){
-        $notificaciones->setShowed($notificacion->id);
-    }
-
- 
-?>

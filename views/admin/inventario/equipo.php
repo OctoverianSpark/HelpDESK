@@ -1,5 +1,5 @@
 <main class="main-container">
-        <h1 class="title-inv"><?php echo $equipo->nombre_equipo ?></h1>
+        <h1 class="title title-inv"><?php echo $equipo->nombre_equipo ?></h1>
 
         <div class="container-user-data">
             <div class="container-data">

@@ -52,7 +52,7 @@
 
                     <h1>Ticket Inexistente</h1>
                     <picture>
-                        <source srcset="build/img/sorryButNot.webp" type="image/webp">
+                        <source srcset="build/img/sorryButNot.webp" type="image/webp" width="200">
                         <img src="build/img/sorryButNot.png" alt="Error">
                     </picture>
         <?php endif?>

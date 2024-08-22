@@ -49,25 +49,33 @@ class TicketController{
 
         $comentarios = Comments::history($id);
 
-
-
+        $notificacion = null;
 
         if($_SERVER["REQUEST_METHOD"] === "POST"){
             if(isset($_POST["comentarios"])){
                 
-                $_POST["comentarios"]["cargado_por"] = $_SESSION["name"];
+                $_POST["comentarios"]["usuario"] = $_SESSION["name"];
                 $comentario = new Comments($_POST["comentarios"]);
 
                 $comentario->guardar();
 
 
+                $notificacion = [
+                    "titulo" =>"Han actualizado tu ticket",
+                    "contenido"=>"Tu tarea ha recibido un comentario",
+                    "destinatario"=>$tickets->usuario,
+                    "url"=>$_SERVER["HTTP_HOST"] . "/ticket?id=".$id
+                ];
+                $notificaciones = new Notificaciones($notificacion);
+                $notificaciones->guardar();
+
                 header("Location: /admin/tickets/ticket?id=" . $tickets->id ,true);
                 
-
 
             }
             if(isset($_POST["tickets"])){
                 
+                $notificacion["id"]= null;
 
 
                 $tecnico = Tecnicos::find($_POST["tickets"]["tecnico_id"]);
@@ -89,19 +97,29 @@ class TicketController{
                             $asignTime =  ($asignTime <0)?$asignTime * -1:$asignTime *1;
                             $_POST["tickets"]["tiempo_en_asignar"] = $asignTime;
                         }else{
+
                             
                             $_POST["tickets"]["fecha_asignada"] = null;
                             $_POST["tickets"]["tiempo_en_asignar"] = 0;
                         }
-                        $notificaciones = new Notificaciones(null,"Tu ticket ha sido asignado","Para mas informacion verificalo en tu tabla de tickets",$tickets->usuario);
 
+
+                        $notificacion =[
+                            "id"=>null,
+                            "titulo"=>"Ticket Asignado",
+                            "contenido"=>"El tecnico asignado a tu ticket fue " . $_POST["tickets"]["tecnico_asignado"],
+                            "destinatario"=>$_POST["tickets"]["usuario"],
+                            "url"=>$_SERVER["HTTP_HOST"] . "/ticket?id=".$id
+                        ];
 
                         break;
                     case "pendiente":
 
                         if($tickets->estado === "sin asignar"){
-                            $_POST["tickets"]["fecha_pendiente"] = null;
-                            $_POST["tickets"]["tiempo_en_pendiente"] = 0;
+                            $_POST["tickets"]["fecha_pendiente"] = date("Y-m-d h:i:s");
+                            $pendingTime = (strtotime($_POST["tickets"]["fecha_pendiente"]) - (strtotime($tickets->fecha))) /1000;
+                            $pendingTime =  ($pendingTime <0)?$pendingTime * -1:$pendingTime *1;
+                            $_POST["tickets"]["tiempo_en_asignar"] = $pendingTime;
 
                             
                         }else if($tickets->estado === "en proceso"){
@@ -111,17 +129,20 @@ class TicketController{
                             $_POST["tickets"]["tiempo_en_pendiente"] = $pendingTime;
                             
                         }
-                        $notificaciones = new Notificaciones(null,"Tu ticket ha sido suspendido hasta nuevo aviso","Para mas informacion verificalo en tu tabla de tickets",$tickets->usuario);
 
-
-
+                        $notificacion =[
+                            "id"=>null,
+                            "titulo"=>"Ticket Suspendido",
+                            "contenido"=>"El ticket fue suspendido, entra a la vista detallada para validar la razon de la suspension",
+                            "destinatario"=>$_POST["tickets"]["usuario"],
+                            "url"=>$_SERVER["HTTP_HOST"] . "/ticket?id=".$id
+                        ];
                         break;
                     case "completado":
-                        $notificaciones = new Notificaciones(null,"Tu ticket fue completado","Para mas informacion verificalo en tu tabla de tickets",$tickets->usuario);
-
+                        
+                        $_POST["tickets"]["fecha_completacion"] = date("Y-m-d h:i:s");
 
                         if($tickets->estado === "en proceso"){
-                            $_POST["tickets"]["fecha_completacion"] = date("Y-m-d h:i:s");
                             $completedTime = (strtotime(date("Y-m-d h:i:s")) - (strtotime($tickets->fecha_asignada))) /1000;
                             $completedTime = ((strtotime($tickets->fecha_asignada)-strtotime(date("Y-m-d h:i:s")) )) /1000;
                             $completedTime =  ($completedTime <0)?$completedTime * -1:$completedTime *1;
@@ -130,36 +151,50 @@ class TicketController{
                             
                         }else if($tickets->estado === "pendiente"){
                             
-                            $_POST["tickets"]["fecha_completacion"] = date("Y-m-d h:i:s");
                             $completedTime = (strtotime($_POST["tickets"]["fecha_completacion"]) - (strtotime($tickets->fecha_pendiente))) /1000;
                             $completedTime = ((strtotime($tickets->fecha_asignada)-strtotime(date("Y-m-d h:i:s")) )) /1000;
                             $completedTime =  ($completedTime <0)?$completedTime * -1:$completedTime *1;
                             $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
+                        }else if($tickets->estado === "sin asignar"){
+                           
+                            $completedTime = (strtotime($_POST["tickets"]["fecha_asignada"]) - (strtotime($tickets->fecha))) /1000;
+                            $completedTime =  ($completedTime <0)?$completedTime * -1:$completedTime *1;
+                            $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
+                       
                         }
+                        
+                        $notificacion =[
+                            "id"=>null,
+                            "titulo"=>"Ticket Completado",
+                            "contenido"=>"El ticket fue completado, entra a el para realizar la encuesta de satisfaccion",
+                            "destinatario"=>$_POST["tickets"]["usuario"],
+                            "url"=>$_SERVER["HTTP_HOST"] . "/ticket?id=".$id
+                        ];
 
                         $_POST["encuesta"]["ticket_id"] = $id;
                         $encuesta = new Encuestas($_POST["encuesta"]);
                         $encuesta->guardar();
-
+                        
                         break;
-
-
+                        
+                        
                     default:
                         break;
+                        
+                    }
                     
-                }
-                
-
-
-
-
-
-
-                $ticket = new Tickets($_POST["tickets"]);
-
-                
-                $ticket->guardar();
-                $notificaciones->guardar();
+                    
+                    
+                    
+                    
+                    
+                    
+                    $ticket = new Tickets($_POST["tickets"]);
+                    
+                    
+                    $ticket->guardar();
+                    $notificaciones = new Notificaciones($notificacion);
+                    $notificaciones->guardar();
 
                 
                 if($_POST["tickets"]["estado"] === "en proceso"){

@@ -7,17 +7,20 @@ namespace Models;
 class  Notificaciones extends ActiveRecord{
 
 
-    protected static $columnasDB = ["id","titulo","contenido","destinatario","mostrado"];
+    protected static $columnasDB = ["id","fecha","titulo","contenido","destinatario","mostrado","url"];
     protected static $tabla = "notificaciones";
 
-    public $id,$titulo,$contenido,$destinatario,$mostrado;
-    public function __construct($id=null,$titulo="",$contenido="",$destinatario="",$mostrado="no"){
+    public $id,$fecha,$titulo,$contenido,$destinatario,$mostrado,$url;
+    public function __construct($args =[]){
 
-        $this->id  = $id;
-        $this->titulo  = $titulo;
-        $this->contenido  = $contenido;
-        $this->destinatario  = $destinatario;
-        $this->mostrado  = $mostrado;
+        $this->id  = $args["id"]?? null;
+        $this->fecha = date("Y-m-d H:i:s");
+        $this->titulo  = $args["titulo"]?? "";
+        $this->contenido  = $args["contenido"]?? "";
+        $this->destinatario  = $args["destinatario"]?? "";
+        $this->mostrado  = $args["mostrado"]?? "no";
+        $this->url  = $args["url"]?? "";
+
     }
 
     public function setShowed($id){
@@ -38,21 +41,53 @@ class  Notificaciones extends ActiveRecord{
         }
         
 
-        $query .= "LIMIT 1";
 
         $data = self::consultarSQL($query);
 
-        return array_shift($data);
+        return $data;
+
+    }
+    public static function getAdminUnshowed($user){
+        $query = "SELECT * FROM ". static::$tabla . " WHERE mostrado = 'no' AND (destinatario= '$user' OR destinatario = 'admin') ";
+
+        
+
+        $data = self::consultarSQL($query);
+        
+        return $data;
 
     }
 
+    
+    public static function getAll($user){
+
+        $query = "SELECT * FROM " . static::$tabla . " WHERE destinatario = '$user' ORDER BY fecha DESC";
 
 
 
+        $resultado = self::consultarSQL($query);
 
 
+        return $resultado;
+
+
+    }
+
+    public static function getAdmins($user){
+        $query = "SELECT * FROM " . static::$tabla . " WHERE destinatario = '$user' OR destinatario = 'admin' ORDER BY fecha DESC";
+
+
+        $resultado = self::consultarSQL($query);
+
+
+        return $resultado;
+
+    }
 
 }
+
+
+
 
 
 

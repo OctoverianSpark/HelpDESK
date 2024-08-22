@@ -94,7 +94,13 @@ class PagesController{
             
             if (empty($errores)) {
 
-                $notificaciones = new Notificaciones(null,"Se ha creado un nuevo ticket","Creado Por: " . $_POST["tickets"]["usuario"],"admin","no");
+                $notificacion =[
+                    "titulo"=>"Ticket Creado por " . $_SESSION["name"],
+                    "contenido"=>"Asunto: " . $_POST["tickets"]["subcategoria"],
+                    "destinatario"=>"admin",
+                    "url"=>$_SERVER["HTTP_HOST"] . "/admin/tickets" 
+                ];
+
                 $nombreImagen = md5(uniqid(rand(),true)) . ".png";
 
                 if($_FILES["tickets"]["tmp_name"]["imagen"]){
@@ -111,6 +117,7 @@ class PagesController{
 
                 $ticket->guardar();
                 notificacion();
+                $notificaciones = new Notificaciones($notificacion);
                 $notificaciones->guardar();
 
                 
@@ -224,6 +231,46 @@ class PagesController{
             "ticket"=>$ticket
         ]);
     }
+
+
+    public static function notificaciones(){
+        
+
+        header('Content-Type: application/json');
+
+        $tecnico = Tecnicos::searchByName($_SESSION["name"]);
+
+        
+
+        if($tecnico){
+
+            $notificaciones = Notificaciones::getAdminUnshowed($_SESSION["name"]);
+
+        }else{
+
+            $notificaciones = Notificaciones::getUnshowed($_SESSION["name"]);
+
+        }
+        
+        $json= json_encode($notificaciones);
+
+        file_put_contents("build/json/notificaciones.json",$json);
+        echo $json;
+        foreach($notificaciones as $notificacion){
+
+
+            $not = new Notificaciones();
+
+            $not->setShowed($notificacion->id);
+
+        }
+    }
+
+
+
+        
+    
+
 
 }
 

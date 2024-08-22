@@ -57,7 +57,7 @@ class Tickets extends ActiveRecord{
 
     public static function getJoin($limite = 0){
         $query = "SELECT " . static::$tabla . ".*,CONCAT(nombre,' ', apellido) as tecnico FROM ". static::$tabla;
-        $query .= " INNER JOIN tecnico on tecnico_id = tecnico.id";
+        $query .= " INNER JOIN tecnico on tecnico_id = tecnico.id order by fecha DESC";
         if ($limite >0){
             $query .= " LIMIT $limite";
 
@@ -89,7 +89,7 @@ class Tickets extends ActiveRecord{
 
         $query = "SELECT " . static::$tabla . ".id ,fecha,usuario, ". static::$tabla .".categoria,subcategoria, CONCAT(nombre,' ', apellido) as tecnico,descripcion,estado,imagen FROM ". static::$tabla;
         $query .= " INNER JOIN tecnico on tecnico_id = tecnico.id";
-        $query .= " WHERE usuario LIKE '%$userData%'";
+        $query .= " WHERE usuario LIKE '%$userData%' ORDER BY fecha DESC";
 
 
         if($limit>0){

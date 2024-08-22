@@ -93,6 +93,10 @@ use Models\Encuestas;
 
 
 
+    $router->get("/notificaciones",[PagesController::class,"notificaciones"]);
+
+
+
     $router->comprobarRutas();
 
 ?>

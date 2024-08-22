@@ -1,0 +1,15 @@
+@keyframes show {
+    2%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+
+@keyframes end {
+    to{
+        width: 100%;
+    }
+}

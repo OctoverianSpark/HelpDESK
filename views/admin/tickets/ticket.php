@@ -3,7 +3,7 @@
     
 
 
-    <h1>Gestion detallada del ticket</h1>
+    <h1 class="title">Gestion detallada del ticket <?php echo $tickets->id ?></h1>
     <div class="container-info-ticket">
         <h2>Informacion del Ticket</h2>
         <h3>ID: <?php echo $tickets->id ?></h3>

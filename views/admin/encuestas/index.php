@@ -1,4 +1,4 @@
-<h1>Administrar Encuestas de Satisfaccion</h1>
+<h1 class="title">Administrar Encuestas de Satisfaccion</h1>
 
 
 
@@ -15,6 +15,7 @@
             <option value="completada" <?php echo ($_GET["state"] === "completada")? "selected" : "" ?>>Completada</option>
             <option value="pendiente" <?php echo ($_GET["state"] === "pendiente")? "selected" : "" ?>>Pendiente</option>
             <option value="vencida" <?php echo ($_GET["state"] === "vencida")? "selected" : "" ?>>Vencida</option>
+            <option value="aptos" <?php echo ($_GET["state"] === "vencida")? "selected" : "" ?>>Aptos a Rifa</option>
         </select>
 
     </div>

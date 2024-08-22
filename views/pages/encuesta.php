@@ -13,7 +13,7 @@
 
 
 
-    <h1>Encuesta de Satisfaccion</h1>
+    <h1 class="title">Encuesta de Satisfaccion</h1>
 
 
     <form method="post" class="form-poll">
@@ -21,7 +21,7 @@
         <input type="hidden" name="encuesta[id]" value="<?php echo $encuesta->id ?>">
         
         <div class="container-promedial">
-                <p>Promedio</p>
+                <p class="subtitle">Promedio</p>
                 <p class="promedial">3</p>
                 <input type="hidden" id="promedial" name="encuesta[promedio]" value="3"/>
         </div>

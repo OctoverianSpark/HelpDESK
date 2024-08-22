@@ -1,5 +1,5 @@
 <main class="contenedor-ticket">
-<h1>Administrador de Tickets</h1>
+<h1 class="title">Administrador de Tickets</h1>
         
     <div class="container-filters">
         <form method="get" class="form-search">
@@ -24,12 +24,26 @@
                     <option value="usuario" <?php echo ($_GET["type"] === "usuario")? "selected":"" ?>>Nombre del Usuario</option>
                     <option value="categoria" <?php echo ($_GET["type"] === "categoria")? "selected":"" ?>>Categoria del Ticket</option>
                     <option value="subcategoria" <?php echo ($_GET["type"] === "subcategoria")? "selected":"" ?>>Subcategoria</option>
-                    <option value="estado" <?php echo ($_GET["type"] === "estado")? "selected":"" ?>>Estado</option>
                 </select>
             </div>
             <div class="container-input-search" id="queryCont">
-                <label for="queryText">Que deseas buscar?</label>
+                <label for="queryText">Valor </label>
                 <input type="text" name="query" id="queryText">
+            </div>
+
+            <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
+
+        </form>
+        <form method="get" class="form-search">
+            <input type="hidden" name="type" value="estado">
+            <div class="container-input-search" id="queryCont">
+                <label for="queryText">Estado</label>
+                <select type="text" name="query" id="queryText">
+                    <option value="sin asignar" <?php echo ($_GET["query"] === "sin asignar")? "selected":"" ?>>Sin Asignar</option>
+                    <option value="en proceso" <?php echo ($_GET["query"] === "en proceso")? "selected":"" ?>>En Proceso</option>
+                    <option value="pendiente" <?php echo ($_GET["query"] === "pendiente")? "selected":"" ?>>Pendiente</option>
+                    <option value="completado" <?php echo ($_GET["query"] === "completado")? "selected":"" ?>>Completado</option>
+                </select>
             </div>
 
             <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
@@ -55,7 +69,6 @@
                 <th>Creado por</th>
                 <th>Categoria</th>
                 <th>Asunto</th>
-                <th>Descripcion</th>
                 <th>Anydesk</th>
                 <th>Tecnico Asignado</th>
                 <th>Estado del Ticket</th>
@@ -70,7 +83,6 @@
                                 <td><?php echo s($ticket->usuario) ?></td>
                                 <td><?php echo s($ticket->categoria) ?></td>
                                 <td><?php echo s($ticket->subcategoria) ?></td>
-                                <td><?php echo s($ticket->descripcion) ?></td>
                                 <td><?php echo s($ticket->anydesk) ?></td>
                                 <td><?php echo s($ticket->tecnico) ?></td>
                                 <td><?php echo ucwords(s($ticket->estado)) ?></td>

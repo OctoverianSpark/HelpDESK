@@ -1,6 +1,7 @@
 <?php
 
 use Models\Tecnicos;
+use Models\Notificaciones as notificaciones;
 
 define("CARPETA_IMAGENES",$_SERVER["DOCUMENT_ROOT"]."/referencias");
 define("CARPETA_SRC",$_SERVER["DOCUMENT_ROOT"]."/blog");
@@ -120,7 +121,6 @@ function admin(){
 
 
 }
-
 
 function fechaActual(){
     

@@ -1,7 +1,7 @@
 <main>
 
 
-    <h1>Control de Inventario</h1>
+    <h1 class="title">Control de Inventario</h1>
 
     <?php $mensaje = mostrarNotificacion($_GET["resultado"])?>
 
