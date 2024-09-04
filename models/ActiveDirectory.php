@@ -19,10 +19,9 @@ class ActiveDirectory{
     public function __construct($args = []){
         $config = [
             
-                    
             'account_suffix' => "@asistentevirtualsas.com",
 
-            'domain_controllers' => array("asistentevirtualsas.com"),
+            'domain_controllers' => array("AV-SRV-DC1.asistentevirtualsas.com"),
 
             'base_dn' => 'dc=asistentevirtualsas,dc=com',
 
@@ -42,6 +41,8 @@ class ActiveDirectory{
         $auth = self::$ad->authenticate($this->user,$this->password,true);
         if($auth){
             return true;
+        }else{
+            debuguear(self::$ad->getLastError());
         }
         return false;
 
