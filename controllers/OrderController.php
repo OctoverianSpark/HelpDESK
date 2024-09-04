@@ -14,7 +14,6 @@ use Models\Ordenes;
 
 use Dompdf\Dompdf;
 
-
 class  OrderController{
 
 
@@ -113,27 +112,45 @@ class  OrderController{
 
 
         if($_SERVER["REQUEST_METHOD"] === "POST"){
-            $html = file_get_contents('../includes/templates/ordenes/entrega.html');
-            $css = file_get_contents("build/css/app.css");
+            $html = "<html>" . file_get_contents('../includes/templates/orden.php');
+            $css =file_get_contents('build/css/app.css');
+            $html = $html . "<style>$css</style></html>";
+            $html = str_replace("{ {name} }",$_POST["nameSign"],$html);
+            $html = str_replace("{ {fecha} }",date("d / m / Y"),$html);
 
-            $html = $html . "<style>$css</style></html>"; 
-            try{
-                $mail = conectarCorreo();
-                
-                
-                $mail->setFrom("helperbot@asistentevirtualsas.com","EQUIPO DE ASISTENTE VIRTUAL");
-    
-                $mail->addAddress("jean.pr@asistentevirtualsas.com");
-                
-                
-                $mail->Subject = 'Orden de ' . $_POST["nameSign"];
+            $path = 'build/img/LOGO.png';
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
 
-                $mail->send();
 
-            }catch(Exception $e){
-                debuguear($mail->ErrorInfo);
-            }
+
+            $html = str_replace("{ {imagen} }",$base64,$html);
+
+
+            // reference the Dompdf namespace
+
+
+            // instantiate and use the dompdf class
+            $dompdf = new Dompdf();
+            $options = $dompdf->getOptions();
+            $options->set('defaultFont', 'Helvetica');
+            $options->setIsPhpEnabled(true);
+            $dompdf->setOptions($options);
+            $dompdf->loadHtml($html);
+
+            // (Optional) Setup the paper size and orientation
+            $dompdf->setPaper('letter', 'portrait');
+
+            // Render the HTML as PDF
+            $dompdf->render();
+
+            // Output the generated PDF to Browser
+            $dompdf->stream("Orden.pdf",[
+                "Attachment"=>false
+            ]);
+
         }
 
         $router->render("admin/inventario/ordenes/orden",[

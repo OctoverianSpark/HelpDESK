@@ -65,11 +65,10 @@ class LoginController{
     }
 
     public static function redirect(){
-
         // init configuration 
         $clientID = '955799568045-v3rim16b2uh01eop27g5a1v2dk73umnu.apps.googleusercontent.com';
         $clientSecret = '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';
-        $redirectUri = 'http://helpdesk.asistentevirtualsas.com/redirect';
+        $redirectUri = 'http://' . $_SERVER["HTTP_HOST"]. '/redirect';
         
         // create Client Request to access Google API 
         $client = new Google_Client();

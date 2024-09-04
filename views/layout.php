@@ -74,7 +74,6 @@
 
     
     <?php include "../includes/templates/notifications.php" ?>
-    <?php include "../includes/templates/toasts.php" ?>
     
     <?php echo $contenido;?>
     <footer class="footer">
