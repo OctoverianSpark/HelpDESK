@@ -59,15 +59,15 @@
             <tbody>
 
                 <?php foreach($equipos as $equipo):?>
-                    <tr onclick="location.href='/admin/inventario/ver?id=<?php echo $equipo->id ?>'">
+                    <tr>
 
-                        <td><?php echo $equipo->nombre_equipo ?></td>
+                        <td><?php echo $equipo->nombre_equipo ?><a href="/admin/inventario/ver?id=<?php echo $equipo->id ?>"><i class="bi bi-box-arrow-up-right"></i></a></td>
                         <td><?php echo $equipo->nombre . " " . $equipo->apellido ?></td>
                         <td><?php echo $equipo->marca ?></td>
                         <td><?php echo $equipo->modelo ?></td>
                         <td><?php echo $equipo->color ?></td>
                         <td><?php echo $equipo->serial ?></td>
-                        <td><?php echo $equipo->anydesk ?></td>
+                        <td><?php echo $equipo->anydesk ?><button type="button"><i class="bi bi-clipboard"></i></button></td>
                         <td>
                             <div class="inventory-actions">
                                 <a href="/admin/inventario/actualizar?id=<?php echo $equipo->id ?>" class="boton-azul-block">Actualizar</a>
