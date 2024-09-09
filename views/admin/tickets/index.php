@@ -49,6 +49,21 @@
             <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
 
         </form>
+        <form method="get" class="form-search">
+            <input type="hidden" name="type" value="prioridad">
+            <div class="container-input-search" id="queryCont">
+                <label for="queryText">Prioridad</label>
+                <select type="text" name="query" id="queryText">
+                    <option value="sin establecer" <?php echo ($_GET["query"] === "sin establecer")? "selected":"" ?>>Sin Establecer</option>
+                    <option value="baja" <?php echo ($_GET["query"] === "baja")? "selected":"" ?>>Baja</option>
+                    <option value="media" <?php echo ($_GET["query"] === "media")? "selected":"" ?>>Media</option>
+                    <option value="alta" <?php echo ($_GET["query"] === "alta")? "selected":"" ?>>Alta</option>
+                </select>
+            </div>
+
+            <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
+
+        </form>
     </div>
 
 

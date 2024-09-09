@@ -45,7 +45,7 @@ class Tickets extends ActiveRecord{
         $this->imagen = $args["imagen"] ?? "";
         $this->estado = $args["estado"] ?? "";
         $this->tecnico = $args["tecnico"] ?? "";
-        $this->prioridad = $args["prioridad"] ?? "";
+        $this->prioridad = $args["prioridad"] ?? "sin establecer";
         $this->fecha_asignada = $args["fecha_asignada"] ?? null;
         $this->fecha_pendiente = $args["fecha_pendiente"] ?? null;
         $this->fecha_completacion = $args["fecha_completacion"] ?? null;
