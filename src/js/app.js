@@ -19,7 +19,7 @@ function EventListeners() {
     notifications();
     openDrop();
     notificarClickup();
-    
+    clipBoard()
 }
 
 
@@ -48,6 +48,20 @@ function cancelForm(){
     }
 
 
+
+}
+
+
+function clipBoard(){
+
+    const clipBoardButton = document.querySelector(".clipboard-button")
+
+
+    clipBoardButton,addEventListener("click",e=>{
+
+
+        navigator.clipboard.writeText(clipBoardButton.textContent)
+    })
 
 }
 

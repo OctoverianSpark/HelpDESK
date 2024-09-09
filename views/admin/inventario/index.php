@@ -67,7 +67,7 @@
                         <td><?php echo $equipo->modelo ?></td>
                         <td><?php echo $equipo->color ?></td>
                         <td><?php echo $equipo->serial ?></td>
-                        <td><?php echo $equipo->anydesk ?><button type="button"><i class="bi bi-clipboard"></i></button></td>
+                        <td><button type="button" class="clipboard-button"><?php echo $equipo->anydesk ?></button></td>
                         <td>
                             <div class="inventory-actions">
                                 <a href="/admin/inventario/actualizar?id=<?php echo $equipo->id ?>" class="boton-azul-block">Actualizar</a>

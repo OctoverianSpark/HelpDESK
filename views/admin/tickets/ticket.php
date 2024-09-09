@@ -11,7 +11,8 @@
         <h3>Categoria: <?php echo $tickets->categoria ?></h3>
         <h3>Solicitud: <?php echo $tickets->subcategoria ?></h3>
         <h3>Descripcion: <?php echo $tickets->descripcion ?></h3>
-
+        <h3 id="copyText">Numero de Anydesk: <button title="Click para copiar al portapapeles" class="clipboard-button"><?php echo $tickets->anydesk ?></button></h3>
+        <h3>Prioridad: <?php echo ucwords($tickets->prioridad??"Sin Establecer") ?></h3>
 
 
 
@@ -40,6 +41,14 @@
                         <?php foreach($tecnicos as $tecnico){ ?>
                             <option value="<?php echo $tecnico->id ?>" <?php echo ($tickets->tecnico_id === $tecnico->id)? "selected" : "" ?>><?php echo $tecnico->nombre . " " . $tecnico->apellido ?></option>
                         <?php } ?>
+                    </select>
+                </div>
+                <div class="container-state-input">
+                    <label for="prioridad">Prioridad</label>
+                    <select name="tickets[prioridad]" id="prioridad">
+                        <option value="baja" <?php echo ( $tickets->prioridad == "baja" ) ? "selected" : "" ?>>Baja</option>
+                        <option value="media" <?php echo ( $tickets->prioridad == "media" ) ? "selected" : "" ?>>Media</option>
+                        <option value="alta" <?php echo ( $tickets->prioridad == "alta" ) ? "selected" : "" ?>>Alta</option>
                     </select>
                 </div>
 

@@ -43,3 +43,24 @@
     color: darken($morado,20);
     letter-spacing: 3px;
 }
+
+
+.clipboard-button{
+    background: none;
+    color: $morado;
+    border: none;
+    i{  
+        font-size: 2.8rem;
+        
+         font-weight: 800;
+
+    }
+    transition: .2s transform;
+
+    cursor: pointer;
+
+    &:active{
+        transform: scale(.6);
+    }
+
+}

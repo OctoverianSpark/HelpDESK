@@ -155,6 +155,7 @@ class TicketController{
                             $completedTime = ((strtotime($tickets->fecha_asignada)-strtotime(date("Y-m-d h:i:s")) )) /1000;
                             $completedTime =  ($completedTime <0)?$completedTime * -1:$completedTime *1;
                             $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
+
                         }else if($tickets->estado === "sin asignar"){
                            
                             $completedTime = (strtotime($_POST["tickets"]["fecha_completacion"]) - (strtotime($tickets->fecha))) /1000;

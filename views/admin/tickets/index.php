@@ -8,7 +8,7 @@
                 <label for="queryText">Tecnico Asignado</label>
                 <select type="text" name="query" id="queryText">
                     <?php foreach($tecnicos as $tecnico): ?>
-                        <option value="<?php echo $tecnico->id ?>" <?php echo ($_GET["query"] === $tecnico->id)? "selected":"" ?>  ><?php echo $tecnico->nombre . " " . $tecnico->apellido ?></option>
+                        <option value="<?php echo $tecnico->id ?>" <?php echo ($_GET["query"] === $tecnico->id )? "selected":"" ?>  ><?php echo $tecnico->nombre . " " . $tecnico->apellido ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
@@ -83,7 +83,7 @@
                                 <td><?php echo s($ticket->usuario) ?></td>
                                 <td><?php echo s($ticket->categoria) ?></td>
                                 <td><?php echo s($ticket->subcategoria) ?></td>
-                                <td><?php echo s($ticket->anydesk) ?></td>
+                                <td><button class="clipboard-button"><?php echo s($ticket->anydesk) ?></button></td>
                                 <td><?php echo s($ticket->tecnico) ?></td>
                                 <td><?php echo ucwords(s($ticket->estado)) ?></td>
                                 <td><img src="/referencias/<?php echo $ticket->imagen ?>" alt="Sin Referencia"></td>

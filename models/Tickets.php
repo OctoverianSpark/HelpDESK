@@ -5,7 +5,7 @@ namespace Models;
 
 class Tickets extends ActiveRecord{
     
-    protected static $columnasDB = ["id","fecha","usuario","categoria","subcategoria","descripcion","anydesk","imagen","estado","tecnico_id","fecha_asignada","fecha_pendiente","fecha_completacion","tiempo_en_asignar","tiempo_en_pendiente","tiempo_en_completar"];
+    protected static $columnasDB = ["id","fecha","usuario","categoria","subcategoria","descripcion","anydesk","imagen","estado","tecnico_id","prioridad","fecha_asignada","fecha_pendiente","fecha_completacion","tiempo_en_asignar","tiempo_en_pendiente","tiempo_en_completar"];
 
 
     protected static $tabla = "tickets";
@@ -22,6 +22,7 @@ class Tickets extends ActiveRecord{
     public $imagen;
     public $estado;
     public $tecnico;
+    public $prioridad;
     public $fecha_asignada;
     public $fecha_pendiente;
     public $fecha_completacion;
@@ -44,6 +45,7 @@ class Tickets extends ActiveRecord{
         $this->imagen = $args["imagen"] ?? "";
         $this->estado = $args["estado"] ?? "";
         $this->tecnico = $args["tecnico"] ?? "";
+        $this->prioridad = $args["prioridad"] ?? "";
         $this->fecha_asignada = $args["fecha_asignada"] ?? null;
         $this->fecha_pendiente = $args["fecha_pendiente"] ?? null;
         $this->fecha_completacion = $args["fecha_completacion"] ?? null;

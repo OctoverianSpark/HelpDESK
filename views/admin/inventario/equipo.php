@@ -5,7 +5,9 @@
             <div class="container-data">
                 <h2><?php echo "ASIGNADO A: ". $equipo->nombre . " " . $equipo->apellido ?></h2>
                 <h2><?php echo "DOCUMENTO: ". $equipo->tipo_documento . " " . $equipo->documento ?></h2>
+                <h2><?php echo "TELEFONO: ". $equipo->telefono?></h2>
                 <h2><?php echo "CORREO: ". strtoupper($equipo->correo) ?></h2>
+                <h2><?php echo "ANYDESK: ". strtoupper($equipo->anydesk) ?></h2>
             </div>
         </div>
         <div class="container-computer-data">
