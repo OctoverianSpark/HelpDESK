@@ -27,9 +27,11 @@ use Models\Encuestas;
     $router->get("/tickets/crear",[PagesController::class,"crear"]);
     $router->post("/tickets/crear",[PagesController::class,"crear"]);
 
-    $router->get("/tickets/ver",[PagesController::class,"ver"]);
+    $router->get("/tickets/ver",[PagesController::class,"tickets"]);
+    $router->get("/ordenes/ver",[PagesController::class,"ordenes"]);
 
     $router->get("/equipos",[PagesController::class,"equipos"]);
+    $router->post("/equipos",[PagesController::class,"equipos"]);
 
     $router->get("/encuesta",[PagesController::class,"encuesta"]);
     $router->post("/encuesta",[PagesController::class,"encuesta"]);
