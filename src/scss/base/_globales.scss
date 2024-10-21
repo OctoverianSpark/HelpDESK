@@ -46,13 +46,25 @@ border: 3px solid rgba($morado,.1);
 *, *:before, *:after {
     box-sizing: inherit;
 }
-body {
+.mainBody {
     font-family: $fuente_principal;
     font-size: 1.6rem;
     line-height: 1.8;
     background-color: $celeste;
     
 }
+
+
+canvas{
+    border-radius: 2rem;
+    background: none;
+}
+.order-printable{
+
+    background-color: $blanco;
+
+}
+
 p {
     color: $negro;
     font-size: 2rem;

@@ -100,7 +100,7 @@ class AdminController{
                 $spreadsheet->createSheet(2)->setTitle("Encuestas");
                 $spreadsheet->removeSheetByIndex(0);
                 $spreadsheet->getActiveSheet()->fromArray(
-                    ["ID","FECHA","USUARIO","CATEGORIA","SUBCATEGORIA","DESCRIPCION","ANYDESK","ESTADO","TECNICO","FECHA ASIGNADA","TIEMPO EN ASIGNAR","FECHA COMPLETACION","TIEMPO EN COMPLETAR","FECHA PENDIENTE","TIEMPO EN PENDIENTE"]
+                    ["ID","FECHA","USUARIO","CATEGORIA","SUBCATEGORIA","PRIORIDAD","DESCRIPCION","ANYDESK","ESTADO","TECNICO","FECHA ASIGNADA","TIEMPO EN ASIGNAR","FECHA COMPLETACION","TIEMPO EN COMPLETAR","FECHA PENDIENTE","TIEMPO EN PENDIENTE"]
                 );
                 $spreadsheet->setActiveSheetIndexByName("Encuestas");
                 $spreadsheet->getActiveSheet()->fromArray(
@@ -119,16 +119,17 @@ class AdminController{
                     $spreadsheet->getActiveSheet()->setCellValue("C$i",$ticket->usuario);
                     $spreadsheet->getActiveSheet()->setCellValue("D$i",$ticket->categoria);
                     $spreadsheet->getActiveSheet()->setCellValue("E$i",$ticket->subcategoria);
-                    $spreadsheet->getActiveSheet()->setCellValue("F$i",$ticket->descripcion);
-                    $spreadsheet->getActiveSheet()->setCellValue("G$i",$ticket->anydesk);
-                    $spreadsheet->getActiveSheet()->setCellValue("H$i",$ticket->estado);
-                    $spreadsheet->getActiveSheet()->setCellValue("I$i",$ticket->tecnico);
-                    $spreadsheet->getActiveSheet()->setCellValue("J$i",$ticket->fecha_asignada);
-                    $spreadsheet->getActiveSheet()->setCellValue("K$i",$ticket->tiempo_en_asignar);
-                    $spreadsheet->getActiveSheet()->setCellValue("L$i",$ticket->fecha_completacion);
-                    $spreadsheet->getActiveSheet()->setCellValue("M$i",$ticket->tiempo_en_completar);
-                    $spreadsheet->getActiveSheet()->setCellValue("N$i",$ticket->fecha_pendiente);
-                    $spreadsheet->getActiveSheet()->setCellValue("O$i",$ticket->tiempo_en_pendiente);
+                    $spreadsheet->getActiveSheet()->setCellValue("F$i",$ticket->prioridad);
+                    $spreadsheet->getActiveSheet()->setCellValue("G$i",$ticket->descripcion);
+                    $spreadsheet->getActiveSheet()->setCellValue("H$i",$ticket->anydesk);
+                    $spreadsheet->getActiveSheet()->setCellValue("I$i",$ticket->estado);
+                    $spreadsheet->getActiveSheet()->setCellValue("J$i",$ticket->tecnico);
+                    $spreadsheet->getActiveSheet()->setCellValue("K$i",$ticket->fecha_asignada);
+                    $spreadsheet->getActiveSheet()->setCellValue("L$i",$ticket->tiempo_en_asignar);
+                    $spreadsheet->getActiveSheet()->setCellValue("M$i",$ticket->fecha_completacion);
+                    $spreadsheet->getActiveSheet()->setCellValue("N$i",$ticket->tiempo_en_completar);
+                    $spreadsheet->getActiveSheet()->setCellValue("O$i",$ticket->fecha_pendiente);
+                    $spreadsheet->getActiveSheet()->setCellValue("P$i",$ticket->tiempo_en_pendiente);
 
                     $spreadsheet->setActiveSheetIndexByName("Encuestas");
                     $encuesta = Encuestas::findJoin($ticket->id);

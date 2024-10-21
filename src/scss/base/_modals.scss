@@ -1,4 +1,61 @@
 
+.modal{
+    background-color: $blanco;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 2rem;
+}
+
+
+.modal-solicitud{
+    box-shadow: 0px 0px 16px -1px rgba(50, 59, 54, 1);
+    
+    top: 5%;
+    left: 0%;
+    height: 50rem;
+    width: 70rem;
+    
+    form{
+        label{
+            color: $morado;
+            font-size: 1.7rem;
+        }
+        textarea{
+            width:100%;
+            border: 3px solid #e1e1e1;
+            border-radius: 2rem;
+            resize: none;
+            height: 10rem;
+        }
+    }
+
+}
+
+
+.modal-errores{
+    display: flex;
+    gap: 2rem;
+    box-shadow: 0px 0px 16px -1px rgba(50, 59, 54, 1);
+    flex-direction: column;
+    justify-content: center;
+    position: fixed;
+    inset: 30%;
+    z-index: 1;
+
+    p{
+        background-color: lighten($rojo,10);
+        width: 80%;
+        color: $blanco;
+        border-radius: 2rem;
+    }
+
+}
+
+.dragable{
+    position: fixed;
+}
 
 .modal-notifications{
     padding: 1rem;
@@ -63,3 +120,19 @@
     
 }
 
+
+
+.formulario-modal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+
+    .container-input{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+}

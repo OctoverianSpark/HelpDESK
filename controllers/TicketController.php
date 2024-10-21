@@ -23,7 +23,7 @@ class TicketController{
 
 
         $tickets = Tickets::filter($_GET["type"],$_GET["query"]);
-        $tecnicos = Tecnicos::all();
+        $tecnicos = Tecnicos::getTecnicals();
         $router->render("admin/tickets/index",[
             "tickets" => $tickets,
             "tecnicos"=>$tecnicos
@@ -41,7 +41,7 @@ class TicketController{
 
         $tickets = Tickets::find($id);
 
-        $tecnicos = Tecnicos::all();
+        $tecnicos = Tecnicos::getTecnicals();
 
         $usuario = Inventario::getInventory("nombre",$tickets->usuario);
         

@@ -28,7 +28,6 @@ function conectarCorreo(){
 function asignado($tecnico,$tickets){
     
     $mail = conectarCorreo();
-    $mail->setFrom("helperbot@asistentevirtualsas.com","HELPER BOT");
     $mail->addAddress($tecnico->correo,$tecnico->nombre . " " . $tecnico->apellido);
     
     $mail->isHTML(true);
@@ -120,7 +119,28 @@ function notificacion($tickets=null,$tecnico=null,$usuario=null,$comentarios=nul
 
 }
 
+function enviarCorreo($body,$subject,$mailTo = []){
 
+
+    $mail = conectarCorreo();
+
+
+
+
+    foreach($mailTo as $to){
+
+        $mail->addAddress($to);
+
+
+    }
+
+
+    $mail->isHTML( true);
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+
+    $mail->send();
+}
 
 
 

@@ -3,7 +3,6 @@
 
 namespace Controllers;
 
-
 use Models\ActiveDirectory;
 use Models\Inventario;
 use MVC\Router;
@@ -29,12 +28,12 @@ class LoginController{
                 $adData = $ad->consultData();
                 $userData = Inventario::getInventory("usuarioPC",$_POST["login"]["user"]);
                 $userData=array_shift($userData);
-
                 if($auth){
                     $_SESSION["login"]=true;
                     $_SESSION["log_type"] = "user";
                     $_SESSION["username"] = $_POST["login"]["user"];
                     $_SESSION["name"] = (!empty($adData))? $adData["displayname"] :$userData->nombre . " " . $userData->apellido ;
+                    $_SESSION["charge"] = $adData["department"];
                     $_SESSION["admin"] = admin();
 
                     header("Location: /");
@@ -81,13 +80,14 @@ class LoginController{
         if (isset($_GET['code'])) {
         $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
         $client->setAccessToken($token['access_token']);
-        
         // get profile info 
+    
+        
         $google_oauth = new Google_Service_Oauth2($client);
         $google_account_info = $google_oauth->userinfo->get();
         $email =  $google_account_info->email;
         $name =  $google_account_info->name;
-        $picture = $google_account_info->picture;
+        $picture =  $google_account_info->picture;
         
 
         if(is_null($_GET["hd"]) || !$_GET["hd"] === "asistentevirtualsas.com" ){

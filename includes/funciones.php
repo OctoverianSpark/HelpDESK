@@ -91,33 +91,25 @@ function estaLogueado(){
 
 function admin(){
 
-    $tecnicos = Tecnicos::all();
+    $tecnico = Tecnicos::searchByName($_SESSION["name"]);
 
-    foreach($tecnicos as $tecnico){
-        if($_SESSION["log_type"] == "email"){
-            if($tecnico->correo == $_SESSION["email"]){
-                $auth = true;
-                break;
-            }else{
-                $auth = false;
-                continue;   
-            }
-        }else{
-            if($tecnico->correo == $_SESSION["username"] . "@asistentevirtualsas.com"){
-                $auth = true;
-                break;
-            }else{
-                $auth = false;
-                continue;   
-            }
-
-        }
-
-        
-
+    if($tecnico->cargo == "ATI"){
+        $auth = true;
+    }else{
+        $auth = false;
     }
+
+
     return $auth;
 
+}
+
+
+function getCharge(){
+
+    $tecnico = Tecnicos::searchByName($_SESSION["name"]);
+
+    $_SESSION["charge"] = $tecnico->cargo;
 
 
 }

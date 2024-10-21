@@ -1,9 +1,4 @@
-.ordenes-container{
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    
 
-}
 
 
 .tabla-ordenes{
@@ -45,8 +40,33 @@
         font-size: 1.8rem;
         padding: .5rem;
         font-weight: 700;
+        border: none;
         letter-spacing: 1px;
         max-width: 40rem;
     }
+
+    input:not([type="submit"]){
+
+        
+        border-radius: 2rem;
+        text-align: center;
+        font-size: 1.8rem;
+        padding: .5rem;
+        border: none;
+        letter-spacing: 1px;
+        max-width: 40rem;
+
+    }
+
+}
+
+
+textarea{
+    height: 10rem;
+    width: 40rem;
+    resize: none;
+    border-radius: 2rem;
+    border: none;
+    padding: 1rem;
 
 }

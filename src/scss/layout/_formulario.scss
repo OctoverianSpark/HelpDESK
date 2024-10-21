@@ -68,48 +68,45 @@
 
         }
     
-        input:not([type="file"]),select,textarea{
-            height: 3rem;
-            border: none;
-            width: 100%;
-            border-radius: 2rem;
+    }
+    input:not([type="file"]),select,textarea{
+        height: 3rem;
+        border: none;
+        width: 100%;
+        border-radius: 2rem;
 
-        }
+    }
 
-        input[type="file"]{
-            &::file-selector-button{
-                @include boton($morado,inline-block);
-                margin-top: -1rem;
-                justify-content: center;
-                flex-direction: row;
-            }
+    input[type="file"]{
+        &::file-selector-button{
+            @include boton($morado,inline-block);
+            margin-top: -1rem;
+            justify-content: center;
+            flex-direction: row;
         }
-        label{
-            font-size: 2rem;
-            display: inline-block;
-        }
-        textarea{
-            height: 10rem;
-            padding: 1rem;
+    }
+    label{
+        font-size: 2rem;
+        display: inline-block;
+    }
+    textarea{
+        height: 10rem;
+        padding: 1rem;
 
-            &::-webkit-resizer{
-                display: none;
-            }
-        }
-        input{
-            padding: 1rem;
-        }
-        #otro,label[for="otro"]{
+        &::-webkit-resizer{
             display: none;
         }
-
-        
-        
     }
+    input{
+        padding: 1rem;
+    }
+    #otro,label[for="otro"]{
+        display: none;
+    }
+
+    
+    
 }
-
-
-
 .container-formulario-casos{
     
     gap: 2rem;
@@ -122,7 +119,11 @@
 .container-categories{
     @include grid(3,4rem);
 }
-
+.container-inputs{
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+}
 .categories-selected{
     
     background-color: $celesteOscuro;

@@ -66,9 +66,13 @@ use Models\Encuestas;
 
     $router->get("/admin/inventario/ordenes",[OrderController::class,"index"]);
     $router->post("/admin/inventario/ordenes",[OrderController::class,"index"]);
+    $router->get("/admin/inventario/ordenes/crear",[OrderController::class,"crear"]);
+    $router->post("/admin/inventario/ordenes/crear",[OrderController::class,"crear"]);
     
     $router->get("/orden",[OrderController::class,"orden"]);
     $router->post("/orden",[OrderController::class,"orden"]);
+    $router->get("/orden/print",[OrderController::class,"print"]);
+    $router->post("/orden/print",[OrderController::class,"print"]);
 
 
     /* * Tickets * */

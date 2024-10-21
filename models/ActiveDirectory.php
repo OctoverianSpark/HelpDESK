@@ -41,8 +41,6 @@ class ActiveDirectory{
         $auth = self::$ad->authenticate($this->user,$this->password,true);
         if($auth){
             return true;
-        }else{
-            debuguear(self::$ad->getLastError());
         }
         return false;
 

@@ -1,0 +1,153 @@
+.container-order-title{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .orders-title{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        line-height: 1.1;
+        font-weight: bolder;
+        font-family: Pangram-Black;
+        letter-spacing: 1px;
+        color: darken($morado,20);
+
+        span{
+
+            &:first-child{
+
+                color: $azulFuerte;
+            }
+
+        }
+    }
+
+}
+.references{
+    
+    font-size: 2rem;
+}
+
+.orders-subtitle{
+    font-family: Pangram-Bold;
+    font-size: 2.5rem;
+    span{
+        color: $morado;
+    }
+}
+.text-order{
+    margin: 2rem;
+
+
+    span{
+        font-family: Pangram-Bold;
+    }
+}
+
+
+.orders-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    line-height: 1.1;
+    font-weight: bolder;
+    font-family: Pangram-Black;
+    letter-spacing: 1px;
+    color: darken($morado,20);
+
+    span{
+
+        &:first-child{
+
+            color: $azulFuerte;
+        }
+
+    }
+}
+
+
+.dep{
+    text-align: center;
+    font-family: Pangram-Black;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+}
+
+.container-order{
+    text-align: justify;
+
+
+
+    .reference-text{
+        font-family: Pangram-Bold;
+        margin: 2rem;
+
+    }
+
+
+
+}
+
+.firmas{
+    @include grid(2,1);
+    place-items: center;
+
+    .container-firma{
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        img{
+            margin-left: 14rem;
+            width: 10rem;
+        }
+        #firma-empleado{
+            margin-left: 0;
+            width: 20rem;
+            height: 10rem;
+        }
+
+
+        p{
+            font-family: Pangram-Bold;
+        }
+    }
+    
+
+}
+
+
+
+.container-equipo-info{
+
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    .title{
+        font-size: 2.2rem;
+    }
+
+    .name{
+        font-size: 1.8rem;
+        text-align: center;
+        color: $azulFuerte;
+        font-family: Pangram-Bold;
+    }
+}
+
+.computer-data{
+    display: grid;
+    place-items: center;
+    gap: 2rem;
+
+
+    .orders-title{
+        font-size: 3.2rem;
+    }
+}

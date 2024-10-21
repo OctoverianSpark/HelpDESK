@@ -22,6 +22,7 @@ use Models\Notificaciones;
 //Libs
 use Intervention\Image\ImageManager as Manager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Models\Ordenes;
 
 class PagesController{
     
@@ -136,7 +137,7 @@ class PagesController{
 
 
 
-        $router->render("pages/crear",[
+        $router->render("pages/tickets/crear",[
             "inventario"=>$inventario,
             "tecnicos"=>$tecnicos,
             "subcats" => $subcats,
@@ -152,11 +153,11 @@ class PagesController{
 
 
     }
-    public static function ver(Router $router){
+    public static function tickets(Router $router){
         
         $tickets = Tickets::findJoinbyUser($_SESSION["name"]);
         $resultado = $_GET["resultado"] ?? null;
-        $router->render("pages/ver",[
+        $router->render("pages/tickets/index",[
             "tickets"=>$tickets,
             "resultado"=>$resultado
         ]);
@@ -170,7 +171,7 @@ class PagesController{
         $tickets = Tickets::findJoin($id);
         $comments = Comments::history($id);
 
-        $router->render("pages/ticket",[
+        $router->render("pages/tickets/ticket",[
             "tickets"=>$tickets,
             "comments"=>$comments
         ]);
@@ -185,15 +186,45 @@ class PagesController{
             $perifericos[] = Perifericos::findGroup($equipo->id);
         }
 
+        $errores = [];
+
+        if($_SERVER["REQUEST_METHOD"] ==="POST"){
+
+
+            $_POST["ordenes"]["fecha_salida"] = str_replace("T"," ",$_POST["ordenes"]["fecha_salida"]);
+            $_POST["ordenes"]["fecha_retorno"] = str_replace("T"," ",$_POST["ordenes"]["fecha_retorno"]);
+
+
+
+            $orden = new Ordenes($_POST["ordenes"]);
+
+
+            $errores = $orden->validar();
+
+            if(empty($errores)){
+
+                $orden->guardar();
+                header("Location : /equipos");
+
+
+            }
+
+
+
+
+
+        }
+
         
 
 
 
 
 
-        $router->render("pages/equipos",[
+        $router->render("pages/equipos/index",[
             "equipos" => $equipos,
-            "perifericos"=>$perifericos
+            "perifericos"=>$perifericos,
+            "errores"=>$errores
         ]);
 
     }
@@ -226,7 +257,7 @@ class PagesController{
             header("Location: /");
         }
 
-        $router->render("pages/encuesta",[
+        $router->render("pages/tickets/encuesta",[
             "encuesta"=>$encuesta,
             "ticket"=>$ticket
         ]);
@@ -264,6 +295,19 @@ class PagesController{
             $not->setShowed($notificacion->id);
 
         }
+    }
+
+
+    public static function ordenes(Router $router){
+
+        
+        $ordenes = Ordenes::getAllFilters("nombre",$_SESSION["name"]);
+
+
+
+        $router->render("pages/ordenes/index",[
+            "ordenes"=>$ordenes
+        ]);
     }
 
 

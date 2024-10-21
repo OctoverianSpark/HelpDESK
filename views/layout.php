@@ -9,12 +9,10 @@
     $auth = estaLogueado();
 
     $admin = admin();
-    if($admin){
-        $_SESSION["admin"] == $admin;
-    }
+    getCharge();
 
     $url = $_SERVER["REQUEST_URI"];
-
+    
 ?>
 
 
@@ -30,58 +28,71 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-<body>
-    <header class="header">
-        <div class="barra">
-            <?php if($auth){ ?>
-                <a href="/" class= "logo">
-                    <h1 class= "logo-title">HELP<span>DESK</span></h1>
-                </a>
-                <nav class="navegacion">
-                    <ul class="nav_links">
-                        <?php if($admin): ?>
-                            <a href="/admin" class="nav_link">Administrador</a>
-                        <?php endif?>
-                        <?php if(str_contains($url,"/admin")){?>
-                            
-                            <a href="/admin/inventario" class="nav_link">Inventario</a>
-                            <a href="/admin/tickets" class="nav_link">Tickets</a>
-                            <a href="/admin/encuestas" class="nav_link">Encuestas</a>
-                            <a href="/admin/entradas" class="nav_link">Entradas</a>
-                            <a href="/logout" class="nav_link">Cerrar Sesion</a>
-                        <?php }else{  ?>
-                            <a href="/tickets/crear" class="nav_link">Crear un Ticket</a>
-                            <a href="/tickets/ver" class="nav_link">Ver Mis Tickets</a>
-                            <a href="/equipos" class="nav_link">Activos Asociados a Mi</a>
-                            <a href="/logout" class="nav_link">Cerrar Sesion</a>
+<body class="mainBody">
+    <?php if($_SERVER["PATH_INFO"] != "/orden/print"){ ?>
+        <header class="header">
+            <div class="barra">
+                <?php if($auth){ ?>
+                    <a href="/" class= "logo">
+                        <h1 class= "logo-title">HELP<span>DESK</span></h1>
+                    </a>
+                    <nav class="navegacion">
+                        <ul class="nav_links">
+                            <?php if($admin){ ?>
+                                <a href="/admin" class="nav_link">Administrador</a>
                             <?php } ?>
-                        </ul>
-                    </nav>
-
-                    <div class="boton-notificaciones">
-                        <button><i id="bell" class="bx bxs-bell"></i><i id="quantity"class="bi"></i></button>   
-                    </div>
-            <?php }else{?>
-                <h1 class= "logo-title">HELP<span>DESK</span></h1>
-            <?php }?>
-        </div>
 
 
-        <?php ?>
+                            <?php if($_SESSION["charge"] == "Coordinacion"){ ?>
+                                <a href="/admin/inventario/ordenes" class="nav_link">Ordenes</a>
+
+                            <?php }?>
 
 
-    </header>
+                            <?php if(str_contains($url,"/admin")){?>
+                                
 
-    
+
+                                <a href="/admin/inventario" class="nav_link">Inventario</a>
+                                <a href="/admin/tickets" class="nav_link">Tickets</a>
+                                <a href="/admin/encuestas" class="nav_link">Encuestas</a>
+                                <a href="/admin/entradas" class="nav_link">Entradas</a>
+                                <a href="/logout" class="nav_link">Cerrar Sesion</a>
+                            <?php }else{  ?>
+                                <a href="/tickets/crear" class="nav_link">Crear un Ticket</a>
+                                <a href="/tickets/ver" class="nav_link">Ver Mis Tickets</a>
+                                <a href="/equipos" class="nav_link">Activos Asociados a Mi</a>
+                                <a href="/logout" class="nav_link">Cerrar Sesion</a>
+                                <?php } ?>
+                            </ul>
+                        </nav>
+
+                        <div class="boton-notificaciones">
+                            <button><i id="bell" class="bx bxs-bell"></i><i id="quantity"class="bi"></i></button>   
+                        </div>
+                <?php }else{?>
+                    <h1 class= "logo-title">HELP<span>DESK</span></h1>
+                <?php }?>
+            </div>
+
+
+            <?php ?>
+
+
+        </header>
+    <?php } ?>
+        
     <?php include "../includes/templates/notifications.php" ?>
     
     <?php echo $contenido;?>
-    <footer class="footer">
-        <a href="/" class= "logo">
-            <h1 class= "logo-title">HELP<span>DESK</span></h1>
-        </a>
-        <p>ASISTENTE VIRTUAL S.A.S &copy;</p>
-    </footer>
+    <?php if($_SERVER["PATH_INFO"] != "/orden/print"){ ?>
+        <footer class="footer">
+            <a href="/" class= "logo">
+                <h1 class= "logo-title">HELP<span>DESK</span></h1>
+            </a>
+            <p>ASISTENTE VIRTUAL S.A.S &copy;</p>
+        </footer>
+    <?php } ?>
 
     <script src="/build/js/bundle.min.js"></script>
 </body>

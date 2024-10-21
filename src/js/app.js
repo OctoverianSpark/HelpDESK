@@ -10,16 +10,146 @@ function EventListeners() {
         checkSubmit()
     }else if(location.href.match("/admin/inventario/ordenes")){
         orderMode()
-    }else if (location.href.match("/orden")) {
-        check();
-
     }
+    
     llamarOtro();
     cancelForm();
     notifications();
     openDrop();
     notificarClickup();
     clipBoard()
+    openModal()
+    dragNdrop()
+    sign()
+
+}
+
+function sign() {
+    const canvas = document.getElementById("canvas");
+    const containerActions = document.querySelector(".container-actions")
+
+
+
+    if (canvas) {
+        canvas.style.display="none"
+        containerActions.style.display="none"
+        const check = document.querySelector("#accept")
+
+        check.addEventListener("input",e=>{
+
+            if(e.target.checked){
+
+                canvas.removeAttribute("style")
+                containerActions.removeAttribute("style")
+
+                const context = canvas.getContext("2d")
+
+                const pencilColor = "black"
+    
+                let xBefore=0,
+                    yBefore=0,
+                    xActual=0,
+                    yActual=0
+    
+    
+                let drawing= false
+    
+                const btnLimpiar = document.querySelector("#clean-canvas")
+    
+                const getRealX = (clientX)=>clientX - canvas.getBoundingClientRect().left;
+                
+                const getRealY = (clientY)=>clientY - canvas.getBoundingClientRect().top;
+    
+                const limpiarCanvas = () => {
+                    // Colocar color blanco en fondo de canvas
+                    context.fillStyle = "white";
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+                };
+                limpiarCanvas();
+                btnLimpiar.onclick = limpiarCanvas;
+    
+                canvas.addEventListener("mousedown",e=>{
+    
+                    xBefore = xActual;
+                    yBefore = yActual;
+                    xActual = getRealX(e.clientX);
+                    yActual = getRealY(e.clientY);
+                    context.beginPath();
+                    context.fillStyle = pencilColor;
+                    context.fillRect(xActual, yActual, 2, 2);
+                    context.closePath();
+                    // Y establecemos la bandera
+                    drawing = true;
+
+                    
+    
+                })
+    
+    
+                canvas.addEventListener("mousemove",e=>{
+    
+                    if(!drawing){
+                        return;
+                    }
+                    xBefore = xActual;
+                    yBefore = yActual;
+                    xActual = getRealX(e.clientX)
+                    yActual = getRealY(e.clientY)
+                    context.beginPath()
+                    context.moveTo(xBefore,yBefore)
+                    context.lineTo(xActual,yActual)
+                    context.strokeStyle = pencilColor;
+                    context.lineWidth = 3
+    
+                    context.stroke();
+                    context.closePath();
+    
+    
+                })
+    
+                canvas.addEventListener("mouseout",e=>{
+                    drawing = false;
+                })
+                canvas.addEventListener("mouseup",e=>{
+                    drawing = false;
+                })
+
+                                
+                window.obtenerImagen = () =>{                        
+                    
+
+                    return canvas.toDataURL()
+                }
+
+                document.querySelector("form").addEventListener("submit",e=>{
+                    
+                    e.preventDefault()
+                    const imprimible = window.open("/orden/print" + window.location.search)
+
+                    imprimible.addEventListener("DOMContentLoaded",e=>{
+                        imprimible.print()
+                    })
+
+                })
+
+            }else{
+                
+
+                canvas.style.display="none"
+                containerActions.style.display="none"
+            }
+
+           
+    
+            
+            
+
+        })
+    
+    }
+        
+
+
 }
 
 
@@ -56,12 +186,15 @@ function clipBoard(){
 
     const clipBoardButton = document.querySelector(".clipboard-button")
 
+    if(clipBoardButton){
 
-    clipBoardButton,addEventListener("click",e=>{
+        clipBoardButton,addEventListener("click",e=>{
+    
+    
+            navigator.clipboard.writeText(clipBoardButton.textContent)
+        })
 
-
-        navigator.clipboard.writeText(clipBoardButton.textContent)
-    })
+    }
 
 }
 
@@ -149,49 +282,68 @@ function openDrop(){
     
 }
 
-
 function orderMode(){
 
-    const orderTypeSelector = document.querySelector("#orders-type")
-
-    const manualForm = document.querySelector("#order-manual")
-    const requestForm = document.querySelector("#order-requested")
-
-    manualForm.style.display = "block"
-
-    orderTypeSelector.addEventListener("input",e =>{
+    const form = document.querySelector(".form-order")
 
 
 
-        if(e.target.value === "manual"){
-            manualForm.style.display = "block"
-            requestForm.style.display = "none"
-        }else if(e.target.value==="request"){
-            requestForm.style.display = "block"
-            manualForm.style.display = "none"
+    if(form){
 
-        }
+        const type = form.querySelector("#type")
 
 
-    })
+        const salida = form.querySelector("#salida")
+        const retorno = form.querySelector("#retorno")
+
+        const asignee = form.querySelector("#nombre")
+
+        const otherNameContainer = form.querySelector("#container-othername")
+        const otherName = otherNameContainer.querySelector("#otroNombre")
+
+        type.addEventListener("input",e=>{
+            let nameFirstLetter = e.target.value.charAt(0).toUpperCase()
+            let nameRemains = e.target.value.substring(1)
+
+            document.querySelector("#order-name").textContent = nameFirstLetter + nameRemains
+            
+            salida.style.display = "none"
+            salida.disabled = true
+
+            retorno.style.display = "none"
+            retorno.disabled = true
+
+            if (e.target.value == "salida") {
+                
+                salida.removeAttribute("style")
+                retorno.removeAttribute("style")
+                salida.disabled = false
+                retorno.disabled = false
     
 
+            }
 
-}
 
-function check(){
-    const check = document.querySelector("#accept")
+        })
 
-    check.addEventListener("change",e=>{
-        const text = document.querySelector("#nameSign")
+        asignee.addEventListener("input",e=>{
 
-        if(e.target.checked){
-            text.disabled = false
-        }else{
-            text.disabled = true
-        }
+            
+            otherNameContainer.style.display = "none"
+            otherName.disabled = true
 
-    })
+            if (e.target.value == "other") {
+                otherNameContainer.removeAttribute("style")
+                otherName.disabled = false
+
+            }
+
+
+        })
+    }
+
+
+
 }
 
 function checkSubmit(){
@@ -352,7 +504,41 @@ function añadirPeriferico(){
 }
 
 
+function openModal(){
 
+    const modalButton = document.querySelector(".modal-button")
+
+    if(modalButton){
+        const modal = document.querySelector(".modal")
+
+
+
+        modalButton.addEventListener("click",e=>{
+
+            console.log("A")
+            modal.removeAttribute("style")
+            modal.classList.add("appear")
+        
+            
+            
+    
+        })
+
+        const modalClose = document.querySelector(".close-modal")
+
+        if (modalClose) {
+            modalClose.addEventListener("click",e=>{
+    
+                modal.style.display="none"
+    
+    
+            })
+            
+        }
+
+    }
+
+}
 
 
 
@@ -395,6 +581,52 @@ function notificarClickup(){
 
 }
 
+function dragNdrop(){
+
+    const dragable = document.querySelector(".dragable")
+
+    let startX = 0
+    let startY = 0
+    let newX = 0
+    let newY = 0
+
+    if(dragable){
+        dragable.addEventListener("mousedown",mouseDown)
+
+    }
+
+
+    function mouseDown(e){
+        startX = e.clientX
+        startY = e.clientY
+    
+        
+        document.addEventListener("mousemove",mouseMove)
+        document.addEventListener("mouseup",mouseUp)
+    
+    }
+    
+    
+    function mouseMove(e){
+        
+        newX = startX - e.clientX
+        newY = startY - e.clientY
+    
+    
+        startX = e.clientX
+        startY = e.clientY
+    
+        dragable.style.top = (dragable.offsetTop - newY) + "px"
+        dragable.style.left = (dragable.offsetLeft - newX) + "px"
+    
+    }
+
+
+    function mouseUp(e){
+        document.removeEventListener("mousemove",mouseMove)
+    }
+
+}
 
 document.addEventListener("DOMContentLoaded",e=>{
     EventListeners();

@@ -32,58 +32,10 @@
 }
 
 
-.container-order-title{
 
-}
-
-.orders-title{
-
-    color: darken($morado,10);
-    font-family: Pangram-Black;
-    font-size: 4rem;
-    font-weight: 800;
-    text-align: center;
-
-
-}
-
-.orders-subtitle{
-    color: darken($morado,40);
-    font-size: 3rem;
-    font-weight: 700;
-    text-align: center;
-}
-
-.container-order{
-
-
-    text-align: justify;
-    
-
-    .reference-text{
-        font-weight: 800;
-        font-size: 2rem;
-    }
-
-    p{
-        font-size: 1.7rem;
-        line-height: 1.8;
-        text-align: justify;
-        span{
-            font-weight: bolder;
-        }
-    }
-
+canvas{
+    border-radius: 2rem;
 }
 
 
-.foot-pdf{
-    text-align: center;
-}
 
-.bg{
-    position: absolute;
-    inset: 30;
-    opacity: .2;
-    z-index: -1;
-}

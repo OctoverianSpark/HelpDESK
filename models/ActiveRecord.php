@@ -93,12 +93,13 @@ class ActiveRecord{
 
         if (!$this->id) {
             $this->crear();
+            $resultado = self::$db->insert_id;
             
         }else{
-            $this->actualizar();
+            $resultado = $this->actualizar();
         }
 
-        return true;
+        return $resultado;
 
 
     }
@@ -119,7 +120,17 @@ class ActiveRecord{
 
         $resultado = self::$db->query($query);
 
+
         return $resultado;
+    }
+
+
+    public static function getLastId(){
+
+
+        return self::$db->insert_id;
+
+
     }
 
     public function eliminar(){

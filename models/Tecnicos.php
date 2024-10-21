@@ -5,7 +5,7 @@ namespace Models;
 
 class Tecnicos extends ActiveRecord{
     
-    protected static $columnasDB = ["id","nombre","apellido","correo"];
+    protected static $columnasDB = ["id","nombre","apellido","correo","cargo"];
 
 
     protected static $tabla = "tecnico";
@@ -15,12 +15,15 @@ class Tecnicos extends ActiveRecord{
     public $apellido;
     public $correo;
 
+    public $cargo;
+
     public function __construct($args= []){
 
         $this->id = $args["id"] ?? null;
         $this->nombre = $args["nombre"] ?? "";
         $this->apellido = $args["apellido"] ?? "";
         $this->correo = $args["correo"] ?? "";
+        $this->cargo = $args["cargo"] ?? "";
 
     }
 
@@ -35,6 +38,12 @@ class Tecnicos extends ActiveRecord{
 
     public static function all(){
         $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC";
+        $resultado = self::consultarSQL($query);
+
+        return $resultado;
+    }
+    public static function getTecnicals(){
+        $query = "SELECT * FROM " . static::$tabla . " where cargo = 'ATI' ORDER BY id DESC";
         $resultado = self::consultarSQL($query);
 
         return $resultado;

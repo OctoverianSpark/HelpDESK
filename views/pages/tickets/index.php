@@ -12,6 +12,7 @@
         <?php endif ?>
 
     <?php endif ?>
+    <a href="/ordenes/ver" class="boton-morado-inline">Ver Mis Ordenes</a>
 
     <table class="tickets-table">
 
