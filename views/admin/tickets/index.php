@@ -42,8 +42,10 @@
                     <option value="sin asignar" <?php echo ($_GET["query"] === "sin asignar")? "selected":"" ?>>Sin Asignar</option>
                     <option value="en proceso" <?php echo ($_GET["query"] === "en proceso")? "selected":"" ?>>En Proceso</option>
                     <option value="pendiente" <?php echo ($_GET["query"] === "pendiente")? "selected":"" ?>>Pendiente</option>
+                    
                     <option value="completado" <?php echo ($_GET["query"] === "completado")? "selected":"" ?>>Completado</option>
-                </select>
+                    
+                    </select>
             </div>
 
             <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>

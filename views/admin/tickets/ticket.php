@@ -32,8 +32,31 @@
                         <option value="sin asignar" <?php echo ($tickets->estado == "sin asignar") ? "selected" : "" ?>>Sin Asignar</option>
                         <option value="en proceso" <?php echo ($tickets->estado == "en proceso") ? "selected" : "" ?>>En Proceso</option>
                         <option value="pendiente" <?php echo ($tickets->estado == "pendiente") ? "selected" : "" ?>>Pendiente</option>
-                        <option value="completado" <?php echo ($tickets->estado == "completado") ? "selected" : "" ?>>Completado</option>
+                        <?php if($tickets->estado != "sin asignar"){ ?>
+                            <option value="completado" <?php echo ($tickets->estado == "completado") ? "selected" : "" ?>>Completado</option>
+                        <?php } ?>
                     </select>
+                </div>
+
+                
+                <label for="subcategoria">Solicitud</label>
+                <select name="tickets[subcategoria]" id="subcategoria">
+                        <?php foreach($subcats as $subcat){ ?>
+                            <option value="<?php echo s($subcat->subcategoria) ?>"><?php echo s($subcat->subcategoria)?></option>
+                        <?php } ?>
+                </select>
+                <?php if($tickets->categoria === "Aplicaciones"){ ?>
+                                <select name="tickets[selected_app]" id="apps">
+                                    <?php foreach($apps as $app):?>
+                                        <option value="<?php echo $app->app ?>"><?php echo $app->app ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                <?php } ?>
+                                    
+                <div class="container-state-input hidden" id="otro-container" style="display: none;">
+                    <label for="otro"></label>
+                    <input id="otro" type="text" placeholder="">
+
                 </div>
                 <div class="container-state-input">
                     <label for="tecnico">Tecnico</label>

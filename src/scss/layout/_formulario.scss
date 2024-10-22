@@ -1,46 +1,6 @@
-.container-create{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6rem;
-    max-width: 100%;
 
-}
 
-.info{
-    padding: 0 2rem;
-    margin: 1rem;
-    margin-top: 10%;
-    width: 60%;
-    height: 50%;
 
-    background-color: $blanco;
-    border-radius: 2rem;
-
-    ul{
-        text-align: justify;
-        line-height: 2.1;
-        li{
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-    }
-
-    h2{
-        margin-top: -10rem;
-        margin-bottom: 6rem;
-
-        &::after{
-            content: "";
-            display: block;
-            background-color: $morado;
-            color: $morado;
-            width: 100%;
-            text-align: center;
-            height: .5rem;
-        }
-    }
-}
 
 .title-tickets{
     text-align: center;
@@ -48,17 +8,19 @@
 
 .formulario{
 
-    max-width: 60%;
 
-    margin-right: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     fieldset{
         border: 2px solid $morado;
         border-radius: 2rem;
         padding: 2rem 3rem;
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 4fr;
-        gap: 1rem;
+        width: 80rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
 
 
         legend{
@@ -100,9 +62,11 @@
     input{
         padding: 1rem;
     }
-    #otro,label[for="otro"]{
-        display: none;
+    input[type="submit"]{
+        width: 50%;
+        height: 5rem;
     }
+
 
     
     
@@ -146,4 +110,9 @@
     }
 }
 
+.container-state-input{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 

@@ -4,8 +4,7 @@
 
 namespace Controllers;
 
-
-
+use Models\Apps;
 use MVC\Router;
 use Models\Tickets;
 use Models\Tecnicos;
@@ -13,6 +12,7 @@ use Models\Inventario;
 use Models\Comments;
 use Models\Encuestas;
 use Models\Notificaciones;
+use Models\Subcats;
 
 class TicketController{
 
@@ -42,7 +42,8 @@ class TicketController{
         $tickets = Tickets::find($id);
 
         $tecnicos = Tecnicos::getTecnicals();
-
+        $subcats = Subcats::getSubs($tickets->categoria);
+        $apps = Apps::all();
         $usuario = Inventario::getInventory("nombre",$tickets->usuario);
         
         $usuario = array_shift( $usuario );
@@ -52,6 +53,7 @@ class TicketController{
         $notificacion = null;
 
         if($_SERVER["REQUEST_METHOD"] === "POST"){
+            
             if(isset($_POST["comentarios"])){
                 
                 $_POST["comentarios"]["usuario"] = $_SESSION["name"];
@@ -79,6 +81,11 @@ class TicketController{
 
 
                 $tecnico = Tecnicos::find($_POST["tickets"]["tecnico_id"]);
+                
+                if($tickets->categoria == "Aplicaciones"){
+                    
+                    $_POST["tickets"]["subcategoria"] .= " (" . $_POST['tickets']['selected_app'] . ")";
+                }  
                 switch($_POST["tickets"]["estado"]){
 
 
@@ -220,7 +227,9 @@ class TicketController{
         $router->render("admin/tickets/ticket",[
             "tickets"=>$tickets,
             "tecnicos" => $tecnicos,
-            "comentarios" => $comentarios
+            "comentarios" => $comentarios,
+            "subcats"=>$subcats,
+            "apps" => $apps
         ]);
     }
 

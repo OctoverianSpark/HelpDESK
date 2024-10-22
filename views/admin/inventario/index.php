@@ -62,11 +62,11 @@
                     <tr>
 
                         <td><?php echo $equipo->nombre_equipo ?><a href="/admin/inventario/ver?id=<?php echo $equipo->id ?>"><i class="bi bi-box-arrow-up-right"></i></a></td>
-                        <td><?php echo $equipo->nombre . " " . $equipo->apellido ?></td>
-                        <td><?php echo $equipo->marca ?></td>
-                        <td><?php echo $equipo->modelo ?></td>
-                        <td><?php echo $equipo->color ?></td>
-                        <td><?php echo $equipo->serial ?></td>
+                        <td><?php echo strtoupper($equipo->nombre) . " " . strtoupper($equipo->apellido) ?></td>
+                        <td><?php echo strtoupper($equipo->marca )?></td>
+                        <td><?php echo strtoupper($equipo->modelo) ?></td>
+                        <td><?php echo strtoupper($equipo->color )?></td>
+                        <td><?php echo strtoupper($equipo->serial) ?></td>
                         <td><button type="button" class="clipboard-button"><?php echo $equipo->anydesk ?></button></td>
                         <td>
                             <div class="inventory-actions">

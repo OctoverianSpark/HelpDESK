@@ -14,11 +14,11 @@
             <div class="container-input">
                 <label for="tipo_documento">Tipo de Documento</label>
                 <select type="text" id="tipo_documento" name="inventario[tipo_documento]">
-                    <option value="PPT" <?php if($inventario->tipo_documento==="PPT") echo "selected"?>>Permiso de Proteccion Temporal</option>
-                    <option value="CC" <?php if($inventario->tipo_documento==="CC") echo "selected"?>>Cedula Colombiana</option>
-                    <option value="Pasaporte" <?php if($inventario->tipo_documento==="Pasaporte") echo "selected"?>>Pasaporte</option>
-                    <option value="CV" <?php if($inventario->tipo_documento==="CV") echo "selected"?>>Cedula Venezolana</option>
-                    <option value="CE" <?php if($inventario->tipo_documento==="CE") echo "selected"?>>Cedula Extranjería</option>
+                    <option value="ppt" <?php echo ($inventario->tipo_documento==="ppt") ? "selected":""?>>Permiso de Proteccion Temporal</option>
+                    <option value="cc" <?php echo ($inventario->tipo_documento=="cc") ? "selected":""?>>Cedula Colombiana</option>
+                    <option value="pasaporte" <?php echo ($inventario->tipo_documento =="pasaporte") ? "selected":""?>>Pasaporte</option>
+                    <option value="cv" <?php echo ($inventario->tipo_documento=="cv") ? "selected":""?>>Cedula Venezolana</option>
+                    <option value="ce" <?php echo ($inventario->tipo_documento=="ce") ? "selected":""?>>Cedula Extranjería</option>
                 </select>
             </div>
             <div class="container-input">
@@ -46,11 +46,11 @@
             <div class="container-input radio">
                 <div class="container-radio-input">
                     <label for="radioPC">PC</label>
-                    <input type="radio" id="radioPC" name="inventario[tipo]" value="PC" <?php if($inventario->tipo == "PC") echo "checked"?> >
+                    <input type="radio" id="radioPC" name="inventario[tipo]" value="pc" <?php echo ($inventario->tipo == "pc") ? "checked" :"" ?> >
                 </div>
                 <div class="container-radio-input">
                     <label for="radioLaptop">Laptop</label>
-                    <input type="radio" id="radioLaptop" name="inventario[tipo]" value="LAPTOP" <?php if($inventario->tipo == "Laptop") echo "checked"?> >
+                    <input type="radio" id="radioLaptop" name="inventario[tipo]" value="laptop" <?php echo ($inventario->tipo == "laptop") ? "checked" :""?> >
                 </div>
             </div>
             <div class="container-input">
@@ -89,9 +89,9 @@
             <div class="container-input">
                 <label for="propietario">Propietario</label>
                 <select type="text" id="propietario" name="inventario[propietario]">
-                    <option value="AVSAS" <?php if($inventario->propietario==="AVSAS") echo "selected"?>>AVSAS</option>
-                    <option value="Rentadvisor" <?php if($inventario->propietario==="Rentadvisor") echo "selected"?>>Rentadvisor</option>
-                    <option value="Lacloud" <?php if($inventario->propietario==="Lacloud") echo "selected"?>>Lacloud</option>
+                    <option value="AVSAS" <?php echo($inventario->propietario==="AVSAS") ? "selected" : ""?>>AVSAS</option>
+                    <option value="Rentadvisor" <?php echo($inventario->propietario==="Rentadvisor") ? "selected":""?>>Rentadvisor</option>
+                    <option value="Lacloud" <?php echo($inventario->propietario==="Lacloud") ? "selected" : ""?>>Lacloud</option>
                 </select>
             </div>
             <div class="container-input">
@@ -117,10 +117,10 @@
                     <div class="container-input">
                         <label for="tipo_periferico">Tipo de Periferico</label>
                         <select name="perifericos[<?php echo $counts ?>][tipo]" id="tipo_periferico">
-                            <option value="MONITOR" <?php if($periferico->tipo === "MONITOR") echo "selected" ?>>Monitor</option>
-                            <option value="MOUSE" <?php if($periferico->tipo === "MOUSE") echo "selected" ?>>Mouse</option>
-                            <option value="TECLADO" <?php if($periferico->tipo === "TECLADO") echo "selected" ?>>Teclado</option>
-                            <option value="DIADEMAS" <?php if($periferico->tipo === "DIADEMAS") echo "selected" ?>>Diademas</option>
+                            <option value="MONITOR" <?php echo ($periferico->tipo === "monitor") ? "selected": "" ?>>Monitor</option>
+                            <option value="MOUSE" <?php echo ($periferico->tipo === "mouse") ? "selected": "" ?>>Mouse</option>
+                            <option value="TECLADO" <?php echo ($periferico->tipo === "teclado") ? "selected": "" ?>>Teclado</option>
+                            <option value="DIADEMAS" <?php echo ($periferico->tipo === "diademas") ? "selected": "" ?>>Diademas</option>
                         </select>
                     </div>
 

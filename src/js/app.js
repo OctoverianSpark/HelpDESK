@@ -399,41 +399,50 @@ function tickChange(){
 
 function llamarOtro() {
     
-    const otroText = document.querySelector("#otro")
-    const otroLbl = document.querySelector("label[for='otro']")
-
-    const apps = document.querySelector("#apps")
-    const subcat = document.querySelector("#subcategoria")
-
-
-
-    if(subcat){
-        subcat.addEventListener("change", e=>{
-            if (e.target.value === "Otro...") {
-                otroText.style.display="block";
-                otroLbl.style.display="block";
-                otroLbl.textContent = "Define lo que presenta tu computador"
-                otroText.setAttribute("name","tickets[subcategoria]")
-            }else{
-                e.preventDefault()
-            }
-        })
-
-    }
-
-    if (apps) {
-        apps.addEventListener("change",e=>{
-            if (e.target.value === "Otro...") {
-                otroText.style.display="block";
-                otroLbl.style.display="block";
-                otroLbl.textContent = "Nombre de la aplicacion"
-                otroText.setAttribute("name","tickets[selected_app]")
-            }else{
-                e.preventDefault()
-            }
-        })
+    const otroContainer = document.querySelector("#otro-container")
+    if (otroContainer) {
+        const otroText = otroContainer.querySelector("input#otro")
+        const otroLbl = otroContainer.querySelector("label[for='otro']")
+    
+        const apps = document.querySelector("#apps")
+        const subcat = document.querySelector("#subcategoria")
+    
+        if(subcat){
+            subcat.addEventListener("change", e=>{
+                if (e.target.value == "Otro...") {
+                    otroContainer.removeAttribute("style")
+                    otroLbl.textContent = "Nombre de la subcategoria"
+                    otroText.setAttribute("name","tickets[subcategoria]")
+                }else{
+    
+    
+                    otroContainer.style.display="none"
+                    
+    
+                }
+            })
+    
+        }
+    
+        if (apps) {
+            apps.addEventListener("change",e=>{
+                if (e.target.value == "Otro...") {
+                    otroContainer.removeAttribute("style")
+                    otroLbl.textContent = "Nombre de la aplicacion"
+                    otroText.setAttribute("name","tickets[selected_app]")
+                }else{
+    
+    
+                    otroContainer.style.display = "none"
+                    
+    
+                }
+            })
+            
+        }
         
     }
+    
 
 }
 
@@ -507,9 +516,9 @@ function añadirPeriferico(){
 function openModal(){
 
     const modalButton = document.querySelector(".modal-button")
+        const modal = document.querySelector(".modal")
 
     if(modalButton){
-        const modal = document.querySelector(".modal")
 
 
 
@@ -524,18 +533,18 @@ function openModal(){
     
         })
 
-        const modalClose = document.querySelector(".close-modal")
 
-        if (modalClose) {
-            modalClose.addEventListener("click",e=>{
-    
-                modal.style.display="none"
-    
-    
-            })
-            
-        }
+    }
+    const modalClose = document.querySelector(".close-modal")
 
+    if (modalClose) {
+        modalClose.addEventListener("click",e=>{
+
+            modal.style.display="none"
+
+
+        })
+        
     }
 
 }
