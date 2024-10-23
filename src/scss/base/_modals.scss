@@ -180,3 +180,30 @@
 
 
 }
+
+
+
+
+
+.drop{
+    position: absolute;
+
+    background-color: white;
+    border-radius: .5rem;
+    padding: 1rem;
+}
+
+.drop-items{
+
+
+    padding: 0;
+    width: 15rem;
+    text-align: center;
+
+    .nav_sub_link{
+        color: black ;
+        text-transform: uppercase;
+
+    }
+}
+

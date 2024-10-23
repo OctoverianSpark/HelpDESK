@@ -19,6 +19,7 @@ function EventListeners() {
     notificarClickup();
     clipBoard()
     openModal()
+    openMenuDrop()
     dragNdrop()
     sign()
 
@@ -257,21 +258,17 @@ async function notifications(){
 function openDrop(){
     const drop = document.querySelector(".drop-notificaciones")
     const notificaciones = document.querySelector(".boton-notificaciones")
-    let down = true
+    const sections = document.querySelector("main")
     notificaciones.addEventListener("click",e=>{
         
-        if(down){
-            drop.style.display = "block"
-            drop.classList.add("in")
-            down=false
-        }else{
-            drop.style.display = "none"
-            drop.classList.add("out")
-            down=true
-        }
+            drop.classList.toggle("hidden")
+
 
 
     })
+
+
+    
 
 
 
@@ -281,6 +278,42 @@ function openDrop(){
 
     
 }
+
+
+
+function openMenuDrop(){
+
+    const navContainers = document.querySelectorAll(".container-nav-link")
+
+    navContainers.forEach(navContainer=>{
+
+        const navLink = navContainer.querySelector(".nav_link")
+
+        navLink.addEventListener("mouseover",e=>{
+
+                const drop = navContainer.querySelector(".drop")
+
+                if (drop) {
+                    drop.classList.remove("hidden")
+                    navContainer.addEventListener("mouseout",e=>{
+                        drop.classList.add("hidden")
+                    })
+
+
+
+                }
+                
+
+        })
+
+
+
+    })
+
+}
+
+
+
 
 function orderMode(){
 

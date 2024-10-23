@@ -20,7 +20,7 @@ use Models\Tecnicos;
 ?>
 
 
-<div class="drop-notificaciones" style="display: none;">
+<div class="drop-notificaciones hidden" >
 
     <?php foreach($notificaciones as $notificacion){ ?>
         <div class="notification">

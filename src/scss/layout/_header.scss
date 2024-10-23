@@ -16,21 +16,29 @@
         }
     }
 
-    .nav_link{
-        color: $blanco;
-        text-transform: uppercase;
-        font-size: 2.1rem;
-        margin-right: 2rem;
-        transition: .2s ease-in-out;
 
-        &:hover{
-            color: $celeste;
-            transition: .2s ease-in-out;
-        }
-        &:last-of-type:hover{
-            
-            color: $rojo;
-            transition: .2s ease-in-out;
-        }
+}
+.nav_link{
+    color: $blanco;
+    text-transform: uppercase;
+    font-size: 2.1rem;
+    margin-right: 2rem;
+    transition: .2s ease-in-out;
+
+    &:hover{
+        color: $celeste;
+        transition: .2s ease-in-out;
     }
+}
+.nav_links{
+
+    display: flex;
+
+
+
+}
+
+
+.container-nav-links{
+    position: relative;
 }

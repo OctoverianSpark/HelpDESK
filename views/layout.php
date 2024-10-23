@@ -39,7 +39,12 @@
                     <nav class="navegacion">
                         <ul class="nav_links">
                             <?php if($admin){ ?>
-                                <a href="/admin" class="nav_link">Administrador</a>
+                                <div class="container-nav-link">
+                                    <a href="/admin" class="nav_link">Administrador</a>
+                                    <?php include "../includes/templates/drop-admin.php" ?>
+
+                                </div>
+
                             <?php } ?>
 
 
@@ -52,12 +57,31 @@
                             <?php if(str_contains($url,"/admin")){?>
                                 
 
-
-                                <a href="/admin/inventario" class="nav_link">Inventario</a>
-                                <a href="/admin/tickets" class="nav_link">Tickets</a>
-                                <a href="/admin/encuestas" class="nav_link">Encuestas</a>
-                                <a href="/admin/entradas" class="nav_link">Entradas</a>
-                                <a href="/logout" class="nav_link">Cerrar Sesion</a>
+                                <div class="container-nav-link">
+                                    
+                                    <a href="/admin/inventario" class="nav_link">Inventario</a>
+                                    
+                                </div>
+                                <div class="container-nav-link">
+                                    
+                                    <a href="/admin/tickets" class="nav_link">Tickets</a>
+                                    
+                                </div>
+                                <div class="container-nav-link">
+                                    
+                                    <a href="/admin/encuestas" class="nav_link">Encuestas</a>
+                                    
+                                </div>
+                                <div class="container-nav-link">
+                                    
+                                    <a href="/admin/entradas" class="nav_link">Entradas</a>
+                                    
+                                </div>
+                                <div class="container-nav-link">
+                                    
+                                    <a href="/logout" class="nav_link">Cerrar Sesion</a>
+                                    
+                                </div>
                             <?php }else{  ?>
                                 <a href="/tickets/crear" class="nav_link">Crear un Ticket</a>
                                 <a href="/tickets/ver" class="nav_link">Ver Mis Tickets</a>

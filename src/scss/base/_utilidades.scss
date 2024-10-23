@@ -11,7 +11,9 @@
     justify-content: flex-end;
 }
 .hidden{
-    display: none;
+    opacity: 0;
+    visibility:hidden;
+
 }
 
 .w-100{
