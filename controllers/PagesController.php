@@ -76,11 +76,10 @@ class PagesController{
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if($_POST["tickets"]["categoria"] === "Aplicaciones"){
-                
+            if($_POST["categoria"] == "Aplicaciones"){
+                    
                 $_POST["tickets"]["subcategoria"] .= " (" . $_POST['tickets']['selected_app'] . ")";
             }  
-
             $_POST["tickets"]["usuario"] = $_SESSION["name"];
 
             $ticket = new Tickets($_POST["tickets"]);
@@ -95,13 +94,6 @@ class PagesController{
             
             if (empty($errores)) {
 
-                $notificacion =[
-                    "titulo"=>"Ticket Creado por " . $_SESSION["name"],
-                    "contenido"=>"Asunto: " . $_POST["tickets"]["subcategoria"],
-                    "destinatario"=>"admin",
-                    "url"=>"/admin/tickets" 
-                ];
-
                 $nombreImagen = md5(uniqid(rand(),true)) . ".png";
 
                 if($_FILES["tickets"]["tmp_name"]["imagen"]){
@@ -114,9 +106,14 @@ class PagesController{
 
                 }
 
+                $resultado = $ticket->guardar();
+                
 
-
-                $ticket->guardar();
+                $notificacion =[
+                    "titulo"=>"Ticket Creado por " . $_SESSION["name"],
+                    "destinatario"=>"admin",
+                    "url"=>"/admin/tickets/ticket?id=$resultado"  
+                ];
                 notificacion();
                 $notificaciones = new Notificaciones($notificacion);
                 $notificaciones->guardar();

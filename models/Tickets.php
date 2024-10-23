@@ -39,7 +39,7 @@ class Tickets extends ActiveRecord{
         $this->fecha = date("Y/m/d h:i:s");
         $this->usuario = $args["usuario"] ?? "";
         $this->categoria = $args["categoria"] ?? null;
-        $this->subcategoria = $args["subcategoria"];
+        $this->subcategoria = $args["subcategoria"] ?? "Sin Establecer";
         $this->descripcion = $args["descripcion"] ?? "";
         $this->anydesk = $args["anydesk"] ?? "";
         $this->imagen = $args["imagen"] ?? "";
