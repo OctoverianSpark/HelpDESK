@@ -183,9 +183,6 @@ class Tickets extends ActiveRecord{
         if(!$this->descripcion){
             static::$errores[] = "Debes de colocar una descripcion";
         }
-        if (!$this->subcategoria) {
-            static::$errores[] = "No puedes enviar un asunto vacio";
-        }
         return static::$errores;
 
 
