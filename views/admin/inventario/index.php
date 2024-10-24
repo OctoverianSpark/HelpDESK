@@ -12,8 +12,6 @@
     <?php } ?>
 
 
-    <a href="/admin/inventario/crear" class="boton-morado-inline" >Añadir Equipo</a>
-    <a href="/admin/inventario/ordenes" class="boton-morado-inline" >Ordenes</a>
     <form method="get" class="form-search">
 
         <div class="container-input-search">

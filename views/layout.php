@@ -1,6 +1,5 @@
 <?php 
 
-    use Models\Notificaciones;
 
     if (!isset($_SESSION)) {
         session_start();
@@ -39,9 +38,11 @@
                     <nav class="navegacion">
                         <ul class="nav_links">
                             <?php if($admin){ ?>
+
+                                
                                 <div class="container-nav-link">
                                     <a href="/admin" class="nav_link">Administrador</a>
-                                    <?php include "../includes/templates/drop-admin.php" ?>
+                                    
 
                                 </div>
 
@@ -49,7 +50,7 @@
 
 
                             <?php if($_SESSION["charge"] == "Coordinacion"){ ?>
-                                <a href="/admin/inventario/ordenes" class="nav_link">Ordenes</a>
+                                <a href="/admin/ordenes" class="nav_link">Ordenes</a>
 
                             <?php }?>
 
@@ -59,22 +60,25 @@
 
                                 <div class="container-nav-link">
                                     
-                                    <a href="/admin/inventario" class="nav_link">Inventario</a>
+                                    <button class="nav_link">Inventario</button>
+
+                                    <?php include "../includes/templates/drop/admin/inventory.php" ?>
                                     
                                 </div>
                                 <div class="container-nav-link">
                                     
-                                    <a href="/admin/tickets" class="nav_link">Tickets</a>
+                                    <button class="nav_link">Tickets</button>
+
+
+                                    <?php include "../includes/templates/drop/admin/tickets.php" ?>
+
                                     
                                 </div>
                                 <div class="container-nav-link">
                                     
-                                    <a href="/admin/encuestas" class="nav_link">Encuestas</a>
-                                    
-                                </div>
-                                <div class="container-nav-link">
-                                    
-                                    <a href="/admin/entradas" class="nav_link">Entradas</a>
+                                    <button class="nav_link">Entradas</button>
+                                    <?php include "../includes/templates/drop/admin/entries.php" ?>
+
                                     
                                 </div>
                                 <div class="container-nav-link">
@@ -83,10 +87,21 @@
                                     
                                 </div>
                             <?php }else{  ?>
-                                <a href="/tickets/crear" class="nav_link">Crear un Ticket</a>
-                                <a href="/tickets/ver" class="nav_link">Ver Mis Tickets</a>
-                                <a href="/equipos" class="nav_link">Activos Asociados a Mi</a>
-                                <a href="/logout" class="nav_link">Cerrar Sesion</a>
+                                <div class="container-nav-link">
+                                    <button class="nav_link">Crear un Ticket</button>
+                                    <?php include "../includes/templates/drop/user/create-ticket.php" ?>
+
+
+                                </div>
+                                <div class="container-nav-link">
+                                    <button class="nav_link">Sobre mi</button>
+
+                                    <?php include "../includes/templates/drop/user/about-me.php" ?>
+                                </div>
+                                <div class="container-nav-link">
+                                    <a href="/logout" class="nav_link">Cerrar Sesion</a>
+
+                                </div>
                                 <?php } ?>
                             </ul>
                         </nav>

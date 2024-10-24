@@ -20,23 +20,23 @@ class Inventario extends ActiveRecord{
 
     public function __construct($args = []){
         $this->id = $args["id"] ?? null;
-        $this->nombre = $args["nombre"] ?? "";
-        $this->apellido = $args["apellido"] ?? "";
-        $this->tipo_documento = $args["tipo_documento"] ?? "";
-        $this->documento = $args["documento"] ?? "";
-        $this->telefono = $args["telefono"] ?? "";
-        $this->anydesk = $args["anydesk"] ?? "";
-        $this->password_anydesk = $args["password_anydesk"] ?? "";
-        $this->tipo = $args["tipo"] ?? "";
-        $this->marca = $args["marca"] ?? "";
-        $this->modelo = $args["modelo"] ?? "";
-        $this->color = $args["color"] ?? "";
+        $this->nombre = strtolower($args["nombre"]) ?? "";
+        $this->apellido = strtolower($args["apellido"]) ?? "";
+        $this->tipo_documento = strtolower($args["tipo_documento"]) ?? "";
+        $this->documento = strtolower($args["documento"]) ?? "";
+        $this->telefono = strtolower($args["telefono"]) ?? "";
+        $this->anydesk = strtolower($args["anydesk"]) ?? "";
+        $this->password_anydesk = strtolower($args["password_anydesk"]) ?? "";
+        $this->tipo = strtolower($args["tipo"]) ?? "";
+        $this->marca = strtolower($args["marca"]) ?? "";
+        $this->modelo = strtolower($args["modelo"]) ?? "";
+        $this->color = strtolower($args["color"]) ?? "";
         $this->nombre_equipo = $args["nombre_equipo"] ?? "";
         $this->serial = $args["serial"] ?? "";
-        $this->correo = $args["correo"] ?? "";
-        $this->usuarioPC = $args["usuarioPC"] ?? "";
-        $this->propietario = $args["propietario"] ?? "";
-        $this->sede = $args["sede"] ?? "";
+        $this->correo = strtolower($args["correo"]) ?? "";
+        $this->usuarioPC = strtolower($args["usuarioPC"]) ?? "";
+        $this->propietario = strtolower($args["propietario"]) ?? "";
+        $this->sede = strtolower($args["sede"]) ?? "";
     }
 
 
@@ -132,6 +132,23 @@ class Inventario extends ActiveRecord{
 
 
     }
+
+
+
+    
+    protected static function crearObjeto($registro){
+        $objeto = new static;
+        
+
+        foreach ($registro as $key => $value) {
+            if(property_exists( $objeto, $key ) ){
+                $objeto->$key = strtoupper($value);
+            }
+        }
+
+        return $objeto;
+    }
+
 
 
 }

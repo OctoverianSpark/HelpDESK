@@ -187,23 +187,65 @@
 
 .drop{
     position: absolute;
+    background-color: darken($color: $morado, $amount: 10%);
 
-    background-color: white;
     border-radius: .5rem;
     padding: 1rem;
+    top: 5rem;
+
+    width: 20rem;
+    transition: .5s;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+
+        a{
+    
+            border-bottom: 1px solid $blanco;
+            transition: .4s;
+            text-align: center;
+            width: 100%;
+            margin-top: .5rem;
+
+            
+            text-align: center;
+            &:hover{
+                border-radius: 1.5rem;
+                width: 90%;
+                background-color: lighten($color: $morado, $amount: 40%);
+                transition: .4s;
+                color: $negro;
+                letter-spacing: 2px;
+    
+            }
+        }
+
+
 }
 
-.drop-items{
 
 
-    padding: 0;
-    width: 15rem;
+.nav_sub_link{
+    color: $blanco ;
+    text-transform: uppercase;
+    font-weight: 800;
     text-align: center;
+    transition: .4s;
 
-    .nav_sub_link{
-        color: black ;
-        text-transform: uppercase;
 
-    }
+
+
 }
 
+
+.about-me-options{
+    width: 25rem;
+}
+
+.entries-options{
+    width: 30rem;
+}

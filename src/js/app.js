@@ -289,22 +289,32 @@ function openMenuDrop(){
 
         const navLink = navContainer.querySelector(".nav_link")
 
-        navLink.addEventListener("mouseover",e=>{
-
+        navLink.addEventListener("click",e=>{
+                const drops = document.querySelectorAll(".drop")
                 const drop = navContainer.querySelector(".drop")
+                drops.forEach(element => {
 
-                if (drop) {
-                    drop.classList.remove("hidden")
-                    navContainer.addEventListener("mouseout",e=>{
-                        drop.classList.add("hidden")
-                    })
+                    if (element != drop) {
+                        element.classList.add("hidden")
+                        
+                    }else{
+
+                        if(element.classList.contains("hidden")){
+                            element.classList.remove("hidden")
+
+                        }else{
+                            element.classList.add("hidden")
+                        }
+
+                    }
 
 
+                })
 
-                }
-                
 
         })
+
+
 
 
 

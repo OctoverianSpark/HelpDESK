@@ -63,7 +63,7 @@
                 <?php $times = 1 ?>
         <?php endforeach ?>
         
-        <button class="boton-morado-inline modal-button">Solicitar Orden de Salida</button>
+        <button class="boton-morado-inline modal-button hidden">Solicitar Orden de Salida</button>
 
     </aside>
 

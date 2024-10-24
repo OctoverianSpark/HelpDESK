@@ -53,7 +53,7 @@
                                 </select>
                 <?php } ?>
                                     
-                <div class="container-state-input hidden" id="otro-container" style="display: none;">
+                <div class="container-state-input" id="otro-container" style="display: none;">
                     <label for="otro"></label>
                     <input id="otro" type="text" placeholder="">
 

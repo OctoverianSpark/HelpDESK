@@ -1,12 +1,7 @@
 <main class="contenedor-entradas">
 
 
-
-
-    <div class="container-links">
-        <a href="/admin/entradas/crear?type=novedad" class="boton-morado-titles">Añadir Novedad</a>
-        <a href="/admin/entradas/crear?type=recomendacion" class="boton-morado-titles">Añadir Recomendacion</a>
-    </div>
+        <h1 class="title">Administrar Entradas</h1>
 
 
 
