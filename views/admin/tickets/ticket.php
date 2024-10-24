@@ -42,7 +42,7 @@
                 <label for="subcategoria">Solicitud</label>
                 <select name="tickets[subcategoria]" id="subcategoria">
                         <?php foreach($subcats as $subcat){ ?>
-                            <option value="<?php echo s($subcat->subcategoria) ?>"><?php echo s($subcat->subcategoria)?></option>
+                            <option value="<?php echo s($subcat->subcategoria) ?>" <?php echo ($tickets->subcategoria === $subcat->subcategoria) ?>  ><?php echo s($subcat->subcategoria)?></option>
                         <?php } ?>
                 </select>
                 <?php if($tickets->categoria === "Aplicaciones"){ ?>
