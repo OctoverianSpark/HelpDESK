@@ -187,8 +187,8 @@
 
 .drop{
     position: absolute;
-    background-color: darken($color: $morado, $amount: 10%);
-
+    background-color: $azulFuerte;
+    border: 1px solid $blanco;
     border-radius: .5rem;
     padding: 1rem;
     top: 5rem;
