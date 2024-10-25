@@ -34,7 +34,6 @@ class LoginController{
                     $_SESSION["username"] = $_POST["login"]["user"];
                     $_SESSION["name"] = (!empty($adData))? $adData["displayname"] :$userData->nombre . " " . $userData->apellido ;
                     $_SESSION["charge"] = $adData["department"];
-                    $_SESSION["admin"] = admin();
 
                     header("Location: /");
                 }else{
@@ -57,6 +56,7 @@ class LoginController{
         session_start();
 
         $_SESSION = [];
+        debuguear($_SESSION);
 
         header("Location: /login");
 
@@ -101,7 +101,6 @@ class LoginController{
         $_SESSION["picture"] = $picture;
         $_SESSION["log_type"] = "email";
         $_SESSION["login"] = true;
-        $_SESSION["admin"] = admin();
         
 
         header("Location: /");

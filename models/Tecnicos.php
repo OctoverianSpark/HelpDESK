@@ -29,8 +29,7 @@ class Tecnicos extends ActiveRecord{
 
 
     public static function searchByName($nombre){
-        $query = "SELECT * FROM " . static::$tabla . " WHERE CONCAT(nombre,' ',apellido) LIKE '%$nombre%'";
-
+        $query = "SELECT * FROM " . static::$tabla . " WHERE CONCAT(nombre,' ',apellido) = '$nombre'";
         $resultado = self::consultarSQL($query);
 
         return array_shift( $resultado );

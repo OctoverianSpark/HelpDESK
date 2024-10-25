@@ -8,6 +8,7 @@
     $auth = estaLogueado();
 
     $admin = admin();
+    
     getCharge();
 
     $url = $_SERVER["REQUEST_URI"];
@@ -49,10 +50,6 @@
                             <?php } ?>
 
 
-                            <?php if($_SESSION["charge"] == "Coordinacion"){ ?>
-                                <a href="/admin/ordenes" class="nav_link">Ordenes</a>
-
-                            <?php }?>
 
 
                             <?php if(str_contains($url,"/admin")){?>

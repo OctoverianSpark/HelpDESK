@@ -92,8 +92,8 @@ function estaLogueado(){
 function admin(){
 
     $tecnico = Tecnicos::searchByName($_SESSION["name"]);
-
-    if($tecnico->cargo == "ATI"){
+    
+    if($tecnico->cargo === "ATI"){
         $auth = true;
     }else{
         $auth = false;
