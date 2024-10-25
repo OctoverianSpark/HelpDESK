@@ -57,7 +57,6 @@ class LoginController{
         session_start();
 
         $_SESSION = [];
-        debuguear($_SESSION);
 
         header("Location: /login");
 
