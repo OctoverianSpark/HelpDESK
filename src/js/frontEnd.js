@@ -518,6 +518,8 @@ async function viewAdminTicket() {
         });
 
         if (key === "status") {
+          const solution = document.querySelector("label[for='solution']");
+
           const completedOption = select.querySelector(
             "option[value='completado']"
           );
@@ -528,17 +530,15 @@ async function viewAdminTicket() {
           if (value.toLowerCase() == "sin asignar") {
             pendingOption.classList.add("hidden");
             completedOption.classList.add("hidden");
+            solution.classList.add("hidden");
+            solution.required = false;
           } else {
             pendingOption.classList.remove("hidden");
             completedOption.classList.remove("hidden");
+            solution.classList.remove("hidden");
+            solution.required = true;
           }
 
-          if (value.toLowerCase() == "completado") {
-            const solution = document.querySelector("label[for='solution']");
-            solution.classList.remove("hidden");
-          } else {
-            solution.classList.add("hidden");
-          }
         }
       });
 
@@ -786,89 +786,76 @@ async function viewAdminDocumentation() {
   });
 }
 
-function imageViewer(){
+function imageViewer() {
+  const ImgMdl = document.querySelector(".img-view");
 
-  
-  const ImgMdl = document.querySelector(".img-view")
+  if (!ImgMdl) return;
 
-  if(!ImgMdl) return;
+  const btns = document.querySelectorAll(".img-btn");
 
-  const btns = document.querySelectorAll(".img-btn")
-
-  btns.forEach(btn=>{
-
-    btn.addEventListener("click",async e =>{
-
-
-      
+  btns.forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
       const cellId = btn.getAttribute("cell-id");
 
       const ticket = await Information.postJSON("/tickets/find", {
         id: cellId,
       });
 
-
-      if(!ticket.imagen){
-        TOAST("La imagen no fue cargada o no se pudo encontrar...","center")
-      }else{
-        ImgMdl.classList.remove("hidden")
-        const img = ImgMdl.querySelector("img")
-        img.src = "/referencias/" + ticket.imagen
+      if (!ticket.imagen) {
+        TOAST("La imagen no fue cargada o no se pudo encontrar...", "center");
+      } else {
+        ImgMdl.classList.remove("hidden");
+        const img = ImgMdl.querySelector("img");
+        img.src = "/referencias/" + ticket.imagen;
       }
+    });
+  });
 
-
-
-    })
-
-  })
-  
-  ImgMdl.addEventListener("click",e=>{
-
-    ImgMdl.classList.add("hidden")
-
-  })
-
+  ImgMdl.addEventListener("click", (e) => {
+    ImgMdl.classList.add("hidden");
+  });
 }
 
-async function TicketGraphicCards(){
+async function TicketGraphicCards() {
+  const query = await Information.postJSON("/tickets/get", {});
 
+  const container = document.querySelector(".ticket-admin-dashboard");
 
+  if (!container) return;
 
-  const query = await Information.postJSON("/tickets/get",{})
-
-  const container = document.querySelector(".ticket-admin-dashboard")
-
-  if(!container) return
-  
-  const totalCard = document.querySelector(".quantificate-total")
-
+  const totalCard = document.querySelector(".quantificate-total");
 
   totalCard.textContent = query.length;
 
-
-  const totalUnassignedTime = query.reduce((acc, ticket) => acc + (Number(ticket.tiempo_en_asignar) || 0), 0);
+  const totalUnassignedTime = query.reduce(
+    (acc, ticket) => acc + (Number(ticket.tiempo_en_asignar) || 0),
+    0
+  );
   const averageUnassignedTime = totalUnassignedTime / query.length;
 
-  const avgUnassignedTimeCard = document.querySelector(".quantificate-asign-time");
+  const avgUnassignedTimeCard = document.querySelector(
+    ".quantificate-asign-time"
+  );
   avgUnassignedTimeCard.textContent = averageUnassignedTime.toFixed(2);
 
-  const totalPendingTime = query.reduce((acc, ticket) => acc + (Number(ticket.tiempo_en_pendiente) || 0), 0);
+  const totalPendingTime = query.reduce(
+    (acc, ticket) => acc + (Number(ticket.tiempo_en_pendiente) || 0),
+    0
+  );
   const avgPendingTime = totalPendingTime / query.length;
 
-  const pendingCard = document.querySelector(".quantificate-pending-time")
-  pendingCard.textContent = avgPendingTime.toFixed(2)
+  const pendingCard = document.querySelector(".quantificate-pending-time");
+  pendingCard.textContent = avgPendingTime.toFixed(2);
 
-  
-  const totalCompletionTime = query.reduce((acc, ticket) => acc + (Number(ticket.tiempo_en_completar) || 0), 0);
+  const totalCompletionTime = query.reduce(
+    (acc, ticket) => acc + (Number(ticket.tiempo_en_completar) || 0),
+    0
+  );
   const avgCompletionTime = totalCompletionTime / query.length;
 
-  const completionCard = document.querySelector(".quantificate-complete-time")
-  completionCard.textContent = avgCompletionTime.toFixed(2)
-
+  const completionCard = document.querySelector(".quantificate-complete-time");
+  completionCard.textContent = avgCompletionTime.toFixed(2);
 }
-
-
-
 
 document.addEventListener("DOMContentLoaded", (e) => {
   addPer();
@@ -879,6 +866,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
   viewAdminTicket();
   invActions();
   viewAdminDocumentation();
-  TicketGraphicCards()
-  imageViewer()
+  TicketGraphicCards();
+  imageViewer();
 });
