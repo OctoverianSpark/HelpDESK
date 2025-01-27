@@ -518,6 +518,7 @@ async function viewAdminTicket() {
         });
 
         if (key === "status") {
+          const solution = document.querySelector("label[for='solution']");
 
           const completedOption = select.querySelector(
             "option[value='completado']"
@@ -529,9 +530,11 @@ async function viewAdminTicket() {
           if (value.toLowerCase() == "sin asignar") {
             pendingOption.classList.add("hidden");
             completedOption.classList.add("hidden");
+            solution.required = false;
           } else {
             pendingOption.classList.remove("hidden");
             completedOption.classList.remove("hidden");
+            solution.required = true;
           }
 
         }
@@ -950,7 +953,7 @@ function circleChart(type,ctx,data){
   const labels = data.labels
 
   const datasets = data.datasets
-
+  
 
   const config = {
     type: type,
