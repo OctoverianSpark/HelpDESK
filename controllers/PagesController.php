@@ -76,6 +76,7 @@ class PagesController{
             $ticket = new Tickets($_POST);
 
             $ticket->tecnico_id = 0;
+            $ticket->estado = "sin asignar";
             
             if (!is_dir(CARPETA_IMAGENES)) {
                 mkdir(CARPETA_IMAGENES);
