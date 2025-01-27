@@ -61,7 +61,7 @@
                         </button>
                     </div>
                     <div class="cell" col="fecha">
-                        <?php echo date("d/m/Y H:i:s") ?>
+                        <?php echo date("d/m/Y H:i:s",strtotime($ticket->fecha)) ?>
                     </div>
                     <div class="cell" col="categoria" data-col="categoria">
                         <?php echo $ticket->categoria ?>
