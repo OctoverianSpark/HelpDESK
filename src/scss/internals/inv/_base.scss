@@ -1,0 +1,35 @@
+@use "../../base/vars" as v;
+@use "../../base/mixins" as m;
+
+.form-search{
+    margin-left: 6rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 3rem;
+
+
+    .container-input-search{
+        display: flex;
+        gap: 1rem;
+
+        input:not([type="submit"]),select{
+            border-radius: 2rem;
+            border: none;
+            outline: none;
+            padding: 1rem;
+            font-weight: 700;
+        }
+
+        input[type="submit"]{
+            margin: 0;
+        }
+
+        label{
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 1rem;
+        }
+    }
+}

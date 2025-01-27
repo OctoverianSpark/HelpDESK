@@ -7,7 +7,7 @@ namespace Controllers;
 use Models\Apps;
 use MVC\Router;
 use Models\Tickets;
-use Models\Tecnicos;
+use Models\Users;
 use Models\Inventario;
 use Models\Comments;
 use Models\Encuestas;
@@ -22,11 +22,12 @@ class TicketController{
     public static function index(Router $router){
 
 
-        $tickets = Tickets::filter($_GET["type"],$_GET["query"]);
-        $tecnicos = Tecnicos::getTecnicals();
+        $tickets = Tickets::all();
+        $tecnicos = Users::filter("area","=","ATI");
+        
         $router->render("admin/tickets/index",[
             "tickets" => $tickets,
-            "tecnicos"=>$tecnicos
+            "tecnicos"=> $tecnicos
         ]);
     }
 
@@ -86,7 +87,7 @@ class TicketController{
                     
                     $_POST["tickets"]["subcategoria"] .= " (" . $_POST['tickets']['selected_app'] . ")";
                 }  
-                switch($_POST["tickets"]["estado"]){
+                switch($tickets->estado){
 
 
                     case "sin asignar":
@@ -234,7 +235,12 @@ class TicketController{
     }
 
 
-    public static function actualizar(Router $router){
+    public static function dashboard(Router $router){
+
+
+
+
+        $router->render("admin/tickets/dashboard");
 
     }
 

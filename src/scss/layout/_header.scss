@@ -1,17 +1,26 @@
+@use "../base/vars" as v;
+@use "../base/mixins" as m;
+
+
+
+
 .barra{
+    padding: 0 4rem;
+    margin-bottom: 2rem ;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: $azulFuerte;
-    padding: 4rem 1rem;
-
+    background-color: v.$azulFuerte;
+    width: 100%;
+    overflow: hidden;
     .logo-title{
         margin: 0 auto;
         font-weight: 800;
-        color: $blanco;
+        color: v.$blanco;
         font-size: 4.9rem;
         span{
-            color: $celeste;
+            color: v.$celeste;
             font-size: 3.8rem;
         }
     }
@@ -19,7 +28,7 @@
 
 }
 .nav_link{
-    color: $blanco;
+    color: v.$blanco;
     text-transform: uppercase;
     font-size: 2.1rem;
     margin-right: 2rem;
@@ -32,7 +41,7 @@
     cursor: pointer;
 
     &:hover{
-        color: $celeste;
+        color: v.$celeste;
         transition: .2s ease-in-out;
     }
 }
@@ -49,7 +58,6 @@
 
 
 .container-nav-link{
-    position: relative;
 
 
 }

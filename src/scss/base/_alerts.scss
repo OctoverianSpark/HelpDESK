@@ -1,0 +1,21 @@
+@use "vars" as v;
+
+.alerta{
+    text-align: center;
+    color: v.$blanco;
+    margin: 3rem;
+    padding: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 800;
+    font-family: v.$fuente_principal;
+    border-radius: 2rem;
+    &.exito{
+        background-color: v.$morado;
+        
+    }
+
+    &.error{
+        background-color: v.$rojo;
+    }
+}

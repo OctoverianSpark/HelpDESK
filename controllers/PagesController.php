@@ -8,7 +8,7 @@ use MVC\Router;
 //Models
 use Models\Tickets;
 use Models\Encuestas;
-use Models\Tecnicos;
+use Models\Users;
 use Models\Subcats;
 use Models\Apps;
 use Models\Inventario;
@@ -22,34 +22,36 @@ use Models\Notificaciones;
 //Libs
 use Intervention\Image\ImageManager as Manager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Models\Inventory;
 use Models\Ordenes;
+use Models\Personal;
 
 class PagesController{
     
 
     public static function index(Router $router){
 
-
-        $tickets = Tickets::findJoinbyUser($_SESSION["name"],1)?? [];
-        $tickets = array_shift($tickets);
+        $ticket = Tickets::filter("usuario","=",$_SESSION["name"])?? [];
+        $ticket = array_shift($ticket);
 
         if(!empty($tickets)){
             
             $encuestas = Encuestas::findPendingsByUser($tickets->id)??[];
         }
-        $entradas = Entradas::randomizeEntries(2);
-        $novedades = $entradas["novedades"] ;
-        $recomendaciones = $entradas["recomendaciones"];
-
-        $count = 0;
+        $entradas = Entradas::all();
         
+        $novedades = array_filter($entradas,function($entrada){
+            return $entrada->tipo === "novedad";
+        });
+        $recomendaciones = array_filter($entradas,function($entrada){
+            return $entrada->tipo === "recomendacion";
+        });
 
         $router->render("pages/index",[
-            "tickets"=>$tickets,
+            "ticket"=>$ticket,
             "encuestas"=>$encuestas,
             "novedades"=>$novedades,
-            "recomendaciones"=>$recomendaciones,
-            "count"=>$count
+            "recomendaciones"=>$recomendaciones
         ]);
 
         
@@ -62,65 +64,51 @@ class PagesController{
         $manager = new Manager(new Driver());
 
         $ticket = new Tickets;
-        $tecnicos  = Tecnicos::all();
-        $inventario = Inventario::getInventory("nombre",$_SESSION["name"]);
+        $inventario = ($_SESSION["log_type"]==="email")?Inventory::filter("usuarioPC","=",$_SESSION["username"]):Inventory::filter("correo_dominio","=",$_SESSION["username"]);
         $inventario =array_shift($inventario);
-        $selectedCat = $_GET["cat"] ?? null;
-        $cats =["Red","Equipo","Aplicaciones"];
-        $subcats = Subcats::getSubs($selectedCat);
-        $allsubcats = Subcats::all();
-        $limite = 3;
-        $errores = Tickets::getErrores();
-        $apps = Apps::all();   
         
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if($_POST["categoria"] == "Aplicaciones"){
-                    
-                $_POST["tickets"]["subcategoria"] .= " (" . $_POST['tickets']['selected_app'] . ")";
-            }  
-            $_POST["tickets"]["usuario"] = $_SESSION["name"];
+            $_POST["usuario"] = $_SESSION["name"];
+            $_POST["fecha"] = date("Y-m-d H:i:s");
 
-            $ticket = new Tickets($_POST["tickets"]);
+            $ticket = new Tickets($_POST);
 
-            $errores = $ticket->validar();
-            
+            $ticket->tecnico_id = 0;
             
             if (!is_dir(CARPETA_IMAGENES)) {
                 mkdir(CARPETA_IMAGENES);
             }
             
             
-            if (empty($errores)) {
 
-                $nombreImagen = md5(uniqid(rand(),true)) . ".png";
+            $nombreImagen = md5(uniqid(rand(),true)) . ".png";
 
-                if($_FILES["tickets"]["tmp_name"]["imagen"]){
-                    $image = $manager->read($_FILES["tickets"]["tmp_name"]["imagen"]);
-                    $image->resize(width: 300,height:300);
+            if($_FILES["imagen"]["tmp_name"]){
+                $image = $manager->read($_FILES["imagen"]["tmp_name"]);
+                $image->resize(width: 300,height:300);
 
 
-                    $image->toPng()->save(CARPETA_IMAGENES . "/$nombreImagen");
-                    $ticket->setImagen($nombreImagen);
+                $image->toPng()->save(CARPETA_IMAGENES . "/$nombreImagen");
+                $ticket->setImagen($nombreImagen);
 
-                }
-
-                $resultado = $ticket->guardar();
-                
-
-                $notificacion =[
-                    "titulo"=>"Ticket Creado por " . $_SESSION["name"],
-                    "destinatario"=>"admin",
-                    "url"=>"/admin/tickets/ticket?id=$resultado"  
-                ];
-                notificacion();
-                $notificaciones = new Notificaciones($notificacion);
-                $notificaciones->guardar();
-
-                
-                header("Location: /tickets/ver?resultado=1");
             }
+
+            $resultado = $ticket->guardar();
+            
+
+            $notificacion =[
+                "titulo"=>"Ticket Creado por " . $_SESSION["name"],
+                "destinatario"=>"admin",
+                "url"=>"/admin/tickets/ticket?id=$resultado"  
+            ];
+            notificacion();
+            $notificaciones = new Notificaciones($notificacion);
+            $notificaciones->guardar();
+
+            
+            header("Location: /tickets/ver?result=1");
 
 
 
@@ -130,21 +118,9 @@ class PagesController{
 
 
 
-
-
-
-
         $router->render("pages/tickets/crear",[
             "inventario"=>$inventario,
-            "tecnicos"=>$tecnicos,
-            "subcats" => $subcats,
-            "allsubcats"=>$allsubcats,
-            "selectedCat"=>$selectedCat,
-            "cats"=>$cats,
             "ticket" => $ticket,
-            "errores" => $errores,
-            "apps" => $apps,
-            "limite"=>$limite
         ]);
         
 
@@ -152,7 +128,7 @@ class PagesController{
     }
     public static function tickets(Router $router){
         
-        $tickets = Tickets::findJoinbyUser($_SESSION["name"]);
+        $tickets = Tickets::filter("usuario","=",$_SESSION["name"]);
         $resultado = $_GET["resultado"] ?? null;
         $router->render("pages/tickets/index",[
             "tickets"=>$tickets,
@@ -164,8 +140,8 @@ class PagesController{
     }
     public static function ticket(Router $router){
         
-        $id = validarID();
-        $tickets = Tickets::findJoin($id);
+        $id = validarID("");
+        $tickets = Tickets::find($id);
         $comments = Comments::history($id);
 
         $router->render("pages/tickets/ticket",[
@@ -176,44 +152,16 @@ class PagesController{
 
     public static function equipos(Router $router){
 
-        $equipos = Inventario::search($_SESSION["email"],$_SESSION["username"]);
+        $equipos = ($_SESSION["log_type"]==="user")?Inventory::filter("usuarioPC","=",$_SESSION["username"]):Inventory::filter("correo_dominio","=",$_SESSION["username"]);
+        
+        
+        
+        
         $perifericos = [];
         foreach($equipos as $equipo){
             
             $perifericos[] = Perifericos::findGroup($equipo->id);
         }
-
-        $errores = [];
-
-        if($_SERVER["REQUEST_METHOD"] ==="POST"){
-
-
-            $_POST["ordenes"]["fecha_salida"] = str_replace("T"," ",$_POST["ordenes"]["fecha_salida"]);
-            $_POST["ordenes"]["fecha_retorno"] = str_replace("T"," ",$_POST["ordenes"]["fecha_retorno"]);
-
-
-
-            $orden = new Ordenes($_POST["ordenes"]);
-
-
-            $errores = $orden->validar();
-
-            if(empty($errores)){
-
-                $orden->guardar();
-                header("Location : /equipos");
-
-
-            }
-
-
-
-
-
-        }
-
-        
-
 
 
 
@@ -221,7 +169,6 @@ class PagesController{
         $router->render("pages/equipos/index",[
             "equipos" => $equipos,
             "perifericos"=>$perifericos,
-            "errores"=>$errores
         ]);
 
     }
@@ -231,32 +178,8 @@ class PagesController{
 
 
 
-        $id =validarID();
-
-        $encuesta = Encuestas::findJoin($id);
-        $ticket= Tickets::findJoin($encuesta->ticket_id);
-        
-        
-        if($encuesta->estado==="completada"){
-            header("Location: /");
-
-        }
-
-
-
-        if($_SERVER["REQUEST_METHOD"] === "POST"){
-            
-            $_POST["encuesta"]["estado"] = "completada";
-            $encuestas = new Encuestas($_POST["encuesta"]);
-
-            $encuestas->guardar();
-
-            header("Location: /");
-        }
 
         $router->render("pages/tickets/encuesta",[
-            "encuesta"=>$encuesta,
-            "ticket"=>$ticket
         ]);
     }
 
@@ -266,7 +189,7 @@ class PagesController{
 
         header('Content-Type: application/json');
 
-        $tecnico = Tecnicos::searchByName($_SESSION["name"]);
+        $tecnico = Users::searchByName($_SESSION["name"]);
 
         
 
@@ -282,7 +205,6 @@ class PagesController{
         
         $json= json_encode($notificaciones);
 
-        file_put_contents("build/json/notificaciones.json",$json);
         echo $json;
         foreach($notificaciones as $notificacion){
 
@@ -298,12 +220,54 @@ class PagesController{
     public static function ordenes(Router $router){
 
         
-        $ordenes = Ordenes::getAllFilters("nombre",$_SESSION["name"]);
+        
+        $usrs = Personal::separateAll();
+        $inv = Inventory::filter("user_id","!=","0");
 
+
+        if($_SERVER["REQUEST_METHOD"] === "POST"){
+
+            $orden = new Ordenes($_POST);
+
+            $orderCount = count(Ordenes::filter("order_id","LIKE","ODS#%"));
+
+            $orden->order_id = "ODS#" . ($orderCount === 0 ? 1 : ++$orderCount);
+            $orden->state = "pendiente";
+            $orden->emitted_date = date("Y-m-d",strtotime($orden->emitted_date));
+            $orden->return_date = date("Y-m-d",strtotime($orden->return_date));
+            
+
+            $subject = "ORDEN DE SALIDA SOLICITADA";
+            $body = file_get_contents(__DIR__ . "/../views/templates/mail/solicitud-orden.html");
+            $body = str_replace("{{ return }}",date("d / m / Y",strtotime($orden->return_date)),$body);
+            $body = str_replace("{{ emition }}",date("d / m / Y",strtotime($orden->emitted_date)),$body);
+            $body = str_replace("{{ order_id }}",$orden->order_id,$body);
+            $body = str_replace("{{ name }}",$_SESSION["name"],$body);
+
+            $body = str_replace("{{ description }}",$orden->description,$body);
+            
+
+
+            $orden->guardar();
+
+            // Send email logic here
+            enviarCorreo(
+                $body,
+                $subject,
+                ["ati@asistentevirtualsas.com"]
+                
+            );
+            
+            header("Location: /equipos?result=1");
+            exit();
+
+
+        }
 
 
         $router->render("pages/ordenes/index",[
-            "ordenes"=>$ordenes
+            "usrs"=>$usrs[$_GET["sede"]],
+            "inv"=>$inv
         ]);
     }
 

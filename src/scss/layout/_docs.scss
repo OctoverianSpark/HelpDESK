@@ -1,0 +1,360 @@
+@use "../base/vars" as v;
+@use "sass:color";
+
+.doc-order {
+  font-family: Arial;
+  display: grid;
+  gap: 1rem;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+
+  .checkbox-label {
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    input {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    span {
+      font-size: 12px;
+      text-align: left;
+      text-wrap: wrap;
+    }
+  }
+
+  .container-doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1.5px solid black;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+
+    img {
+      width: 20rem;
+      height: 20rem;
+    }
+
+    .container-img {
+      border-right: 1px solid black;
+      padding: 1.4rem;
+      height: 100%;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .metadata {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-left: 1px solid black;
+      p {
+        margin: 0 auto;
+        text-align: justify;
+        width: 100%;
+        padding: 1rem;
+
+        &:not(:last-of-type) {
+          border-bottom: 1px solid black;
+        }
+      }
+    }
+  }
+
+  .container-doc-checks {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    width: 100%;
+  }
+
+  .container-doc-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    .container-data {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      p {
+        padding: 0.5rem;
+        width: 100%;
+        border: 0.25px solid #3f3f3f;
+      }
+      input {
+        height: 100%;
+        cursor: text;
+        font-size: 2.2rem;
+      }
+    }
+    .container-main-data {
+      display: flex;
+      justify-content: center;
+      width: 80%;
+      .container-data {
+        width: 80%;
+        flex-direction: column;
+      }
+    }
+
+    p {
+      text-align: justify;
+    }
+  }
+}
+
+.doc-order.printing {
+
+  .modal,
+  button {
+    display: none;
+  }
+
+  h2 {
+    font-size: 2.8rem;
+    text-align: justify;
+  }
+
+  p{
+    text-align: justify;
+  }
+
+  .container-doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1.5px solid black;
+    width: 100rem;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+
+    img {
+      width: 20rem;
+      height: 20rem;
+    }
+
+    .container-img {
+      border-right: 1px solid black;
+      padding: 1.4rem;
+      height: 100%;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .metadata {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-left: 1px solid black;
+      p {
+        margin: 0 auto;
+        text-align: justify;
+        width: 100%;
+        padding: 1rem;
+
+        &:not(:last-of-type) {
+          border-bottom: 1px solid black;
+        }
+      }
+    }
+  }
+
+  .container-doc-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 80%;
+    .container-data {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 80%;
+      p {
+        padding: 0.5rem;
+        width: 100%;
+        border: 0.25px solid #3f3f3f;
+      }
+      input {
+        height: 100%;
+        cursor: text;
+        font-size: 2.2rem;
+      }
+    }
+    .container-main-data {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100rem;
+      .container-data {
+        width: 100%;
+        flex-direction: column;
+      }
+    }
+
+    p {
+      text-align: justify;
+    }
+  }
+
+  .container-doc-checks {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    width: 100%;
+  }
+  .container-doc-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    
+    .container-data {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100rem;
+      p {
+        padding: 0.5rem;
+        width: 100%;
+        border: 0.25px solid #3f3f3f;
+      }
+      input {
+        height: 100%;
+        cursor: text;
+        font-size: 2.2rem;
+      }
+    }
+    .container-main-data {
+      display: flex;
+      justify-content: center;
+      width: 100rem;
+      .container-data {
+        width: 100%;
+        flex-direction: column;
+      }
+    }
+
+    p {
+      text-align: justify;
+    }
+  }
+}
+
+.container-doc-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  .container-data {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100rem;
+    p {
+      padding: 0.5rem;
+      width: 100%;
+      border: 0.25px solid #3f3f3f;
+    }
+    input {
+      height: 100%;
+      cursor: text;
+      font-size: 2.2rem;
+    }
+  }
+  .container-main-data {
+    display: flex;
+    justify-content: center;
+    width: 100rem;
+    .container-data {
+      width: 100%;
+      flex-direction: column;
+    }
+  }
+
+  p {
+    text-align: justify;
+  }
+}
+
+img {
+  width: 15rem;
+}
+
+.container-signs {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 2rem;
+
+  p > span {
+    border-bottom: 0.5px #3f3f3f;
+  }
+}
+
+.doc-table {
+  width: 110rem;
+  margin: 0 auto;
+  display: table;
+  table-layout: fixed;
+
+  input {
+    width: 100%;
+    height: 5rem;
+    font-size: 1.7rem;
+    text-align: center;
+  }
+
+  .table-row,
+  .table-header {
+    display: table-row;
+    align-items: center;
+  }
+
+  .cell {
+    text-align: center;
+
+    display: table-cell;
+    border: solid black;
+    border-width: 1.5px;
+    border-color: color.scale(black, $lightness: -20%);
+    font-size: 1.7rem;
+  }
+
+  .header {
+    background-color: white;
+    padding: 1rem;
+    font-weight: bold;
+    text-align: center;
+    display: table-cell;
+    border: solid black;
+    border-width: 1.5px;
+  }
+}
+
+
+.doc-order.orden-salida.printing{
+  
+  gap: 6rem;
+}
+

@@ -1,0 +1,67 @@
+@use "sass:color";
+@use "../base/vars" as v;
+@use "../base/mixins" as m;
+
+
+
+.container-bg{
+    backdrop-filter: blur(4px);
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+
+    
+}
+
+.login-form{
+    .logo{
+
+        
+        font-size: 7rem;
+        color: v.$azulOscuro;
+        span{
+            font-size: 4.8rem;
+            color: v.$blanco;
+        }
+
+    }
+    transition: .5s;
+
+
+    display: grid;
+    place-items: center;
+    gap: 1.5rem;
+
+    fieldset{
+        width: 60rem;
+        height: 50rem;
+        border: none;
+    }
+
+    
+
+}
+
+
+.container-psswrd-input{
+
+
+    position: relative;
+
+
+    button{
+        position: absolute;
+        right: 0;
+        padding: 0;
+        margin: .8rem;
+        background-color: transparent;
+    }
+
+}
+
+.loginCanvas{
+    position: absolute;
+    inset: 0;
+    padding: 0;
+}

@@ -1,7 +1,7 @@
 <?php
 
-use Models\Tecnicos;
 use Models\Notificaciones as notificaciones;
+use Models\Users;
 
 define("CARPETA_IMAGENES",$_SERVER["DOCUMENT_ROOT"]."/referencias");
 define("CARPETA_SRC",$_SERVER["DOCUMENT_ROOT"]."/blog");
@@ -65,8 +65,8 @@ function mostrarError($resultado){
 }
 
 
-function validarID(){
-    $id = $_GET["id"];
+function validarID($id=null){
+    $id = $id??$_GET["id"]??$_POST["id"];
 
     $id = filter_var($id,FILTER_VALIDATE_INT);
 
@@ -91,9 +91,8 @@ function estaLogueado(){
 
 function admin(){
 
-    $tecnico = Tecnicos::searchByName($_SESSION["name"]);
-    
-    if($tecnico->cargo === "ATI"){
+    $tecnico = Users::searchByName($_SESSION["name"]);
+    if($tecnico->role === "ADMIN"){
         $auth = true;
     }else{
         $auth = false;
@@ -103,11 +102,27 @@ function admin(){
     return $auth;
 
 }
+function calculateDays(string $from, string $to){
+    /**
+     * Calculates the difference in days between two dates.
+     * @param string $from The start date in a format recognized by strtotime().
+     * @return float $days The result of the operation
+                                                                             **/
+    $from = new DateTime("$from");
+    $to = new DateTime("$to");
+
+    $diff = $from->diff($to)->days;
+
+    return $diff;
+
+
+
+}
 
 
 function getCharge(){
 
-    $tecnico = Tecnicos::searchByName($_SESSION["name"]);
+    $tecnico = Users::searchByName($_SESSION["name"]);
 
     $_SESSION["charge"] = $tecnico->cargo;
 

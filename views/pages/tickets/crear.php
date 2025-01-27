@@ -1,133 +1,57 @@
-<h1 class="title">Creacion de Ticket</h1>
+
+<div class="modal info-modal">
+    <h2 class="subtitle">Creando un Ticket</h2>
+
+    <ul>
+        <li>Selecciona el tipo de problema que presentas en tu computador</li>
+        <li>Coloca una breve descripcion sobre la falla que este presenta</li>
+        <li>Luego de la descripcion puedes colocar una imagen de referencia como un dato opcional a conectar</li>
+        <li>Cuando se envia el ticket te llegará un correo a ti con la confirmacion de que se ha creado y un correo al departamento de A.T.I</li>
+    </ul>
+
+    <label for="close" class="close-modal">
+        <p>Entendido</p>
+        <input type="checkbox" id="close">
+    </label>
+</div>
 
 
-<?php if(!$_GET){ ?>
-    <div class="modal info">
-                <h2 class="subtitle">Creando un Ticket</h2>
-
-                <ul>
-                    <li>1. Selecciona la categoria que encaje con el problema de tu equipo</li>
-                    <li>2. Coloca una breve descripcion sobre la falla que este presenta</li>
-                    <li>3. En caso de ser necesario el formulario solicita tu numero de anydesk para conexion remota</li>
-                    <li>4. Luego de la descripcion puedes colocar una imagen de referencia como un dato opcional a conectar</li>
-                    <li>5. Cuando se envia el ticket te llegará un correo a ti con la confirmacion de que se ha creado y un correo al departamento de A.T.I</li>
-                </ul>
+<form method="POST" enctype="multipart/form-data">
 
 
-                <button class="boton-morado-inline close-modal">Entendido</button>
-    </div>
-<?php } ?>
-
-<?php foreach($errores as $error): ?>
-    <p class="alerta error"><?php echo $error ?></p>
-    
-    <?php endforeach ?>
-    
-    
-    <?php if(!$selectedCat){ ?>
-        <a href="/" class="boton-morado-inline">Volver</a>
+    <h1>De que se trata tu solicitud?</h1>
+    <div class="container-input-flex">
         
-        
-        <div class="container-categories">
-            
-            <?php foreach ($cats as $cat):?>
-                <?php $limite = 3?>
-                <div class="categories-selected seccion">
-                    <a class="boton-azul-block" href="?cat=<?php echo $cat ?>"><?php echo $cat ?></a>
-                    <p>Casos relacionados:</p>
-                    <?php foreach($allsubcats as $subcat){ ?>
-                        <?php if($limite === 0) break ?>
-                        <?php if($subcat->subcategoria === "Otro...") continue;?>
-                        <?php if ($subcat->categoria === $cat) { ?>
-                            <li><?php echo $subcat->subcategoria; ?></li>
-                            <?php $limite--; }?>
-                            <?php } ?>
-                        </div>
-                        <?php endforeach ?>
+
+        <label class="radio-label-card" for="apps-radio" title="Programas del Computador">
+            <input type="radio" name="categoria" id="apps-radio" value="Aplicaciones">
+            <i class="bi bi-grid-fill"></i>
+            <span>Aplicaciones del computador</span>
+        </label>
+        <label class="radio-label-card" for="computer-radio" title="">
+            <input type="radio" name="categoria" id="computer-radio" value="equipo">
+            <i class="bi bi-laptop-fill"></i>
+            <span>Problemas fisicos</span>
+        </label>
     </div>
 
-    
-    <?php } else if(in_array($selectedCat,$cats)){  ?>
-        
-        <div class="container-create">
-            <form action="/tickets/crear" method="post" enctype = "multipart/form-data" class="formulario" id="tik-form"> 
-            
-
-                <input type="hidden" value="<?php echo $selectedCat ?>" name="tickets[categoria]">
-                <div class="container-formulario-casos">
-                    <fieldset class="usuario">
-                        <legend>Datos del Usuario</legend>
-                        <div class="container-state-input">
-                            <label for="nombre">Nombre</label>
-                            <input type="text" id="nombre" placeholder="Tu Nombre" name = "tickets[usuario]" value = "<?php echo $_SESSION["name"] ?>" disabled>
-                    
-                        </div>
-                        </fieldset>
-                    <fieldset class="general">
-                        <legend>Informacion General</legend>
-                        
-                            <?php if($selectedCat === "Aplicaciones"): ?>
-                                <div class="container-state-input">
-                                    <label for="subcategoria">Solicitud</label>
-                                    <select name="tickets[subcategoria]" id="subcategoria">
-                                            <?php foreach($subcats as $subcat){ ?>
-                                                <option value="<?php echo s($subcat->subcategoria) ?>"><?php echo s($subcat->subcategoria)?></option>
-                                            <?php } ?>
-                                    </select>
-
-                                </div>
-                                <div class="container-state-input">
-                                    <label for="apps">Aplicacion</label>
-                                    <select id="apps" name="tickets[selected_app]">
-                                    <?php foreach($apps as $app):?>
-                                        <option value="<?php echo $app->app ?>"><?php echo $app->app ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                    
-                                    
-                                </div>
-                                <div class="container-state-input" id="otro-container" style="display: none;">
-                                    <label for="otro"></label>
-                                    <input id="otro" type="text" placeholder="">
-
-                                </div>
-                                <?php endif?>
-                                <div class="container-state-input">
-                                    <label for="descripcion">Descripcion</label>
-                                    <textarea name="tickets[descripcion]" id="descripcion"></textarea>
-
-                                </div>
-                                <?php if($selectedCat === "Aplicaciones"):?>
-                                    <div class="container-state-input">
-                                        <label for="anydesk">AnyDesk</label>
-                                        <input type="text" id="anydesk" name="tickets[anydesk]" value="<?php echo $inventario->anydesk?>">
 
 
-                                    </div>
-                            <?php endif ?>
-                            
-                    </fieldset>
-
-                    <fieldset>
-                            <legend>Referencias</legend>
-                            <label for="imagen">Referencias del Ticket</label>
-                            <input type="file" id="imagen" name="tickets[imagen]" accept="image/jpeg , image/png">
-                    </fieldset>
-
-                    <input type="submit" value="Enviar Ticket" class="boton-morado-block">
-
-                </div>
-            </form>
 
 
-    </div>
-    
+
+    <label for="descripcion" class="label-input">
+        <p>Describe tu solicitud</p>
+        <textarea placeholder="Coloca una descripcion detallada de tu solicitud" name="descripcion" id="descripcion" required><?php echo $ticket->descripcion ?></textarea>
+    </label>
 
 
-<?php }
-    else { 
-    
-        header("Location: /");
-    
-    
-}?>
+    <label for="image" class="file-selector">
+        <p><i class="bi bi-file-earmark-arrow-up-fill"></i>Agregar Imagen de referencia</p>
+        <input type="file" name="imagen" id="image" accept="image/*">
+    </label>
+
+
+    <button class="btn btn-submit">Enviar</button>
+
+</form>

@@ -1,72 +1,127 @@
-<?php 
+<?php
 
 namespace Models;
 
 
 
-class Ordenes extends ActiveRecord{
+class Ordenes extends ActiveRecord
+{
 
+
+    protected static $columnasDB = [
+        "id", 
+        "order_id",
+        "user_id",
+        "computer_id",
+        "nombre_equipo",
+        "nombre",
+        "apellido",
+        "description",
+        "emitted_date",
+        "return_date",
+        "comments",
+        "state"
+    ];
     
-    protected static $columnasDB = ["id","fecha","tipo","nombre","fecha_salida","fecha_retorno","equipo","descripcion","estado","observaciones"];
+    
     protected static $tabla = "ordenes";
 
-    public $id,$fecha,$tipo,$nombre,$fecha_salida,$fecha_retorno,$equipo,$descripcion,$estado,$observaciones;
-    public function __construct($args=[]){
+    
 
-            $this->id = $args["id"] ?? null;
 
-            $this->fecha = date("Y/m/d H:i:s");
 
-            $this->tipo = $args["tipo"] ?? "salida";
+    public static function find($id){
+        
+        $query = "SELECT * FROM ti.ordenes as i WHERE id = $id";
+        $resultado = self::consultarSQL($query);
 
-            $this->nombre = $args["nombre"] ?? $_SESSION["name"];
 
-            $this->fecha_salida = $args["fecha_salida"]?? null;
+        $resultado = self::findConn($resultado);
+        $resultado = array_shift( $resultado );
 
-            $this->fecha_retorno = $args["fecha_retorno"]?? null;
+        return $resultado;
+    }
 
-            $this->equipo = $args["equipo"] ?? "";
+    public static function filter($columna,$operador,$valor){
 
-            $this->descripcion = $args["descripcion"] ?? "";
+        $query = "SELECT * FROM ti.ordenes as i WHERE $columna $operador '$valor' order by id DESC";
+        $result = self::consultarSQL($query);
 
-            $this->estado = $args["estado"] ?? "pendiente";
+        $result = self::findConn($result);
 
-            $this->observaciones = $args["observaciones"] ?? "";
+        return $result;
+    }
+
+    public static function all()
+    {
+
+        $query = "SELECT * FROM ti.ordenes as i ORDER BY id DESC";
+
+
+        $result = self::consultarSQL($query);
+
+        $result = self::findConn($result);
+
+        return $result;
+
 
     }
-    public function validar(){
 
 
-        self::$errores = [];
+
+    public static function findConn($object = []){
+        foreach ($object as $data) {
+                $info = Personal::PIVOTFINDER($data->user_id,"avsas");
+                $computer = Inventory::filter("id","=",$data->computer_id);
+                $computer = array_shift($computer);
+                $data->nombre = $info->nombre;
+                $data->apellido = $info->apellido;
+                $data->nombre_equipo = $computer->nombre_equipo;
 
 
-        if(!$this->descripcion){
-            self::$errores[] = "Debes colocar una descripcion a tu solicitud";
-        }
-        if(!$this->fecha_salida ){
-            self::$errores[] = "Debes colocar una la fecha de tu salida";
-
-        }
-        if(!$this->fecha_retorno ){
-            self::$errores[] = "Debes colocar una la fecha de retorno";
 
         }
+        return $object;
+    }
+
+    public function atributos(){
+        $atributos = [];
+        foreach(static::$columnasDB as $col){
+
+            if(!$this->$col) continue;
+
+            $atributos[$col] = $this->$col;
 
 
-        return self::$errores;
 
-    }   
+        }
+
+        return $atributos;
+    }
+
+    
+    public function crear(){
+
+        //Sanitizar
+        $atributos = $this->sanitizarAtributos();
+        
+ 
+
+        //Insercion
+        $query = "INSERT INTO ". static::$tabla ." ("  ;
+        $query .= join(", ",array_keys($atributos));
+        $query .= ")VALUES ('";
+        $query .= join("' , '",array_values($atributos));
+        $query.= "')";
+
+        $query = strtolower($query);
+        $resultado = self::$db->query($query);
+
+
+        return $resultado;
+    }
 
 
 
 
 }
-
-
-
-
-
-
-
-
-?>

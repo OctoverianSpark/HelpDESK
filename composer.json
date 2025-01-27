@@ -25,6 +25,7 @@
         "psr-4": {
             "Models\\":"./models",
             "Controllers\\":"./controllers",
+            "Controllers\\LAPI":"./controllers/LAPI",
             "MVC\\":"./"
         }
     }

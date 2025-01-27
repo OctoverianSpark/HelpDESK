@@ -21,7 +21,7 @@ class Router{
 
         session_start();
         $auth = $_SESSION["login"] ?? null;
-        $admin = $_SESSION["admin"] ?? null;
+        $admin = $_SESSION["role"] === "ADMIN" ?? null;
 
         $rutas_protegidas = ["/","/tickets/crear","/ticket","tickets/ver","/equipos",];
 

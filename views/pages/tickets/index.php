@@ -1,44 +1,33 @@
-
-
-<main class="contenedor-data">  
+<main class="contenedor-data">
 
     <h1 class="title">Mis Tickets</h1>
 
-    <?php if ($resultado): ?>
-        
-        <?php $mensaje = mostrarNotificacion(intval($resultado)) ?>
-        <?php if ($mensaje):?>
-            <p class="alerta exito"><?php echo $mensaje ?></p>
-        <?php endif ?>
+    <div class="table-wrapper">
 
-    <?php endif ?>
 
-    <table class="tickets-table">
+        <div class="table">
 
-        <thead>
-            <th>ID</th>
-            <th>Creado el</th>
-            <th>Categoria</th>
-            <th>Asunto</th>
-            <th>Tecnico Asignado</th>
-            <th>Estado del Ticket</th>
-            <th>Referencia</th>
-        </thead>
-        <tbody>
-            <?php foreach($tickets as $ticket) :?>
-                <tr onclick="location.href = '/ticket?id=<?php echo s($ticket->id) ?>'">
-                        <td><?php echo strtoupper(s($ticket->id)) ?></td>
-                        <td><?php echo strtoupper(s($ticket->fecha)) ?></td>
-                        <td><?php echo strtoupper(s($ticket->categoria)) ?></td>
-                        <td><?php echo strtoupper(s($ticket->subcategoria)) ?></td>
-                        <td><?php echo strtoupper(s($ticket->tecnico)) ?></td>
-                        <td><?php echo strtoupper(s($ticket->estado)) ?></td>
-                        <td><?php if($ticket->imagen){?><img src="/referencias/<?php echo $ticket->imagen ?>" alt="Imagen de Referencia"><?php }else{ ?><i class="bi bi-exclamation"></i>Referencia Inexistente<?php } ?></td>
-                </tr>
-            <?php endforeach ?>
-        </tbody>
 
-    </table>
+            <div class="table-row table-header">
+                <div class="header">Creado El</div>
+                <div class="header">Descripcion</div>
+                <div class="header">Estado</div>
+                <div class="header">Tecnico Asignado</div>
+            </div>
+
+            <?php foreach ($tickets as $ticket) { ?>
+
+                <div class="table-row">
+                    <div class="cell"><?php echo $ticket->fecha ?></div>
+                    <div class="cell"><?php echo $ticket->descripcion ?></div>
+                    <div class="cell"><?php echo $ticket->estado ?></div>
+                    <div class="cell"><?php echo $ticket->tecnico ?></div>
+                </div>
+
+            <?php } ?>
+
+        </div>
+    </div>
 
 
 

@@ -1,0 +1,100 @@
+@use "sass:color";
+@use "vars" as v;
+
+.seccion {
+    margin-top: calc(v.$separacion / 2);
+    margin-bottom: calc(v.$separacion / 2);
+}
+.contenido-centrado {
+    max-width: 700px;
+}
+
+.alinear-derecha{
+    display: flex;
+    justify-content: flex-end;
+}
+.hidden{
+    display: none;
+
+}
+
+.comment{
+    border: 1.5px solid #b4b3b3;
+    border-radius: 3rem 3rem 3rem 0 ;
+    legend,p,span{
+        color: v.$negro;
+        font-size: 1.5rem;
+        
+
+
+    }
+    transition: .5s;
+
+    &:hover{
+        border: 1.5px solid v.$morado;
+    }
+
+    legend{
+        font-weight: 800;
+        text-align: left;
+        span{
+            color: v.$morado;
+        }
+        
+    }
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    flex-direction: column;
+}
+
+.w-100{
+    width: 100%;
+}
+
+.appear{
+    opacity: 1;
+    transition: .8s opacity;
+}
+
+.transparent{
+    background-color: transparent;
+}
+
+.title{
+    font-size: 6rem;
+    font-family: Pangram-Black;
+    color: color.adjust(v.$morado,$lightness: 1% * -20);
+    letter-spacing: 3px;
+}
+
+
+.subtitle{
+    
+    font-size: 3.8rem;
+    font-family: Pangram-Black;
+    color: color.adjust(v.$morado,$lightness: 1% * -20);
+    letter-spacing: 3px;
+}
+
+
+.clipboard-button{
+    background: none;
+    color: v.$morado;
+    border: none;
+    i{  
+        font-size: 2.8rem;
+        
+         font-weight: 800;
+
+    }
+    transition: .2s transform;
+
+    cursor: pointer;
+
+    &:active{
+        transform: scale(.6);
+    }
+
+}
+

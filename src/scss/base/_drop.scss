@@ -1,0 +1,128 @@
+@use "vars" as v;
+@use "sass:color";
+
+.nav_link{
+
+
+
+    &:focus-within + .drop{
+        opacity: 1;
+        z-index: 4;
+        visibility: visible;
+        pointer-events: auto;
+        transition: .5s;
+    }
+
+    &:not(:focus-within) + .drop{
+        opacity: 0;
+        visibility: hidden;
+        transition: .5s;
+    }
+
+
+}
+
+
+.boton-notificaciones{
+
+    & button:focus + .drop-notificaciones{
+        opacity: 1;
+        visibility: visible;
+
+        transition: .5s;
+    }
+
+}
+
+
+
+.drop-notificaciones{
+    position: absolute;
+    top: 6rem;
+    right: 6rem;
+    border-radius: 1rem;
+    background-color: v.$blanco;
+    max-height: 60vh;
+    width: 40rem;
+    overflow-y: scroll;
+
+    opacity: 0;
+    visibility: hidden;
+    z-index: 5;
+ 
+    transition: .5s;
+    .notification{
+       border-bottom: 1px solid #e1e1e1; 
+    }
+    a{
+       display: flex;
+       align-items: center;
+       justify-content: flex-start;
+       gap: 1rem;
+    }
+    .prompt-title{
+        font-size: 1.9rem;
+        text-wrap: wrap;
+        color: v.$morado;
+        font-family: Pangram-Black;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    .prompt-text{
+        color: color.adjust(v.$azul,$lightness: -20 * 1%);
+        text-transform: uppercase;
+        font-family: Pangram-Bold;
+        text-align: justify;
+    }
+    #notification-icon{
+        font-size: 3.5rem;
+        color: color.adjust(v.$azul,$lightness: -20 * 1%);
+        padding: 1rem;
+        margin-left: 2rem;
+        border-right: 2px solid #e1e1e1;
+    }
+}
+
+
+
+
+.drop{
+    position: absolute;
+    background-color: v.$azulFuerte;
+    border: 1px solid v.$blanco;
+    border-radius: .5rem;
+    padding: 1rem;
+    top: 7rem;
+    
+    width: 20rem;
+    transition: .5s;
+
+    opacity: 0;
+    visibility: hidden;
+    z-index: 5;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+        a{
+            border-bottom: 1px solid v.$blanco;
+            transition: .4s;
+            text-align: center;
+            width: 100%;
+            margin-top: .5rem;
+
+            text-align: center;
+            &:hover{
+                border-radius: 1.5rem;
+                width: 90%;
+                background-color: color.adjust($color: v.$morado, $lightness: 40%);
+                transition: .4s;
+                color: v.$negro;
+                letter-spacing: 2px;
+            }
+        }
+}
+
+

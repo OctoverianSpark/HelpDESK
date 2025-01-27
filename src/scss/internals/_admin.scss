@@ -1,0 +1,23 @@
+@use "../base/vars.scss" as v;
+@use "../base/mixins.scss" as m;
+
+
+.main-dashboard{
+    margin: .5rem .10rem;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(autofit,minmax(100px,1fr));
+    gap: 1rem;
+    place-items: center;
+}
+
+
+
+.inv-form{
+
+
+
+
+}
+
+

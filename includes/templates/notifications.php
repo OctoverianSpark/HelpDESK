@@ -1,9 +1,9 @@
 <?php
 
     use Models\Notificaciones;
-use Models\Tecnicos;
+    use Models\Users;
 
-    $tecnico = Tecnicos::searchByName($_SESSION["name"]);
+    $tecnico = Users::searchByName($_SESSION["name"]);
 
 
     if($tecnico){
@@ -20,7 +20,7 @@ use Models\Tecnicos;
 ?>
 
 
-<div class="drop-notificaciones hidden" >
+<div class="drop-notificaciones">
 
     <?php foreach($notificaciones as $notificacion){ ?>
         <div class="notification">

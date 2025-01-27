@@ -4,9 +4,9 @@
 
 
 
-    <form method="post" class="formulario-inventario">
+    <form method="post" class="inv-form">
         <?php include "formulario.php" ?>
-        <input type="submit" class="boton-morado-inline" value="Actualizar">
+        <button class="btn btn-submit">Actualizar <i class="bi bi-floppy2-fill"></i></button>
     </form>
 
 

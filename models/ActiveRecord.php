@@ -8,22 +8,35 @@ namespace Models;
 
 
 
-class ActiveRecord{
+abstract class ActiveRecord extends ObjectCreator{
 
     protected static $columnasDB = [];
 
     protected static $db;
 
+    protected static $schema = "ti";
+
     protected static $tabla = "";
 
     protected static $errores = [];
 
-    public static function setDB($database){
-        self::$db = $database;
+
+    public function __construct($args = []){
+
+        foreach (static::$columnasDB as $column) {
+            $this->$column = $args[$column] ?? null;
+        }
+
+
+    }
+
+
+
+    public static function setDB(){
+        self::$db = conectarDB(static::$schema);
     }
     public static function all(){
-        $query = "SELECT * FROM " . static::$tabla ;
-
+        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC";
         $resultado = self::consultarSQL($query);
 
         return $resultado;
@@ -43,7 +56,6 @@ class ActiveRecord{
         
         $query = "SELECT * FROM " . static::$tabla." WHERE ID = $id";
         $resultado = self::consultarSQL($query);
-
         return array_shift( $resultado );
     }
 
@@ -73,19 +85,6 @@ class ActiveRecord{
 
 
 
-    }
-
-    protected static function crearObjeto($registro){
-        $objeto = new static;
-        
-
-        foreach ($registro as $key => $value) {
-            if(property_exists( $objeto, $key ) ){
-                $objeto->$key = $value;
-            }
-        }
-
-        return $objeto;
     }
 
 
@@ -118,6 +117,8 @@ class ActiveRecord{
         $query .= join("' , '",array_values($atributos));
         $query.= "')";
 
+
+        $query = strtolower($query);
         $resultado = self::$db->query($query);
 
 
@@ -134,9 +135,10 @@ class ActiveRecord{
     }
 
     public function eliminar(){
-        $query = "DELETE FROM " . static::$tabla . " WHERE id = $this->id";
+        $query = "DELETE FROM " . static::$tabla . " WHERE id = '$this->id' ";
 
         self::$db->query($query);
+
     }
 
     public function atributos(){
@@ -148,6 +150,7 @@ class ActiveRecord{
         }
         return $atributos;
     }
+
 
     public function sanitizarAtributos(){
         $atributos = $this->atributos();
@@ -163,6 +166,7 @@ class ActiveRecord{
         }
         return $sanitizado;
     }
+
     public function actualizar(){
         
         $atributos = $this->sanitizarAtributos();
@@ -180,12 +184,23 @@ class ActiveRecord{
         $query.= " WHERE id = '". self::$db->escape_string($this->id) . "'";
         $query.= " LIMIT 1";
 
+        
+        $query = strtolower($query);
+
         $resultado = self::$db->query($query);
         return $resultado;
 
 
     }
 
+    public function sync($args = []) {
+
+        foreach($args as $key=>$value){
+            $this->$key = $value;
+        }
+
+        
+    }
 
     //Validacion
     public static function getErrores(){
@@ -196,7 +211,6 @@ class ActiveRecord{
 
         static::$errores = [];
         
-        //Validar por tamaño(100Kb maximo)
 
 
 
@@ -208,22 +222,15 @@ class ActiveRecord{
 
     }
 
-    public function setImagen($imagen){
-        //Asignar el atributo de imagen el nombre de la imagen
-        if ($imagen) {
-            $this->imagen = $imagen;
-        }
-    }
 
 
-    public static function getAllFilters($column = null,$param = null){
-        
-        
-        $query  = "SELECT * FROM ". static::$tabla . " WHERE $column = '$param'";
+    public static function filter($column,$operator,$value){
+
+        $query = "SELECT * FROM ". static::$tabla . " WHERE $column $operator '$value'";
+
         $resultado = self::consultarSQL($query);
 
         return $resultado;
-
 
 
 

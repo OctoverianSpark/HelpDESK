@@ -1,60 +1,77 @@
-<h1 class="title">Generar Orden de <span id="order-name">Entrega</span></h1>
+<main class="order-generator">
+
+
+   <form method="get" class="selection-form">
+
+      <fieldset class="container-input-flex no-fieldset">
+
+         <legend>Tipo de Orden</legend>
+
+         <label for="entrega" class="radio-label-card">
+            <input type="radio" name="type" id="entrega" value="entrega" <?php echo ($_GET["type"] === "entrega") ? "checked" : "" ?>>
+            <i class="bi bi-person-fill-add"></i>
+            <span>Entrega</span>
+         </label>
+
+         <label for="salida" class="radio-label-card">
+            <input type="radio" name="type" id="salida" value="salida" <?php echo ($_GET["type"] === "salida") ? "checked" : "" ?>>
+            <i class="bi bi-house-up-fill"></i>
+            <span>Salida</span>
+         </label>
+
+         <label for="recepcion" class="radio-label-card">
+            <input type="radio" name="type" id="recepcion" value="recepcion" <?php echo ($_GET["type"] === "recepcion") ? "checked" : "" ?>>
+            <i class="bi bi-person-fill-dash"></i>
+            <span>Recepcion</span>
+         </label>
+
+      </fieldset>
+      <?php if($_GET["type"] !== "salida"){?>
+         <fieldset class="container-input-flex no-fieldset">
+            <legend>Estancia del Usuario</legend>
+
+            <label class="radio-label-card">
+               <input type="radio" name="sede" value="avsas" <?php echo ($_GET["sede"] === "avsas")?"checked":"" ?>>
+               <i class="bi bi-house-door"></i>
+               <span>Colombia</span>
+            </label>
+            <label class="radio-label-card">
+               <input type="radio" name="sede" value="avca" <?php echo ($_GET["sede"] === "avca")?"checked":"" ?>>
+               <i class="bi bi-airplane-fill"></i>
+               <span>Venezuela</span>
+            </label>
+            <label class="radio-label-card">
+               <input type="radio" name="sede" value="ops" <?php echo ($_GET["sede"] === "ops")?"checked":"" ?>>
+               <i class="bi bi-headphones"></i>
+               <span>OPS</span>
+            </label>
+
+         </fieldset>
+      <?php }?>
+
+
+   </form>
+
+
+   <form action="/orden/print" method="post" class="ord-form">
+
+
+      <?php if($_GET["type"]){ ?>
+
+         
+
+         <?php include "forms/" . $_GET["type"] . ".php" ?>
+
+
+         <?php foreach($_GET as $key=>$value){ ?>
+            <input type="hidden" name="<?php echo $key ?>" value="<?php echo $value ?>">
+         <?php } ?>
+      <?php } ?>
+
+      <button class="btn btn-submit">Generar Orden <i class="bi bi-file-earmark-post-fill"></i></button>
 
 
 
-<form method="post" class="form-order">
+   </form>
 
-
-            <div class="container-input-order">
-                <label for="type">Tipo de Orden</label>
-                <select name="tipo" id="type">
-                    <option value="entrega">Entrega</option>
-                    <option value="salida">Salida</option>
-                    <option value="recepcion">Recepcion</option>
-                </select>
-            </div>
-            <div class="container-input-order" style="display:none" id="salida">
-                <label for="fecha-salida">Fecha de Salida</label>
-                <input type="datetime-local" name="fecha_salida" id="fecha-salida">
-            </div>
-            <div class="container-input-order" style="display:none" id="retorno">
-                <label for="fecha-retorno">Fecha de Retorno</label>
-                <input type="datetime-local" name="fecha_retorno" id="fecha-retorno">
-            </div>
-                
-
-            <div class="container-input-order">
-                <label for="computer">ID del Equipo : Usuario de ese equipo</label>
-                <select name="equipo" id="computer">
-                    <?php foreach($inventario as $inv): ?>
-                        <option value="<?php echo $inv->nombre_equipo ?>"><?php echo $inv->nombre_equipo . " : " . $inv->nombre . " " . $inv->apellido ?></option>
-                    <?php endforeach ?>
-                </select>
-            </div>
-            <div class="container-input-order">
-                <label for="nombre">Persona a asignar el equipo</label>
-                <select name="nombre" id="nombre">
-                    <?php foreach($inventario as $inv): ?>
-                        <option value="<?php echo $inv->nombre . " " . $inv->apellido ?>"><?php echo $inv->nombre . " " . $inv->apellido ?></option>
-                    <?php endforeach ?>
-                        <option value="other">OTRO</option>
-                </select>
-
-            </div>
-
-            <div class="container-input-order" style="display:none" id="container-othername">
-                <label for="otroNombre">Nombre</label>
-                <input type="text" name="nombre" id="otroNombre" disabled>
-            </div>
-                        
-            <div class="container-input-order">
-                <label for="comentarios">Comentarios</label>
-                <textarea name="observaciones" id="comentarios"></textarea>
-            </div>
-
-
-            <input type="submit" class="boton-morado-inline" value="Enviar Orden">
-
-
-
-</form>
+</main>

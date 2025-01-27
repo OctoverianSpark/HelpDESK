@@ -1,45 +1,5 @@
+@forward "base";
+@forward "internals";
+@forward "layout";
 
 
-
-
-/* Base */
-@import "base/variables";
-@import "base/normalize";
-@import "base/mixins";
-@import "base/utilidades";
-@import "base/globales";
-@import "base/botones";
-@import "base/tabla";
-@import "base/alertas";
-@import "base/modals";
-@import "base/animations";
-
-
-/*UX-UI*/
-
-@import "layout/tarjetas";
-@import "layout/header";
-@import "layout/footer";
-@import "layout/formulario";
-@import "layout/ticket";
-
-
-
-
-
-
-/*Internals*/
-@import "internas/entrada/formulario";
-@import "internas/entrada";
-@import "internas/tickets";
-@import "internas/orderTemplate";
-@import "internas/tickets/gestionar";
-@import "internas/tickets/encuesta";
-@import "internas/inventario/ordenes";
-@import "internas/inventario/orden";
-@import "internas/inventario/equipo";
-@import "internas/inventario/crear";
-@import "internas/inventario/ver";
-@import "internas/inventario";
-@import "internas/admin";
-@import "internas/login";

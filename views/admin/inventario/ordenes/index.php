@@ -1,75 +1,96 @@
+<main class="orders-generator-index">
+
+   <form method="GET" class="search-form">
+
+      <fieldset class="no-fieldset container-input-flex">
+         <legend>Filtros de Busqueda</legend>
+
+
+
+         <label for="col" class="input-group">
+
+            <span>Columna</span>
+
+            <select name="col" id="col">
+               <option value="order_id">Orden</option>
+               <option value="nombre">Nombre de Usuario</option>
+               <option value="nombre_equipo">Nombre del computador</option>
+               <option value="state">Estado</option>
+            </select>
 
 
 
 
-<main class="ordenes-container">
+         </label>
 
 
 
-    <a href="ordenes/crear" class="boton-morado-inline">Crear Orden</a>
-        
-        <form method="get" class="search-requests">
+         <label for="val" class="input-group">
 
-            <div class="container-input-order">
-                <label for="estado">Estado</label>
-                <select name="state" id="estado">
-                    <option value="pendiente" <?php echo ($_GET["state"] ==="pendiente" || !$_GET["state"])?"selected":"" ?>>Pendiente</option>
-                    <option value="aprobada">Aprobada</option>
-                    <option value="denegada">Denegada</option>
-                    <option value="generada">Generada</option>
-                    <option value="firmada">Firmada</option>
-                </select>
-                <input type="submit" value="Buscar" class="boton-morado-inline">
+            <span>Valor</span>
+            <input type="text" name="val" id="val">
+
+
+
+
+         </label>
+
+
+
+
+
+
+      </fieldset>
+
+   </form>
+
+
+   <div class="table-wrapper">
+
+      <div class="table">
+
+
+         <div class="table-row table-header">
+
+            <div class="header">Orden</div>
+            <div class="header">Usuario</div>
+            <div class="header">Computador</div>
+            <div class="header">Fecha de Emision</div>
+            <div class="header">Fecha de Retorno</div>
+            <div class="header">Estado</div>
+
+         </div>
+
+         <?php foreach ($orders as $order) { ?>
+
+            <div class="table-row" order-id="<?php echo $order->id ?>">
+               <div class="cell" col="order_id">
+                  <?php echo $order->order_id ?>
+               </div>
+               <div class="cell" col="nombre">
+                  <?php echo $order->nombre . " " . $order->apellido ?>
+               </div>
+               <div class="cell" col="nombre_equipo">
+                  <?php echo $order->nombre_equipo ?>
+               </div>
+               <div class="cell">
+                  <?php echo $order->emitted_date ?>
+               </div>
+               <div class="cell">
+                  <?php echo $order->return_date ?>
+               </div>
+               <div class="cell" col="state">
+                  <?php echo $order->state ?>
+               </div>
             </div>
-
-        </form>
-        <table class="tabla-ordenes">
-                        
+         <?php } ?>
 
 
-            <thead>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Nombre</th>
-                <th>Descripcion</th>
-                <th>Estado</th>
-                <?php if(!$_GET["state"] || $_GET["state"]==="pendiente"): ?>
-                    <th>Acciones</th>
-                <?php endif ?>
-            </thead>
-            <tbody>
-                <?php foreach($ordenes as $orden){ ?>
-                    <tr>
-                        <td><?php echo s($orden->id) ?></td>
-                        <td><?php echo s($orden->tipo) ?></td>
-                        <td><?php echo s($orden->nombre) ?></td>
-                        <td><?php echo s($orden->descripcion) ?></td>
-                        <td><?php echo s($orden->estado) ?></td>
-                        <?php if(!$_GET["state"] || $_GET["state"]==="pendiente"): ?>
-                                <td>
-                                    <form method="post">
-                                        <input type="hidden" name="orderType" value="request">
-                                        <input type="hidden" name="orders[id]" value="<?php echo s($orden->id) ?>">
-                                        <input type="submit" value="Generar Orden" class="boton-morado-inline">
-                                    </form>
-                                </td>
-                        <?php endif ?>
-                    </tr>
-                <?php } ?>
-            </tbody>
 
-        </table>
 
-    </div>
-
-    
-
+      </div>
+   </div>
 
 
 
 </main>
-
-
-
-
-

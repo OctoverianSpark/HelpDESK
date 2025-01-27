@@ -32,7 +32,7 @@ class Comments extends ActiveRecord{
         $this->ticket_id = $args["ticket_id"] ?? null;
         $this->fecha = $args["fecha"] ?? date("Y/m/d h:i:s");
         $this->comentario = $args["comentario"] ?? "";
-        $this->cargado_por = $args["cargado_por"] ?? "";
+        $this->cargado_por = $args["cargado_por"];
 
     }
 

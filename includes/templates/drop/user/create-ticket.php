@@ -1,5 +1,5 @@
 
-<div class="drop create-options hidden">
+<div class="drop create-options">
 
 
     <a class="nav_sub_link" href="/tickets/crear?cat=Red">Red</a>

@@ -5,8 +5,7 @@ function conectarCorreo(){
 
     
     $user ="helperbot@asistentevirtualsas.com";
-    $password = "Venezu22366792@@";
-
+    $password = "trnm lmbk suur acpz";
 
     $mail = new PHPMailer();
     $mail->isSMTP();
@@ -120,7 +119,15 @@ function notificacion($tickets=null,$tecnico=null,$usuario=null,$comentarios=nul
 }
 
 function enviarCorreo($body,$subject,$mailTo = []){
-
+    /**
+     * Sends an email with PHPMailer
+     *
+     * This function sends an email using the PHPMailer library.
+     *
+     * @param string $body The body of the email (Can be HTML Code)
+     * @param string $subject The subject of the email
+     * @param array $mailTo The recipients of the email
+     */
 
     $mail = conectarCorreo();
 
@@ -134,12 +141,13 @@ function enviarCorreo($body,$subject,$mailTo = []){
 
     }
 
-
-    $mail->isHTML( true);
+    $mail->isHTML( true );
     $mail->Subject = $subject;
     $mail->Body = $body;
-
+    
     $mail->send();
+
+    return $mail->ErrorInfo;
 }
 
 

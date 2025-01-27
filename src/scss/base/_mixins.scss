@@ -1,18 +1,20 @@
+@use "sass:color";
+@use "vars" as v;
 /** Media Queries **/
 @mixin telefono {
-    @media (min-width: #{$telefono}) {
+    @media (min-width: #{v.$telefono}) {
         @content;
     }
 }
 
 @mixin tablet {
-    @media (min-width: #{$tablet}) {
+    @media (min-width: #{v.$tablet}) {
         @content;
     }
 }
   
 @mixin desktop {
-    @media (min-width: #{$desktop}) {
+    @media (min-width: #{v.$desktop}) {
         @content;
     }
 }
@@ -26,7 +28,7 @@
 
 @mixin boton($bgColor,$display){
     background-color: $bgColor;
-    color: $blanco;
+    color: v.$blanco;
     font-weight: 600;
     text-decoration: none;
     padding: 1rem 3rem;
@@ -38,7 +40,53 @@
 
 
     &:hover{
-        background-color: darken($color: $bgColor, $amount: 5);
+        background-color: color.adjust($color: $bgColor, $lightness: -5%);
         cursor: pointer;
     }
+}
+
+
+@mixin setInput(){
+    
+    outline: none;
+    border: none;
+    font-size: 1.8rem;
+}
+
+
+
+@mixin setValidations(){
+    
+
+  &::placeholder {
+    color: blue;
+  }
+
+  &:focus:required {
+    outline: 0 none;
+    border: none;
+  }
+
+  &:required:placeholder-shown {
+    outline: 0 none;
+    border: none;
+    color: red;
+  }
+
+  &:required:not(:placeholder-shown):invalid {
+    border: 1px solid red;
+    color: red;
+    box-shadow: 0 0 0 1px;
+  }
+
+  &:required:not(:placeholder-shown):valid {
+    border: 1px solid green;
+    color: green;
+    box-shadow: 0 0 0 1px;
+  }
+  &:required:focus:invalid {
+    border: 1px solid red;
+    color: red;
+    box-shadow: 0 0 0 1px;
+  }
 }

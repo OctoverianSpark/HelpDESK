@@ -10,38 +10,6 @@
     <div class="modal modal-solicitud dragable" style="display: none;">
         <h3 class="subtitle">Solicitud</h3>
 
-        <form method="post" class="formulario-modal">
-                <div class="container-inputs">
-                    <div class="container-input">
-                        <label for="fecha-salida">Fecha de Salida</label>
-                        <input type="datetime-local" name="ordenes[fecha_salida]" id="fecha-salida">
-                    </div>
-                    <div class="container-input">
-                        <label for="fecha-retorno">Fecha de Retorno</label>
-                        <input type="datetime-local" name="ordenes[fecha_retorno]" id="fecha-retorno">
-                    </div>
-                </div>
-                <div class="container-input">
-                    <label for="equipo">Equipo</label>
-                    <select name="ordenes[equipo]" id="equipo">
-                        <?php foreach($equipos as $equipo){ ?>
-                            <option value="<?php echo $equipo->nombre_equipo ?>"><?php echo $equipo->nombre_equipo ?> : <?php echo $equipo->tipo  ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="container-input">
-                    <label for="descripcion">Motivo de la Solicitud</label>
-                    <textarea name="ordenes[descripcion]" id="descripcion"></textarea>
-
-                </div>
-
-                
-            <div class="container-actions">
-                <button type="submit" class="boton-morado-inline">Enviar</button>
-                <button type="button" class="boton-rojo-inline close-modal">Cancelar</button>
-            </div>
-
-        </form>
 
     </div>
     

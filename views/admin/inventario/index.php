@@ -3,92 +3,122 @@
 
     <h1 class="title">Control de Inventario</h1>
 
-    <?php $mensaje = mostrarNotificacion($_GET["resultado"])?>
+    <?php $mensaje = mostrarNotificacion($_GET["resultado"]) ?>
 
-    <?php if($mensaje){ ?>
+    <?php if ($mensaje) { ?>
         <div class="alerta exito">
             <?php echo $mensaje ?>
         </div>
     <?php } ?>
 
+    <form class="search-form" method="GET">
 
-    <form method="get" class="form-search">
+        <div class="container-input">
 
-        <div class="container-input-search">
-            <label for="typeOf">Tipo</label>
-            <select name="type" id="typeOf">
-                <option value="nombre">Nombre del Ejecutivo</option>
-                <option value="correo">Correo del Ejecutivo</option>
-                <option value="nombre_equipo">Nombre del Equipo</option>
-                <option value="marca">Marca</option>
-                <option value="modelo">Modelo</option>
-                <option value="color">Color</option>
-                <option value="serial">Serial</option>
-                <option value="usuarioPC">Usuario de Dominio</option>
-                <option value="tipo">Tipo de Equipo</option>
-            </select>
+            <div class="container-input-flex">
+
+                <label for="col" class="input-group" direction="column">
+                    <span>Buscar por:</span>
+
+                    <select name="col" id="col">
+                        <option value="" disabled selected>Elige una opcion</option>
+                        <option value="nombre_equipo">Nombre del Equipo</option>
+                        <option value="nombre">Nombre del Usuario</option>
+                        <option value="marca">Marca</option>
+                        <option value="modelo">Modelo</option>
+                        <option value="color">Color</option>
+                        <option value="serial">Serial</option>
+                        <option value="anydesk">Anydesk</option>
+                    </select>
+                </label>
+
+                <label for="val" class="input-group" direction="column">
+                    <span>Valor</span>
+
+                    <input type="text" name="val" id="val" placeholder="Buscar..." autocomplete="off">
+
+                </label>
+            </div>
         </div>
-        <div class="container-input-search">
-            <label for="queryText">Que deseas buscar?</label>
-            <input type="text" name="query" id="queryText">
-        </div>
 
-        <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
+
 
     </form>
 
-    <?php if(empty($equipos)){ ?>
-        <div class="alerta error">
-            No hay datos relacionados
+    <div class="table-wrapper">
+
+        <div class="table table-inv-admin">
+            <div class="table-row table-header">
+                <div class="header">Nombre del Equipo</div>
+                <div class="header">Usuario del Equipo</div>
+                <div class="header">Marca</div>
+                <div class="header">Modelo</div>
+                <div class="header">Color</div>
+                <div class="header">Serial</div>
+                <div class="header">Anydesk</div>
+            </div>
+
+            <?php foreach ($equipos as $equipo) { ?>
+                <div class="table-row" cell-id="<?php echo $equipo->id ?>">
+                    <div class="cell cell-link" col="nombre_equipo">
+                        <button class="btn view-btn">
+                            <?php echo $equipo->nombre_equipo ?>
+                            <i class="bi bi-box-arrow-up-right"></i>
+                        </button>
+                    </div>
+                    <div class="cell" col="nombre">
+
+                        <?php echo "$equipo->nombre $equipo->apellido" ?>
+
+                    </div>
+                    <div class="cell" col="marca">
+
+                        <?php echo $equipo->marca ?>
+
+                    </div>
+                    <div class="cell" col="modelo">
+                        <?php echo $equipo->modelo ?>
+                    </div>
+                    <div class="cell" col="color">
+                        <?php echo $equipo->color ?>
+                    </div>
+                    <div class="cell" col="serial">
+                        <?php echo $equipo->serial ?>
+                    </div>
+                    <div class="cell" col="anydesk">
+                        <?php echo $equipo->anydesk ?>
+                    </div>
+                </div>
+            <?php } ?>
         </div>
-    <?php }else{ ?>
-        <table class="table-inventario">
+    </div>
 
-            <thead>
-                <th>Nombre del equipo</th>
-                <th>Usuario</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Color</th>
-                <th>Serial</th>
-                <th>Anydesk</th>
-                <th>Acciones</th>
-            </thead>
-            <tbody>
-
-                <?php foreach($equipos as $equipo):?>
-                    <tr>
-
-                        <td><?php echo $equipo->nombre_equipo ?><a href="/admin/inventario/ver?id=<?php echo $equipo->id ?>"><i class="bi bi-box-arrow-up-right"></i></a></td>
-                        <td><?php echo strtoupper($equipo->nombre) . " " . strtoupper($equipo->apellido) ?></td>
-                        <td><?php echo strtoupper($equipo->marca )?></td>
-                        <td><?php echo strtoupper($equipo->modelo) ?></td>
-                        <td><?php echo strtoupper($equipo->color )?></td>
-                        <td><?php echo strtoupper($equipo->serial) ?></td>
-                        <td><button type="button" class="clipboard-button"><?php echo $equipo->anydesk ?></button></td>
-                        <td>
-                            <div class="inventory-actions">
-                                <a href="/admin/inventario/actualizar?id=<?php echo $equipo->id ?>" class="boton-azul-block">Actualizar</a>
-                                <form method="post">
-                                    <input type="hidden" name="equipo[id]" value="<?php echo $equipo->id ?>">
-                                    <input type="submit" value="Eliminar" class="boton-rojo-block">
-                                </form>
-                            </div>
-                        </td>
-
-
-                    </tr>
-                <?php endforeach ?>
-            </tbody>
+    <div class="modal modal-view inv-view hidden">
 
 
 
 
-        </table>
-    <?php } ?>
+        <div class="container-actions">
+            <button class="modal-close-btn btn top-btn" title="Cerrar">
+                Cerrar
+                <i class="bi bi-x-circle-fill"></i>
+            </button>
+            <button class="btn stock-btn top-btn" cellId="">
+                Mover a Stock
+                <i class="bi bi-archive-fill"></i>
+            </button>
+            <button class="btn delete-btn top-btn" cellId="">
+                Eliminar
+                <i class="bi bi-trash-fill"></i>
+            </button>
+            <a class="btn update-btn top-btn">
+                Actualizar
+                <i class="bi bi-pen-fill"></i>
+            </a>
+        </div>
+        <br>
 
 
-
-
+    </div>
 
 </main>

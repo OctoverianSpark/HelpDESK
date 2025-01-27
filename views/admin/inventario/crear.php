@@ -8,10 +8,10 @@
 
 <main>
 
-    <form method="post" class="formulario-inventario">
+    <form method="post" class="inv-form">
         
         <?php include "formulario.php" ?>
         
-        <input type="submit" value="Enviar" class="boton-morado-inline">
+        <button class="btn btn-submit">Enviar <i class="bi bi-floppy2-fill"></i></button>
     </form>
 </main>

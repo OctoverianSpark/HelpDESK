@@ -4,37 +4,41 @@
 namespace Controllers;
 
 use Models\ActiveDirectory;
-use Models\Inventario;
 use MVC\Router;
 
 
 use Google_Client;
 use Google_Service_Oauth2;
+use Models\Inventory;
+use Models\Users;
 
 class LoginController{
     
     public static function login(Router $router){
         if($_SERVER["REQUEST_METHOD"] === "POST"){
 
-            $ad = new ActiveDirectory($_POST["login"]);
+            $ad = new ActiveDirectory($_POST);
 
             $auth = $ad->auth();
 
-            if (!$_POST["login"]["user"] || !$_POST["login"]["password"]) {
+            if (!$_POST["user"] || !$_POST["password"]) {
                 header("Location: /login?error=1");
             }
             else{
 
                 $adData = $ad->consultData();
-                $userData = Inventario::getInventory("usuarioPC",$_POST["login"]["user"]);
+                $userData = Inventory::filter("usuarioPC","=",$_POST["user"]);
                 $userData=array_shift($userData);
+
+                $userRole = array_shift(Users::filter("ad_user","=",$_POST["user"]));
+
                 if($auth){
                     $_SESSION["login"]=true;
                     $_SESSION["log_type"] = "user";
-                    $_SESSION["username"] = $_POST["login"]["user"];
+                    $_SESSION["username"] = $_POST["user"];
                     $_SESSION["name"] = (!empty($adData))? $adData["displayname"] :$userData->nombre . " " . $userData->apellido ;
-                    $_SESSION["charge"] = $adData["department"];
-                    $_SESSION["admin"] = admin();
+                    $_SESSION["charge"] = $userRole->area;
+                    $_SESSION["role"] = $userRole->role??"USER";
 
                     header("Location: /");
                 }else{
@@ -95,13 +99,13 @@ class LoginController{
         }
         session_start();
 
-
+        $userRole = array_shift(Users::filter("mail","=",$email));
         $_SESSION["name"] = $name;
         $_SESSION["email"] = $email;
         $_SESSION["picture"] = $picture;
         $_SESSION["log_type"] = "email";
         $_SESSION["login"] = true;
-        $_SESSION["admin"] = admin();
+        $_SESSION["role"] = $userRole->role??"USER";
         
 
         header("Location: /");

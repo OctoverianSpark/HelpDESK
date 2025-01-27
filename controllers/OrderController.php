@@ -5,15 +5,13 @@
 
 namespace Controllers;
 
-use Dompdf\Canvas;
-use Exception;
 use MVC\Router;
 
-use Models\Inventario;
+use Models\Inventory;
 use Models\Perifericos;
 use Models\Ordenes;
-
-use Dompdf\Dompdf;
+use Models\Personal;
+use Models\Users;
 
 class  OrderController{
 
@@ -22,37 +20,16 @@ class  OrderController{
 
     public static function index(Router $router){
         
-        $inventario = Inventario::all();
-        $ordenes = Ordenes::getAllFilters("estado",(!$_GET["state"] )? "pendiente" : $_GET["state"]);
-
-
+        $orders = Ordenes::all();
         $router->render("admin/inventario/ordenes/index",[
-            "inventario"=>$inventario,
-            "ordenes"=>$ordenes
+            "orders"=>$orders,
         ]);
     }
 
     public static function orden(Router $router){
 
-        $id = validarID();
-
-        $orden = Ordenes::find($id);
-
-        $equipo = Inventario::getInventory("nombre_equipo",$orden->equipo);
-        $equipo = array_shift( $equipo );
-        $perifericos = Perifericos::findGroup($equipo->id);
-        
-        if($orden->estado !== "generada"){
-
-
-            header("Location : /");
-        }
-
 
         $router->render("admin/inventario/ordenes/orden",[
-            "equipo"=>$equipo,
-            "perifericos" =>$perifericos,
-            "orden"=>$orden??""
         ]);
     
     
@@ -60,44 +37,19 @@ class  OrderController{
 
     public static function crear(Router $router){
 
-        $inventario = Inventario::all();
-
-
-
-        if($_SERVER["REQUEST_METHOD"] === "POST"){
-
-            
-
-            $_POST["fecha_salida"] = str_replace("T", " " , $_POST["fecha_salida"]);
-            $_POST["fecha_retorno"] = str_replace("T", " " , $_POST["fecha_retorno"]);
-            $_POST["estado"] = "generada";
-            $orden = new Ordenes($_POST);
-            $orden->guardar();
-
-            $id = $orden::getLastId();
-
-            $html = file_get_contents("../views/templates/mail/orden-de-salida.html");
-
-
-            $orderLink =  $_SERVER["HTTP_ORIGIN"] . "/orden?id=$id";
-
-            $html = str_replace("{ {link} }",$orderLink,$html);
-            $html = str_replace("{ {salida} }",$_POST["fecha_salida"],$html);
-            $html = str_replace("{ {retorno} }",$_POST["fecha_retorno"],$html);
-
-            $inventario = Inventario::getInventory("nombre_equipo",$_POST["equipo"]);
-            $usuario = Inventario::getInventory("nombre",$_POST["nombre"]);
-            $usuario = array_shift($usuario);
-    
-            enviarCorreo($html ,"Orden Generada",[$usuario->correo]);
-
-
+        $inv = Inventory::all();
+        $users = Personal::separateAll();
+        
+        $orders = Ordenes::filter("state","=","pendiente");
+        
+        foreach($orders as $order){
 
         }
 
-
         $router->render("/admin/inventario/ordenes/crear",[
-            "inventario"=>$inventario
+            "inv"=>$inv,
+            "users"=>$users[$_GET["sede"]],
+            "orders"=>$orders
         ]);
 
 
@@ -105,23 +57,85 @@ class  OrderController{
     }
     public static function print(Router $router){
 
-        $id = validarID();
-        $orden = Ordenes::find($id);
-        $equipo = Inventario::getInventory("nombre_equipo",$orden->equipo);
-        $equipo = array_shift( $equipo );
-        $usuario = Inventario::getInventory("nombre",$orden->nombre);
-        $usuario = array_shift( $usuario );
+        $computer_id = filter_var($_POST["computer"],FILTER_VALIDATE_INT);
+        $user_id = filter_var($_POST["user"],FILTER_VALIDATE_INT);
+        $emission_date = date("Y-m-d",strtotime($_POST["emitted-date"]));
+        if ($_POST["type"] === "entrega") {
+            
+            $eq = Inventory::find($computer_id);
+            $usr = Personal::PIVOTFINDER($user_id,$_POST["sede"]);
+            $orderCount = count(Ordenes::filter("order_id","LIKE","ODE#%"));
+            
+            $args = [
+                "order_id"=>"ODE#".($orderCount === 0 ? 1 : ++$orderCount),
+                "user_id"=>$usr->id,
+                "computer_id"=>$eq->id,
+                "description"=>"Ordenada por correo",
+                "emitted_date"=>$emission_date,
+                "return_date"=>"no return",
+                "state"=>"generada"
+
+            ];
+
+            $pers= $_POST["pers"];
+
+            $order = new Ordenes($args);
 
 
-        $perifericos = Perifericos::findGroup($equipo->id);
+        }if($_POST["type"] === "salida"){
+
+            $order = Ordenes::filter("order_id","=",$_POST["order_id"]);
+            
+            $order = array_shift($order);
+
+            $args = ["state"=>"generada"];
+            $order->sync($args);
+            $eq = Inventory::find($order->computer_id);
+            $usr = Personal::PIVOTFINDER($order->user_id,"avsas");
+
+            $pers = $_POST["pers"];
+
+
+
+        }if($_POST["type"] === "recepcion"){
+
+            $eq = Inventory::find($computer_id);
+            $usr = Personal::PIVOTFINDER($user_id,$_POST["sede"]);
+            $orderCount = count(Ordenes::filter("order_id","LIKE","ODR#%"));
+            
+            $args = [
+                "order_id"=>"ODR#".($orderCount === 0 ? 1 : ++$orderCount),
+                "user_id"=>$usr->id,
+                "computer_id"=>$eq->id,
+                "description"=>"Ordenada por correo",
+                "emitted_date"=>$emission_date,
+                "return_date"=>"No Return",
+                "state"=>"generada"
+
+            ];
+            $pers= $_POST["pers"];
+
+            $order = new Ordenes($args);
+
+
+        }
+
+        $order->guardar();
 
 
         $router->render("pages/ordenes/orden",[
-            "usuario"=>$usuario,
-            "equipo"=>$equipo,
-            "orden"=>$orden
+            "eq"=>$eq,
+            "usr"=>$usr,
+            "pers"=>$pers,
+            "order"=>$order,
+            "type"=>$_POST["type"],
         ]);
+        
 
+
+
+
+            
 
     }
 

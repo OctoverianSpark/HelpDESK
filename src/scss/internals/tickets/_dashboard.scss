@@ -1,0 +1,73 @@
+@use "../../base/vars" as v;
+
+.ticket-admin-dashboard{
+
+
+   display: grid;
+   place-items: center;
+
+}
+
+
+
+
+.container-brief-cards{
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+   margin: 5rem;
+
+   .brief-card{
+      position: relative;
+
+      .card-data{
+         margin-top: 1rem;
+         background: white;
+         border-radius: 1rem;
+         width: 32rem;
+         height: 15rem;
+         text-align: right;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         flex-direction: column;
+         
+         p,span{
+            font-family: Pangram;
+         }
+
+         p{
+            font-size: 3rem;
+            padding: 0;
+            margin: 0;
+
+         }
+
+         span{
+            color: #b1b1b1;
+            margin-top: 5rem;
+            padding: 0;
+            font-size: 2.1rem;
+         }
+   
+      }
+
+      i{
+         position: absolute;
+         background-color: v.$azulFuerte ;
+         color: white;
+         top: -1.5rem;
+         left: -1.5rem;
+         width: 8rem;
+         height: 8rem;
+         font-size: 5rem;
+         border-radius: 1rem;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+   }
+
+   
+
+}

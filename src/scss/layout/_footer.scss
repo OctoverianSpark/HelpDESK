@@ -1,9 +1,11 @@
+@use "../base/vars" as v;
+@use "../base/mixins" as m;
 .footer{
     padding: 4rem 1rem;
-    background-color: $azulFuerte;
+    background-color: v.$azulFuerte;
 
     p{
-        color: $blanco;
+        color: v.$blanco;
         text-align: center;
     }
 
@@ -11,10 +13,10 @@
     .logo-title{
         margin: 0 auto;
         font-weight: 800;
-        color: $blanco;
+        color: v.$blanco;
         font-size: 4.9rem;
         span{
-            color: $celeste;
+            color: v.$celeste;
             font-size: 3.8rem;
         }
     }

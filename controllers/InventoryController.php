@@ -7,177 +7,161 @@ namespace Controllers;
 
 use MVC\Router;
 
-use Models\Inventario;
+use Models\Inventory;
 use Models\Perifericos;
+use Models\Personal;
 
-class InventoryController{
+class InventoryController
+{
 
 
-    public static function index(Router $router){
+    public static function index(Router $router)
+    {
 
-        if($_GET["type"] && !$_GET["query"]==""){
-            $equipos = Inventario::getInventory($_GET["type"],$_GET["query"]);
-
-        }else{
-            $equipos = Inventario::all();
+        if ($_GET["type"] && !$_GET["query"] == "") {
+            $equipos = Inventory::filter($_GET["type"], "=", $_GET["query"]);
+        } else {
+            $equipos = Inventory::all();
         }
 
+        
+        
 
 
 
-        if($_SERVER["REQUEST_METHOD"] === "POST"){
-            $inventario = new Inventario($_POST["equipo"]);
-
-            $perifericos = new Perifericos;
-            $perifericos->computer_id = $_POST["equipo"]["id"];
-
-            
-            $perifericos->deleteByGroup();
-            $inventario->eliminar();
 
 
-            header("Location: /admin/inventario?resultado=3");
-        }
-
-
-        $router->render("admin/inventario/index",[
-            "equipos"=>$equipos
+        $router->render("admin/inventario/index", [
+            "equipos" => $equipos
         ]);
-
-
     }
 
-    public static function ver(Router $router){
+    public static function ver(Router $router)
+    {
 
         $id = validarID();
 
-        $equipo = Inventario::find($id);
+        $equipo = Inventory::find($id);
 
         $perifericos = Perifericos::findGroup($id);
 
-        $router->render("admin/inventario/equipo",[
+
+
+
+
+
+        $router->render("admin/inventario/equipo", [
             "equipo" => $equipo,
             "perifericos" => $perifericos
         ]);
     }
-    public static function crear(Router $router){
+
+    public static function crear(Router $router)
+    {
 
 
+        $users = Personal::all();
+
+
+        
         if($_SERVER["REQUEST_METHOD"] === "POST"){
 
-            $inventario = new Inventario($_POST["inventario"]);
+
+            $inv = new Inventory($_POST);
 
 
-            $errores = $inventario->validar();
+            $id = $inv->guardar();
 
-            if(empty($errores)){
-                $resultado = $inventario->guardar();
-    
-                $id = $inventario->search(null,null,$_POST["inventario"]["nombre_equipo"]);
-    
-                if(isset($_POST["perifericos"])){
-                    foreach($_POST["perifericos"] as $periferico){
-                        $periferico["computer_id"] = $id->id;
-                        $perifericos = new Perifericos($periferico);
-        
-                        $perifericos->guardar();
-                    }
-                }
-                if($resultado){
-                    header("Location: /admin/inventario?resultado=1");
-                }
 
+            foreach($_POST["perifericos"] as $per){
+
+                $periferico = new Perifericos($per);
+
+                $periferico->computer_id = $id;
+
+                $periferico->guardar();
                 
 
             }
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
         }
 
 
-
-        $router->render("admin/inventario/crear",[
-            "errores"=>$errores,
-            "inventario"=>$inventario,
-            "perifericos"=>$perifericos,
+        $router->render("admin/inventario/crear", [
+            "users"=>$users,
+            "inv"=>$inv
         ]);
-
-
     }
 
-    public static function actualizar(Router $router){
+    public static function actualizar(Router $router)
+    {
 
         $id = validarID();
-        $inventario = Inventario::find($id);
+        $inv = Inventory::find($id);
         $perifericos = Perifericos::findGroup($id);
+        $users = Personal::all();
 
 
-        if($_SERVER["REQUEST_METHOD"] === "POST"){
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+            $inv = $inv->sync($_POST);
+
             $_POST["inventario"]["id"] = $id;
-            $inv = new Inventario($_POST["inventario"]);
             $per = new Perifericos($_POST["perifericos"]);
 
 
-            
-            $errores = $inventario->validar();
+            $resultado  = $inv->guardar();
 
-            if(empty($errores)){
-                
-                $resultado  = $inv->guardar();
-    
-    
-                if(isset($_POST["perifericos"])){
-                    foreach($_POST["perifericos"] as $periferico){
-                        
-                        $periferico["computer_id"] = $id;
 
-                        $per = new Perifericos($periferico);
+            if (isset($_POST["perifericos"])) {
+                foreach ($_POST["perifericos"] as $periferico) {
 
-                        $per->eliminar();
+                    $periferico["computer_id"] = $resultado;
 
-                        $per->guardar();
-                        }
-        
-                    }
+                    $per = new Perifericos($periferico);
+
+                    $per->eliminar();
+
+                    $per->guardar();
                 }
-
-                if($resultado){
-                    header("Location: /admin/inventario?resultado=1");
-                }
-
             }
 
-        $router->render("admin/inventario/actualizar",[
-            "inventario" => $inventario,
-            "perifericos" => $perifericos
+            if ($resultado) {
+                header("Location: /admin/inventario?result=1");
+            }
+        }
+
+        $router->render("admin/inventario/actualizar", [
+            "inv" => $inv,
+            "perifericos" => $perifericos,
+            "users"=>$users
         ]);
     }
 
 
+    public static function actions(){
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            
+            
+            $data = json_decode(file_get_contents("php://input"),true);
+
+            
+            $inv =Inventory::find($data["id"]);
+            
+
+            if($data["action"] === "stock") $inv->setStock();
+            if($data["action"] === "delete") $inv->eliminar();
+
+            echo json_encode(["msg"=>"1"]);
+            exit;
 
 
 
+        }
 
 
-
+    }
 }
-
-
-
-
-?>

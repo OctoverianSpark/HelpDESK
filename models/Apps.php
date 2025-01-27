@@ -13,14 +13,4 @@ class Apps extends ActiveRecord{
     public $app;
 
     
-
-    public function __construct($args = []){
-
-        $this->id = $args["id"] ?? null;
-        $this->app = $args["app"] ?? "";
-
-
-
-    }
-
 }
