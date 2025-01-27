@@ -71,3 +71,28 @@
    
 
 }
+
+
+.dashboard{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 2rem;
+
+
+
+
+   .dashboard-info{
+      width: 30rem;
+      border-radius: 2rem;
+      background-color: transparent;
+      border:1px  solid v.$azulFuerte;
+      transition: .5s;
+
+      &:hover{
+         width: 50rem;
+      }
+
+   }
+}

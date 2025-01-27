@@ -238,9 +238,13 @@ class TicketController{
     public static function dashboard(Router $router){
 
 
+        $usrs = Users::filter("area","=","ATI");
 
 
-        $router->render("admin/tickets/dashboard");
+
+        $router->render("admin/tickets/dashboard",[
+            "usrs"=>$usrs
+        ]);
 
     }
 

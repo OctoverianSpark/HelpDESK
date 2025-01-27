@@ -35,6 +35,18 @@ class Tickets extends ActiveRecord
 
     }
 
+    public static function getByDate($from,$to){
+
+
+        $query = "SELECT * FROM ti.tickets WHERE fecha BETWEEN '$from' AND '$to' ORDER BY id DESC";
+
+        $result =self::consultarSQL($query);
+        $result = static::findConn($result);
+
+        return $result;
+
+    }
+
 
 
     public static function all(){

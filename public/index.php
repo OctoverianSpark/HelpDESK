@@ -117,12 +117,18 @@ $router->post("/admin/inventario/actions", [InventoryController::class, "actions
 //NOTE: LAPI FUNCTIONS
 $router->post("/admin/pers/find",[API_Inventory::class,"PERSSEARCH"]);
 $router->post("/admin/inventory/find",[API_Inventory::class,"INVENTORYSEARCH"]);
+
 $router->post("/tickets/find",[API_Tickets::class,"TICKETSEARCH"]);
 $router->post("/tickets/get",[API_Tickets::class,"TICKETSGET"]);
 $router->post("/admin/subcats/get",[API_Tickets::class,"SUBCATSSEARCH"]);
 $router->post("/admin/cookies/get",[API_BASE::class,"COOKIESGET"]);
 $router->post("/admin/documentations/find",[API_Documentations::class,"DOCUMENTATIONSEARCH"]);
 $router->post("/admin/documentations/create",[API_Documentations::class,"DOCUMENTATIONCREATE"]);
+
+
+//NOTE: INDEXERS
+$router->post("/admin/tickets/indexer",[API_Tickets::class,"INDEXER"]);
+
 
 
 $router->comprobarRutas();

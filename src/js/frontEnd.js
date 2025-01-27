@@ -518,7 +518,6 @@ async function viewAdminTicket() {
         });
 
         if (key === "status") {
-          const solution = document.querySelector("label[for='solution']");
 
           const completedOption = select.querySelector(
             "option[value='completado']"
@@ -530,13 +529,9 @@ async function viewAdminTicket() {
           if (value.toLowerCase() == "sin asignar") {
             pendingOption.classList.add("hidden");
             completedOption.classList.add("hidden");
-            solution.classList.add("hidden");
-            solution.required = false;
           } else {
             pendingOption.classList.remove("hidden");
             completedOption.classList.remove("hidden");
-            solution.classList.remove("hidden");
-            solution.required = true;
           }
 
         }
@@ -816,10 +811,9 @@ function imageViewer() {
   });
 }
 
-async function TicketGraphicCards() {
-  const query = await Information.postJSON("/tickets/get", {});
+async function TicketGraphicCards(query) {
 
-  const container = document.querySelector(".ticket-admin-dashboard");
+  const container = document.querySelector(".tickets-admin-dashboard");
 
   if (!container) return;
 
@@ -845,7 +839,7 @@ async function TicketGraphicCards() {
   const avgPendingTime = totalPendingTime / query.length;
 
   const pendingCard = document.querySelector(".quantificate-pending-time");
-  pendingCard.textContent = avgPendingTime.toFixed(2);
+  pendingCard.textContent = avgPendingTime.toFixed(2)??0;
 
   const totalCompletionTime = query.reduce(
     (acc, ticket) => acc + (Number(ticket.tiempo_en_completar) || 0),
@@ -853,9 +847,146 @@ async function TicketGraphicCards() {
   );
   const avgCompletionTime = totalCompletionTime / query.length;
 
+
+
   const completionCard = document.querySelector(".quantificate-complete-time");
+
   completionCard.textContent = avgCompletionTime.toFixed(2);
+
 }
+
+
+async function TicketGraphicsControllers(){
+
+
+  const DASHBOARD = document.querySelector(".tickets-admin-dashboard");
+
+
+  if(!DASHBOARD) return
+
+
+  const form = DASHBOARD.querySelector(".graphics-filter-form")
+
+   
+  let query = await Information.postJSON("/admin/tickets/indexer",{});
+  TicketGraphicCards(query);
+
+  form.addEventListener("input",async e=>{
+
+
+    const formData= new FormData(form)
+
+    const body = {};
+    formData.forEach((value, key) => {
+      body[key] = value;
+    });
+
+
+
+
+
+    query = await Information.postJSON("/admin/tickets/indexer",body);
+
+    TicketGraphicCards(query);
+    console.log("Graphic Controllers",query);
+
+
+
+  })
+
+
+  const ctx = document.querySelector('.chart-per-type').getContext('2d');
+
+
+
+  const payload = {
+
+    labels:query.reduce((acc, ticket) => {
+      if (!acc.includes(ticket.categoria)) {
+        acc.push(ticket.categoria);
+      }
+      return acc;
+    }, []),
+    datasets:[]
+    
+    
+
+
+  }
+
+  
+  payload.datasets =[ {data:payload.labels.map((label) => query.filter(ticket => ticket.categoria === label).length)}]
+
+
+  console.log(payload)
+
+
+
+  circleChart("doughnut",ctx,payload)
+
+
+  
+}
+
+function randomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+/**
+ * Creates a circle chart (doughnut or pie) using Chart.js.
+ *
+ * @param {String} type - The type of chart (e.g., 'doughnut', 'pie').
+ * @param {CanvasRenderingContext2D} ctx - The 2D context of the canvas element where the chart will be rendered.
+ * @param {Array} labels - The labels for the chart's data points.
+ * @param {Array} data - The data values for the chart.
+ */
+function circleChart(type,ctx,data){
+
+  const labels = data.labels
+
+  const datasets = data.datasets
+
+
+  const config = {
+    type: type,
+    data: {
+      labels: labels,
+      
+      datasets: datasets.map(x=>x)
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: false,
+          text: 'Donut Chart Example'
+        }
+      }
+    },
+  }
+
+  
+  
+  const myChart = new Chart(ctx, config);
+
+
+}
+
+
+
+
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", (e) => {
   addPer();
@@ -866,6 +997,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
   viewAdminTicket();
   invActions();
   viewAdminDocumentation();
-  TicketGraphicCards();
+  TicketGraphicsControllers();
   imageViewer();
 });

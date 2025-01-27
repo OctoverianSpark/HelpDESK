@@ -10,7 +10,50 @@ use Models\Subcats;
 use Models\Users;
 
 class API_Tickets
-{
+{  
+
+
+   public static function INDEXER(){
+
+
+
+      $data = json_decode(file_get_contents("php://input"));
+
+
+      if (!$data->from || !$data->to) {
+         $tickets = Tickets::all();
+      }else{
+         $tickets= Tickets::getByDate("$data->from" ,  "$data->to");
+      }
+
+      if($data->tech){
+
+         $filter = array_filter($tickets, function($ticket) use ($data) {
+            return $ticket->tecnico_id == $data->tech;
+         });
+
+         $tickets = [];
+
+         foreach($filter as $data) {
+            
+            $tickets[] = $data;
+
+         }
+
+      }
+
+
+
+      
+
+
+      echo json_encode($tickets);
+
+      exit;
+
+
+
+   }
 
 
 
