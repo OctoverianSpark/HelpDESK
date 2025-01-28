@@ -176,6 +176,9 @@
   overflow: hidden;
 
   transition: 0.5s;
+  p,span{
+    text-align: center;
+  }
 
   select,
   input,
