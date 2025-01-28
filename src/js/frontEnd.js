@@ -506,15 +506,15 @@ async function viewAdminTicket() {
         ContainerInfo.appendChild(P.render());
       });
 
-      Object.entries(INPUT_INFO).forEach(([key, value]) => {
+      Object.entries(INPUT_INFO).forEach(async ([key, value]) => {
         const select = MdlForm.querySelector(`#${key}`);
         const options = select.querySelectorAll("option");
 
-        select.addEventListener("input",e=>{
-
-          MdlForm.querySelectorAll("select").forEach(element=>element.disabled = false)
-
-        })
+        select.addEventListener("input", (e) => {
+          MdlForm.querySelectorAll("select").forEach(
+            (element) => (element.disabled = false)
+          );
+        });
 
         options.forEach((option) => {
           if (option.value.toLowerCase() == value.toLowerCase()) {
@@ -540,48 +540,39 @@ async function viewAdminTicket() {
             completedOption.classList.remove("hidden");
           }
 
-          let solValid = value.toLowerCase() === "completado"
-          
+          let solValid = value.toLowerCase() === "completado";
+
           select.addEventListener("input", (e) => {
+            solValid = e.target.value.toLowerCase() === "completado";
 
-            solValid = e.target.value.toLowerCase() === "completado"
-
-            solution.required = solValid
-            solution.disabled = !solValid
-
+            solution.required = solValid;
+            solution.disabled = !solValid;
           });
-          
 
           solution.required = solValid;
-          solution.disabled = !solValid
-
+          solution.disabled = !solValid;
         }
 
         if (key === "subcat") {
-          
           const app = document.querySelector("#app");
-          const other = document.querySelector("label[for='other']")
+          const other = document.querySelector("label[for='other']");
           select.addEventListener("input", (e) => {
             let valid =
               e.target.value.toLowerCase() === "instalar" ||
               e.target.value.toLowerCase() === "revisar";
             app.disabled = !valid;
             app.required = valid;
-            
 
-            let otherVal = e.target.value.toLowerCase() === "otro"
-            if (!otherVal) other.classList.add("hidden") 
-            if (otherVal) other.classList.remove("hidden") 
+            let otherVal = e.target.value.toLowerCase() === "otro";
+            if (!otherVal) other.classList.add("hidden");
+            if (otherVal) other.classList.remove("hidden");
 
-            const OTHERINPUT = other.querySelector("input")
+            const OTHERINPUT = other.querySelector("input");
 
-            OTHERINPUT.disabled = !otherVal
+            OTHERINPUT.disabled = !otherVal;
             OTHERINPUT.required = otherVal;
 
-            e.target.disabled = otherVal
-  
-              
-
+            e.target.disabled = otherVal;
           });
 
           let valid =
@@ -589,10 +580,34 @@ async function viewAdminTicket() {
             value.toLowerCase() === "instalar";
           app.disabled = !valid;
           app.required = valid;
-          
-
         }
 
+        if (key === "category") {
+          const subcats = await Information.postJSON("/admin/subcats/get", {
+            cat:value.toLowerCase(),
+          });
+          
+          const subcatsSelector = MdlForm.querySelector("#subcat")
+
+          const subs = subcatsSelector.querySelectorAll(".subs")
+
+          subs.forEach(sub=>sub.remove())
+
+          subcats.forEach((subcat) => {
+            let sub = subcat.subcategoria.toString();
+      
+            sub = sub.charAt(0).toUpperCase() + sub.slice(1).toLowerCase();
+      
+            const option = new Element(
+              "OPTION",
+              { value: sub, class: "subs" },
+              { textContent: sub },
+              []
+            );
+      
+            subcatsSelector.appendChild(option.render());
+          });
+        }
       });
 
       const HIDDEN = new Element(
@@ -604,6 +619,15 @@ async function viewAdminTicket() {
       MdlForm.appendChild(HIDDEN.render());
 
       viewMdl.classList.remove("hidden");
+
+      MdlForm.onsubmit = () => {
+        viewMdl.classList.add("hidden");
+        TOAST("Cargando nueva Informacion...", "right");
+
+        setTimeout(() => {
+          btn.click();
+        }, 2500);
+      };
 
       CLIPBOARDWORK();
     });
@@ -618,8 +642,30 @@ async function viewAdminTicket() {
 
   const categorySelector = MdlForm.querySelector("#category");
 
+  const subcatsSelector = MdlForm.querySelector("#subcat");
+
+  const subcats = await Information.postJSON("/admin/subcats/get", {
+    cat: categorySelector.options[categorySelector.options.selectedIndex].value,
+  });
+
+  console.log(subcats);
+
+  subcats.forEach((subcat) => {
+    let sub = subcat.subcategoria.toString();
+
+    sub = sub.charAt(0).toUpperCase() + sub.slice(1).toLowerCase();
+
+    const option = new Element(
+      "OPTION",
+      { value: sub, class: "subs" },
+      { textContent: sub },
+      []
+    );
+
+    subcatsSelector.appendChild(option.render());
+  });
+
   categorySelector.addEventListener("input", async (e) => {
-    const subcatsSelector = MdlForm.querySelector("#subcat");
     const subcats = await Information.postJSON("/admin/subcats/get", {
       cat: e.target.value,
     });

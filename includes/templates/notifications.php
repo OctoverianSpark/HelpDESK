@@ -24,7 +24,7 @@
 
     <?php foreach($notificaciones as $notificacion){ ?>
         <div class="notification">
-            <a href="<?php echo $notificacion->url ?>">
+            <a href="<?php echo strtolower($notificacion->url) ?>">
                 <i id="notification-icon" class="bi bi-ticket-fill"></i>
                 <div class="container-content">
                     <h4 class="prompt-title"><?php echo $notificacion->titulo ?></h4>

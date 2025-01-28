@@ -95,38 +95,59 @@ function showPswrd(){
 }
 function notificarClickup(){
     
-    const form = document.querySelector("#tik-form")
-    if(form){
-        form.addEventListener("submit",e=>{
-            const api = "pk_82319104_47GHX06YGVUDO4QUAIYXJAET4U5B4ZLW"
-            
-            const listId = '901405411492';
+    const form = document.querySelector(".tickets-user-form")
+
+    if (!form) return
+
+    form.addEventListener("submit",e=>{
+        const api = "pk_82319104_47GHX06YGVUDO4QUAIYXJAET4U5B4ZLW"
         
-        
-        
-            const resp = fetch(
-                `https://api.clickup.com/api/v2/list/${listId}/task`,
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: api
-                  },
-                  body: JSON.stringify({
-                    name: 'Ticket Creado',
-                    description: 'Revisar aplicacion de tickets',
-                  })
-                }
-              )
-        
+        const listId = '901405411492';
     
     
     
+        const resp = fetch(
+            `https://api.clickup.com/api/v2/list/${listId}/task`,
+            {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                Authorization: api
+                },
+                body: JSON.stringify({
+                name: 'Ticket Creado',
+                description: 'Revisar aplicacion de tickets',
+                })
+            }
+            )
     
-    
-    
-        })
+
+
+
+
+
+
+    })
     }
+
+function modalKEY(){
+
+
+    document.addEventListener("keydown",e=>{
+
+        const modal = document.querySelectorAll(".modal")
+        if (e.key.toLowerCase() === "escape") {
+            modal.forEach(modalElement => {
+
+                if (!modalElement.classList.contains("hidden")) {
+                    modalElement.classList.add("hidden")
+                }
+            });
+        }
+
+
+    })
+
 }
 
 
@@ -138,6 +159,7 @@ document.addEventListener("DOMContentLoaded",e=>{
         loginBackground();
         showPswrd();
         notificarClickup();
+        modalKEY()
 
 }
 );

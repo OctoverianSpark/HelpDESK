@@ -16,7 +16,7 @@
 </div>
 
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" class="tickets-user-form" enctype="multipart/form-data">
 
 
     <h1>De que se trata tu solicitud?</h1>
