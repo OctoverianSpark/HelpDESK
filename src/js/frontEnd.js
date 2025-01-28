@@ -567,7 +567,7 @@ async function viewAdminTicket() {
               e.target.value.toLowerCase() === "revisar";
             app.disabled = !valid;
             app.required = valid;
-
+            
 
             let otherVal = e.target.value.toLowerCase() === "otro"
             if (!otherVal) other.classList.add("hidden") 

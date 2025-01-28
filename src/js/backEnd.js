@@ -207,12 +207,18 @@ async function ticketUpdate() {
   form.addEventListener("submit", async (e) => {
     TOAST("Actualizando ticket...", "right");
     e.preventDefault();
+
     const formData = new FormData(form);
 
     const body = {};
+    const app = document.querySelector("#app")
 
     formData.entries().forEach(([key, value]) => {
+
       body[key] = value;
+
+
+      if(key === "subcategoria" && !app.disabled) body[key] = `${value}(${app.value})` 
     });
 
     const ticket = await Information.postJSON("/tickets/find", {
