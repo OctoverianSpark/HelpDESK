@@ -17,6 +17,8 @@ import * as helpers from "https://cdn.jsdelivr.net/npm/chart.js/dist/helpers.mjs
 
 Chart.register(...registerables);
 
+Chart.defaults.color = "#000";
+
 console.log("FrontEnd.js loaded");
 
 function addPer() {
@@ -508,8 +510,11 @@ async function viewAdminTicket() {
         const select = MdlForm.querySelector(`#${key}`);
         const options = select.querySelectorAll("option");
 
-        if (key === "category") return;
-        if (key === "subcat") return;
+        select.addEventListener("input",e=>{
+
+          MdlForm.querySelectorAll("select").forEach(element=>element.disabled = false)
+
+        })
 
         options.forEach((option) => {
           if (option.value.toLowerCase() == value.toLowerCase()) {
@@ -518,7 +523,7 @@ async function viewAdminTicket() {
         });
 
         if (key === "status") {
-          const solution = document.querySelector("label[for='solution']");
+          const solution = document.querySelector("#solution");
 
           const completedOption = select.querySelector(
             "option[value='completado']"
@@ -530,14 +535,64 @@ async function viewAdminTicket() {
           if (value.toLowerCase() == "sin asignar") {
             pendingOption.classList.add("hidden");
             completedOption.classList.add("hidden");
-            solution.required = false;
           } else {
             pendingOption.classList.remove("hidden");
             completedOption.classList.remove("hidden");
-            solution.required = true;
           }
 
+          let solValid = value.toLowerCase() === "completado"
+          
+          select.addEventListener("input", (e) => {
+
+            solValid = e.target.value.toLowerCase() === "completado"
+
+            solution.required = solValid
+            solution.disabled = !solValid
+
+          });
+          
+
+          solution.required = solValid;
+          solution.disabled = !solValid
+
         }
+
+        if (key === "subcat") {
+          
+          const app = document.querySelector("#app");
+          const other = document.querySelector("label[for='other']")
+          select.addEventListener("input", (e) => {
+            let valid =
+              e.target.value.toLowerCase() === "instalar" ||
+              e.target.value.toLowerCase() === "revisar";
+            app.disabled = !valid;
+            app.required = valid;
+
+
+            let otherVal = e.target.value.toLowerCase() === "otro"
+            if (!otherVal) other.classList.add("hidden") 
+            if (otherVal) other.classList.remove("hidden") 
+
+            const OTHERINPUT = other.querySelector("input")
+
+            OTHERINPUT.disabled = !otherVal
+            OTHERINPUT.required = otherVal;
+
+            e.target.disabled = otherVal
+  
+              
+
+          });
+
+          let valid =
+            value.toLowerCase() === "revisar" ||
+            value.toLowerCase() === "instalar";
+          app.disabled = !valid;
+          app.required = valid;
+          
+
+        }
+
       });
 
       const HIDDEN = new Element(
@@ -666,6 +721,9 @@ async function viewAdminDocumentation() {
         id: rowID,
       });
 
+      const comments = viewMdl.querySelectorAll(".comment");
+
+      comments.forEach((comment) => comment.remove());
       query.forEach((body) => {
         const DATESPAN = new Element(
           "SPAN",
@@ -815,7 +873,6 @@ function imageViewer() {
 }
 
 async function TicketGraphicCards(query) {
-
   const container = document.querySelector(".tickets-admin-dashboard");
 
   if (!container) return;
@@ -842,7 +899,7 @@ async function TicketGraphicCards(query) {
   const avgPendingTime = totalPendingTime / query.length;
 
   const pendingCard = document.querySelector(".quantificate-pending-time");
-  pendingCard.textContent = avgPendingTime.toFixed(2)??0;
+  pendingCard.textContent = avgPendingTime.toFixed(2) ?? 0;
 
   const totalCompletionTime = query.reduce(
     (acc, ticket) => acc + (Number(ticket.tiempo_en_completar) || 0),
@@ -850,90 +907,85 @@ async function TicketGraphicCards(query) {
   );
   const avgCompletionTime = totalCompletionTime / query.length;
 
-
-
   const completionCard = document.querySelector(".quantificate-complete-time");
 
   completionCard.textContent = avgCompletionTime.toFixed(2);
-
 }
 
-
-async function TicketGraphicsControllers(){
-
-
+async function TicketGraphicsControllers() {
   const DASHBOARD = document.querySelector(".tickets-admin-dashboard");
 
+  if (!DASHBOARD) return;
 
-  if(!DASHBOARD) return
+  const form = DASHBOARD.querySelector(".graphics-filter-form");
 
-
-  const form = DASHBOARD.querySelector(".graphics-filter-form")
-
-   
-  let query = await Information.postJSON("/admin/tickets/indexer",{});
+  let query = await Information.postJSON("/admin/tickets/indexer", {});
   TicketGraphicCards(query);
 
-  form.addEventListener("input",async e=>{
+  const perTypeChartCTX = document
+    .querySelector(".chart-per-type")
+    .getContext("2d");
 
+  let perTypePayload = {
+    labels: query.reduce((acc, ticket) => {
+      if (!acc.includes(ticket.categoria)) {
+        acc.push(ticket.categoria);
+      }
+      return acc;
+    }, []),
+    datasets: [],
+  };
 
-    const formData= new FormData(form)
+  perTypePayload.datasets = [
+    {
+      data: perTypePayload.labels.map(
+        (label) => query.filter((ticket) => ticket.categoria === label).length
+      ),
+      backgroundColor: perTypePayload.labels.map((x) => randomColor()),
+    },
+  ];
+
+  circleChart("doughnut", perTypeChartCTX, perTypePayload);
+
+  form.addEventListener("input", async (e) => {
+    const formData = new FormData(form);
 
     const body = {};
     formData.forEach((value, key) => {
       body[key] = value;
     });
 
+    query = await Information.postJSON("/admin/tickets/indexer", body);
 
+    perTypePayload = {
+      labels: query.reduce((acc, ticket) => {
+        if (!acc.includes(ticket.categoria)) {
+          acc.push(ticket.categoria);
+        }
+        return acc;
+      }, []),
+      datasets: [],
+    };
 
+    perTypePayload.datasets = [
+      {
+        data: perTypePayload.labels.map(
+          (label) => query.filter((ticket) => ticket.categoria === label).length
+        ),
+        backgroundColor: perTypePayload.labels.map((x) => randomColor()),
+      },
+    ];
 
-
-    query = await Information.postJSON("/admin/tickets/indexer",body);
+    circleChart("pie", perTypeChartCTX, perTypePayload);
 
     TicketGraphicCards(query);
-    console.log("Graphic Controllers",query);
-
-
-
-  })
-
-
-  const ctx = document.querySelector('.chart-per-type').getContext('2d');
-
-
-
-  const payload = {
-
-    labels:query.reduce((acc, ticket) => {
-      if (!acc.includes(ticket.categoria)) {
-        acc.push(ticket.categoria);
-      }
-      return acc;
-    }, []),
-    datasets:[]
-    
-    
-
-
-  }
-
-  
-  payload.datasets =[ {data:payload.labels.map((label) => query.filter(ticket => ticket.categoria === label).length)}]
-
-
-  console.log(payload)
-
-
-
-  circleChart("doughnut",ctx,payload)
-
-
-  
+    console.log("Graphic Controllers", query);
+  });
 }
 
 function randomColor() {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
+  const letters = "0123456789ABCDEF";
+  let color = "#";
   for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
@@ -948,48 +1000,42 @@ function randomColor() {
  * @param {Array} labels - The labels for the chart's data points.
  * @param {Array} data - The data values for the chart.
  */
-function circleChart(type,ctx,data){
+function circleChart(type, ctx, data) {
+  const labels = data.labels;
 
-  const labels = data.labels
-
-  const datasets = data.datasets
-  
+  const datasets = data.datasets;
 
   const config = {
     type: type,
     data: {
       labels: labels,
-      
-      datasets: datasets.map(x=>x)
+
+      datasets: datasets.map((x) => x),
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
-          position: 'top',
+          position: "top",
+          color: "black",
+          font: {
+            size: 16,
+          },
         },
         title: {
           display: false,
-          text: 'Donut Chart Example'
-        }
-      }
+          text: "Donut Chart Example",
+        },
+      },
     },
+  };
+
+  if (window.myChart) {
+    window.myChart.destroy();
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
-
-  
-  
-  const myChart = new Chart(ctx, config);
-
-
+  window.myChart = new Chart(ctx, config);
 }
-
-
-
-
-
-
-
-
 
 document.addEventListener("DOMContentLoaded", (e) => {
   addPer();

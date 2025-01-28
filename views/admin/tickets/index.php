@@ -127,7 +127,16 @@
                             <span>Razon del Ticket</span>
                             <select name="subcategoria" id="subcat" required>
                                 <option value="" selected disabled>--Elige una Opcion--</option>
+                                <option value="otro">Otro</option>
                             </select>
+                        </label>
+                        <label for="other" class="input-group hidden">
+                            <span>Razon del Ticket</span>
+                            <input type="text" name="subcat" id="other" disabled>
+                        </label>
+                        <label for="app" class="input-group">
+                            <span>Aplicacion </span>
+                            <input type="text" id="app" disabled>
                         </label>
                         <label for="asigned" class="input-group" >
                             <span>Asignar a</span>
@@ -151,7 +160,7 @@
                         
                         <label for="solution" class="input-group">
                                 <span>Solucion Brindada</span>
-                                <textarea name="solucion" id="solution" placeholder="Describe la solucion brindada al problema" required></textarea>
+                                <textarea name="solucion" id="solution" placeholder="Describe la solucion brindada al problema"></textarea>
                         </label>
                         <label for="comentarios" class="input-group">
                                 <span>Comentarios adicionales</span>
