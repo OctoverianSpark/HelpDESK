@@ -44,9 +44,10 @@ $url = $_SERVER["REQUEST_URI"];
 
 
                                 <div class="container-nav-link">
-                                    <a href="/admin" class="nav_link">Administrador</a>
+                                    <button class="nav_link">Administrador</button>
 
 
+                                    <?php include "../includes/templates/drop/admin/admin.php" ?>
                                 </div>
 
                             <?php } ?>

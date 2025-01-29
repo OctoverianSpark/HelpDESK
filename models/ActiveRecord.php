@@ -92,10 +92,11 @@ abstract class ActiveRecord extends ObjectCreator{
 
         if (!$this->id) {
             $this->crear();
-            $resultado = self::$db->insert_id;
             
+            $resultado = self::$db->insert_id;
         }else{
-            $resultado = $this->actualizar();
+            $this->actualizar();
+            $resultado = $this->id;
         }
 
         return $resultado;

@@ -39,6 +39,8 @@ class LoginController{
                     $_SESSION["name"] = (!empty($adData))? $adData["displayname"] :$userData->nombre . " " . $userData->apellido ;
                     $_SESSION["charge"] = $userRole->area;
                     $_SESSION["role"] = $userRole->role??"USER";
+                    $_SESSION["area"] = $userRole->area??"OPERACIONES";
+
 
                     header("Location: /");
                 }else{
@@ -106,6 +108,7 @@ class LoginController{
         $_SESSION["log_type"] = "email";
         $_SESSION["login"] = true;
         $_SESSION["role"] = $userRole->role??"USER";
+        $_SESSION["area"] = $userRole->area??"OPERACIONES";
         
 
         header("Location: /");

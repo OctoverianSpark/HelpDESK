@@ -450,3 +450,44 @@
 .entries-options {
   width: 30rem;
 }
+
+
+.form-usrs-view{
+
+  position: fixed;
+  inset: 0;
+  margin: 0 auto;
+  background: transparent;
+  backdrop-filter: blur(10px);
+
+  .modal-close-btn{
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: transparent;
+    font-size: 4.5rem;
+    color: v.$blanco;
+    
+  }
+  
+  transition: .5s;
+  &.hidden{
+    opacity: 0;
+    visibility: hidden;
+    transition: .5s;
+  }
+  
+
+  form{
+    display: grid;
+    gap: 2rem;
+
+    .input-group > span{
+      
+
+        color: white;
+    }
+  }
+
+
+}

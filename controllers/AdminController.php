@@ -9,9 +9,7 @@ use Models\Inventory;
 use Models\Perifericos;
 use Models\Encuestas;
 use Models\Tickets;
-
-
-
+use Models\Users;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -28,6 +26,17 @@ class AdminController
 
         $router->render("admin/index", []);
     }
+
+    public static function usrs(Router $router)
+    {
+
+
+        $usrs = Users::all();
+        $router->render("admin/users", [
+            "usrs" => $usrs
+        ]);
+    }
+
 
     public static function export()
     {
@@ -166,7 +175,6 @@ class AdminController
 
             $spreadsheet->disconnectWorksheets();
             unset($spreadsheet);
-
         }
     }
 }

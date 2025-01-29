@@ -38,8 +38,10 @@ class Personal extends ActiveRecord{
             
             foreach($resultado as $r){
 
-                $results[] = $r;
+                $results[$table][] = $r;
             }
+
+            
 
         }
 
@@ -64,6 +66,25 @@ class Personal extends ActiveRecord{
 
     }
 
+
+    
+    public static function filter($column,$operator,$value){
+
+
+
+        foreach (static::$tables as $table) {
+            
+            $query = "SELECT * FROM " . static::$schema . ".$table"  . " WHERE $column $operator '$value' ORDER BY id DESC";
+    
+            $resultado[$table] = static::consultarSQL($query);
+            
+
+        }
+
+
+        return $resultado;
+
+    }
     
 
 

@@ -15,6 +15,7 @@ use Controllers\LAPI\API_BASE;
 use Controllers\LAPI\API_Documentations;
 use Controllers\LAPI\API_Inventory;
 use Controllers\LAPI\API_Tickets;
+use Controllers\LAPI\API_USERS;
 use Controllers\OrderController;
 use MVC\Router;
 use Models\Encuestas;
@@ -58,6 +59,8 @@ $router->get("/logout", [LoginController::class, "logout"]);
 
 $router->get("/admin", [AdminController::class, "index"]);
 $router->post("/admin", [AdminController::class, "index"]);
+$router->get("/admin/users", [AdminController::class, "usrs"]);
+$router->post("/admin/users", [AdminController::class, "usrs"]);
 $router->post("/admin/export", [AdminController::class, "export"]);
 
 /* * Inventario * */
@@ -125,6 +128,10 @@ $router->post("/admin/cookies/get",[API_BASE::class,"COOKIESGET"]);
 $router->post("/admin/documentations/find",[API_Documentations::class,"DOCUMENTATIONSEARCH"]);
 $router->post("/admin/documentations/create",[API_Documentations::class,"DOCUMENTATIONCREATE"]);
 
+
+$router->post("/admin/usrs/find",[API_USERS::class,"USERSEARCH"]);
+$router->post("/admin/usrs/save",[API_USERS::class,"USERS_SAVE"]);
+$router->post("/admin/usrs/delete",[API_USERS::class,"USER_DELETE"]);
 
 //NOTE: INDEXERS
 $router->post("/admin/tickets/indexer",[API_Tickets::class,"INDEXER"]);

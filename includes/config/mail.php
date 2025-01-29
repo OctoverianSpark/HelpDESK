@@ -56,11 +56,11 @@ function notificacion($tickets=null,$tecnico=null,$usuario=null,$comentarios=nul
 
         $mail->isHTML();
 
-        $mail->Subject = "Ticket por " . $_POST["tickets"]["categoria"] . " Generado";
+        $mail->Subject = "Ticket por " . $_POST["categoria"] . " Generado";
 
-        $mail->Body = "<h1>Ticket Generado por " . $_POST["tickets"]["usuario"] ."</h1>";
-        $mail->Body .= "<h2> " . "Solicitud: " . $_POST["tickets"]["subcategoria"] . "</h2>";
-        $mail->Body .= "<h2> " . "Descripcion: " . $_POST["tickets"]["descripcion"] . "</h2>";
+        $mail->Body = "<h1>Ticket Generado por " . $_POST["usuario"] ."</h1>";
+        $mail->Body .= "<h2> " . "Solicitud: " . $_POST["subcategoria"] . "</h2>";
+        $mail->Body .= "<h2> " . "Descripcion: " . $_POST["descripcion"] . "</h2>";
 
         $mail->Body .= "<a href='http://". $_SERVER["HTTP_HOST"] ."/admin/tickets' style='background-color:#4600ff;border:none;border-radius:2rem;color:#fff;display:inline-block;font-weight:600;margin-top:2.5rem;padding:1rem 3rem;text-align:center;text-decoration:none'>Ir a los tickets</a>";
 
@@ -84,7 +84,7 @@ function notificacion($tickets=null,$tecnico=null,$usuario=null,$comentarios=nul
 
                 $mail->Body = "<h2 style='color:#4600ff'>El tecnico asignado a tu ticket es ". $tecnico->nombre." ".$tecnico->apellido  ."</h2>";
 
-                $mail->Body .= "<a href='http://". $_SERVER["HTTP_HOST"] ."/ticket?id=" .$_POST["tickets"]["id"]."' style='background-color:#4600ff;border:none;border-radius:2rem;color:#fff;display:inline-block;font-weight:600;margin:.5rem 0;padding:1rem 3rem;text-align:center;text-decoration:none;'>Ir al ticket</a>";
+                $mail->Body .= "<a href='http://". $_SERVER["HTTP_HOST"] ."/ticket?id=" .$_POST["id"]."' style='background-color:#4600ff;border:none;border-radius:2rem;color:#fff;display:inline-block;font-weight:600;margin:.5rem 0;padding:1rem 3rem;text-align:center;text-decoration:none;'>Ir al ticket</a>";
 
                 $mail->send();
         }else if($tickets["estado"] == "completado"){

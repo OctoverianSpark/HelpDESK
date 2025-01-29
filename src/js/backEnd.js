@@ -14,7 +14,6 @@ function select() {
       const optionsList = wrapper.querySelector(".options");
       const options = optionsList.querySelectorAll(".option");
 
-      console.log(optionsList.parentElement);
       let result = [];
       options.forEach((option) => {
         const span = option.querySelector("span");

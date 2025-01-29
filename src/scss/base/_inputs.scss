@@ -340,10 +340,12 @@ textarea {
 
 
     &:has(input[type="radio"]:checked){
-        
-        border: 3px solid v.$azulOscuro;
-        color: v.$azulOscuro;
+          
+        border: 3px solid v.$azul;
+        background-color: v.$azulOscuro;
+        color: v.$blanco;
         transition: color .5s;
+        transition: background-color .5s;
     }
     
 

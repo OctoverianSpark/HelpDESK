@@ -4,6 +4,7 @@ import {
   GENCONTAINER,
   TOAST,
   GETCOOKIES,
+  randomColor
 } from "./GLOBALS.min.js";
 import { Element } from "./Class/Element.min.js";
 import { Information } from "./Class/Information.min.js";
@@ -263,7 +264,7 @@ function tableSearchManager() {
   const colSelector = form.querySelector("#col");
   const valInput = form.querySelector("#val");
 
-  let colToFilter = "order_id";
+  let colToFilter = "";
   colSelector.addEventListener("input", (e) => {
     colToFilter = e.target.value;
   });
@@ -1029,14 +1030,6 @@ async function TicketGraphicsControllers() {
   });
 }
 
-function randomColor() {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
 
 /**
  * Creates a circle chart (doughnut or pie) using Chart.js.
@@ -1083,6 +1076,162 @@ function circleChart(type, ctx, data) {
   window.myChart = new Chart(ctx, config);
 }
 
+
+
+
+function usrsCreationForm(){
+
+
+
+  const table = document.querySelector(".usrs-table")
+
+  if(!table) return;
+  
+  const viewMdl = document.querySelector(".form-usrs-view")
+  const MdlForm = viewMdl.querySelector("form")
+
+
+  const btns = document.querySelectorAll(".view-btn")
+
+  let cellID = null
+  let formData = null
+  btns.forEach(btn=>{
+
+
+    btn.addEventListener("click",async e=>{
+
+        
+      cellID = btn.getAttribute("cell-id")
+
+      const delButton = MdlForm.querySelector(".btn-red")
+
+
+      viewMdl.classList.remove("hidden")
+
+      if (cellID) {
+        
+
+        const HIDDEN = new Element("INPUT",{type:"hidden",value:null,name:"id"},{},[])
+
+        MdlForm.appendChild(HIDDEN.render())
+
+        
+        const query = await Information.postJSON("/admin/usrs/find",{
+          id:cellID
+        })
+
+        
+        Object.entries(query).forEach(([key,value])=>{
+
+
+          if (MdlForm[key].length) {
+
+            MdlForm[key].forEach(radio=>{
+              radio.checked = radio.value.toLowerCase() === value.toLowerCase()
+            })
+            
+            
+          }else{
+            
+            MdlForm[key].value = value
+          }
+
+
+        })
+
+        
+
+
+
+      delButton.classList.remove("hidden")
+      delButton.addEventListener("click", async e=>{
+
+
+        const deleter = await Information.postJSON("/admin/usrs/delete",{
+          id:cellID
+        })
+
+        location.reload();
+
+
+      })
+
+        
+
+
+
+      }else{
+        
+        delButton.classList.add("hidden")
+        formData = new FormData(MdlForm);
+
+        formData.entries().forEach(([key,value])=>{
+
+
+          if(MdlForm[key].length){
+
+            MdlForm[key].forEach(radio=>radio.checked = false)
+            return
+          }
+          
+          MdlForm[key].value = null
+
+
+
+
+        })
+
+      }
+
+
+      MdlForm.addEventListener("submit",async e=>{
+
+
+        e.preventDefault()
+
+        formData = new FormData(e.target)
+
+        const body = {}
+
+
+        let rows = []
+        formData.entries().forEach(([key,value])=>{
+
+
+          body[key] = value
+          
+
+        })
+        const payload = await Information.postJSON("/admin/usrs/save",body)
+
+        TOAST("Informacion de Usuarios actualizada correctamente!!!","center")
+
+        location.reload()
+        
+        
+
+
+
+      })
+
+
+
+    })
+
+
+
+  })
+
+
+
+
+}
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", (e) => {
   addPer();
   sign();
@@ -1094,4 +1243,5 @@ document.addEventListener("DOMContentLoaded", (e) => {
   viewAdminDocumentation();
   TicketGraphicsControllers();
   imageViewer();
+  usrsCreationForm()
 });
