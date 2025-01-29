@@ -1089,7 +1089,7 @@ function usrsCreationForm(){
   
   const viewMdl = document.querySelector(".form-usrs-view")
   const MdlForm = viewMdl.querySelector("form")
-
+  const close = viewMdl.querySelector(".modal-close-btn")
 
   const btns = document.querySelectorAll(".view-btn")
 
@@ -1211,6 +1211,12 @@ function usrsCreationForm(){
         
 
 
+
+      })
+
+      close.addEventListener("click",e=>{
+
+        viewMdl.classList.add("hidden")
 
       })
 

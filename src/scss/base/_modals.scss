@@ -462,10 +462,15 @@
 
   .modal-close-btn{
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     top: 1rem;
     left: 1rem;
     background-color: transparent;
     font-size: 4.5rem;
+    width: 5rem;
+    height: 5rem;
     color: v.$blanco;
     
   }
