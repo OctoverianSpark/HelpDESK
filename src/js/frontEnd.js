@@ -10,6 +10,7 @@ import {
 import {
   PerTypeGraphic,
   TechnicalPodium,
+  metricTime,
   circleChart,
   barChart
   
@@ -978,11 +979,13 @@ async function TicketGraphicsControllers() {
     TechnicalPodium(query);
     PerTypeGraphic(query);
     TicketGraphicCards(query);
+    metricTime(query)
   });
 
   TechnicalPodium(query);
   PerTypeGraphic(query);
   TicketGraphicCards(query);
+  metricTime(query);
 }
 
 function usrsCreationForm() {

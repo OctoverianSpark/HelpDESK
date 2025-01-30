@@ -37,146 +37,146 @@ export async function PerTypeGraphic(query) {
       data: payload.labels.map(
         (label) => query.filter((ticket) => ticket.categoria === label).length
       ),
-      backgroundColor: ["#0e1d62","#fff554","#00e67e"],
-      borderWidth:0
+      backgroundColor: ["#0e1d62", "#fff554", "#00e67e"],
+      borderWidth: 0,
     },
   ];
 
   circleChart("doughnut", ctx, payload);
 }
 
-
 export function TechnicalPodium(query) {
   const ctx = document.querySelector(".chart-per-asign").getContext("2d");
-
 
   const labels = query.reduce((acc, ticket) => {
     if (!acc.includes(ticket.tecnico)) {
       acc.push(ticket.tecnico);
     }
     return acc;
-  }, [])
+  }, []);
 
-  const asignationsDataSet = 
-  {
+  const asignationsDataSet = {
     data: labels.map(
       (label) => query.filter((ticket) => ticket.tecnico === label).length
     ),
     backgroundColor: "#0e1d62",
-    label:"Tickets asignados",
-    order:1
-  }
-  const asignedTimeDataSet =
-  {
+    label: "Tickets asignados",
+  };
 
+  let payload = {
+    labels: labels,
+    datasets: [asignationsDataSet],
+  };
 
-    data: labels.map((label)=>{
+  barChart("y", ctx, payload);
+}
 
-      const value = query.reduce(
-        (acc, ticket) => acc + (Number(ticket.tiempo_en_asignar) || 0),
-        0
-      ) / query.filter(
-        (ticket) => label.toLowerCase() === ticket.tecnico.toLowerCase()
-      ).length;
+export function metricTime(query) {
+  const ctx = document.querySelector(".chart-per-time").getContext("2d");
 
+  const labels = query.reduce((acc, ticket) => {
+    if (!acc.includes(ticket.tecnico)) {
+      acc.push(ticket.tecnico);
+    }
+    return acc;
+  }, []);
 
-      
-      return value
-
-
-    }),
-    label:"Tiempo en asignar",
-    backgroundColor:"#fff554"
-
-
-
-  }
-  const pendingTimeDataSet =
-  {
-
-
-    data: labels.map((label)=>{
-
-      const value = query.reduce(
-        (acc, ticket) => acc + (Number(ticket.tiempo_en_pendiente) || 0),
-        0
-      ) / query.filter(
-        (ticket) => label.toLowerCase() === ticket.tecnico.toLowerCase()
-      ).length;
-
-
-      
-      return value
-
-
-    }),
-    label:"Tiempo en pendiente",
-    backgroundColor:"#ff8938"
-
-
-
-  }
-  const completedTimeDataSet =
-  {
-
-
-    data: labels.map((label)=>{
-
-      const value = query.reduce(
+  const avgCompletedTime = labels.map((label) => {
+    const value =
+      query.reduce(
         (acc, ticket) => acc + (Number(ticket.tiempo_en_completar) || 0),
         0
-      ) / query.filter(
+      ) /
+      query.filter(
         (ticket) => label.toLowerCase() === ticket.tecnico.toLowerCase()
       ).length;
 
+    return value;
+  });
 
-      
-      return value
+  const avgPendingTime = labels.map((label) => {
+    const value =
+      query.reduce(
+        (acc, ticket) => acc + (Number(ticket.tiempo_en_pendiente) || 0),
+        0
+      ) /
+      query.filter(
+        (ticket) => label.toLowerCase() === ticket.tecnico.toLowerCase()
+      ).length;
 
+    return value;
+  });
 
-    }),
-    label:"Tiempo en completar",
-    backgroundColor:"#00ff8b"
+  const avgAsignTime = labels.map((label) => {
+    const value =
+      query.reduce(
+        (acc, ticket) => acc + (Number(ticket.tiempo_en_pendiente) || 0),
+        0
+      ) /
+      query.filter(
+        (ticket) => label.toLowerCase() === ticket.tecnico.toLowerCase()
+      ).length;
 
+    return value;
+  });
 
-
+  let avgGeneralTime = [];
+  for (let i = 0; i < labels.length; i++) {
+    avgGeneralTime.push(
+      (avgAsignTime[i] + avgCompletedTime[i] + avgPendingTime[i]) / 3
+    );
   }
 
+  const asignedTimeDataSet = {
+    data: avgAsignTime,
+    label: "Tiempo en asignar",
+    color: "#fff554",
+    borderColor: "#fff554",
+    order: 1,
+    type: "line",
+    tension: 0.5,
+  };
+  const pendingTimeDataSet = {
+    data: avgPendingTime,
+    label: "Tiempo en pendiente",
+    color: "#ff8938",
+    borderColor: "#ff8938",
+    order: 1,
+    type: "line",
+    tension: 0.5,
+  };
+  const completedTimeDataSet = {
+    data: avgCompletedTime,
+    label: "Tiempo en completar",
+    color: "#00ff8b",
+    borderColor: "#00ff8b",
+    order: 1,
+    type: "line",
+    tension: 0.5,
+  };
 
-
-
+  const generalMediaDataSet = {
+    data: avgGeneralTime,
+    label: "Linea General de Tiempo",
+    color: "#9700ff",
+    borderColor: "#9700ff",
+    order: 1,
+    type: "line",
+    tension: 0.5,
+  };
 
   let payload = {
     labels: labels,
     datasets: [
-      asignationsDataSet,
       asignedTimeDataSet,
       pendingTimeDataSet,
-      completedTimeDataSet
-      
+      completedTimeDataSet,
+      generalMediaDataSet,
     ],
   };
 
-
-
-
-
-
-  barChart("x", ctx, payload);
+  lineChart(ctx, payload);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Creates a circle chart (doughnut or pie) using Chart.js.
@@ -271,7 +271,6 @@ export function barChart(orientation, ctx, data) {
  * Creates a line chart using Chart.js.
  *
  * @param {CanvasRenderingContext2D} ctx - The 2D context of the canvas element where the chart will be rendered.
- * @param {Array} labels - The labels for the chart's data points.
  * @param {Array} data - The data values for the chart.
  */
 export function lineChart(ctx, data) {
@@ -285,6 +284,18 @@ export function lineChart(ctx, data) {
       datasets: datasets.map((x) => x),
     },
     options: {
+      transitions: {
+        show: {
+          animations: {
+            x: {
+              from: 0,
+            },
+            y: {
+              from: 0,
+            },
+          },
+        },
+      },
       responsive: true,
       plugins: {
         legend: {
@@ -304,17 +315,17 @@ export function lineChart(ctx, data) {
           display: true,
           title: {
             display: false,
-            text: 'X Axis Title'
-          }
+            text: "X Axis Title",
+          },
         },
         y: {
           display: true,
           title: {
             display: false,
-            text: 'Y Axis Title'
-          }
-        }
-      }
+            text: "Y Axis Title",
+          },
+        },
+      },
     },
   };
 

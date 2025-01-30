@@ -122,7 +122,9 @@
 
       </div>
 
-
+      <div class="dashboard-info line-chart">
+         <canvas class="chart-per-time"></canvas>
+      </div>
 
    </div>
 
