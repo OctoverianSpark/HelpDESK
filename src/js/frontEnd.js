@@ -4,21 +4,20 @@ import {
   GENCONTAINER,
   TOAST,
   GETCOOKIES,
-  randomColor
+  randomColor,
 } from "./GLOBALS.min.js";
+
+import {
+  PerTypeGraphic,
+  TechnicalPodium,
+  circleChart,
+  barChart
+  
+} from "./graphics.min.js";
+
+//NOTE:CLASS FOLDER IMPORTATIONS
 import { Element } from "./Class/Element.min.js";
 import { Information } from "./Class/Information.min.js";
-
-//NOTE: Libraries Imports
-import {
-  Chart,
-  registerables,
-} from "https://cdn.jsdelivr.net/npm/chart.js/dist/chart.mjs";
-import * as helpers from "https://cdn.jsdelivr.net/npm/chart.js/dist/helpers.mjs";
-
-Chart.register(...registerables);
-
-Chart.defaults.color = "#000";
 
 console.log("FrontEnd.js loaded");
 
@@ -585,27 +584,27 @@ async function viewAdminTicket() {
 
         if (key === "category") {
           const subcats = await Information.postJSON("/admin/subcats/get", {
-            cat:value.toLowerCase(),
+            cat: value.toLowerCase(),
           });
-          
-          const subcatsSelector = MdlForm.querySelector("#subcat")
 
-          const subs = subcatsSelector.querySelectorAll(".subs")
+          const subcatsSelector = MdlForm.querySelector("#subcat");
 
-          subs.forEach(sub=>sub.remove())
+          const subs = subcatsSelector.querySelectorAll(".subs");
+
+          subs.forEach((sub) => sub.remove());
 
           subcats.forEach((subcat) => {
             let sub = subcat.subcategoria.toString();
-      
+
             sub = sub.charAt(0).toUpperCase() + sub.slice(1).toLowerCase();
-      
+
             const option = new Element(
               "OPTION",
               { value: sub, class: "subs" },
               { textContent: sub },
               []
             );
-      
+
             subcatsSelector.appendChild(option.render());
           });
         }
@@ -967,276 +966,116 @@ async function TicketGraphicsControllers() {
   const form = DASHBOARD.querySelector(".graphics-filter-form");
 
   let query = await Information.postJSON("/admin/tickets/indexer", {});
-  TicketGraphicCards(query);
-
-  const perTypeChartCTX = document
-    .querySelector(".chart-per-type")
-    .getContext("2d");
-
-  let perTypePayload = {
-    labels: query.reduce((acc, ticket) => {
-      if (!acc.includes(ticket.categoria)) {
-        acc.push(ticket.categoria);
-      }
-      return acc;
-    }, []),
-    datasets: [],
-  };
-
-  perTypePayload.datasets = [
-    {
-      data: perTypePayload.labels.map(
-        (label) => query.filter((ticket) => ticket.categoria === label).length
-      ),
-      backgroundColor: perTypePayload.labels.map((x) => randomColor()),
-    },
-  ];
-
-  circleChart("doughnut", perTypeChartCTX, perTypePayload);
 
   form.addEventListener("input", async (e) => {
     const formData = new FormData(form);
-
     const body = {};
     formData.forEach((value, key) => {
       body[key] = value;
     });
-
     query = await Information.postJSON("/admin/tickets/indexer", body);
 
-    perTypePayload = {
-      labels: query.reduce((acc, ticket) => {
-        if (!acc.includes(ticket.categoria)) {
-          acc.push(ticket.categoria);
-        }
-        return acc;
-      }, []),
-      datasets: [],
-    };
-
-    perTypePayload.datasets = [
-      {
-        data: perTypePayload.labels.map(
-          (label) => query.filter((ticket) => ticket.categoria === label).length
-        ),
-        backgroundColor: perTypePayload.labels.map((x) => randomColor()),
-      },
-    ];
-
-    circleChart("pie", perTypeChartCTX, perTypePayload);
-
+    TechnicalPodium(query);
+    PerTypeGraphic(query);
     TicketGraphicCards(query);
-    console.log("Graphic Controllers", query);
   });
+
+  TechnicalPodium(query);
+  PerTypeGraphic(query);
+  TicketGraphicCards(query);
 }
 
+function usrsCreationForm() {
+  const table = document.querySelector(".usrs-table");
 
-/**
- * Creates a circle chart (doughnut or pie) using Chart.js.
- *
- * @param {String} type - The type of chart (e.g., 'doughnut', 'pie').
- * @param {CanvasRenderingContext2D} ctx - The 2D context of the canvas element where the chart will be rendered.
- * @param {Array} labels - The labels for the chart's data points.
- * @param {Array} data - The data values for the chart.
- */
-function circleChart(type, ctx, data) {
-  const labels = data.labels;
+  if (!table) return;
 
-  const datasets = data.datasets;
+  const viewMdl = document.querySelector(".form-usrs-view");
+  const MdlForm = viewMdl.querySelector("form");
+  const close = viewMdl.querySelector(".modal-close-btn");
 
-  const config = {
-    type: type,
-    data: {
-      labels: labels,
+  const btns = document.querySelectorAll(".view-btn");
 
-      datasets: datasets.map((x) => x),
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "top",
-          color: "black",
-          font: {
-            size: 16,
-          },
-        },
-        title: {
-          display: false,
-          text: "Donut Chart Example",
-        },
-      },
-    },
-  };
+  let cellID = null;
+  let formData = null;
+  btns.forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      cellID = btn.getAttribute("cell-id");
 
-  if (window.myChart) {
-    window.myChart.destroy();
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  }
-  window.myChart = new Chart(ctx, config);
-}
+      const delButton = MdlForm.querySelector(".btn-red");
 
-
-
-
-function usrsCreationForm(){
-
-
-
-  const table = document.querySelector(".usrs-table")
-
-  if(!table) return;
-  
-  const viewMdl = document.querySelector(".form-usrs-view")
-  const MdlForm = viewMdl.querySelector("form")
-  const close = viewMdl.querySelector(".modal-close-btn")
-
-  const btns = document.querySelectorAll(".view-btn")
-
-  let cellID = null
-  let formData = null
-  btns.forEach(btn=>{
-
-
-    btn.addEventListener("click",async e=>{
-
-        
-      cellID = btn.getAttribute("cell-id")
-
-      const delButton = MdlForm.querySelector(".btn-red")
-
-
-      viewMdl.classList.remove("hidden")
+      viewMdl.classList.remove("hidden");
 
       if (cellID) {
-        
+        const HIDDEN = new Element(
+          "INPUT",
+          { type: "hidden", value: null, name: "id" },
+          {},
+          []
+        );
 
-        const HIDDEN = new Element("INPUT",{type:"hidden",value:null,name:"id"},{},[])
+        MdlForm.appendChild(HIDDEN.render());
 
-        MdlForm.appendChild(HIDDEN.render())
+        const query = await Information.postJSON("/admin/usrs/find", {
+          id: cellID,
+        });
 
-        
-        const query = await Information.postJSON("/admin/usrs/find",{
-          id:cellID
-        })
-
-        
-        Object.entries(query).forEach(([key,value])=>{
-
-
+        Object.entries(query).forEach(([key, value]) => {
           if (MdlForm[key].length) {
-
-            MdlForm[key].forEach(radio=>{
-              radio.checked = radio.value.toLowerCase() === value.toLowerCase()
-            })
-            
-            
-          }else{
-            
-            MdlForm[key].value = value
+            MdlForm[key].forEach((radio) => {
+              radio.checked = radio.value.toLowerCase() === value.toLowerCase();
+            });
+          } else {
+            MdlForm[key].value = value;
           }
+        });
 
+        delButton.classList.remove("hidden");
+        delButton.addEventListener("click", async (e) => {
+          const deleter = await Information.postJSON("/admin/usrs/delete", {
+            id: cellID,
+          });
 
-        })
-
-        
-
-
-
-      delButton.classList.remove("hidden")
-      delButton.addEventListener("click", async e=>{
-
-
-        const deleter = await Information.postJSON("/admin/usrs/delete",{
-          id:cellID
-        })
-
-        location.reload();
-
-
-      })
-
-        
-
-
-
-      }else{
-        
-        delButton.classList.add("hidden")
+          location.reload();
+        });
+      } else {
+        delButton.classList.add("hidden");
         formData = new FormData(MdlForm);
 
-        formData.entries().forEach(([key,value])=>{
-
-
-          if(MdlForm[key].length){
-
-            MdlForm[key].forEach(radio=>radio.checked = false)
-            return
+        formData.entries().forEach(([key, value]) => {
+          if (MdlForm[key].length) {
+            MdlForm[key].forEach((radio) => (radio.checked = false));
+            return;
           }
-          
-          MdlForm[key].value = null
 
-
-
-
-        })
-
+          MdlForm[key].value = null;
+        });
       }
 
+      MdlForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-      MdlForm.addEventListener("submit",async e=>{
+        formData = new FormData(e.target);
 
+        const body = {};
 
-        e.preventDefault()
+        let rows = [];
+        formData.entries().forEach(([key, value]) => {
+          body[key] = value;
+        });
+        const payload = await Information.postJSON("/admin/usrs/save", body);
 
-        formData = new FormData(e.target)
+        TOAST("Informacion de Usuarios actualizada correctamente!!!", "center");
 
-        const body = {}
+        location.reload();
+      });
 
-
-        let rows = []
-        formData.entries().forEach(([key,value])=>{
-
-
-          body[key] = value
-          
-
-        })
-        const payload = await Information.postJSON("/admin/usrs/save",body)
-
-        TOAST("Informacion de Usuarios actualizada correctamente!!!","center")
-
-        location.reload()
-        
-        
-
-
-
-      })
-
-      close.addEventListener("click",e=>{
-
-        viewMdl.classList.add("hidden")
-
-      })
-
-
-
-    })
-
-
-
-  })
-
-
-
-
+      close.addEventListener("click", (e) => {
+        viewMdl.classList.add("hidden");
+      });
+    });
+  });
 }
-
-
-
-
-
 
 document.addEventListener("DOMContentLoaded", (e) => {
   addPer();
@@ -1249,5 +1088,5 @@ document.addEventListener("DOMContentLoaded", (e) => {
   viewAdminDocumentation();
   TicketGraphicsControllers();
   imageViewer();
-  usrsCreationForm()
+  usrsCreationForm();
 });

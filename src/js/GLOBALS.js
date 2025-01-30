@@ -69,4 +69,7 @@ function randomColor() {
   return color;
 }
 
+
+
+
 export { GENCONTAINER, RADIOCARD, INPUTGROUP,TOAST, GETCOOKIES,randomColor };

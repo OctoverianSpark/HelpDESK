@@ -64,7 +64,9 @@
 .title{
     font-size: 6rem;
     font-family: Pangram-Black;
-    color: color.adjust(v.$morado,$lightness: 1% * -20);
+    background: linear-gradient(to right, v.$morado, v.$azulFuerte);
+    background-clip: text;
+    color: transparent;
     letter-spacing: 3px;
 }
 

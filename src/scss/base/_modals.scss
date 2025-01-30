@@ -496,3 +496,47 @@
 
 
 }
+
+.filter-view{
+  
+  background-color: rgba(white,.5);
+  backdrop-filter: blur(10px);
+  
+  min-height: 4rem;
+  width: 10rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+
+  .summary-group{
+    width: 100%;
+  }
+
+  .container-form{
+    height: 0;
+    overflow-y: hidden;
+  }
+  &:has(input:checked){
+    width: 80rem;
+      
+  }
+
+  &:has(input:checked) .container-form{
+
+    height: 100%;
+
+  }
+  
+  form{
+    width: 100%;
+  }
+
+
+  .summary-group{
+    display: flex;
+    height: 100%;
+  }
+  
+}

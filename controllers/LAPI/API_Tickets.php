@@ -20,28 +20,41 @@ class API_Tickets
       $data = json_decode(file_get_contents("php://input"));
 
 
+      $tickets = [];
       if (!$data->from || !$data->to) {
-         $tickets = Tickets::all();
+         $info = Tickets::all();
       }else{
-         $tickets= Tickets::getByDate("$data->from" ,  "$data->to");
+         $info= Tickets::getByDate("$data->from" ,  "$data->to");
       }
 
       if($data->tech){
 
-         $filter = array_filter($tickets, function($ticket) use ($data) {
+         $filter = array_filter($info, function($ticket) use ($data) {
             return $ticket->tecnico_id == $data->tech;
          });
 
-         $tickets = [];
+         $info = [];
 
          foreach($filter as $data) {
             
-            $tickets[] = $data;
+            $info[] = $data;
 
          }
 
       }
 
+
+      foreach ($info as $ticket) {
+
+
+         if ($ticket->categoria != "") {
+            if ($ticket->tecnico != 'SIN ASIGNAR') {
+               $tickets[] = $ticket;
+            }
+         }
+         
+
+      }
 
 
       
