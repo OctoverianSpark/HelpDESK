@@ -21,58 +21,11 @@ class EntrieController{
 
 
 
-        if($_SERVER["REQUEST_METHOD"] === "POST"){
-            
-            
-            
-
-            
-            if(isset($_POST["entradas"])){
-                $entrada = new Entradas($_POST["entradas"]);
-                $datos = Entradas::find($_POST["entradas"]["id"]);
-                $manager = new Manager(new Driver());
-
-                
-                $png =CARPETA_SRC."/".$datos->imagen . ".png";
-                $webp = CARPETA_SRC."/".$datos->imagen . ".webp";
-                
-                unlink($png);
-                unlink($webp);
-
-
-                
-
-                
-
-
-                $entrada->eliminar();
-    
-                header("Location: /admin/entradas");
-
-            }else if(isset($_POST["entrada"])){
-
-                $entrada= new Entradas($_POST["entrada"]);
-
-                $entrada->mostrar = (isset($_POST["entrada"]["mostrar"]))? "si":"no";
-
-
-                $entrada->actualizar();
-
-
-                header("Location: /admin/entradas");
-
-
-
-            }
-
-        }
-
 
 
 
         $router->render("admin/entradas/index",[
-            "entradas"=>$entradas,
-            "count"=>$count
+            "entradas"=>$entradas
         ]);
     }
 

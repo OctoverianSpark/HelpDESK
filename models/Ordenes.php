@@ -124,4 +124,25 @@ class Ordenes extends ActiveRecord
 
 
 
+
+    
+    public function sanitizarAtributos(){
+        $atributos = $this->atributos();
+
+
+        $sanitizado= [];
+
+        foreach($atributos as $key => $value){
+            
+            if($key === "nombre_equipo" || $key === "nombre" || $key ==="apellido")continue;
+            
+            $sanitizado[$key] = self::$db->escape_string($value);
+          
+
+        }
+        return $sanitizado;
+    }
+
+
+
 }
