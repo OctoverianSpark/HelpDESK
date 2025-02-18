@@ -32,7 +32,7 @@
          <p>Cargo:<?php echo ucwords(strtolower(s($usr->cargo))) ?> </p>
       </div>
       <div class="container-data">
-         <p>Fecha de Retorno: <?php echo s(date("d / m / Y", strtotime($order->return_date))) ?></p>
+         <p>Fecha de Retorno: <?php echo (strtolower($order->return_date) === "no return")?"Sin Retorno":date("d / m / Y", strtotime($order->return_date)) ?></p>
          <p>Empleado: <?php echo ucwords(strtolower(s($usr->nombre . " " . $usr->apellido))) ?> </p>
          <p>Departamento: <?php echo ucwords(strtolower(s($usr->area))) ?> </p>
 
@@ -44,9 +44,9 @@
 
 
    <p>
-      Mediante el presente documento, Asistente Virtual S.A.S. autoriza el préstamo, salida y traslado de los siguientes equipos y accesorios informáticos descritos en el punto 1 de este documento al usuario(a) <?php echo ucwords(strtolower(s($usr->nombre . " " . $usr->apellido))) ?> por un período de <?php echo calculateDays($order->emitted_date,$order->return_date) ?> dia.
+      Mediante el presente documento, Asistente Virtual S.A.S. autoriza el préstamo, salida y traslado de los siguientes equipos y accesorios informáticos descritos en el punto 1 de este documento al usuario(a) <?php echo ucwords(strtolower(s($usr->nombre . " " . $usr->apellido))) ?> por un período de <?php echo (strtolower($order->return_date) === "no return")?"tiempo indefinido":calculateDays($order->emitted_date,$order->return_date). " dia/s" ?>.
    </p>
-
+   
    <p>
       El Departamento de Automatización, Tecnología e Informática realizará el despacho de los equipos y accesorios en las instalaciones de la empresa y el usuario se compromete a utilizar los equipos exclusivamente para fines laborales y a cuidarlos de acuerdo con las normas establecidas. El Usuario se compromete a cuidar y devolver estos activos, propiedad de la empresa, en buen estado físico y de funcionamiento, tal y como fueron entregados y en caso de sufrir pérdida, daño, robo o mal funcionamiento este debe verificar de manera inmediata. Al finalizar el periodo de trabajo remoto en el domicilio pautado, el usuario deberá trasladar los equipos y accesorios informáticos anteriormente mencionados en las mismas condiciones en que fueron entregados, para retomar sus actividades en las instalaciones de la empresa.
    </p>
@@ -85,24 +85,6 @@
    </div>
 
 
-   <?php
-
-   $i = 2;
-   foreach ($pers as $key => $value) {
-   ?>
-
-      <div class="table-row">
-         <div class="cell cell-no"><?php echo $i++ ?></div>
-         <div class="cell"><?php echo strtoupper($key) ?></div>
-         <div class="cell"><?php echo strtoupper($pers[$key]["marca"]) ?></div>
-         <div class="cell"><?php echo strtoupper($pers[$key]["modelo"]) ?></div>
-         <div class="cell"><?php echo strtoupper($pers[$key]["serial"]) ?></div>
-         <div class="cell">N / A </div>
-         <div class="cell">
-            <input type="text">
-         </div>
-      </div>
-   <?php } ?>
 
 
 </div>
@@ -118,7 +100,7 @@
    <h1>GESTI&Oacute;N AUTOMATIZACI&Oacute;N, TECNOLOG&Iacute;A, E INFORMATICA <br> ORDEN DE SALIDA DE EQUIPOS <br> INFORMATICOS</h1>
    <div class="metadata">
 
-      <p><b>C&oacute;digo: </b> GATI-FT-01</p>
+      <p><b>C&oacute;digo: </b> GATI-FT-03</p>
       <p><b>Versi&oacute;n: </b> 01</p>
       <p><b>Fecha: </b><?php echo date("d / m / Y") ?></p>
       <p><b>P&aacute;gina: </b>2 de 2</p>
@@ -134,55 +116,3 @@
    Además, garantiza que, en caso de que el equipo sufra daños o pérdidas, ya sean parciales o totales, asumirá la responsabilidad ante la empresa por los equipos mencionados.
 </p>
 
-
-
-<div class="container-signs">
-
-
-
-   <div class="user-sign">
-
-
-
-      <h4>Firma del Usuario</h4>
-
-
-      <canvas class="sign-canvas" height="200px">
-
-      </canvas>
-
-
-
-      <p><b>Nombre: </b><span><?php echo ucwords(strtolower($usr->nombre . " " . $usr->apellido)) ?></span></p>
-      <p><b>Identificaci&oacute;n: </b> <span><?php echo $usr->tipo_documento . " " . $usr->documento ?></span></p>
-      <p><b>Fecha:</b> <?php echo date("d / m / Y") ?></p>
-
-   </div>
-
-   <div class="admin-sign">
-
-
-
-      <h4>Firma del representante de la Empresa</h4>
-
-      <img src="/build/img/firma.png" alt="">
-
-
-
-      <p><b>Nombre: </b><span>Jeandry de Jesus Rodriguez Zerpa</span></p>
-      <p><b>Identificaci&oacute;n: </b> <span>CC 1034313186</span></p>
-      <p><b>Fecha:</b> <?php echo date("d / m / Y") ?></p>
-
-   </div>
-
-
-
-
-
-
-
-
-
-
-
-</div>

@@ -9,7 +9,7 @@
   width: 100%;
   background-color: white;
 
-  .checkbox-label {
+  .checkbox-group {
     margin: 0 auto;
     display: flex;
     gap: 2rem;
@@ -23,6 +23,7 @@
       text-align: left;
       text-wrap: wrap;
     }
+
   }
 
   .container-doc-header {
@@ -71,11 +72,13 @@
 
   .container-doc-checks {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    gap: 4rem;
-    width: 100%;
+    align-items: left;
+    gap: .5rem;
+    display: flex;
+    flex-wrap: wrap;
+    height: 30rem;
   }
 
   .container-doc-body {
@@ -118,10 +121,6 @@
 
 .doc-order.printing {
 
-  .modal,
-  button {
-    display: none;
-  }
 
   h2 {
     font-size: 2.8rem;
@@ -131,6 +130,10 @@
   p{
     text-align: justify;
   }
+  button{
+    opacity: 0;
+  }
+
 
   .container-doc-header {
     display: flex;
@@ -139,7 +142,6 @@
     border: 1.5px solid black;
     width: 100rem;
     margin: 0 auto;
-    margin-bottom: 2rem;
 
     img {
       width: 20rem;
@@ -214,14 +216,6 @@
     }
   }
 
-  .container-doc-checks {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 4rem;
-    width: 100%;
-  }
   .container-doc-body {
     display: flex;
     align-items: center;
@@ -305,10 +299,15 @@ img {
 .container-signs {
   display: flex;
   justify-content: space-evenly;
-  gap: 2rem;
+  gap: .5rem;
 
   p > span {
     border-bottom: 0.5px #3f3f3f;
+  }
+
+  img{
+    height: 15rem;
+    width: 12rem;
   }
 }
 

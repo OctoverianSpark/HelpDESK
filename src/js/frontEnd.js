@@ -5,7 +5,7 @@ import {
   TOAST,
   GETCOOKIES,
   randomColor,
-} from "./GLOBALS.min.js";
+} from "./GLOBALS.js";
 
 import {
   PerTypeGraphic,
@@ -14,11 +14,11 @@ import {
   circleChart,
   barChart
   
-} from "./graphics.min.js";
+} from "./graphics.js";
 
 //NOTE:CLASS FOLDER IMPORTATIONS
-import { Element } from "./Class/Element.min.js";
-import { Information } from "./Class/Information.min.js";
+import { Element } from "./Class/Element.js";
+import { Information } from "./Class/Information.js";
 
 console.log("FrontEnd.js loaded");
 
@@ -136,6 +136,26 @@ function addPer() {
     fieldset.remove();
     count--;
   });
+}
+
+function noReturn(){
+
+
+  const NORETURNCHECK = document.querySelector("#no-return");
+
+
+  const returnDate = document.querySelector("#return")
+
+  if (!NORETURNCHECK) return
+    
+  
+
+  NORETURNCHECK.addEventListener("input",e=>{
+
+    returnDate.disabled = e.target.checked
+
+  })
+
 }
 
 function sign() {
@@ -1080,6 +1100,141 @@ function usrsCreationForm() {
   });
 }
 
+
+function entriesFormFront(){
+
+
+  const containerEntries = document.querySelector(".entries");
+
+  if (!containerEntries) return;
+
+  const addEntriesBTN = document.querySelector(".add-entry-btn");
+  const updateEntryBTN = document.querySelectorAll(".update-entry-btn")
+  const deleteEntryBTN = document.querySelectorAll(".delete-entry-btn")
+
+  const Mdl = document.querySelector(".entry-form");
+  const MdlForm = Mdl.querySelector("form");
+
+  addEntriesBTN.addEventListener("click",e=>{
+
+    Mdl.classList.remove("hidden")
+
+
+    const inputs = MdlForm.querySelectorAll("input");
+    const textarea = MdlForm.querySelector("textarea")
+
+    inputs.forEach(input=>{
+      if (input.type === 'radio') input.checked = false;
+      if (input.type === 'text' || input.type === 'hidden') input.value = ""; 
+
+    })
+    textarea.value = "";
+
+
+  })
+
+
+
+  updateEntryBTN.forEach(btn=>{
+
+    btn.addEventListener("click",async e=>{
+
+      const id = btn.getAttribute("data-id");
+
+
+      Mdl.classList.remove("hidden");
+
+      const query = await Information.postJSON("/admin/entradas/find",{
+
+        id:id
+
+      })
+
+
+      Object.entries(query).forEach(([key,value])=>{
+
+        if (!MdlForm[key]) return;
+
+        const actual = MdlForm[key];
+
+        if (actual.length > 0) {
+          
+          actual.forEach(radio=>{
+
+            radio.checked = radio.value === value.toLowerCase();
+
+          })
+          
+          return;
+
+        }
+        MdlForm[key].value = value;
+        
+
+      })
+      
+
+
+
+
+
+    })
+
+
+
+  })
+  deleteEntryBTN.forEach(btn=>{
+
+    btn.addEventListener("click",async e=>{
+
+      const id = btn.getAttribute("data-id");
+
+
+
+      const query = await Information.postJSON("/admin/entradas/delete",{
+
+        id:id
+
+      })
+
+  
+      
+      btn.parentNode.parentNode.remove();
+
+
+
+
+
+    })
+
+
+
+  })
+
+
+  
+
+
+
+} 
+
+
+function results(){
+
+
+  const params = new URLSearchParams(window.location.search);
+
+
+  const result = params.get("result");
+
+
+  if(result === "1") TOAST("Solicitud realizada correctamente!!!","center","/");
+  
+
+
+
+}
+
 document.addEventListener("DOMContentLoaded", (e) => {
   addPer();
   sign();
@@ -1092,4 +1247,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   TicketGraphicsControllers();
   imageViewer();
   usrsCreationForm();
+  noReturn();
+  entriesFormFront();
+  results();
 });

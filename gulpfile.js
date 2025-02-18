@@ -13,10 +13,15 @@ import cache from "gulp-cache";
 import clean from "gulp-clean";
 import webp from "gulp-webp";
 import imagemin from "gulp-imagemin";
+import webpackStream from "webpack-stream";
+
+
+
 
 const sass = gulpSass(dartSass);
 
 const paths = {
+
     scss: "src/scss/**/*.scss",
     js: "src/js/**/*.*js",
     imagenes: "src/img/**/*",
@@ -29,17 +34,24 @@ export function css() {
         .pipe(sass())
         .pipe(postcss([autoprefixer(), cssnano()]))
         .pipe(sourcemaps.write("."))
-        .pipe(gulp.dest("./public/build/css"));
+        .pipe(gulp.dest("./public/build/css"))
+        .pipe(notify({ message: "CSS compilado" }));
 }
 
 export function javascript() {
     return gulp
         .src(paths.js)
+        .pipe(webpackStream({
+            mode:"production",
+            entry:"./src/js/index.js"
+        }))
         .pipe(sourcemaps.init())
+        .pipe(concat("bundle.js"))
         .pipe(terser())
         .pipe(sourcemaps.write("."))
         .pipe(rename({ suffix: ".min" }))
-        .pipe(gulp.dest("./public/build/js"));
+        .pipe(gulp.dest("./public/build/js"))
+        .pipe(notify({ message: "Javascript compilado" }));
 }
 
 export async function imagenes() {

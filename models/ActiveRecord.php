@@ -56,6 +56,7 @@ abstract class ActiveRecord extends ObjectCreator{
         
         $query = "SELECT * FROM " . static::$tabla." WHERE ID = $id";
         $resultado = self::consultarSQL($query);
+        
         return array_shift( $resultado );
     }
 

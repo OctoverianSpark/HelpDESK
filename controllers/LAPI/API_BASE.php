@@ -16,5 +16,16 @@ class API_BASE{
 
       
    }
+   static function CONVERT(){
+
+
+
+      
+
+
+
+      echo json_encode(["a"=>"A"]);
+
+   }
 
 }

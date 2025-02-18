@@ -24,11 +24,16 @@
     src: url('../fonts/Pangram-Medium.otf')
 }
 
+@font-face {
+    font-family: Imperial;
+    src: url('https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap');
+}
 
 html {
     font-size: 62.5%;
     box-sizing: border-box;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 
 }
   
@@ -323,4 +328,12 @@ fieldset{
         border: none;
     }
 
+}
+
+
+button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
 }

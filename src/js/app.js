@@ -1,11 +1,7 @@
-import "./backEnd.min.js"
-import "./frontEnd.min.js"
-import  Particle  from "./Class/Particle.min.js";
+import  Particle  from "./Class/Particle.js";
+
 
 console.log("App.js loaded");
-
-
-
 
 
 function loginBackground(){
@@ -67,6 +63,7 @@ function loginBackground(){
     animar()
 
 }
+
 
 
 
@@ -151,6 +148,13 @@ function modalKEY(){
 }
 
 
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded",e=>{
 
 
@@ -159,7 +163,7 @@ document.addEventListener("DOMContentLoaded",e=>{
         loginBackground();
         showPswrd();
         notificarClickup();
-        modalKEY()
-
+        modalKEY();
+        
 }
 );

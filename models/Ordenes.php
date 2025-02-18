@@ -32,11 +32,13 @@ class Ordenes extends ActiveRecord
 
     public static function find($id){
         
-        $query = "SELECT * FROM ti.ordenes as i WHERE id = $id";
+        $query = "SELECT * FROM ti.ordenes WHERE id = $id";
+
         $resultado = self::consultarSQL($query);
 
 
         $resultado = self::findConn($resultado);
+
         $resultado = array_shift( $resultado );
 
         return $resultado;
@@ -114,6 +116,7 @@ class Ordenes extends ActiveRecord
         $query .= join("' , '",array_values($atributos));
         $query.= "')";
 
+
         $query = strtolower($query);
         $resultado = self::$db->query($query);
 
@@ -140,6 +143,7 @@ class Ordenes extends ActiveRecord
           
 
         }
+
         return $sanitizado;
     }
 

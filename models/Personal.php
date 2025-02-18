@@ -38,7 +38,7 @@ class Personal extends ActiveRecord{
             
             foreach($resultado as $r){
 
-                $results[$table][] = $r;
+                $results[] = $r;
             }
 
             

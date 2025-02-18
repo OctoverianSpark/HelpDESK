@@ -31,7 +31,6 @@
 </form>
 
 <form method="post" class="order-query-mngr">
-
     <fieldset class="selector-wrapper no-fieldset">
         <legend>Usuario del equipo</legend>
 
@@ -83,15 +82,20 @@
 
     <fieldset class="no-fieldset container-input-flex">
 
-                <label for="emitted" class="input-group">
-                    <span>Fecha de Emisi&oacute;n</span>
-                    <input type="date" name="emitted_date" id="emitted" required placeholder="Fecha">
-                </label>
+        <label for="emitted" class="input-group">
+            <span>Fecha de Emisi&oacute;n</span>
+            <input type="date" name="emitted_date" id="emitted" required placeholder="Fecha">
+        </label>
 
-                <label for="return" class="input-group">
-                    <span>Fecha de Retorno</span>
-                    <input type="date" name="return_date" id="return" required placeholder="Fecha">
-                </label>
+        <label for="return" class="input-group">
+            <span>Fecha de Retorno</span>
+
+            <input type="date" name="return_date" id="return" required placeholder="Fecha">
+        <label for="no-return" class="checkbox-group">
+            <input type="checkbox" name="return_date" id="no-return" value="no return">
+            <span>Sin Retorno</span>
+        </label>
+        </label>
 
     </fieldset>
 

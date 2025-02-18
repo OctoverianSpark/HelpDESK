@@ -13,7 +13,9 @@ use Controllers\EntrieController;
 use Controllers\LAPI;
 use Controllers\LAPI\API_BASE;
 use Controllers\LAPI\API_Documentations;
+use Controllers\LAPI\API_ENTRIES;
 use Controllers\LAPI\API_Inventory;
+use Controllers\LAPI\API_ORDERS;
 use Controllers\LAPI\API_Tickets;
 use Controllers\LAPI\API_USERS;
 use Controllers\OrderController;
@@ -79,12 +81,13 @@ $router->get("/admin/inventario/ver", [InventoryController::class, "ver"]);
 $router->get("/admin/ordenes", [OrderController::class, "index"]);
 $router->post("/admin/ordenes", [OrderController::class, "index"]);
 $router->get("/admin/ordenes/crear", [OrderController::class, "crear"]);
-$router->post("/admin/ordenes/crear", [OrderController::class, "crear"]);
+$router->post("/admin/ordenes/crear", [OrderController::class, "send"]);
+$router->post("/admin/ordenes/print", [API_ORDERS::class, "printer"]);
 
 $router->get("/orden", [OrderController::class, "orden"]);
 $router->post("/orden", [OrderController::class, "orden"]);
-$router->get("/orden/print", [OrderController::class, "print"]);
-$router->post("/orden/print", [OrderController::class, "print"]);
+$router->get("/order/see", [OrderController::class, "sign"]);
+$router->post("/order/see", [OrderController::class, "sign"]);
 
 
 /* * Tickets * */
@@ -103,10 +106,6 @@ $router->post("/admin/encuestas/ver", [PollController::class, "ver"]);
 /* * Entradas * */
 $router->get("/admin/entradas", [EntrieController::class, "index"]);
 $router->post("/admin/entradas", [EntrieController::class, "index"]);
-$router->get("/admin/entradas/crear", [EntrieController::class, "crear"]);
-$router->post("/admin/entradas/crear", [EntrieController::class, "crear"]);
-$router->get("/admin/entradas/actualizar", [EntrieController::class, "actualizar"]);
-$router->post("/admin/entradas/actualizar", [EntrieController::class, "actualizar"]);
 
 
 
@@ -133,9 +132,15 @@ $router->post("/admin/usrs/find",[API_USERS::class,"USERSEARCH"]);
 $router->post("/admin/usrs/save",[API_USERS::class,"USERS_SAVE"]);
 $router->post("/admin/usrs/delete",[API_USERS::class,"USER_DELETE"]);
 
+$router->post("/admin/entradas/set",[API_ENTRIES::class,"SETSHOWED"]);
+$router->post("/admin/entradas/find",[API_ENTRIES::class,"FIND_ENTRY"]);
+$router->post("/admin/entradas/save",[API_ENTRIES::class,"SAVE_ENTRY"]);
+$router->post("/admin/entradas/delete",[API_ENTRIES::class,"DELETE_ENTRY"]);
+
 //NOTE: INDEXERS
 $router->post("/admin/tickets/indexer",[API_Tickets::class,"INDEXER"]);
 
+$router->post("/admin/convert",[API_BASE::class,"CONVERT"]);
 
 
 $router->comprobarRutas();

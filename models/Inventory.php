@@ -78,10 +78,11 @@ class Inventory extends ActiveRecord
 
     public static function find($id){
         
-        $query = "SELECT * FROM ti.inv as i WHERE id = $id";
+        $query = "SELECT * FROM ti.inv WHERE id = $id";
+        
+        
         $resultado = self::consultarSQL($query);
-
-
+        
         $resultado = self::findUser($resultado);
         $resultado = array_shift( $resultado );
 

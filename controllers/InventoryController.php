@@ -60,8 +60,7 @@ class InventoryController
     {
 
 
-        $users = Personal::all();
-
+        $users = Personal::separateAll();
 
         
         if($_SERVER["REQUEST_METHOD"] === "POST"){
@@ -90,7 +89,7 @@ class InventoryController
 
 
         $router->render("admin/inventario/crear", [
-            "users"=>$users,
+            "users"=>$users[$_GET["sede"]],
             "inv"=>$inv
         ]);
     }

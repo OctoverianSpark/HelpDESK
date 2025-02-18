@@ -106,7 +106,7 @@ function calculateDays(string $from, string $to){
     /**
      * Calculates the difference in days between two dates.
      * @param string $from The start date in a format recognized by strtotime().
-     * @return float $days The result of the operation
+     * @return float|null $days The result of the operation
                                                                              **/
     $from = new DateTime("$from");
     $to = new DateTime("$to");

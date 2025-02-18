@@ -99,7 +99,7 @@
    <h1>GESTI&Oacute;N AUTOMATIZACI&Oacute;N, TECNOLOG&Iacute;A, E INFORMATICA <br> ORDEN DE RECEPCION DE EQUIPOS <br> INFORMATICOS</h1>
    <div class="metadata">
 
-      <p><b>C&oacute;digo: </b> GATI-FT-01</p>
+      <p><b>C&oacute;digo: </b> GATI-FT-02</p>
       <p><b>Versi&oacute;n: </b> 01</p>
       <p><b>Fecha: </b> <?php echo date("d / m / Y") ?></p>
       <p><b>P&aacute;gina: </b>2 de 2</p>
@@ -138,22 +138,21 @@
    <?php
 
    $i = 2;
-   foreach ($pers as $key => $value) {
+   foreach ($pers as $per) {
    ?>
 
       <div class="table-row">
          <div class="cell cell-no"><?php echo $i++ ?></div>
-         <div class="cell"><?php echo str_replace("-", " ", strtoupper($key)) ?></div>
-         <div class="cell"><?php echo strtoupper($pers[$key]["marca"]) ?></div>
-         <div class="cell"><?php echo strtoupper($pers[$key]["modelo"]) ?></div>
-         <div class="cell"><?php echo strtoupper($pers[$key]["serial"]) ?></div>
+         <div class="cell"><?php echo strtoupper($per->tipo) ?></div>
+         <div class="cell"><?php echo strtoupper($per->marca) ?></div>
+         <div class="cell"><?php echo strtoupper($per->modelo) ?></div>
+         <div class="cell"><?php echo strtoupper($per->serial) ?></div>
          <div class="cell">N / A </div>
          <div class="cell">
             <input type="text">
          </div>
       </div>
    <?php } ?>
-
 
 </div>
 
@@ -164,58 +163,3 @@
    Al firmar este documento, el firmante certifica que los equipos y accesorios se encuentran en perfecto estado físico y funcional. Asimismo, se compromete a responder por cualquier daño o pérdida que sufran los mismos.
 </p>
 
-
-
-
-<div class="container-signs">
-
-
-
-   <div class="user-sign">
-
-
-
-      <h4>Firma del Usuario</h4>
-
-
-      <canvas class="sign-canvas">
-
-      </canvas>
-
-
-
-      <p><b>Nombre: </b><span><?php echo ucwords(strtolower($usr->nombre . " " . $usr->apellido)) ?></span></p>
-      <p><b>Identificaci&oacute;n: </b> <span><?php echo $usr->tipo_documento . " " . $usr->documento ?></span></p>
-      <p><b>Tel&eacute;fono:</b> <span><?php echo $usr->telefono ?></span></p>
-      <p><b>Correo electr&oacute;nico: </b><span><?php echo $usr->correo ?></span></p>
-      <p><b>Fecha:</b> <?php echo date("d / m / Y") ?></p>
-
-   </div>
-
-   <div class="admin-sign">
-
-
-
-      <h4>Firma del representante de la Empresa</h4>
-
-      <img src="/build/img/firma.png" alt="">
-
-
-
-      <p><b>Nombre: </b><span>Jeandry de Jesus Rodriguez Zerpa</span></p>
-      <p><b>Identificaci&oacute;n: </b> <span>CC 1034313186</span></p>
-      <p><b>Fecha:</b> <?php echo date("d / m / Y") ?></p>
-
-   </div>
-
-
-
-
-
-
-
-
-
-
-
-</div>

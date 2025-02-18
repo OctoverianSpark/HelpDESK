@@ -40,13 +40,12 @@ class PagesController
 
             $encuestas = Encuestas::findPendingsByUser($tickets->id) ?? [];
         }
-        $entradas = Entradas::all();
-
+        $entradas = Entradas::filter("mostrar","=","si");
         $novedades = array_filter($entradas, function ($entrada) {
-            return $entrada->tipo === "novedad";
+            return strtolower($entrada->tipo) === "novedad";
         });
         $recomendaciones = array_filter($entradas, function ($entrada) {
-            return $entrada->tipo === "recomendacion";
+            return strtolower($entrada->tipo) === "recomendacion";
         });
 
         $router->render("pages/index", [
@@ -216,14 +215,11 @@ class PagesController
         $usrs = [];
 
         $inv = [];
-        if ($area == "ati" || $area == "gerencia") $usrs = Personal::all();
+        if ($area == "ati" || $area == "gerencia") $usrs = Personal::separateAll();
 
         else $usrs = Personal::filter("area", "=", $area);
 
-
-        
         foreach($usrs as $key => $value){
-
 
             foreach($value as $usr){
 
@@ -232,14 +228,14 @@ class PagesController
             }
 
 
-
         }
+
+
         
 
         $inv = array_filter($inv, function ($item) {
             return $item !== null;
         });
-
 
 
 
@@ -278,9 +274,12 @@ class PagesController
 
             );
 
-            header("Location: /equipos?result=1");
-            exit();
+
+            header("Location: /ordenes/crear?result=1");
+
         }
+
+        
 
 
         $router->render("pages/ordenes/index", [

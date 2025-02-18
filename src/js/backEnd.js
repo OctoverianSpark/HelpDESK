@@ -1,5 +1,9 @@
-import { Information } from "./Class/Information.min.js";
-import { GENCONTAINER, RADIOCARD, INPUTGROUP, TOAST } from "./GLOBALS.min.js";
+import { Information } from "./Class/Information.js";
+import { Element } from "./Class/Element.js";
+import { GENCONTAINER, RADIOCARD, INPUTGROUP, TOAST, cleanPers } from "./GLOBALS.js";
+
+
+
 
 console.log("BackEnd.js loaded");
 
@@ -88,7 +92,7 @@ function blockSubmit() {
   if (!form) return;
 
   form.addEventListener("submit", (e) => {
-    const btn = form.querySelector(".btn-submit");
+    const btn = form.querySelector(".btn-submit") ?? form.querySelector(".btn-send");
 
     TOAST("Estamos enviando tu informacion, por favor espere....", "center");
     btn.disabled = true;
@@ -132,6 +136,8 @@ function persGET() {
   const container = document.querySelector(".ord-form");
   const radios = document.querySelectorAll("input[type='radio'][computer-id]");
 
+  
+
   radios.forEach((radio) => {
     radio.addEventListener("input", async (e) => {
       const computer_id = radio.getAttribute("computer-id");
@@ -139,6 +145,7 @@ function persGET() {
       const pers = await Information.postJSON("/admin/pers/find", {
         computer_id: computer_id,
       });
+
       let monitors = pers.filter((e) => {
         if (e.tipo == "MONITOR") {
           return e;
@@ -210,14 +217,13 @@ async function ticketUpdate() {
     const formData = new FormData(form);
 
     const body = {};
-    const app = document.querySelector("#app")
+    const app = document.querySelector("#app");
 
     formData.entries().forEach(([key, value]) => {
-
       body[key] = value;
 
-
-      if(key === "subcategoria" && !app.disabled) body[key] = `${value}(${app.value})` 
+      if (key === "subcategoria" && !app.disabled)
+        body[key] = `${value}(${app.value})`;
     });
 
     const ticket = await Information.postJSON("/tickets/find", {
@@ -321,7 +327,361 @@ function calculateTime(from, to) {
   return diff;
 }
 
+async function updateOrder() {
+
+
+
+
+  const inputSign = document.querySelector("#sign");
+  const canvas = document.querySelector(".sign-canvas-replica");
+  const form = document.querySelector(".sign-form");
+  if (!inputSign) return;
+
+  let dataURL = "";
+
+  const ctx = canvas.getContext("2d");
+
+  let fontSize = 150;
+  ctx.font = `${fontSize}px Imperial Script`;
+  ctx.fillStyle = "black";
+  ctx.textBaseline = "top";
+  ctx.textAlign = "left";
+
+
+  dataURL = canvas.toDataURL("image/png");
+  canvas.toBlob(function (blob) {
+    const formData = new FormData();
+    formData.append("sign", blob, "sign.png");
+
+    fetch("/admin/ordenes/print", {
+      method: "POST",
+      body: formData,
+    })
+      .then((data) => {
+        console.log("Imagen guardada");
+      })
+      .catch((error) => {
+        console.error("Error al guardar imagen:", error);
+      });
+  }, "image/png");
+
+
+  inputSign.oninput = (e) => {
+
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillText(e.target.value, 10 * 2, 100);
+
+
+
+    let dataURL = canvas.toDataURL("image/png");
+
+    canvas.toBlob(function (blob) {
+      const formData = new FormData();
+      formData.append("sign", blob, "sign.png");
+
+      fetch("/admin/ordenes/print", {
+        method: "POST",
+        body: formData,
+      })
+        .then((data) => {
+          console.log("Imagen guardada");
+        })
+        .catch((error) => {
+          console.error("Error al guardar imagen:", error);
+        });
+    }, "image/png");
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    let body = {};
+
+
+
+
+    formData.entries().forEach(([key, value]) => {
+      if (key === "sign") return;
+      body[key] = value;
+    });
+
+
+    const query = await Information.postJSON("/admin/ordenes/print", body);
+    console.log(query);
+
+
+
+  });
+}
+
+function sendOrderInformation() {
+
+  const form = document.querySelector(".ord-form");
+
+  if (!form) return
+
+  form.addEventListener("submit", async e => {
+
+    e.preventDefault()
+    Object.entries(localStorage).forEach(([key, value]) => {
+
+      localStorage.removeItem(key)
+
+    })
+
+    const formData = new FormData(form)
+
+    let body = {
+      "mouse": {
+        marca: '',
+        modelo: '',
+        serial: '',
+
+      },
+      "diademas": {
+        marca: '',
+        modelo: '',
+        serial: '',
+
+      },
+      "teclado": {
+        marca: '',
+        modelo: '',
+        serial: '',
+
+      },
+      "monitor": {
+        marca: '',
+        modelo: '',
+        serial: '',
+
+      },
+      "monitor-2": {
+        marca: '',
+        modelo: '',
+        serial: '',
+
+      },
+
+    }
+
+    formData.entries().forEach(([key, value]) => {
+
+      if (key === "order_id" || key === "type") {
+        body[key] = value
+      }
+
+      if (key === 'features') {
+
+        if (!body["features"]) {
+          body["features"] = []
+        }
+        return
+      }
+
+      if (key.includes("mouse")) {
+
+
+        let k = key.replace("mouse[", "")
+        k = k.replace("]", "");
+        body["mouse"][k] = value;
+
+
+
+
+        return
+
+      }
+      else if (key.includes("diademas")) {
+
+        let k = key.replace("diademas[", "")
+        k = k.replace("]", "");
+
+        body["diademas"][k] = value;
+
+        return
+      }
+      else if (key.includes("teclado")) {
+
+        let k = key.replace("teclado[", "")
+        k = k.replace("]", "");
+
+        body["teclado"][k] = value;
+
+        return
+      }
+      else if (key.includes("monitor") && !key.includes("-2")) {
+
+        let k = key.replace("monitor[", "")
+        k = k.replace("]", "");
+
+        body["monitor"][k] = value;
+
+        return
+      }
+      else if (key.includes("monitor-2")) {
+
+        let k = key.replace("monitor-2[", "")
+        k = k.replace("]", "");
+
+        body["monitor-2"][k] = value;
+
+        return
+      }
+      else if (key === "user_id" || key === "computer_id" || key === "emitted_date") {
+        body[key] = value
+      }
+
+
+
+    })
+
+    const ftrs = document.getElementsByName("features");
+
+    if (!body["features"]) body["features"] = [];
+
+    ftrs.forEach(ftr => {
+
+      const span = ftr.parentNode.querySelector("span");
+
+      body["features"].push({
+        "id":ftr.id,
+        "text":span.textContent,
+        "checked":ftr.checked
+      })
+
+
+
+    })
+    
+
+    body = cleanPers(body);
+        
+
+    const q = await Information.postJSON(location.href, body);
+    console.log(q);
+
+    
+    if (body.type == 'entrega' || body.type == 'recepcion' ) location.href = q.url;
+
+    TOAST("Hemos enviado un correo al firmante de la orden, espera a su firma...", "center", "#")
+
+
+
+
+
+
+
+
+  })
+
+
+
+}
+
+
+function openSignView() {
+
+  const doc = document.querySelector(".doc-order");
+  if (!doc) return;
+  const signButton = document.querySelector(".sign-button");
+
+  TOAST("Click aqui para bajar a la firma", "center", "#sign-button");
+
+
+  signButton.addEventListener("click", e => {
+
+    const signModal = document.querySelector(".data-form");
+
+    signModal.classList.remove("hidden");
+
+  })
+
+}
+
+
+async function setEntries(){
+
+  const entriesContainer = document.querySelector(".entries");
+
+  if (!entriesContainer) return
+    
+  const entries = entriesContainer.querySelectorAll(".checkbox-card");
+
+  entries.forEach(entry=>{
+
+    const input = entry.querySelector("input");
+
+    input.addEventListener("input", async e=>{
+
+      const value = (e.target.checked)?'si':'no';
+
+
+      const q = await Information.postJSON("/admin/entradas/set",{id:e.target.value,mostrar:value});
+
+      
+      
+
+    })
+
+  })
+
+  
+}
+
+
+function submitEntryForm(){
+
+
+  const Mdl = document.querySelector(".entry-form");
+
+
+  if(!Mdl) return;
+
+
+  const form = Mdl.querySelector("form");
+
+  form.addEventListener("submit",async e=>{
+
+    e.preventDefault();
+    TOAST("Actualizando Informacion....","center","#");
+
+    const formData = new FormData(e.target);
+
+
+    let body = {};
+    
+
+    formData.entries().forEach(([key,value])=>{
+
+
+      body[key] = value;
+
+
+    })
+
+
+   const q = await Information.postJSON("/admin/entradas/save",body);
+    
+
+    location.reload()
+
+
+
+  })
+
+
+
+
+
+}
+
+
 document.addEventListener("DOMContentLoaded", (e) => {
+
   select();
   autoFilter();
   inhabilitate();
@@ -330,4 +690,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
   persGET();
   ticketUpdate();
   blockSubmit();
+  updateOrder();
+  sendOrderInformation();
+  openSignView();
+  setEntries();
+  submitEntryForm();
+
+
 });

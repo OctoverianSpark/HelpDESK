@@ -1,5 +1,6 @@
-import { Element } from "./Class/Element.min.js";
-import { Information } from "./Class/Information.min.js"
+import { Element } from "./Class/Element.js";
+import { Information } from "./Class/Information.js"
+
 
 function RADIOCARD(name, id, text, icon,value = "") {
   const INPUT = new Element("INPUT", { name: name, id: id, type: "radio",value:value });
@@ -39,6 +40,16 @@ function GENCONTAINER(tag, className, childs = []) {
   return CONTAINER;
 }
 
+
+/**
+ * Create a Toast Notificaction
+ * 
+ * @param {String} text The text displayed in the Toast
+ * @param {String} pos The position ("left","center","right") where the Toast is displayed
+ * @param {String} dest The destination page for the toast
+ * 
+ * 
+ */
 function TOAST(text,pos,dest=""){
   
   Toastify({
@@ -49,7 +60,7 @@ function TOAST(text,pos,dest=""){
     margin:"10",
     position: pos,
     backgroundColor: "linear-gradient(to right,rgb(89, 74, 177),rgb(47, 66, 107))",
-    destination: dest,
+    destination: dest
   }).showToast();
 }
 
@@ -69,7 +80,27 @@ function randomColor() {
   return color;
 }
 
+function cleanPers(obj){
+
+  
+  let res = {};
+
+
+  Object.entries(obj).forEach(([key,value])=>{
+
+
+    
+    let ev= Object.values(value).every(val=>val===""||val === undefined||val===null)
+
+    if (ev) return;
+    res[key] = value;
+  })
+
+  return res;
+
+
+}
 
 
 
-export { GENCONTAINER, RADIOCARD, INPUTGROUP,TOAST, GETCOOKIES,randomColor };
+export  { GENCONTAINER, RADIOCARD, INPUTGROUP,TOAST, GETCOOKIES,randomColor,cleanPers };

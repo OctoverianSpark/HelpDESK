@@ -202,3 +202,46 @@
 
     
 }
+
+.sign-button{
+
+    margin-top: 8rem;
+
+    background-color: v.$celeste;
+    height: 10rem;
+    width: 30rem;
+    padding: 1rem;
+    border: 3px solid v.$azulOscuro;
+    border-radius: 1rem;
+    font-size: 3rem;
+    color: v.$azulFuerte;
+    font-weight: 600;
+    cursor: pointer;
+
+
+}
+
+.btn-send{
+
+    display: inline;
+    background: v.$morado;
+    color: v.$blanco;
+    font-size: 1.6rem;
+    border-radius: .8rem;
+    height: 5rem;
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+}
+
+
+.btn-entries{
+
+    height: 6rem;
+    width: 30rem;
+    font-size: 2.4rem;
+    background-color: v.$azulFuerte;
+    color: white;
+    text-align: center;
+
+}

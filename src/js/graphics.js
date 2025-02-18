@@ -1,4 +1,4 @@
-import { Information } from "./Class/Information.min.js";
+import { Information } from "./Class/Information.js";
 import {
   RADIOCARD,
   INPUTGROUP,
@@ -6,14 +6,10 @@ import {
   TOAST,
   GETCOOKIES,
   randomColor,
-} from "./GLOBALS.min.js";
+} from "./GLOBALS.js";
 
-//NOTE: Libraries Imports
-import {
-  Chart,
-  registerables,
-} from "https://cdn.jsdelivr.net/npm/chart.js/dist/chart.mjs";
-import * as helpers from "https://cdn.jsdelivr.net/npm/chart.js/dist/helpers.mjs";
+import { Chart,registerables } from "chart.js";
+
 
 Chart.register(...registerables);
 

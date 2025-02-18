@@ -39,5 +39,24 @@ canvas{
     border-radius: 2rem;
 }
 
+.sign-canvas-replica{
+    background-color: v.$blanco;
+    height: 20rem;
+    width: 50rem;
+    font-family: Imperial;
+    font-size: 3rem;
+}
 
 
+.checklist-entries{
+    width: 140rem;
+
+    .container-input{
+
+
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+    }
+}
