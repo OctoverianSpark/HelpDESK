@@ -31,7 +31,7 @@ use Google\Service\Drive\DriveFile;
 
       $fileMetadata = new DriveFile([
          "name"=>$fileName,
-         "parents"=>["1JO8wNF0OuvDb80dg8rCwS75DgnKvT__l"]
+         "parents"=>["14JggU_YDyT1clNxpxq9WD0IRVbu_hcys"]
       ]);
 
       $content = file_get_contents($file);
