@@ -83,8 +83,7 @@ $url = $_SERVER["REQUEST_URI"];
                                 </div>
                                 <div class="container-nav-link">
 
-                                    <button class="nav_link">Entradas</button>
-                                    <?php include "../includes/templates/drop/admin/entries.php" ?>
+                                    <a href="/admin/entradas" class="nav_link">Entradas</a>
 
 
                                 </div>
