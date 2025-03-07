@@ -134,6 +134,7 @@
 
   .container-actions {
     position: sticky;
+    display: flex;
     top: 0;
     left: 0;
     background-color: v.$blanco;
@@ -252,7 +253,7 @@
   inset: 0;
   width: 100%;
   animation: show linear 1s;
-  background-color: transparent;
+  background-color: rgba(white, 0.7);
   backdrop-filter: blur(10px);
 
   display: grid;

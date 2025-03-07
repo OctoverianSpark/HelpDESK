@@ -22,7 +22,7 @@
    <div class="container-main-data">
 
       <div class="container-data">
-         <p>Fecha de Emisi&oacute;n: <?php echo date("d / m / Y", strtotime($order->emitted_date)) ?></p>
+         <p>Fecha de Emisi&oacute;n: <?php echo date("d / m / Y") ?></p>
          <p>Empresa: Asistente Virtual</p>
          <p>Cargo: <?php echo ucwords(strtolower($usr->cargo)) ?> </p>
       </div>

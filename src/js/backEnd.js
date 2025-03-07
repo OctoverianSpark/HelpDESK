@@ -412,7 +412,7 @@ async function updateOrder() {
     const query = await Information.postJSON("/admin/ordenes/print", body);
     console.log(query);
 
-
+    location.href = "/"
 
   });
 }

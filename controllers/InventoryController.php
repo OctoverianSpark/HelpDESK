@@ -65,7 +65,6 @@ class InventoryController
         
         if($_SERVER["REQUEST_METHOD"] === "POST"){
 
-
             $inv = new Inventory($_POST);
 
 
@@ -104,10 +103,8 @@ class InventoryController
 
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $inv->sync($_POST);
 
-            $inv = $inv->sync($_POST);
-
-            $_POST["inventario"]["id"] = $id;
             $per = new Perifericos($_POST["perifericos"]);
 
 

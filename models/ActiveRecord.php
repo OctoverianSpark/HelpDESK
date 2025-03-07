@@ -198,6 +198,7 @@ abstract class ActiveRecord extends ObjectCreator{
     public function sync($args = []) {
 
         foreach($args as $key=>$value){
+            
             $this->$key = $value;
         }
 

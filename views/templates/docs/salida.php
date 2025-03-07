@@ -84,6 +84,24 @@
       </div>
    </div>
 
+   <?php $i = 2 ?>
+
+
+   <?php foreach($pers as $key=>$value){ ?>
+      <div class="table-row">
+         <div class="cell cell-no"><?php echo $i++?></div>
+         <div class="cell"><?php echo strtoupper(str_replace("-"," ",$key))?></div>
+         <div class="cell"><?php echo $pers[$key]["marca"] ?></div>
+         <div class="cell"><?php echo $pers[$key]["modelo"] ?></div>
+         <div class="cell"><?php echo "N/A" ?></div>
+         <div class="cell"><?php echo "N/A" ?></div>
+         <div class="cell">
+            <input type="text">
+         </div>
+      </div>
+
+   <?php }?>
+
 
 
 

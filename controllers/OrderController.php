@@ -100,7 +100,7 @@ class  OrderController
 
             $html = str_replace("{{emission_date}}", $order->emitted_date, $html);
 
-            $return = $order->return_date === "NO RETURN"?"Sin Retorno":$order->return_date;
+            $return = $order->return_date === "no return"?"Sin Retorno":$order->return_date;
 
             $html = str_replace("{{return_date}}", $return , $html);
             $html = str_replace("{{days}}", $days, $html);
@@ -131,8 +131,10 @@ class  OrderController
             ]);
         } else {
 
+            $inv = Inventory::find($order->computer_id);
+            
             echo json_encode([
-                "msg" => enviarCorreo($html, "Orden Generada", ["alexander.p@asistentevirtualsas.com", "jean.pr@asistentevirtualsas.com"]) ?? "Message sent!!!"
+                "msg" => enviarCorreo($html, "Orden Generada", [$inv->correo_dominio]) ?? "Message sent!!!"
             ]);
         }
         exit;
@@ -182,7 +184,7 @@ class  OrderController
         $args = ["state" => "generada"];
         $order->sync($args);
         $eq = Inventory::find($order->computer_id);
-        $usr = Personal::PIVOTFINDER($order->user_id, "avsas");
+        $usr = Personal::PIVOTFINDER($order->user_id, $eq->sede);
 
         $pers = [];
 
@@ -192,7 +194,9 @@ class  OrderController
         foreach ($json as $key => $value) {
             if (in_array($key, ["mouse", "diademas", "monitor", "monitor-2", "teclado"])) {
                 $pers[$key] = $value;
+                
             }
+            
         }
 
 

@@ -65,7 +65,7 @@ class Inventory extends ActiveRecord
         $atributos = [];
         foreach(static::$columnasDB as $col){
 
-            if($this->$col == null) continue;
+            if($this->$col == null || in_array($col,["nombre","apellido","tipo_documento","documento","telefono","correo",])) continue;
 
             $atributos[$col] = $this->$col;
 
