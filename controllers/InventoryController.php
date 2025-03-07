@@ -105,23 +105,40 @@ class InventoryController
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $inv->sync($_POST);
 
-            $per = new Perifericos($_POST["perifericos"]);
 
 
             $resultado  = $inv->guardar();
 
 
             if (isset($_POST["perifericos"])) {
-                foreach ($_POST["perifericos"] as $periferico) {
 
-                    $periferico["computer_id"] = $resultado;
+                $existingPerifericos = array_column($perifericos, 'id');
+                $postedPerifericos = array_column($_POST["perifericos"], 'id');
 
-                    $per = new Perifericos($periferico);
+                $toDelete = array_diff($existingPerifericos, $postedPerifericos);
+                $toAdd = array_diff($postedPerifericos, $existingPerifericos);
 
-                    $per->eliminar();
 
-                    $per->guardar();
+                foreach ($toDelete as $perId) {
+                    $periferico = Perifericos::find($perId);
+                    $periferico->eliminar();
                 }
+
+                
+
+                foreach ($_POST["perifericos"] as $per) {
+                    if (in_array($per['id'], $toAdd)) {
+                        $periferico = new Perifericos($per);
+                        $periferico->computer_id = $id;
+                        $periferico->guardar();
+                    } else {
+                        $periferico = Perifericos::find($per['id']);
+                        
+                        $periferico->sync($per);
+                        $periferico->guardar();
+                    }
+                }
+
             }
 
             if ($resultado) {
@@ -139,7 +156,6 @@ class InventoryController
 
     public static function actions(){
 
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
             
             
             $data = json_decode(file_get_contents("php://input"),true);
@@ -156,7 +172,6 @@ class InventoryController
 
 
 
-        }
 
 
     }

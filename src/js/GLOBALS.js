@@ -60,7 +60,8 @@ function TOAST(text,pos,dest=""){
     margin:"10",
     position: pos,
     backgroundColor: "linear-gradient(to right,rgb(89, 74, 177),rgb(47, 66, 107))",
-    destination: dest
+    destination: dest,
+    width:1200
   }).showToast();
 }
 

@@ -711,16 +711,19 @@ async function viewAdminTicket() {
 }
 
 function invActions() {
-  const ViewMdl = document.querySelector(".modal-inv-view");
-
+  const ViewMdl = document.querySelector(".inv-view");
+  
   if (!ViewMdl) return;
 
   const stockBTN = ViewMdl.querySelector(".stock-btn");
+  
   const deleteBTN = ViewMdl.querySelector(".delete-btn");
   const updateBTN = ViewMdl.querySelector(".update-btn");
 
   stockBTN.addEventListener("click", (e) => {
     const id = stockBTN.getAttribute("cellId");
+    
+
     MOVETOSTOCK(id);
   });
   deleteBTN.addEventListener("click", (e) => {

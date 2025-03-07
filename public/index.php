@@ -119,6 +119,7 @@ $router->post("/admin/inventario/actions", [InventoryController::class, "actions
 //NOTE: LAPI FUNCTIONS
 $router->post("/admin/pers/find",[API_Inventory::class,"PERSSEARCH"]);
 $router->post("/admin/inventory/find",[API_Inventory::class,"INVENTORYSEARCH"]);
+$router->post("/admin/inventory/actions",[API_Inventory::class,"actions"]);
 
 $router->post("/tickets/find",[API_Tickets::class,"TICKETSEARCH"]);
 $router->post("/tickets/get",[API_Tickets::class,"TICKETSGET"]);

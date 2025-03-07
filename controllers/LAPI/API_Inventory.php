@@ -12,6 +12,26 @@
 
 
 
+      public static function SET_STOCK(){
+
+         $DATA = json_decode(file_get_contents("php://input"));
+
+
+         $id = filter_var($DATA->id,FILTER_VALIDATE_INT);
+
+
+         $computer = Inventory::find($id);
+
+         $computer->user_id = 0;
+
+         $computer->guardar();
+
+
+
+
+
+      }
+
       public static function PERSSEARCH(){
 
             $DATA = json_decode(file_get_contents("php://input"));

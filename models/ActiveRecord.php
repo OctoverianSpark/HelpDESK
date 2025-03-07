@@ -54,7 +54,7 @@ abstract class ActiveRecord extends ObjectCreator{
 
     public static function find($id){
         
-        $query = "SELECT * FROM " . static::$tabla." WHERE ID = $id";
+        $query = "SELECT * FROM " . static::$tabla." WHERE id = $id";
         $resultado = self::consultarSQL($query);
         
         return array_shift( $resultado );
