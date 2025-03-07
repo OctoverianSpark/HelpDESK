@@ -174,6 +174,7 @@ export function metricTime(query) {
   lineChart(ctx, payload);
 }
 
+
 /**
  * Creates a circle chart (doughnut or pie) using Chart.js.
  *

@@ -175,4 +175,17 @@ class InventoryController
 
 
     }
+
+
+    public static function dashboard(Router $router){
+
+
+
+        
+        $router->render("/admin/inventario/dashboard");
+
+
+    }
+
+
 }

@@ -3,9 +3,8 @@
    "short_name": "HelpDESK",
    "description": "A web application for help desk management.",
    "start_url": "/",
+   "scope":"/",
    "display": "standalone",
-   "background_color": "#ffffff",
-   "theme_color": "#000000",
    "icons": [
       {
         "src": "./icons/manifest-icon-192.maskable.png",

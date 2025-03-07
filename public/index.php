@@ -68,6 +68,7 @@ $router->post("/admin/export", [AdminController::class, "export"]);
 /* * Inventario * */
 $router->get("/admin/inventario", [InventoryController::class, "index"]);
 $router->post("/admin/inventario", [InventoryController::class, "index"]);
+$router->get("/admin/inventario/dashboard", [InventoryController::class, "dashboard"]);
 
 
 $router->get("/admin/inventario/crear", [InventoryController::class, "crear"]);
