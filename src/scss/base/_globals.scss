@@ -156,6 +156,13 @@ main:has(.table-wrapper){
     overflow-y: auto;
     height: clamp(30rem, 40rem, 50rem);
     margin: 1rem;
+    display: grid;
+    place-items: center;
+}
+
+hr{
+    width: 80%;
+    border: 1px solid black;
 }
 
 .table{

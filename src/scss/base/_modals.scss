@@ -612,3 +612,83 @@
 
   }
 }
+
+.user-detail-modal{
+
+  padding: 2rem;
+  top: 0;
+  position: fixed;
+
+  &.hidden{
+
+
+    opacity: 0;
+    visibility: 0;
+    pointer-events: none;
+
+
+  }
+
+  p{
+    display: flex;
+    gap: 10px;
+  }
+
+}
+
+
+.create-server-modal{
+
+
+  position: absolute;
+  inset: 0;
+  background-color: rgba(white,.3);
+  backdrop-filter: blur(10px);
+
+
+  &.hidden{
+    opacity: 0;
+    visibility: hidden;
+  }
+
+
+  form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    flex-wrap: wrap;
+    width: 45%;
+
+
+    label:has(input#cost){
+      width: 100%;
+    }
+  }
+
+}
+.create-user-modal{
+
+
+  position: absolute;
+  inset: 0;
+  background-color: rgba(white,.3);
+  backdrop-filter: blur(10px);
+
+
+  &.hidden{
+    opacity: 0;
+    visibility: hidden;
+  }
+
+
+  form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    flex-wrap: wrap;
+    width: 45%;
+  }
+
+}

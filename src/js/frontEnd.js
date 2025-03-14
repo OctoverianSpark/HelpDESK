@@ -13,7 +13,7 @@ import {
   metricTime,
   circleChart,
   barChart
-  
+
 } from "./graphics.js";
 
 //NOTE:CLASS FOLDER IMPORTATIONS
@@ -138,7 +138,7 @@ function addPer() {
   });
 }
 
-function noReturn(){
+function noReturn() {
 
 
   const NORETURNCHECK = document.querySelector("#no-return");
@@ -147,10 +147,10 @@ function noReturn(){
   const returnDate = document.querySelector("#return")
 
   if (!NORETURNCHECK) return
-    
-  
 
-  NORETURNCHECK.addEventListener("input",e=>{
+
+
+  NORETURNCHECK.addEventListener("input", e => {
 
     returnDate.disabled = e.target.checked
 
@@ -517,9 +517,8 @@ async function viewAdminTicket() {
           "P",
           {},
           {
-            textContent: `${key} : ${
-              value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
-            }`,
+            textContent: `${key} : ${value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+              }`,
           },
           [BUTTON]
         );
@@ -712,17 +711,17 @@ async function viewAdminTicket() {
 
 function invActions() {
   const ViewMdl = document.querySelector(".inv-view");
-  
+
   if (!ViewMdl) return;
 
   const stockBTN = ViewMdl.querySelector(".stock-btn");
-  
+
   const deleteBTN = ViewMdl.querySelector(".delete-btn");
   const updateBTN = ViewMdl.querySelector(".update-btn");
 
   stockBTN.addEventListener("click", (e) => {
     const id = stockBTN.getAttribute("cellId");
-    
+
 
     MOVETOSTOCK(id);
   });
@@ -1104,7 +1103,7 @@ function usrsCreationForm() {
 }
 
 
-function entriesFormFront(){
+function entriesFormFront() {
 
 
   const containerEntries = document.querySelector(".entries");
@@ -1118,7 +1117,7 @@ function entriesFormFront(){
   const Mdl = document.querySelector(".entry-form");
   const MdlForm = Mdl.querySelector("form");
 
-  addEntriesBTN.addEventListener("click",e=>{
+  addEntriesBTN.addEventListener("click", e => {
 
     Mdl.classList.remove("hidden")
 
@@ -1126,9 +1125,9 @@ function entriesFormFront(){
     const inputs = MdlForm.querySelectorAll("input");
     const textarea = MdlForm.querySelector("textarea")
 
-    inputs.forEach(input=>{
+    inputs.forEach(input => {
       if (input.type === 'radio') input.checked = false;
-      if (input.type === 'text' || input.type === 'hidden') input.value = ""; 
+      if (input.type === 'text' || input.type === 'hidden') input.value = "";
 
     })
     textarea.value = "";
@@ -1138,44 +1137,44 @@ function entriesFormFront(){
 
 
 
-  updateEntryBTN.forEach(btn=>{
+  updateEntryBTN.forEach(btn => {
 
-    btn.addEventListener("click",async e=>{
+    btn.addEventListener("click", async e => {
 
       const id = btn.getAttribute("data-id");
 
 
       Mdl.classList.remove("hidden");
 
-      const query = await Information.postJSON("/admin/entradas/find",{
+      const query = await Information.postJSON("/admin/entradas/find", {
 
-        id:id
+        id: id
 
       })
 
 
-      Object.entries(query).forEach(([key,value])=>{
+      Object.entries(query).forEach(([key, value]) => {
 
         if (!MdlForm[key]) return;
 
         const actual = MdlForm[key];
 
         if (actual.length > 0) {
-          
-          actual.forEach(radio=>{
+
+          actual.forEach(radio => {
 
             radio.checked = radio.value === value.toLowerCase();
 
           })
-          
+
           return;
 
         }
         MdlForm[key].value = value;
-        
+
 
       })
-      
+
 
 
 
@@ -1186,22 +1185,22 @@ function entriesFormFront(){
 
 
   })
-  deleteEntryBTN.forEach(btn=>{
+  deleteEntryBTN.forEach(btn => {
 
-    btn.addEventListener("click",async e=>{
+    btn.addEventListener("click", async e => {
 
       const id = btn.getAttribute("data-id");
 
 
 
-      const query = await Information.postJSON("/admin/entradas/delete",{
+      const query = await Information.postJSON("/admin/entradas/delete", {
 
-        id:id
+        id: id
 
       })
 
-  
-      
+
+
       btn.parentNode.parentNode.remove();
 
 
@@ -1215,14 +1214,14 @@ function entriesFormFront(){
   })
 
 
-  
 
 
 
-} 
+
+}
 
 
-function results(){
+function results() {
 
 
   const params = new URLSearchParams(window.location.search);
@@ -1231,12 +1230,229 @@ function results(){
   const result = params.get("result");
 
 
-  if(result === "1") TOAST("Solicitud realizada correctamente!!!","center","/");
-  
+  if (result === "1") TOAST("Solicitud realizada correctamente!!!", "center", "/");
+
 
 
 
 }
+
+
+function ServerForm() {
+
+
+  const Mdl = document.querySelector(".create-server-modal");
+  const form = Mdl.querySelector(".srvr-form");
+  const updateBTN = document.querySelectorAll(".update-srv-btn");
+  const deleteBTN = document.querySelectorAll(".delete-srv-btn");
+
+  const createBTN = document.querySelector(".create-srvr-btn")
+
+  updateBTN.forEach(btn => {
+
+    btn.addEventListener("click", async e => {
+
+      const id = btn.getAttribute("data-id");
+
+      const query = await Information.postJSON("/admin/servers/find", { id })
+
+      Object.entries(query).forEach(([key, value]) => {
+
+
+        if (key === "maintenance") {
+
+          Array.from(form[key].options).forEach(option => {
+            if (option.value === value) option.selected = true;
+            else option.selected = false;
+          })
+        } else {
+          form[key].value = value
+        }
+
+
+
+      })
+
+      Mdl.classList.remove("hidden")
+
+
+    })
+
+
+  })
+
+  createBTN.addEventListener("click", e => {
+
+
+    Mdl.classList.remove("hidden")
+
+
+    Object.entries(form).forEach(([key, value]) => {
+
+      if (key === "maintenance") return
+      form[key].value = "";
+
+
+    })
+
+
+  })
+
+  deleteBTN.forEach(btn => {
+    btn.addEventListener("click", async e => {
+
+
+      const id = btn.getAttribute("data-id");
+
+
+      const query = await Information.postJSON("/admin/servers/delete", { id });
+
+
+      location.reload();
+
+    })
+  })
+
+
+  form.addEventListener("submit", async e => {
+
+    e.preventDefault();
+
+    const data = new FormData(e.target);
+
+
+    let body = {}
+
+    data.entries().forEach(([key, value]) => {
+
+
+      body[key] = value;
+
+
+    })
+
+
+
+
+    const query = await Information.postJSON("/admin/servers/save", body);
+
+
+    setTimeout(() => {
+
+      form.querySelector(".btn-submit").disabled = false;
+    }, 1500);
+
+
+    Mdl.classList.add("hidden")
+
+    location.reload();
+
+
+  })
+
+
+
+
+}
+
+
+
+function UserForm() {
+
+
+  const Mdl = document.querySelector(".create-user-modal");
+  const form = Mdl.querySelector(".usr-form");
+  const addUserBTN= document.querySelector(".create-srvr-usr-btn")
+  const updateBTN = document.querySelector(".update-usr-btn");
+  const deleteBTN = document.querySelector(".delete-usr-btn");
+
+
+  updateBTN.addEventListener("click", async e=>{
+
+
+    const id = updateBTN.getAttribute("data-id")
+
+    Mdl.classList.remove("hidden");
+
+    const query = await Information.postJSON("/admin/server_users/find",{id});
+
+    Object.entries(query.user).forEach(([key,value])=>{
+
+        if(["created_at","updated_at"].includes(key)) return;
+        
+        if(key === "server_id"){
+
+          Array.from(form[key].options).forEach(option=>{
+
+            if(option.value === value) option.selected = true;
+            else option.selected = false;
+
+          })
+          return;
+        }
+
+        
+        form[key].value = value;
+
+
+    })
+
+
+
+  })
+
+  deleteBTN.addEventListener("click",async e=>{
+
+
+    const id = updateBTN.getAttribute("data-id")
+
+    await Information.postJSON("/admin/server_users/delete",{id});
+
+    location.reload();
+
+
+
+  })
+
+  addUserBTN.addEventListener("click",e=>{
+
+    Object.entries(form).forEach(([key,value])=>{
+
+
+      form[key].value = "";
+
+
+    })
+
+    Mdl.classList.remove("hidden");
+
+  })
+
+
+  form.addEventListener("submit",async e=>{
+
+    e.preventDefault();
+    const data = new FormData(e.target);
+    let body = {};
+
+    data.entries().forEach(([key,value])=>{
+      
+      body[key] = value;
+      
+    })
+
+    await Information.postJSON("/admin/server_users/save",body);
+    
+    Mdl.classList.add("hidden");
+
+    location.reload();
+
+  })
+
+
+}
+
+
 
 document.addEventListener("DOMContentLoaded", (e) => {
   addPer();
@@ -1253,4 +1469,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   noReturn();
   entriesFormFront();
   results();
+  ServerForm();
+  UserForm();
+
 });

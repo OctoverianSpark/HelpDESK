@@ -35,7 +35,6 @@ export function css() {
         .pipe(postcss([autoprefixer(), cssnano()]))
         .pipe(sourcemaps.write("."))
         .pipe(gulp.dest("./public/build/css"))
-        .pipe(notify({ message: "CSS compilado" }));
 }
 
 export function javascript() {
@@ -51,7 +50,6 @@ export function javascript() {
         .pipe(sourcemaps.write("."))
         .pipe(rename({ suffix: ".min" }))
         .pipe(gulp.dest("./public/build/js"))
-        .pipe(notify({ message: "Javascript compilado" }));
 }
 
 export async function imagenes() {
@@ -59,7 +57,6 @@ export async function imagenes() {
         .src(paths.imagenes)
         .pipe(cache(imagemin({ optimizationLevel: 3 })))
         .pipe(gulp.dest("./public/build/img"))
-        .pipe(notify("Imagen Completada"));
 }
 
 export function versionWebp() {
@@ -67,7 +64,6 @@ export function versionWebp() {
         .src(paths.imagenes)
         .pipe(webp())
         .pipe(gulp.dest("./public/build/img"))
-        .pipe(notify({ message: "Imagen Completada" }));
 }
 
 export function watchArchivos() {
@@ -77,7 +73,6 @@ export function watchArchivos() {
     gulp.watch(paths.imagenes, versionWebp);
 }
 
-export function libs() { }
 
 export default gulp.parallel(
     css,

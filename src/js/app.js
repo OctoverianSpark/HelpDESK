@@ -1,65 +1,65 @@
-import  Particle  from "./Class/Particle.js";
-
+import { Information } from "./Class/Information.js";
+import Particle from "./Class/Particle.js";
 
 console.log("App.js loaded");
 
 
-function loginBackground(){
+function loginBackground() {
     const canvas = document.querySelector(".loginCanvas")
 
     if (!canvas) return;
-        
-    
-    const ctx = canvas.getContext("2d")    
-    
-    
+
+
+    const ctx = canvas.getContext("2d")
+
+
     canvas.width = innerWidth
     canvas.height = innerHeight
-    
-    
-    
+
+
+
     let bolas = []
     for (let i = 0; i < 30; i++) {
-        bolas.push(new Particle(canvas,canvas.width/2, canvas.height /2))
-        
+        bolas.push(new Particle(canvas, canvas.width / 2, canvas.height / 2))
+
     }
-    
-    
-    function animar(){
-    
-    
-        ctx.clearRect(0,0,canvas.width,canvas.height)
-    
-        bolas.forEach(Particle=>{
-    
-            bolas.forEach(target=>{
-    
+
+
+    function animar() {
+
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        bolas.forEach(Particle => {
+
+            bolas.forEach(target => {
+
                 let dx = target.x - Particle.x
                 let dy = target.y - Particle.y
-                let dist = Math.sqrt(dx**2 + dy**2)
-    
+                let dist = Math.sqrt(dx ** 2 + dy ** 2)
+
                 if (dist < 100) {
                     ctx.beginPath()
-                    ctx.moveTo(Particle.x,Particle.y)
-                    ctx.lineTo(target.x,target.y)
+                    ctx.moveTo(Particle.x, Particle.y)
+                    ctx.lineTo(target.x, target.y)
                     ctx.stroke()
                     ctx.strokeStyle = "#2b0c7e";
                     ctx.closePath()
-        
-                    
+
+
                 }
-    
-    
+
+
             })
-             
+
             Particle.draw()
             Particle.move()
         })
-    
+
         requestAnimationFrame(animar)
-    
+
     }
-    
+
     animar()
 
 }
@@ -67,20 +67,20 @@ function loginBackground(){
 
 
 
-function showPswrd(){
+function showPswrd() {
     const psswrd = document.querySelector("#psswrd")
     const showPsswrdBtn = document.querySelector(".pswrd-btn")
     if (!showPsswrdBtn) return;
     console.log(showPsswrdBtn)
-        
+
     const icon = showPsswrdBtn.querySelector("i")
-    showPsswrdBtn.addEventListener("click",e=>{
+    showPsswrdBtn.addEventListener("click", e => {
 
         if (psswrd.type == "password") {
             psswrd.type = "text"
             icon.classList.remove("bi-eye-fill")
             icon.classList.add("bi-eye-slash-fill")
-        }else{
+        } else {
             psswrd.type = "password"
             icon.classList.remove("bi-eye-slash-fill")
             icon.classList.add("bi-eye-fill")
@@ -88,36 +88,37 @@ function showPswrd(){
 
     })
 
-    
+
 }
-function notificarClickup(){
-    
+
+function notificarClickup() {
+
     const form = document.querySelector(".tickets-user-form")
 
     if (!form) return
 
-    form.addEventListener("submit",e=>{
+    form.addEventListener("submit", e => {
         const api = "pk_82319104_47GHX06YGVUDO4QUAIYXJAET4U5B4ZLW"
-        
+
         const listId = '901405411492';
-    
-    
-    
+
+
+
         const resp = fetch(
             `https://api.clickup.com/api/v2/list/${listId}/task`,
             {
                 method: 'POST',
                 headers: {
-                'Content-Type': 'application/json',
-                Authorization: api
+                    'Content-Type': 'application/json',
+                    Authorization: api
                 },
                 body: JSON.stringify({
-                name: 'Ticket Creado',
-                description: 'Revisar aplicacion de tickets',
+                    name: 'Ticket Creado',
+                    description: 'Revisar aplicacion de tickets',
                 })
             }
-            )
-    
+        )
+
 
 
 
@@ -125,12 +126,12 @@ function notificarClickup(){
 
 
     })
-    }
+}
 
-function modalKEY(){
+function modalKEY() {
 
 
-    document.addEventListener("keydown",e=>{
+    document.addEventListener("keydown", e => {
 
         const modal = document.querySelectorAll(".modal")
         if (e.key.toLowerCase() === "escape") {
@@ -160,22 +161,113 @@ function registerServiceWorker() {
 }
 
 
+async function openRDPModal() {
+
+    const usersBTN = document.querySelectorAll(".usr-btn")
+    const UsrMdl = document.querySelector(".user-detail-modal")
+
+    usersBTN.forEach(btn => {
 
 
 
+        btn.addEventListener("click", async e => {
+            const id = btn.getAttribute("data-id")
 
 
 
-document.addEventListener("DOMContentLoaded",e=>{
-
-
+            const query = await Information.postJSON("/admin/server_users/find", {
+                id: id
+            })
             
 
-        loginBackground();
-        showPswrd();
-        notificarClickup();
-        modalKEY();
-        registerServiceWorker();
-        
+
+            const rdpContent = `
+            screen mode id:i:2
+            desktopwidth:i:1920
+            desktopheight:i:1080
+            session bpp:i:32
+            full address:s:${query.server.ip}
+            username:s:${query.user.username}
+            prompt for credentials:i:1
+            audio mode:i:2
+            redirectclipboard:i:1
+            redirectprinters:i:1
+            redirectcomports:i:0
+            redirectsmartcards:i:1`
+
+
+            UsrMdl.classList.remove("hidden");
+
+            Object.entries(query.user).forEach(([key,value])=>{
+
+                
+                if(key === "server_id") return
+
+                if(key=== 'id'){
+
+                    const dltbtn= UsrMdl.querySelector(".delete-usr-btn")
+                    const updatebtn= UsrMdl.querySelector(".update-usr-btn")
+
+                    dltbtn.setAttribute("data-id",value)
+                    updatebtn.setAttribute("data-id",value)
+                    return
+
+                }
+
+                const span = UsrMdl.querySelector(`#${key}`)
+                
+                span.textContent = value
+            })
+
+            document.querySelector("#server").textContent = " " + query.server.ip;
+
+
+
+            const rdpBTN = document.querySelector(".download-rdp")
+
+            rdpBTN.addEventListener("click",e=>{
+
+
+                const blob = new Blob([rdpContent],{type:"aplication/rdp"});
+                const url = URL.createObjectURL(blob);
+
+
+                const a = document.createElement("a")
+                a.href = url;
+                a.download = "conexion.rdp"
+                document.body.appendChild(a);
+                a.click()
+                document.body.removeChild(a)
+                URL.revokeObjectURL(url);
+
+
+            })
+
+        })
+
+
+    })
+
+
+
+
+}
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", e => {
+
+
+
+
+    loginBackground();
+    showPswrd();
+    notificarClickup();
+    modalKEY();
+    registerServiceWorker();
+    openRDPModal()
+
 }
 );

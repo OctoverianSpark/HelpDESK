@@ -165,7 +165,16 @@ class InventoryController
             
 
             if($data["action"] === "stock") $inv->setStock();
-            if($data["action"] === "delete") $inv->eliminar();
+            if($data["action"] === "delete") {
+
+                $pers = Perifericos::filter("computer_id","=",$inv->id);
+
+                foreach($pers as $per){
+                    $per->eliminar();
+                }
+
+                $inv->eliminar();
+            }
 
             echo json_encode(["msg"=>"1"]);
             exit;

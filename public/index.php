@@ -16,9 +16,11 @@ use Controllers\LAPI\API_Documentations;
 use Controllers\LAPI\API_ENTRIES;
 use Controllers\LAPI\API_Inventory;
 use Controllers\LAPI\API_ORDERS;
+use Controllers\LAPI\API_SERVERS;
 use Controllers\LAPI\API_Tickets;
 use Controllers\LAPI\API_USERS;
 use Controllers\OrderController;
+use Controllers\ServersController;
 use MVC\Router;
 use Models\Encuestas;
 
@@ -109,10 +111,23 @@ $router->get("/admin/entradas", [EntrieController::class, "index"]);
 $router->post("/admin/entradas", [EntrieController::class, "index"]);
 
 
+/* Servidores */
+
+$router->get("/admin/servers",[ServersController::class, "index"]);
+$router->post("/admin/server_users/find",[API_SERVERS::class, "FIND_USERS"]);
+$router->post("/admin/server_users/save",[API_SERVERS::class, "SAVE_USERS"]);
+$router->post("/admin/server_users/delete",[API_SERVERS::class, "DELETE_USERS"]);
+$router->post("/admin/servers/find",[API_SERVERS::class, "FIND_SERVER"]);
+$router->post("/admin/servers/save",[API_SERVERS::class, "SAVE_SERVER"]);
+$router->post("/admin/servers/delete",[API_SERVERS::class, "DELETE_SERVER"]);
 
 
 $router->get("/notificaciones", [PagesController::class, "notificaciones"]);
 $router->post("/admin/inventario/actions", [InventoryController::class, "actions"]);
+
+
+
+
 
 
 
