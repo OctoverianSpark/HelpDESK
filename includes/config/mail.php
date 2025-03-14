@@ -5,7 +5,7 @@ function conectarCorreo(){
 
     
     $user ="helperbot@asistentevirtualsas.com";
-    $password = "trnm lmbk suur acpz";
+    $password = "dvhv mojq qqmw ihht";
 
     $mail = new PHPMailer();
     $mail->isSMTP();
@@ -17,7 +17,7 @@ function conectarCorreo(){
     $mail->Port = 587;
 
 
-    $mail->setFrom($user,"Equipo de Asistente Virtual S.A.S");
+    $mail->setFrom($user,"Equipo de GoXpert");
 
     return $mail;
 
@@ -40,6 +40,7 @@ function asignado($tecnico,$tickets){
     $mail->Body .= "</body>";
 
     $mail->send();
+
 
 }
 

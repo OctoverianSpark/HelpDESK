@@ -117,17 +117,16 @@ class InventoryController
 
                 $toDelete = array_diff($existingPerifericos, $postedPerifericos);
                 $toAdd = array_diff($postedPerifericos, $existingPerifericos);
-
+                
 
                 foreach ($toDelete as $perId) {
                     $periferico = Perifericos::find($perId);
                     $periferico->eliminar();
                 }
 
-                
 
                 foreach ($_POST["perifericos"] as $per) {
-                    if (in_array($per['id'], $toAdd)) {
+                    if (!in_array($per['id'], $toAdd)) {
                         $periferico = new Perifericos($per);
                         $periferico->computer_id = $id;
                         $periferico->guardar();
