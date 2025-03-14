@@ -138,7 +138,7 @@
 </div>
 
 
-<div class="modal create-user-modal">
+<div class="modal create-user-modal hidden">
 
    <form class="usr-form">
 
