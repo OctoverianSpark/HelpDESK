@@ -404,7 +404,7 @@ $rHeight = 1500;
 $table->addRow();
 
 $cell = $table->addCell(4350,["valign"=>"center"]);
-$cell->addImage(__DIR__ . '/../../public/build/img/sign.png', [
+$cell->addImage($_SESSION["sign_name"], [
    "width" => "90%",
    "height"=> 80,
    "alignment" => Jc::START

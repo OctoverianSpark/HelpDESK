@@ -25,16 +25,28 @@ class API_ORDERS
       if (isset($_FILES["sign"])) {
          
          $file = $_FILES["sign"];
+         
+         $tempDir = sys_get_temp_dir() . "\\user_" . session_id(); // Directorio temporal único
 
-         $path= __DIR__ . "/../../public/build/img";
+         // Crear el directorio si no existe
+         if (!file_exists($tempDir)) {
+             mkdir($tempDir, 0777, true);
+         }
+         
+         // Ruta completa del archivo
+         $tempPath = $tempDir . "\\" . basename($file["name"]);
+
+         move_uploaded_file($file["tmp_name"], $tempPath);
+
+         $_SESSION["sign_name"] = $tempPath;
+
+         
 
 
-         move_uploaded_file($file["tmp_name"],$path . "/" . $file["name"]);
 
          exit;
 
       }
-
       $order = Ordenes::find($post->order_id);
 
       $eq = Inventory::find($order->computer_id);
@@ -67,8 +79,9 @@ class API_ORDERS
   
       $id = saveData($name);
 
-      unlink(__DIR__ . '/../../public/build/img/sign.png');
+      unlink($_SESSION["sign_name"]);
       unlink($name);
+      $_SESSION["sign_name"] = null;
       
       echo json_encode(["msg"=>"Done!!!!","link"=>"https://docs.google.com/document/d/$id"]);
       exit;
