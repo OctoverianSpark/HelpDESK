@@ -1,0 +1,102 @@
+@use "../../base/vars" as v;
+
+.inv-dashboard {
+  gap: 2rem;
+  margin: 20px;
+
+  .dashboard-pie-data {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5rem;
+    width: 100%;
+  }
+
+  .container-dashboard {
+    background-color: #2941bb;
+
+    border-radius: 1.5rem;
+
+    box-shadow: 0.5rem 0.5rem 0.5rem 0.5rem rgba(rgb(20, 124, 209), 0.2);
+    padding: 5rem;
+    height: 50rem;
+  }
+
+  .container-brief-cards {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   
+    margin: 1rem;
+
+    .brief-card {
+      background-color: v.$blanco;
+
+      position: relative;
+      width: 35rem;
+      height: 8rem;
+      border-radius: 0.5rem;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+
+      .avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 5rem;
+
+        height: 5rem;
+        padding: 1rem;
+        margin: 1rem;
+        border-radius: 0.5rem;
+
+        i {
+          background: linear-gradient(
+            to right,
+            v.$moradoFuerte 20%,
+            v.$morado 80%
+          );
+          background-clip: text;
+          color: transparent;
+          font-size: 4rem;
+        }
+      }
+
+      .card-data {
+        display: flex;
+        align-items: left;
+        justify-content: flex-start;
+        flex-direction: column;
+        width: 100%;
+
+        span {
+          width: 100%;
+          text-align: left;
+          margin: 0;
+          padding: 0;
+          font-family: Pangram;
+        }
+
+        .card-title {
+          font-family: Pangram-Black;
+          font-size: 2rem;
+          background: linear-gradient(to right, v.$azul, v.$azulFuerte);
+          background-clip: text;
+          color: transparent;
+        }
+
+        .card-result {
+          font-size: 2.5rem;
+          font-weight: 900;
+          letter-spacing: 1px;
+          background: linear-gradient(to right, v.$azul, v.$azulFuerte);
+          background-clip: text;
+          color: transparent;
+        }
+      }
+    }
+  }
+}

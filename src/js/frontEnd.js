@@ -8,11 +8,13 @@ import {
 } from "./GLOBALS.js";
 
 import {
+  setInvTypeChart,
   PerTypeGraphic,
   TechnicalPodium,
   metricTime,
   circleChart,
-  barChart
+  barChart,
+  
 
 } from "./graphics.js";
 
@@ -23,6 +25,23 @@ import { Chart } from "chart.js";
 
 
 Chart.defaults.font.family = "Pangram";
+Chart.defaults.backgroundColor = [
+  'rgba(255, 99, 132, 1)',
+  'rgb(93, 95, 226)',
+  'rgba(255, 206, 86, 1)',
+  'rgba(75, 192, 192, 1)',
+  'rgba(153, 102, 255,1)',
+  'rgba(255, 159, 64, 1)'
+]
+
+Chart.defaults.borderColor =  [
+  'rgba(255, 99, 132, 1)',
+  'rgb(36, 81, 110)',
+  'rgba(255, 206, 86, 1)',
+  'rgb(39, 88, 88)',
+  'rgba(153, 102, 255, 1)',
+  'rgba(255, 159, 64, 1)'
+]
 
 console.log("FrontEnd.js loaded");
 
@@ -1463,11 +1482,14 @@ function UserForm() {
 
 async function AdminDashBoard() {
 
+
+  const dashboard = document.querySelector(".admin-dashboard");
+  if(!dashboard) return;
+
   const TicketCtx = document.querySelector('#tickets-chart').getContext('2d');
 
 
   const tickets = await Information.postJSON("/tickets/get");
-  const inventory = await Information.postJSON("/admin/inventory/get");
 
 
   //NOTE: TICKETS POR MES
@@ -1477,7 +1499,6 @@ async function AdminDashBoard() {
 
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
-  console.log(currentMonth);
 
   const ticketCounts = tickets.reduce((acc, ticket) => {
     const ticketMonth = new Date(ticket.fecha).getMonth();
@@ -1495,22 +1516,6 @@ async function AdminDashBoard() {
     datasets: [{
       label: 'Tickets',
       data: Object.values(ticketCounts),
-      backgroundColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255,1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
       borderWidth: 1,
 
     }]
@@ -1558,97 +1563,9 @@ async function AdminDashBoard() {
   };
 
   const TChart = new Chart(TicketCtx, config);
-
-
-
-  const invCount = inventory.reduce((acc, data) => {
-
-    if (data.user_id == 0) {
-      acc["stock"] = (acc["stock"] || 0) + 1;
-    } else {
-      acc["asignados"] = (acc["asignados"] || 0) + 1;
-    }
-    return acc;
-  }, {});
-
-
-
-  const invDATA = {
-    labels: Object.keys(invCount).map(x => x.toUpperCase()),
-    datasets: [{
-      label: 'Tipo',
-      data: Object.values(invCount),
-      backgroundColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255,1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1,
-
-    }]
-  };
-
-
-  const invCONFIG = {
-    type: 'pie',
-    data: invDATA,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: 'Resumen de inventario',
-          color: 'white',
-          font: {
-            size: 18
-          }
-        },
-        legend: {
-          position: 'top',
-          labels: {
-            color: 'white'
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function (tooltipItem) {
-              return tooltipItem.raw;
-            }
-          }
-        },
-        datalabels: {
-          color: 'white',
-          formatter: (value, context) => {
-            return value;
-          }
-        }
-      }
-    },
-    layout: {
-      padding: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10
-      }
-    }
-  };
-
   const invCTX = document.querySelector("#inv-chart").getContext("2d");
 
-  const invChart = new Chart(invCTX, invCONFIG)
+  setInvTypeChart(invCTX);
 
   const orders = await Information.postJSON("/admin/orders/get", )
 
@@ -1676,13 +1593,12 @@ async function AdminDashBoard() {
 
     if(orderMonth === currentMonth && currentYear === orderYear)orderTypes[type].push(order);
 
-    
+
     
 
 
   })
 
-  console.log(orderTypes);
   
   
 
@@ -1694,22 +1610,6 @@ async function AdminDashBoard() {
     datasets: [{
       label: 'Tipo',
       data: Object.values(orderTypes).map(x => x.length),
-      backgroundColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255,1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
       borderWidth: 1,
 
     }]
@@ -1768,6 +1668,194 @@ async function AdminDashBoard() {
   const orderTypeChart = new Chart(orderTypeCTX, orderTypeConfig)
 
 
+  const briefCards = document.querySelector(".container-brief-cards");
+
+
+
+  const briefTickets = briefCards.querySelector(".month-total-tickets");
+  const briefINV = briefCards.querySelector(".total-inventory");
+  const briefOrders = briefCards.querySelector(".month-total-orders");
+
+  const inventory = await Information.postJSON("/admin/inventory/get");
+
+  let monthTickets = 0
+  let totalinv = inventory.length
+  let totalOrders = 0
+
+
+
+  Object.values(ticketCounts).forEach(value => {
+    
+    
+    monthTickets += value;
+      
+
+
+
+
+  });
+
+  Object.values(orderTypes).forEach(value => {
+    
+    
+    totalOrders += value.length;
+      
+
+
+
+
+  });
+
+  
+
+
+
+
+
+
+  briefTickets.textContent = monthTickets
+  briefINV.textContent = totalinv
+  briefOrders.textContent = totalOrders
+
+
+
+
+}
+
+async function InvDashboard(){
+  const dashboard = document.querySelector(".inv-dashboard");
+  const inventory = await Information.postJSON("/admin/inventory/get");
+
+  if(!dashboard) return;
+
+
+
+  const typeCTX = document.querySelector("#inv-type-chart").getContext("2d");
+
+  setInvTypeChart(typeCTX);
+
+  const propertyCTX = document.querySelector("#inv-property-chart").getContext("2d");
+
+
+  const propertyData = inventory.reduce((acc, item) => {
+    const propietario = item.propietario || "Desconocido";
+    acc[propietario] = (acc[propietario] || 0) + 1;
+    return acc;
+  }, {});
+
+  const propertyChartData = {
+    labels: Object.keys(propertyData),
+    datasets: [{
+      label: 'Propietario',
+      data: Object.values(propertyData),
+      borderWidth: 1,
+    }]
+  };
+
+  const propertyChartConfig = {
+    type: 'pie',
+    data: propertyChartData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Inventario por Propietario',
+          color: 'white',
+          font: {
+            size: 18
+          }
+        },
+        legend: {
+          position: 'top',
+          labels: {
+            color: 'white'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.label + ': ' + tooltipItem.raw;
+            }
+          }
+        }
+      }
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10
+      }
+    }
+  };
+
+  const propertyChart = new Chart(propertyCTX, propertyChartConfig);
+
+
+
+  const locationData = inventory.reduce((acc, item) => {
+    const sede = item.sede || "Desconocido";
+    acc[sede] = (acc[sede] || 0) + 1;
+    return acc;
+  }, {});
+
+  const locationChartData = {
+    labels: Object.keys(locationData),
+    datasets: [{
+      label: 'Sede',
+      data: Object.values(locationData),
+      borderWidth: 1,
+    }]
+  };
+
+  const locationChartConfig = {
+    type: 'pie',
+    data: locationChartData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Inventario por Sede',
+          color: 'white',
+          font: {
+            size: 18
+          }
+        },
+        legend: {
+          position: 'top',
+          labels: {
+            color: 'white'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.label + ': ' + tooltipItem.raw;
+            }
+          }
+        }
+      }
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10
+      }
+    }
+  };
+
+
+  const locationCTX = document.querySelector("#inv-location-chart").getContext("2d");
+  const locationChart = new Chart(locationCTX, locationChartConfig);
+  
+
 }
 
 
@@ -1789,5 +1877,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
   ServerForm();
   UserForm();
   AdminDashBoard();
+  InvDashboard();
 
 });

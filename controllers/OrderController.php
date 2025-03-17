@@ -80,6 +80,7 @@ class  OrderController
 
 
             $order = new Ordenes([
+                "emitted_date"=> date("Y-m-d"),
                 "order_id" => $post->order_id,
                 "computer_id" => $post->computer_id,
                 "user_id" => $post->user_id

@@ -1,5 +1,61 @@
 <h1 class="title">Panel de Administrador</h1>
 
+<div class="container-brief-cards">
+    <div class="brief-card">
+        <span class="avatar">
+
+            <i class="bi bi-ticket-detailed"></i>
+
+        </span>
+        <div class="card-data">
+
+            <span class="card-title">Tickets en el Mes</span>
+            <span class="month-total-tickets card-result"></span>
+
+        </div>
+    </div>
+    <div class="brief-card">
+        <span class="avatar">
+
+            <i class="bi bi-database"></i>
+
+        </span>
+        <div class="card-data">
+
+            <span class="card-title">Inventario Actual</span>
+            <span class="total-inventory card-result"></span>
+        </div>
+
+    </div>
+    <div class="brief-card">
+        <span class="avatar">
+
+            <i class="bi bi-file-earmark"></i>
+
+        </span>
+        <div class="card-data">
+            <span class="card-title">Ordenes en el Mes</span>
+            <span class="month-total-orders card-result"></span>
+
+        </div>
+
+    </div>
+
+    <div class="brief-card">
+        <span class="avatar">
+
+            <i class="bi bi-file-earmark-arrow-down"></i>
+
+        </span>
+        <div class="card-data">
+            <span class="card-title">Ordenes Pendientes</span>
+            <span class="card-result"><?php echo count($orders); ?></span>
+
+        </div>
+
+    </div>
+</div>
+
 <div class="admin-dashboard">
 
 

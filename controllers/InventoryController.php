@@ -187,10 +187,17 @@ class InventoryController
 
     public static function dashboard(Router $router){
 
+        $inv = Inventory::all();
+        $stock = Inventory::filter("user_id","=","0");
+        $asigned = Inventory::filter("NOT user_id","=","0");
 
 
         
-        $router->render("/admin/inventario/dashboard");
+        $router->render("/admin/inventario/dashboard",[
+            "inv"=>$inv,
+            "stock"=>$stock,
+            "asigned"=>$asigned
+        ]);
 
 
     }

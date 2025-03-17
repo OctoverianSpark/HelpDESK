@@ -8,7 +8,7 @@ import {
   randomColor,
 } from "./GLOBALS.js";
 
-import { Chart,registerables } from "chart.js";
+import { Chart, registerables } from "chart.js";
 
 
 Chart.register(...registerables);
@@ -180,6 +180,83 @@ export function updateChart(chart, data) {
   chart.update();
 }
 
+export async function setInvTypeChart(invCTX) {
+  const inventory = await Information.postJSON("/admin/inventory/get");
+
+  const invCount = inventory.reduce((acc, data) => {
+
+    if (data.user_id == 0) {
+      acc["stock"] = (acc["stock"] || 0) + 1;
+    } else {
+      acc["asignados"] = (acc["asignados"] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+
+
+  const invDATA = {
+    labels: Object.keys(invCount).map(x => x.toUpperCase()),
+    datasets: [{
+      label: 'Tipo',
+      data: Object.values(invCount),
+      borderWidth: 1,
+
+    }]
+  };
+
+
+  const invCONFIG = {
+    type: 'pie',
+    data: invDATA,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Resumen de inventario',
+          color: 'white',
+          font: {
+            size: 18
+          }
+        },
+        legend: {
+          position: 'top',
+          labels: {
+            color: 'white'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.raw;
+            }
+          }
+        },
+        datalabels: {
+          color: 'white',
+          formatter: (value, context) => {
+            return value;
+          }
+        }
+      }
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10
+      }
+    }
+  };
+
+
+  const invChart = new Chart(invCTX, invCONFIG)
+
+  return invChart;
+}
 
 
 /**
