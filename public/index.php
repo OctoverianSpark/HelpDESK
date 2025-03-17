@@ -65,6 +65,7 @@ $router->get("/admin", [AdminController::class, "index"]);
 $router->post("/admin", [AdminController::class, "index"]);
 $router->get("/admin/users", [AdminController::class, "usrs"]);
 $router->post("/admin/users", [AdminController::class, "usrs"]);
+$router->get("/admin/export", [AdminController::class, "export"]);
 $router->post("/admin/export", [AdminController::class, "export"]);
 
 /* * Inventario * */
