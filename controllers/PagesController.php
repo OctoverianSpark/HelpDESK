@@ -214,28 +214,23 @@ class PagesController
 
         $usrs = [];
 
-        $inv = [];
         if ($area == "ati" || $area == "gerencia") $usrs = Personal::separateAll();
 
         else $usrs = Personal::filter("area", "=", $area);
 
-        foreach($usrs as $key => $value){
+        $usrs = Personal::separateAll();
+        $inv = [];
+
+        foreach($usrs as $key=>$value){
 
             foreach($value as $usr){
-
-                
-                $inv[] = array_shift(Inventory::filter("user_id","=",$usr->id));
-            }
-
-
+                $data = Inventory::find($usr->id);
+                if($data->nombre==="STOCK") continue;
+                $inv[$key][] = $data;
+            } 
         }
-
-
         
-
-        $inv = array_filter($inv, function ($item) {
-            return $item !== null;
-        });
+        
 
 
 
@@ -284,7 +279,7 @@ class PagesController
 
         $router->render("pages/ordenes/index", [
             "usrs" => $usrs[$_GET["sede"]],
-            "inv" => $inv
+            "inv" => $inv[$_GET["sede"]]
         ]);
     }
 }

@@ -21,3 +21,29 @@
 }
 
 
+.admin-dashboard{
+
+
+    display: grid;
+    place-items: center;
+    gap: 2rem;
+    margin: 20px 0;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(2,1fr);
+    width: 100vw;
+    height: 100vh;
+
+    .container-dashboard{
+        background-color: #2941BB;
+
+        height: 100%;
+        width: 90%;
+        border-radius: 1.5rem;
+
+        box-shadow: .5rem .5rem .5rem .5rem rgba(rgb(20, 124, 209),.2);
+        
+
+
+    }
+
+}

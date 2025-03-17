@@ -165,6 +165,7 @@ async function openRDPModal() {
 
     const usersBTN = document.querySelectorAll(".usr-btn")
     const UsrMdl = document.querySelector(".user-detail-modal")
+    if(!UsrMdl ) return;
 
     usersBTN.forEach(btn => {
 

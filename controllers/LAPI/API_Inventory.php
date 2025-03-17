@@ -65,6 +65,17 @@
 
 
       }
+
+      public static function INVENTORY_GET(){
+
+
+         $inv = Inventory::all();
+         
+
+         echo json_encode($inv);
+
+
+      } 
    }
 
 

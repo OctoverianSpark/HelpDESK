@@ -8,6 +8,7 @@ use MVC\Router;
 use Models\Inventory;
 use Models\Perifericos;
 use Models\Encuestas;
+use Models\Ordenes;
 use Models\Tickets;
 use Models\Users;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -21,10 +22,12 @@ class AdminController
     public static function index(Router $router)
     {
 
+        $orders=  Ordenes::filter("state","=","pendiente");
 
 
-
-        $router->render("admin/index", []);
+        $router->render("admin/index", [
+            "orders"=>$orders
+        ]);
     }
 
     public static function usrs(Router $router)

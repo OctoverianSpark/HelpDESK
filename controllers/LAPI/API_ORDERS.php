@@ -88,4 +88,43 @@ class API_ORDERS
       
       
    }
+
+
+   public static function GET(){
+
+      $data = json_decode(file_get_contents("php://input"));
+      $orders = Ordenes::all();
+
+      if($data->mode === "graphs"){
+
+         $graph = [
+            "entrega"=>0,
+            "salida"=>0,
+            "recepcion"=>0
+         ];
+
+         foreach($orders as $order){
+            
+            if(str_contains($order->order_id,"ODE")) $graph["entrega"] += 1;
+            if(str_contains($order->order_id,"ODS")) $graph["salida"] += 1;
+            if(str_contains($order->order_id,"ODR")) $graph["recepcion"] += 1;
+
+         }
+         echo json_encode($graph);
+         exit;
+
+
+      }else{
+         echo json_encode($orders);
+         exit;
+
+      }
+
+
+
+
+
+
+   }
+
 }

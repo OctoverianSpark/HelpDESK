@@ -19,6 +19,10 @@ import {
 //NOTE:CLASS FOLDER IMPORTATIONS
 import { Element } from "./Class/Element.js";
 import { Information } from "./Class/Information.js";
+import { Chart } from "chart.js";
+
+
+Chart.defaults.font.family = "Pangram";
 
 console.log("FrontEnd.js loaded");
 
@@ -1242,6 +1246,8 @@ function ServerForm() {
 
 
   const Mdl = document.querySelector(".create-server-modal");
+  if (!Mdl) return;
+
   const form = Mdl.querySelector(".srvr-form");
   const updateBTN = document.querySelectorAll(".update-srv-btn");
   const deleteBTN = document.querySelectorAll(".delete-srv-btn");
@@ -1361,38 +1367,41 @@ function UserForm() {
 
 
   const Mdl = document.querySelector(".create-user-modal");
+
+  if (!Mdl) return;
+
   const form = Mdl.querySelector(".usr-form");
-  const addUserBTN= document.querySelector(".create-srvr-usr-btn")
+  const addUserBTN = document.querySelector(".create-srvr-usr-btn")
   const updateBTN = document.querySelector(".update-usr-btn");
   const deleteBTN = document.querySelector(".delete-usr-btn");
 
 
-  updateBTN.addEventListener("click", async e=>{
+  updateBTN.addEventListener("click", async e => {
 
 
     const id = updateBTN.getAttribute("data-id")
 
     Mdl.classList.remove("hidden");
 
-    const query = await Information.postJSON("/admin/server_users/find",{id});
+    const query = await Information.postJSON("/admin/server_users/find", { id });
 
-    Object.entries(query.user).forEach(([key,value])=>{
+    Object.entries(query.user).forEach(([key, value]) => {
 
-        if(["created_at","updated_at"].includes(key)) return;
-        
-        if(key === "server_id"){
+      if (["created_at", "updated_at"].includes(key)) return;
 
-          Array.from(form[key].options).forEach(option=>{
+      if (key === "server_id") {
 
-            if(option.value === value) option.selected = true;
-            else option.selected = false;
+        Array.from(form[key].options).forEach(option => {
 
-          })
-          return;
-        }
+          if (option.value === value) option.selected = true;
+          else option.selected = false;
 
-        
-        form[key].value = value;
+        })
+        return;
+      }
+
+
+      form[key].value = value;
 
 
     })
@@ -1401,12 +1410,12 @@ function UserForm() {
 
   })
 
-  deleteBTN.addEventListener("click",async e=>{
+  deleteBTN.addEventListener("click", async e => {
 
 
     const id = updateBTN.getAttribute("data-id")
 
-    await Information.postJSON("/admin/server_users/delete",{id});
+    await Information.postJSON("/admin/server_users/delete", { id });
 
     location.reload();
 
@@ -1414,9 +1423,9 @@ function UserForm() {
 
   })
 
-  addUserBTN.addEventListener("click",e=>{
+  addUserBTN.addEventListener("click", e => {
 
-    Object.entries(form).forEach(([key,value])=>{
+    Object.entries(form).forEach(([key, value]) => {
 
 
       form[key].value = "";
@@ -1429,20 +1438,20 @@ function UserForm() {
   })
 
 
-  form.addEventListener("submit",async e=>{
+  form.addEventListener("submit", async e => {
 
     e.preventDefault();
     const data = new FormData(e.target);
     let body = {};
 
-    data.entries().forEach(([key,value])=>{
-      
+    data.entries().forEach(([key, value]) => {
+
       body[key] = value;
-      
+
     })
 
-    await Information.postJSON("/admin/server_users/save",body);
-    
+    await Information.postJSON("/admin/server_users/save", body);
+
     Mdl.classList.add("hidden");
 
     location.reload();
@@ -1452,6 +1461,280 @@ function UserForm() {
 
 }
 
+async function AdminDashBoard() {
+
+  const TicketCtx = document.querySelector('#tickets-chart').getContext('2d');
+
+
+  const tickets = await Information.postJSON("/tickets/get");
+  const inventory = await Information.postJSON("/admin/inventory/get");
+
+
+  //NOTE: TICKETS POR MES
+  //TODO: PASAR TODA LA RESPONSABILIDAD DE LAS GRAFICAS A UNA FUNCION APARTE QUE SE LLAME MAS FACIL (UNA FUNCION POR GRAFICA PARA SIMPLIFICACION DE LOGICA Y REDUCCION DE CODIGO)
+
+
+
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  console.log(currentMonth);
+
+  const ticketCounts = tickets.reduce((acc, ticket) => {
+    const ticketMonth = new Date(ticket.fecha).getMonth();
+    const ticketYear = new Date(ticket.fecha).getFullYear();
+
+    if (ticketMonth === currentMonth && ticketYear === currentYear) {
+      acc[ticket.categoria] = (acc[ticket.categoria] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+
+  const data = {
+    labels: Object.keys(ticketCounts),
+    datasets: [{
+      label: 'Tickets',
+      data: Object.values(ticketCounts),
+      backgroundColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255,1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1,
+
+    }]
+  };
+
+  const config = {
+    type: 'pie',
+    data: data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+
+          display: true,
+          text: 'Resumen de tickets de este mes',
+          color: 'white',
+          font: {
+            size: 18
+          }
+        },
+        legend: {
+          position: 'top',
+          labels: {
+            color: 'white'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.label + ': ' + tooltipItem.raw + ' tickets';
+            }
+          }
+        }
+      }
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10
+      }
+    }
+  };
+
+  const TChart = new Chart(TicketCtx, config);
+
+
+
+  const invCount = inventory.reduce((acc, data) => {
+
+    if (data.user_id == 0) {
+      acc["stock"] = (acc["stock"] || 0) + 1;
+    } else {
+      acc["asignados"] = (acc["asignados"] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+
+
+  const invDATA = {
+    labels: Object.keys(invCount).map(x => x.toUpperCase()),
+    datasets: [{
+      label: 'Tipo',
+      data: Object.values(invCount),
+      backgroundColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255,1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1,
+
+    }]
+  };
+
+
+  const invCONFIG = {
+    type: 'pie',
+    data: invDATA,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Resumen de inventario',
+          color: 'white',
+          font: {
+            size: 18
+          }
+        },
+        legend: {
+          position: 'top',
+          labels: {
+            color: 'white'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.raw;
+            }
+          }
+        },
+        datalabels: {
+          color: 'white',
+          formatter: (value, context) => {
+            return value;
+          }
+        }
+      }
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10
+      }
+    }
+  };
+
+  const invCTX = document.querySelector("#inv-chart").getContext("2d");
+
+  const invChart = new Chart(invCTX, invCONFIG)
+
+  const orders = await Information.postJSON("/admin/orders/get", { mode: "graphs" })
+
+
+
+
+  const orderTypeData = {
+    labels: Object.keys(orders).map(x => x.toUpperCase()),
+    datasets: [{
+      label: 'Tipo',
+      data: Object.values(orders),
+      backgroundColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255,1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1,
+
+    }]
+  };
+
+
+  const orderTypeConfig= {
+    type: 'pie',
+    data: orderTypeData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Resumen de Ordenes',
+          color: 'white',
+          font: {
+            size: 18
+          }
+        },
+        legend: {
+          position: 'top',
+          labels: {
+            color: 'white'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.raw;
+            }
+          }
+        },
+        datalabels: {
+          color: 'white',
+          formatter: (value, context) => {
+            return value;
+          }
+        }
+      }
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10
+      }
+    }
+  };
+
+
+  const orderTypeCTX = document.getElementById("orders-type-chart").getContext("2d");
+
+  const orderTypeChart = new Chart(orderTypeCTX,orderTypeConfig)
+
+
+}
 
 
 document.addEventListener("DOMContentLoaded", (e) => {
@@ -1471,5 +1754,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
   results();
   ServerForm();
   UserForm();
+  AdminDashBoard();
 
 });

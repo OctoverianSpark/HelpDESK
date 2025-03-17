@@ -174,6 +174,13 @@ export function metricTime(query) {
   lineChart(ctx, payload);
 }
 
+export function updateChart(chart, data) {
+  chart.data.labels = data.labels;
+  chart.data.datasets = data.datasets;
+  chart.update();
+}
+
+
 
 /**
  * Creates a circle chart (doughnut or pie) using Chart.js.
@@ -332,3 +339,5 @@ export function lineChart(ctx, data) {
   }
   window.myLineChart = new Chart(ctx, config);
 }
+
+
