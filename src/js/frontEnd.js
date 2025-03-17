@@ -1650,16 +1650,50 @@ async function AdminDashBoard() {
 
   const invChart = new Chart(invCTX, invCONFIG)
 
-  const orders = await Information.postJSON("/admin/orders/get", { mode: "graphs" })
+  const orders = await Information.postJSON("/admin/orders/get", )
+
+
+  let orderTypes = {
+    
+    entrega:[],
+    salida:[],
+    recepcion:[]
+  }
+
+  orders.forEach(order=>{
+    let type = "";
+
+    if(order.order_id.includes("ODE")) type = "entrega";
+    if(order.order_id.includes("ODS")) type = "salida";
+    if(order.order_id.includes("ODR")) type = "recepcion";
+
+
+    const orderMonth = new Date(order.emitted_date).getMonth();
+    const orderYear = new Date(order.emitted_date).getFullYear();
+
+
+
+
+    if(orderMonth === currentMonth && currentYear === orderYear)orderTypes[type].push(order);
+
+    
+    
+
+
+  })
+
+  console.log(orderTypes);
+  
+  
 
 
 
 
   const orderTypeData = {
-    labels: Object.keys(orders).map(x => x.toUpperCase()),
+    labels: Object.keys(orderTypes).map(x => x.toUpperCase()),
     datasets: [{
       label: 'Tipo',
-      data: Object.values(orders),
+      data: Object.values(orderTypes).map(x => x.length),
       backgroundColor: [
         'rgba(255, 99, 132, 1)',
         'rgba(54, 162, 235, 1)',
@@ -1682,7 +1716,7 @@ async function AdminDashBoard() {
   };
 
 
-  const orderTypeConfig= {
+  const orderTypeConfig = {
     type: 'pie',
     data: orderTypeData,
     options: {
@@ -1731,7 +1765,7 @@ async function AdminDashBoard() {
 
   const orderTypeCTX = document.getElementById("orders-type-chart").getContext("2d");
 
-  const orderTypeChart = new Chart(orderTypeCTX,orderTypeConfig)
+  const orderTypeChart = new Chart(orderTypeCTX, orderTypeConfig)
 
 
 }
