@@ -302,10 +302,12 @@ class PagesController
         $usrs = Personal::separateAll();
         $inv = [];
 
-        foreach ($usrs as $key => $value) {
 
+
+        foreach ($usrs as $key => $value) {
             foreach ($value as $usr) {
-                $data = Inventory::find($usr->id);
+                $data = array_shift(Inventory::filter("user_id","=",$usr->id));
+
                 if ($data->nombre === "STOCK") continue;
                 $inv[$key][] = $data;
             }

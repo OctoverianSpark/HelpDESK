@@ -115,7 +115,7 @@
       </label>
 
       <label for="user_limit" class="input-group">
-         <span>Cantidad de Usuarios en uso</span>
+         <span>Limite de Usuarios</span>
          <input type="number" name="user_limit" id="user_limit">
       </label>
 
