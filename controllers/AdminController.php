@@ -8,6 +8,7 @@ use MVC\Router;
 use Models\Inventory;
 use Models\Perifericos;
 use Models\Encuestas;
+use Models\Log;
 use Models\Ordenes;
 use Models\Tickets;
 use Models\Users;
@@ -38,6 +39,19 @@ class AdminController
         $router->render("admin/users", [
             "usrs" => $usrs
         ]);
+    }
+
+    public static function logs(Router $router){
+
+
+
+        $logs = Log::all();
+
+        $router->render("/admin/logs",["logs"=>$logs]);
+
+
+
+
     }
 
     

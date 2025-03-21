@@ -1,5 +1,6 @@
 <?php
 
+use Models\Log;
 
 if (!isset($_SESSION)) {
     session_start();
@@ -9,6 +10,8 @@ $auth = estaLogueado();
 
 
 $url = $_SERVER["REQUEST_URI"];
+
+
 
 ?>
 

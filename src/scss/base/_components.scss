@@ -164,3 +164,69 @@
 
 
 }
+
+.indv-tests{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+
+
+  .indv-test{
+    width: 100%;
+    .container-info{
+      width: 450px;
+    }
+  }
+}
+
+.general-test{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+
+  margin: 2rem;
+
+}
+
+.indv-test{
+
+  margin: 2rem;
+
+  .container-ranges{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12rem;
+  }
+
+
+  .container-info{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    h3{
+      padding: 0;
+      margin: 0;
+
+      color: rgb(37, 8, 90);
+      font-weight: 800;
+    }
+
+
+  }
+
+}
+
+
+.container-question{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

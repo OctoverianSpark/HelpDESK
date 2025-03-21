@@ -26,6 +26,7 @@ use Models\Inventory;
 use Models\Ordenes;
 use Models\Personal;
 
+
 class PagesController
 {
 
@@ -36,11 +37,7 @@ class PagesController
         $ticket = Tickets::filter("usuario", "=", $_SESSION["name"]) ?? [];
         $ticket = array_shift($ticket);
 
-        if (!empty($tickets)) {
-
-            $encuestas = Encuestas::findPendingsByUser($tickets->id) ?? [];
-        }
-        $entradas = Entradas::filter("mostrar","=","si");
+        $entradas = Entradas::filter("mostrar", "=", "si");
         $novedades = array_filter($entradas, function ($entrada) {
             return strtolower($entrada->tipo) === "novedad";
         });
@@ -50,7 +47,6 @@ class PagesController
 
         $router->render("pages/index", [
             "ticket" => $ticket,
-            "encuestas" => $encuestas,
             "novedades" => $novedades,
             "recomendaciones" => $recomendaciones
         ]);
@@ -165,12 +161,97 @@ class PagesController
 
     public static function encuesta(Router $router)
     {
+        if (!in_array(date("d"),["15","16","17","18","19","20"],true) || !in_array(date("d"),["30","31","01","02","03","04"])) {
+
+            $router->render("pages/tickets/poll_forbidden");  
+
+            exit;
+        };
+
+        $techs = Users::filter("area", "=", "ATI");
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+            
+            $json =[];
+            
+
+            foreach($techs as $tech){
+
+                if (strtolower($tech->ad_user) === "alexander.p") continue;
+
+                $json[$tech->id] = [];
+
+            }
+
+
+            foreach($json as $key=>$value){
+
+
+
+                if($_POST["individual"]["made-ticket"][$key] == "no") {
+                    
+                    unset($json[$key]);
+                    continue;
+
+                }; 
+
+
+                $json[$key] = [
+                    
+
+                    "made-ticket"=>$_POST["individual"]["made-ticket"][$key],
+
+                    "response"=>$_POST["individual"]["response"][$key],
+                
+                    "quality"=>$_POST["individual"]["quality"][$key],
+               
+                    "amability"=>$_POST["individual"]["amability"][$key]
+                ];
+
+
+
+            }
+
+
+
+
+            $args = [
+                "date"=>date("Y-m-d"),
+                "name"=>$_SESSION["name"],
+                "tick_num"=>$_POST["tick_num"],
+                "area"=>$_POST["area"],
+                "individual_test"=>json_encode($json),
+                "general_test"=>json_encode($_POST["general"]),
+                "suggestions"=>$_POST["suggestions"]
+            ];
+
+            
+            $poll = new Encuestas($args);
+
+            $poll->guardar();
 
 
 
 
 
-        $router->render("pages/tickets/encuesta", []);
+
+
+
+            
+            
+
+            
+
+
+
+
+
+        }
+
+
+
+        $router->render("pages/tickets/encuesta", ["techs" => $techs]);
     }
 
 
@@ -221,16 +302,16 @@ class PagesController
         $usrs = Personal::separateAll();
         $inv = [];
 
-        foreach($usrs as $key=>$value){
+        foreach ($usrs as $key => $value) {
 
-            foreach($value as $usr){
+            foreach ($value as $usr) {
                 $data = Inventory::find($usr->id);
-                if($data->nombre==="STOCK") continue;
+                if ($data->nombre === "STOCK") continue;
                 $inv[$key][] = $data;
-            } 
+            }
         }
-        
-        
+
+
 
 
 
@@ -271,10 +352,9 @@ class PagesController
 
 
             header("Location: /ordenes/crear?result=1");
-
         }
 
-        
+
 
 
         $router->render("pages/ordenes/index", [

@@ -1,98 +1,35 @@
-<h1 class="title">Administrar Encuestas de Satisfaccion</h1>
+<h1 class="title"> Encuestas </h1>
 
 
+<div class="table-wrapper">
 
 
+   <div class="table">
 
 
+      <div class="table-header">
+         <div class="header">Encuestado</div>
+         <div class="header">Fecha de Encuesta</div>
+         <div class="header">Tiempo de Respuesta</div>
+         <div class="header">Explicacion Efectiva</div>
+         <div class="header">Atencion Efectiva</div>
+         <div class="header">Comentarios</div>
+
+      </div>
+
+      <?php foreach($polls as $poll){ ?>
 
 
-<form method="get" class="form-search">
+            <div class="table-row">
+               <div class="cell"><?php echo strtoupper( $poll->name) ?></div>
+               <div class="cell"><?php echo date("d / m / Y",strtotime($poll->date)) ?></div>
+               <div class="cell"><?php echo $poll->general_test["response_time"] ?></div>
+               <div class="cell"><?php echo strtoupper($poll->general_test["effective-explain"]) ?></div>
+               <div class="cell"><?php echo strtoupper($poll->general_test["effective-atention"]) ?></div>
+               <div class="cell"><?php echo $poll->suggestions ?></div>
+            </div>
 
-    <div class="container-input-search">
-        <label for="state">Buscar encuestas</label>
-        <select name="state" id="state">
-            <option value="completada" <?php echo ($_GET["state"] === "completada")? "selected" : "" ?>>Completada</option>
-            <option value="pendiente" <?php echo ($_GET["state"] === "pendiente")? "selected" : "" ?>>Pendiente</option>
-            <option value="vencida" <?php echo ($_GET["state"] === "vencida")? "selected" : "" ?>>Vencida</option>
-            <option value="aptos" <?php echo ($_GET["state"] === "vencida")? "selected" : "" ?>>Aptos a Rifa</option>
-        </select>
+      <?php } ?>
 
-    </div>
-
-    <button type="submit" class="boton-morado-inline">Buscar <i class='bx bx-search-alt'></i></button>
-
-
-    <a href="/admin/encuestas" class="boton-morado-inline">Borrar Filtro <i class='bx bxs-trash' ></i></a>
-
-</form>
-
-
-
-<?php ?>
-<table class="tabla-encuestas">
-
-
-
-    <?php if($_GET["state"]==="completada" || !$_GET["state"]){ ?>
-
-        <thead>
-            <th>ID</th>
-            <th>Creacion / Vencimiento</th>
-            <th>Estado</th>
-            <th>Ticket</th>
-            <th>Usuario</th>
-            <th>Resolucion</th>
-            <th>Asertividad</th>
-            <th>Rapidez</th>
-            <th>Calidad</th>
-            <th>Promedio</th>
-            <th>Comentarios</th>
-        </thead>
-        <tbody>
-            <?php foreach($encuestas as $encuesta){ ?>
-
-                <tr>
-                    <td><?php echo s($encuesta->id) ?></td>
-                    <td><?php echo s($encuesta->creado) . " / " . s($encuesta->vencimiento) ?></td>
-                    <td><?php echo ucwords(s($encuesta->estado)) ?></td>
-                    <td><?php echo s($encuesta->subcategoria) ?></td>
-                    <td><?php echo s($encuesta->usuario) ?></td>
-                    <td><?php echo s($encuesta->resolucion) ?></td>
-                    <td><?php echo s($encuesta->asertividad) ?></td>
-                    <td><?php echo s($encuesta->rapidez) ?></td>
-                    <td><?php echo s($encuesta->calidad) ?></td>
-                    <td><?php echo s($encuesta->promedio) ?></td>
-                    <td><?php echo s($encuesta->comentarios) ?></td>
-
-                </tr>
-
-            <?php } ?>
-        </tbody>
-
-    <?php }else if($_GET["state"] === "pendiente" || $_GET["state"] === "vencida"){ ?>
-        
-        <thead>
-            <th>ID</th>
-            <th>Creacion / Vencimiento</th>
-            <th>Estado</th>
-            <th>Ticket</th>
-            <th>Usuario</th>
-        </thead>
-        <tbody>
-            <?php foreach($encuestas as $encuesta){ ?>
-
-                <tr>
-                    <td><?php echo s($encuesta->id) ?></td>
-                    <td><?php echo s($encuesta->creado) . " / " . s($encuesta->vencimiento) ?></td>
-                    <td><?php echo ucwords(s($encuesta->estado)) ?></td>
-                    <td><?php echo s($encuesta->subcategoria) ?></td>
-                    <td><?php echo s($encuesta->usuario) ?></td>
-
-                </tr>
-
-            <?php } ?>
-        </tbody>
-
-    <?php }?>
-</table>
+   </div>
+</div>

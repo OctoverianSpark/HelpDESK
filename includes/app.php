@@ -12,9 +12,11 @@ define("BUILD_ROUTE",__DIR__ . "\\..\\public\\build");
 
 
 use Models\ActiveRecord;
+use Models\Log;
+
 ActiveRecord::setDB();
 
-
+$log = new Log();
 
 
 

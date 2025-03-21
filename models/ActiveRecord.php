@@ -139,7 +139,11 @@ abstract class ActiveRecord extends ObjectCreator{
     public function eliminar(){
         $query = "DELETE FROM " . static::$tabla . " WHERE id = '$this->id' ";
 
+
         self::$db->query($query);
+
+
+        
 
     }
 

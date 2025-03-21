@@ -152,6 +152,8 @@
 
         <fieldset class="peripheral" id="per-<?php echo $i; ?>">
             <legend>Periferico #<?php echo $i; ?></legend>
+
+            <button type="button" class="btn cell-btn"><i class="bi bi-x"></i></button>
             <input type="hidden" name="perifericos[<?php echo $i - 1 ?>][id]" value="<?php echo $per->id ?>">
             <div class="container-input-flex">
                 <label for="mouse-<?php echo $i; ?>" class="radio-label-card">
@@ -173,6 +175,16 @@
                     <input name="perifericos[<?php echo $i-1; ?>][tipo]" id="monitor-<?php echo $i; ?>" type="radio" value="monitor" <?php echo ($per->tipo == "MONITOR") ? "checked" : ""; ?>>
                     <i class="bi bi-display"></i>
                     <span>Monitor</span>
+                </label>
+                <label for="adaptador-<?php echo $i; ?>" class="radio-label-card">
+                    <input name="perifericos[<?php echo $i-1; ?>][tipo]" id="adaptador-<?php echo $i; ?>" type="radio" value="adaptador" <?php echo ($per->tipo == "ADAPTADOR") ? "checked" : ""; ?>>
+                    <i class="bi bi-usb-symbol"></i>
+                    <span>Adaptador</span>
+                </label>
+                <label for="camara-<?php echo $i; ?>" class="radio-label-card">
+                    <input name="perifericos[<?php echo $i-1; ?>][tipo]" id="camara-<?php echo $i; ?>" type="radio" value="camara" <?php echo ($per->tipo == "CAMARA") ? "checked" : ""; ?>>
+                    <i class="bi bi-webcam-fill"></i>
+                    <span>Camara</span>
                 </label>
             </div>
             <div class="container-input">

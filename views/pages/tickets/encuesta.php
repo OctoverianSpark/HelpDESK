@@ -1,74 +1,161 @@
-<?php
-    
-    if($encuesta->estado==="completado"){
-        header("Location: /");
-    }else if($encuesta->estado==="vencido"){
-        header("Location: /");
-    }
-
-?>
-
-
-<main>
+<h1 class="title">Encuesta de Sastisfaccion</h1>
 
 
 
-    <h1 class="title">Encuesta de Satisfaccion</h1>
+<form method="POST" class="satisfaction-form">
 
 
-    <form method="post" class="form-poll">
 
-        <input type="hidden" name="encuesta[id]" value="<?php echo $encuesta->id ?>">
-        
-        <div class="container-promedial">
-                <p class="subtitle">Promedio</p>
-                <p class="promedial">3</p>
-                <input type="hidden" id="promedial" name="encuesta[promedio]" value="3"/>
-        </div>
-    
-        <fieldset>
-            <legend>Datos del Ticket</legend>
-            <h4><span>Fecha de Creacion</span> <?php echo $ticket->fecha ?></h4>
-            <h4><span>ID del Ticket Referenciado</span> <?php echo $ticket->id ?></h4>
-            <h4><span>Categoria</span> <?php echo $ticket->categoria ?></h4>
-            <h4><span>Asunto </span><?php echo $ticket->subcategoria ?></h4>
-            <h4><span>Tecnico Asignado</span> <?php echo $ticket->tecnico ?></h4>
-            <h4><span>Descripcion</span></h4>
-            <h4><?php echo $ticket->descripcion ?></h4>
-        </fieldset>
+   <label for="area" class="input-group">
+      <span>Area</span>
+      <select name="area" id="area">
+         <option value="operations">Operaciones</option>
+         <option value="desc">DESC</option>
+         <option value="supervision">Supervision</option>
+         <option value="administracion">Administracion</option>
+         <option value="talento humano">Talento Humano</option>
+         <option value="gerencia">Gerencia</option>
+      </select>
 
-        <fieldset class="container-inputs-poll">
-            <legend>Encuesta de Satisfacción</legend>
-            <div class="container-poll-input" id="container-resol">
-                <label for="resol">Resolucion que tuvo el Tecnico</label>
-                <input type="range" name="encuesta[resolucion]" id="resol" min="1" max="5">
-                <span class="resol-value results-span"></span>
-            </div>
-            <div class="container-poll-input" id="container-asert">
-                <label for="asert">Asertividad del Tecnico</label>
-                <input type="range" name="encuesta[asertividad]" id="asert" min="1" max="5">
-                <span class="asert-value results-span"></span>
-            </div>
-            <div class="container-poll-input" id="container-rap">
-                <label for="rap">Rapidez de la Atención</label>
-                <input type="range" name="encuesta[rapidez]" id="rap" min="1" max="5">
-                <span class="rap-value results-span"></span>
-            </div>
-            <div class="container-poll-input" id="container-qa">
-                <label for="qa">Calidad de la Atención</label>
-                <input type="range" name="encuesta[calidad]" id="qa" min="1" max="5">
-                <span class="qa-value results-span"></span>
-            </div>
-            <div class="container-poll-input" id="container-qa">
-                <label for="comments">Comentarios</label>
-                <textarea name="encuesta[comentarios]" placeholder="Describe comentarios sobre la asistencia recibida..." id="comments"></textarea>
+
+   </label>
+
+
+   <label for="tickets" class="input-group">
+      <span>Numero de tickets realizados</span>
+      <input type="number" name="tick_num" id="id">
+   </label>
+
+   <div class="indv-tests">
+
+      <?php
+      $i = 0;
+
+      foreach ($techs as $tech) {
+         if (strtolower($tech->ad_user) === "alexander.p") continue;
+
+      ?>
+
+         <div class="indv-test">
+
+
+            <h2 class="subtitle"><?php echo ucwords(strtolower("$tech->first_name $tech->last_name")) ?></h2>
+            <div class="container-question">
+
+               <p>Has recibido atencion de <?php echo ucwords(strtolower("$tech->first_name $tech->last_name")) ?>?</p>
+               <div class="container-flex">
+                  <label for="yes-ticket-<?php echo $tech->id ?>" class="yes-no-radio yes-radio">
+                     <input type="radio" name="individual[made-ticket][<?php echo $tech->id ?>]" id="yes-ticket-<?php echo $tech->id ?>" value="si">
+                     <span><i class="bi bi-check"></i>Si</span>
+
+                  </label>
+                  <label for="no-ticket-<?php echo $tech->id ?>" class="yes-no-radio no-radio">
+                     <input type="radio" name="individual[made-ticket][<?php echo $tech->id ?>]" id="no-ticket-<?php echo $tech->id ?>" value="no">
+                     <span><i class="bi bi-x"></i> No</span>
+
+                  </label>
+               </div>
             </div>
 
-            <input type="submit" value="Enviar Encuesta" class="boton-morado-inline">
-        </fieldset>
+            <div class="container-ranges">
+               <div class="container-info">
+
+                  <h3>Tiempo de Respuesta</h3>
+                  <div class="range-wth-title">
+                     <span class="value">Elige una Calificacion</span>
+                     <input type="range" name="individual[response][<?php echo $tech->id ?>]" min="1" max="5" value="3" disabled>
+                  </div>
+
+
+               </div>
+               <div class="container-info">
+
+                  <h3>Calidad del servicio</h3>
+                  <div class="range-wth-title">
+                     <span class="value">Elige una Calificacion</span>
+                     <input type="range" name="individual[quality][<?php echo $tech->id ?>]"  min="1" max="5" value="3" disabled>
+                  </div>
+
+
+               </div>
+               <div class="container-info">
+
+                  <h3>Amabilidad y profesionalismo</h3>
+                  <div class="range-wth-title">
+                     <span class="value">Elige una Calificacion</span>
+                     <input type="range" name="individual[amability][<?php echo $tech->id ?>]"  min="1" max="5" value="3" disabled>
+                  </div>
+
+
+               </div>
+            </div>
+
+
+         </div>
 
 
 
-    </form>
+      <?php
+      } ?>
+   </div>
 
-</main>
+
+   <div class="general-test">
+      <h3>¿Recibió una solución efectiva a sus tickets?</h3>
+      <div class="container-flex">
+         <label for="yes-attention" class="yes-no-radio yes-radio">
+            <input type="radio" name="general[effective-atention]" id="yes-attention" value="si">
+            <span><i class="bi bi-check"></i>Si</span>
+
+         </label>
+         <label for="no-attention" class="yes-no-radio no-radio">
+            <input type="radio" name="general[effective-atention]" id="no-attention" value="no">
+            <span><i class="bi bi-x"></i> No</span>
+
+         </label>
+      </div>
+      <h3>¿Le brindaron una explicación clara sobre la solución aplicada?</h3>
+      <div class="container-flex">
+         <label for="yes-explain" class="yes-no-radio yes-radio">
+            <input type="radio" name="general[effective-explain]" id="yes-explain" value="si">
+            <span><i class="bi bi-check"></i>Si</span>
+
+         </label>
+         <label for="no-explain" class="yes-no-radio no-radio">
+            <input type="radio" name="general[effective-explain]" id="no-explain" value="no">
+            <span><i class="bi bi-x"></i> No</span>
+
+         </label>
+      </div>
+
+
+
+      <div class="container-info">
+
+         <h3>¿Cómo calificaría la facilidad para comunicarse con el equipo de informática?</h3>
+         <div class="range-wth-title">
+            <span class="value">Elige una Calificacion</span>
+            <input type="range" name="general[response_time]" id="response-time" min="1" max="5" value="1">
+         </div>
+
+      </div>
+
+   </div>
+
+
+
+   <label for="comments" class="label-input">
+      
+      <p>Sugerencias y comentarios</p>
+      
+      <textarea name="suggestions" id="comments"></textarea>
+   </label>
+
+
+   
+
+   <button type="submit" class="btn btn-submit btn-purple">Enviar Encuesta</button>
+
+
+
+</form>

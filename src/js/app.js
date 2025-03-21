@@ -1,5 +1,6 @@
 import { Information } from "./Class/Information.js";
 import Particle from "./Class/Particle.js";
+import { TOAST } from "./GLOBALS.js";
 
 console.log("App.js loaded");
 
@@ -255,7 +256,76 @@ async function openRDPModal() {
 }
 
 
+function inputRangeTitle(){
 
+
+
+    const rangeConts = document.querySelectorAll(".range-wth-title");
+
+    const keys = {
+        1:"Muy Deficiente",
+        2:"Deficiente",
+        3:"Aceptable",
+        4:"Bueno",
+        5:"Excelente"
+    }
+    
+    rangeConts.forEach(container=>{
+
+        const range = container.querySelector("input");
+        const value = container.querySelector(".value");
+
+
+        range.addEventListener("input",e=>{
+
+            value.textContent = e.target.value + " - " + keys[e.target.value];
+
+
+        })
+
+
+
+    })
+
+}
+
+function setRanges(){
+
+    const form = document.querySelector(".satisfaction-form");
+
+    if(!form) return;
+
+    const containers = document.querySelectorAll(".indv-test");
+
+
+    containers.forEach(container=>{
+
+
+        const ranges = container.querySelectorAll("input[type='range']")
+
+        const yesno = container.querySelectorAll(".yes-no-radio");
+
+        yesno.forEach(element=>{
+
+            const radio = element.querySelector("input");
+
+            
+            radio.addEventListener("input",e=>{
+                
+                if(e.target.value === "si") ranges.forEach(range=>range.disabled = false);
+                if(e.target.value === "no") ranges.forEach(range=>range.disabled = true);
+
+            })
+            
+
+        })
+
+
+    })
+
+
+
+}
 
 
 document.addEventListener("DOMContentLoaded", e => {
@@ -269,6 +339,15 @@ document.addEventListener("DOMContentLoaded", e => {
     modalKEY();
     registerServiceWorker();
     openRDPModal()
+    inputRangeTitle()
+    setRanges();
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorParam = urlParams.get('err');
+
+    if (errorParam == 4) {
+        console.error(`Error: ${errorParam}`);
+        TOAST(`El nombre del equipo ya existe!!!`, "center","#");
+    }
 }
 );

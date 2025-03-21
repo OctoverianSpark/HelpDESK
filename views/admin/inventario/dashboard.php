@@ -63,6 +63,10 @@
                         <canvas id="inv-location-chart"></canvas>
 
                 </div>
+                <div class="container-dashboard">
+                        <canvas id="inv-area-chart"></canvas>
+
+                </div>
 
 
         </div>

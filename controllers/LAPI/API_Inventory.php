@@ -7,6 +7,7 @@
 
    use Models\Inventory;
    use Models\Perifericos;
+use Models\Personal;
 
    class API_Inventory{
 
@@ -71,6 +72,15 @@
 
          $inv = Inventory::all();
          
+         foreach($inv as $eq){
+
+            $usr = Personal::PIVOTFINDER($eq->user_id,$eq->sede);
+
+            $eq->area = $usr->area;
+
+
+         }
+
 
          echo json_encode($inv);
 

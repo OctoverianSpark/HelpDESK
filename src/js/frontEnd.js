@@ -14,7 +14,7 @@ import {
   metricTime,
   circleChart,
   barChart,
-  
+
 
 } from "./graphics.js";
 
@@ -34,7 +34,7 @@ Chart.defaults.backgroundColor = [
   'rgba(255, 159, 64, 1)'
 ]
 
-Chart.defaults.borderColor =  [
+Chart.defaults.borderColor = [
   'rgba(255, 99, 132, 1)',
   'rgb(36, 81, 110)',
   'rgba(255, 206, 86, 1)',
@@ -45,6 +45,76 @@ Chart.defaults.borderColor =  [
 
 console.log("FrontEnd.js loaded");
 
+
+let pers = document.querySelectorAll(".peripheral");
+
+function updatePersCont() {
+  let pers = document.querySelectorAll(".peripheral");
+  pers.forEach((per, idx) => {
+
+
+    const id = per.getAttribute("id").split("-")[1];
+
+
+    const newId = idx + 1
+
+    per.setAttribute("id", `per-${newId}`)
+
+    const legend = per.querySelector("legend");
+
+    legend.textContent = `Periferico #${newId}`;
+
+    const inputs = per.querySelectorAll("input");
+
+    inputs.forEach(input => {
+
+      const name = input.getAttribute("name").replace(`[${id}]`, `[${newId - 1}]`);
+
+
+      input.setAttribute("name", `${name}`)
+
+    })
+
+    const btn = per.querySelector(".cell-btn")
+
+    btn.addEventListener("click", e => {
+
+      
+
+      btn.parentNode.remove();
+
+    })
+
+
+
+
+
+
+  })
+
+  return pers;
+
+}
+
+
+const observer = new MutationObserver(() => {
+
+  console.log("Mutacion realizada!!!");
+
+  setTimeout(() => {
+
+    pers = updatePersCont()
+    
+
+  }, 0);
+
+})
+const persCont = document.querySelector(".container-peripherals");
+if(persCont){
+  observer.observe(persCont, { childList: true,attributes:true })
+
+}
+
 function addPer() {
   const container = document.querySelector(".container-peripherals");
 
@@ -53,12 +123,10 @@ function addPer() {
   const addBtn = document.querySelector(".add-btn");
   const rmBtn = document.querySelector(".remove-btn");
 
-  const instances = container.querySelectorAll(".peripheral");
-
-  let count = instances.length;
 
   addBtn.addEventListener("click", (e) => {
-    count++;
+    let count = pers.length
+    count++
 
     const MOUSECARD = RADIOCARD(
       `perifericos[${count - 1}][tipo]`,
@@ -91,12 +159,37 @@ function addPer() {
       "bi bi-keyboard-fill",
       "teclado"
     );
+    const ADAPTERCARD = RADIOCARD(
+      `perifericos[${count - 1}][tipo]`,
+      `adaptador-${count}`,
+      "Adaptador",
+      "bi bi-usb-symbol",
+      "adaptador"
+    );
+    const CAMERACARD = RADIOCARD(
+      `perifericos[${count - 1}][tipo]`,
+      `camara-${count}`,
+      "Camara",
+      "bi bi-webcam-fill",
+      "camara"
+    );
+
+    const DELETE_BTN = new Element(
+      "BUTTON",
+      { type: "button", class: "btn cell-btn" },
+      {},
+      [
+        new Element("I", { class: "bi bi-x" }, {}, [])
+      ]
+    )
 
     const CARDSCONTAINER = GENCONTAINER("DIV", "container-input-flex", [
       MOUSECARD,
       KEYBOARDCARD,
       HEADPHONECARD,
       MONITORCARD,
+      ADAPTERCARD,
+      CAMERACARD
     ]);
 
     const BRANDINPUT = INPUTGROUP(
@@ -128,6 +221,7 @@ function addPer() {
     );
 
     const CONTAINERINPUTS = GENCONTAINER("DIV", "container-input", [
+
       BRANDINPUT,
       MODELINPUT,
       COLORINPUT,
@@ -143,6 +237,7 @@ function addPer() {
 
     const FIELDSET = GENCONTAINER("FIELDSET", "peripheral", [
       LEGEND,
+      DELETE_BTN,
       CARDSCONTAINER,
       CONTAINERINPUTS,
     ]);
@@ -150,15 +245,52 @@ function addPer() {
     FIELDSET._attributes["id"] = `per-${count}`;
 
     container.appendChild(FIELDSET.render());
+
   });
 
   rmBtn.addEventListener("click", (e) => {
+    let count = pers.length;
+
     if (!count >= 1) return;
 
     const fieldset = document.querySelector(`#per-${count}`);
     fieldset.remove();
     count--;
   });
+}
+
+
+function delPer() {
+
+
+
+
+
+  pers.forEach(per => {
+
+
+    const btn = per.querySelector(".cell-btn")
+
+    btn.addEventListener("click", e => {
+
+      
+
+      btn.parentNode.remove();
+
+    })
+
+
+  })
+
+
+
+
+
+
+
+
+
+
 }
 
 function noReturn() {
@@ -1484,7 +1616,7 @@ async function AdminDashBoard() {
 
 
   const dashboard = document.querySelector(".admin-dashboard");
-  if(!dashboard) return;
+  if (!dashboard) return;
 
   const TicketCtx = document.querySelector('#tickets-chart').getContext('2d');
 
@@ -1567,22 +1699,22 @@ async function AdminDashBoard() {
 
   setInvTypeChart(invCTX);
 
-  const orders = await Information.postJSON("/admin/orders/get", )
+  const orders = await Information.postJSON("/admin/orders/get",)
 
 
   let orderTypes = {
-    
-    entrega:[],
-    salida:[],
-    recepcion:[]
+
+    entrega: [],
+    salida: [],
+    recepcion: []
   }
 
-  orders.forEach(order=>{
+  orders.forEach(order => {
     let type = "";
 
-    if(order.order_id.includes("ODE")) type = "entrega";
-    if(order.order_id.includes("ODS")) type = "salida";
-    if(order.order_id.includes("ODR")) type = "recepcion";
+    if (order.order_id.includes("ODE")) type = "entrega";
+    if (order.order_id.includes("ODS")) type = "salida";
+    if (order.order_id.includes("ODR")) type = "recepcion";
 
 
     const orderMonth = new Date(order.emitted_date).getMonth();
@@ -1591,16 +1723,16 @@ async function AdminDashBoard() {
 
 
 
-    if(orderMonth === currentMonth && currentYear === orderYear)orderTypes[type].push(order);
+    if (orderMonth === currentMonth && currentYear === orderYear) orderTypes[type].push(order);
 
 
-    
+
 
 
   })
 
-  
-  
+
+
 
 
 
@@ -1685,10 +1817,10 @@ async function AdminDashBoard() {
 
 
   Object.values(ticketCounts).forEach(value => {
-    
-    
+
+
     monthTickets += value;
-      
+
 
 
 
@@ -1696,17 +1828,17 @@ async function AdminDashBoard() {
   });
 
   Object.values(orderTypes).forEach(value => {
-    
-    
+
+
     totalOrders += value.length;
-      
+
 
 
 
 
   });
 
-  
+
 
 
 
@@ -1722,12 +1854,12 @@ async function AdminDashBoard() {
 
 }
 
-async function InvDashboard(){
+async function InvDashboard() {
   const dashboard = document.querySelector(".inv-dashboard");
   const inventory = await Information.postJSON("/admin/inventory/get");
 
-  if(!dashboard) return;
-
+  if (!dashboard) return;
+  
 
 
   const typeCTX = document.querySelector("#inv-type-chart").getContext("2d");
@@ -1742,6 +1874,64 @@ async function InvDashboard(){
     acc[propietario] = (acc[propietario] || 0) + 1;
     return acc;
   }, {});
+
+  const areaData = inventory.reduce((acc, item) => {
+    const area = item.area || "Stock";
+    acc[area] = (acc[area] || 0) + 1;
+    return acc;
+  }, {});
+
+  const areaChartData = {
+    labels: Object.keys(areaData),
+    datasets: [{
+      label: 'Área',
+      data: Object.values(areaData),
+      borderWidth: 1,
+    }]
+  };
+
+  const areaChartConfig = {
+    type: 'pie',
+    data: areaChartData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Inventario por Área',
+          color: 'white',
+          font: {
+            size: 18
+          }
+        },
+        legend: {
+          position: 'top',
+          labels: {
+            color: 'white'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.label + ': ' + tooltipItem.raw;
+            }
+          }
+        }
+      }
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10
+      }
+    }
+  };
+
+  const areaCTX = document.querySelector("#inv-area-chart").getContext("2d");
+  const areaChart = new Chart(areaCTX, areaChartConfig);
 
   const propertyChartData = {
     labels: Object.keys(propertyData),
@@ -1854,13 +2044,162 @@ async function InvDashboard(){
 
   const locationCTX = document.querySelector("#inv-location-chart").getContext("2d");
   const locationChart = new Chart(locationCTX, locationChartConfig);
-  
+
 
 }
 
 
+async function PollDashboard() {
+
+
+  const polls = await Information.postJSON("/admin/encuestas");
+
+
+  let body = {}
+
+
+  polls.forEach(poll => {
+
+
+    Object.entries(poll.individual_test).forEach(([key, value]) => {
+
+
+
+
+      if (!body[key]) body[key] = {
+        amability: 0,
+        quality: 0,
+        response: 0,
+        name: "",
+        polls: 0
+      };
+
+
+      Object.entries(value).forEach(([key1, value1]) => {
+
+        if (body[key][key1] === "") body[key][key1] = value1;
+
+
+        if (typeof body[key][key1] === "number") body[key][key1] += Number(value[key1]);
+
+
+
+
+
+      });
+
+      body[key]["polls"] += 1;
+
+
+    })
+
+
+  })
+
+
+  Object.entries(body).forEach(([key, value]) => {
+
+    Object.entries(value).forEach(([category, val]) => {
+
+      if (category === "polls" || category === "name") return;
+
+      body[key][category] = val / body[key]["polls"];
+
+
+    })
+
+
+  })
+
+
+
+  const polLCtx = document.querySelector("#chart-by-point").getContext("2d");
+
+
+  const labels = Object.values(body).map((poll) => poll.name);
+
+  const pollData = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Amabilidad y Profesionalismo",
+        data: Object.values(body).map((poll) => poll.amability),
+        backgroundColor: "rgb(255, 99, 133)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 1,
+      },
+      {
+        label: "Calidad de Servicio",
+        data: Object.values(body).map((poll) => poll.quality),
+        backgroundColor: "rgb(54, 163, 235)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1,
+      },
+      {
+        label: "Tiempo de Respuesta",
+        data: Object.values(body).map((poll) => poll.response),
+        backgroundColor: "rgb(75, 192, 192)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const pollConfig = {
+    type: "bar",
+    data: pollData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: "Resultados de Encuestas",
+          color: "white",
+          font: {
+            size: 18,
+          },
+        },
+        legend: {
+          position: "top",
+          labels: {
+            color: "white",
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: "white",
+          },
+        },
+        y: {
+          ticks: {
+            color: "white",
+          },
+          beginAtZero: true,
+        },
+      },
+    },
+  };
+
+  const pollChart = new Chart(polLCtx, pollConfig);
+
+
+
+
+
+
+
+
+
+
+
+}
+
 document.addEventListener("DOMContentLoaded", (e) => {
   addPer();
+  delPer();
   sign();
   tableSearchManager();
   dragNdrop();
@@ -1878,5 +2217,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
   UserForm();
   AdminDashBoard();
   InvDashboard();
+  PollDashboard();
 
 });

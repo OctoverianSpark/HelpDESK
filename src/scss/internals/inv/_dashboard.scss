@@ -7,9 +7,10 @@
   .dashboard-pie-data {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 5rem;
+    justify-content: center;
+    flex-wrap: wrap;
     width: 100%;
+    gap: 3rem;
   }
 
   .container-dashboard {
@@ -20,6 +21,7 @@
     box-shadow: 0.5rem 0.5rem 0.5rem 0.5rem rgba(rgb(20, 124, 209), 0.2);
     padding: 5rem;
     height: 50rem;
+    width: 70rem;
   }
 
   .container-brief-cards {

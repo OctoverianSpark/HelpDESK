@@ -33,3 +33,30 @@
         }
     }
 }
+
+.container-peripherals{
+
+    
+
+    .peripheral{
+
+
+        position: relative;
+
+        .cell-btn{
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 4rem;
+            color: rgb(160, 55, 55);
+        }
+
+
+    }
+
+
+    .container-input-flex{
+        flex-wrap: wrap;
+    }
+
+}

@@ -8,6 +8,7 @@ namespace Controllers;
 use MVC\Router;
 
 use Models\Inventory;
+use Models\Log;
 use Models\Perifericos;
 use Models\Personal;
 
@@ -24,8 +25,8 @@ class InventoryController
             $equipos = Inventory::all();
         }
 
-        
-        
+
+
 
 
 
@@ -61,35 +62,39 @@ class InventoryController
 
 
         $users = Personal::separateAll();
+        $log = new Log();
 
-        
-        if($_SERVER["REQUEST_METHOD"] === "POST"){
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $inv = new Inventory($_POST);
 
+            if(!empty(Inventory::filter("nombre_equipo","=",$inv->nombre_equipo))){
+
+                header("Location: /admin/inventario/crear?err=4");
+                exit;
+
+            }
 
             $id = $inv->guardar();
+            $log->newInventoryLog($id);
 
 
-            foreach($_POST["perifericos"] as $per){
+
+            foreach ($_POST["perifericos"] as $per) {
 
                 $periferico = new Perifericos($per);
 
                 $periferico->computer_id = $id;
 
                 $periferico->guardar();
-                
-
             }
-
-
-
         }
 
 
         $router->render("admin/inventario/crear", [
-            "users"=>$users[$_GET["sede"]],
-            "inv"=>$inv
+            "users" => $users[$_GET["sede"]],
+            "inv" => $inv
         ]);
     }
 
@@ -109,6 +114,9 @@ class InventoryController
 
             $resultado  = $inv->guardar();
 
+            $log = new Log();
+
+            $log->updateInventoryLog($resultado);
 
             if (isset($_POST["perifericos"])) {
 
@@ -117,27 +125,32 @@ class InventoryController
 
                 $toDelete = array_diff($existingPerifericos, $postedPerifericos);
                 $toAdd = array_diff($postedPerifericos, $existingPerifericos);
-                
+
 
                 foreach ($toDelete as $perId) {
                     $periferico = Perifericos::find($perId);
                     $periferico->eliminar();
+                    $log->delPerLog($periferico);
                 }
 
 
                 foreach ($_POST["perifericos"] as $per) {
-                    if (!in_array($per['id'], $toAdd)) {
+
+                    if($per["id"]){
+                        $periferico = Perifericos::find($per['id']);
+                        $periferico->sync($per);
+                        $log->updatePerLog(Perifericos::find($periferico->id), $periferico);
+                        $periferico->guardar();
+
+                    }else{
+                    
                         $periferico = new Perifericos($per);
                         $periferico->computer_id = $id;
-                        $periferico->guardar();
-                    } else {
-                        $periferico = Perifericos::find($per['id']);
-                        
-                        $periferico->sync($per);
-                        $periferico->guardar();
+                        $perId = $periferico->guardar();
+                        $log->newPerLog($perId);
+
                     }
                 }
-
             }
 
             if ($resultado) {
@@ -148,59 +161,59 @@ class InventoryController
         $router->render("admin/inventario/actualizar", [
             "inv" => $inv,
             "perifericos" => $perifericos,
-            "users"=>$users
+            "users" => $users
         ]);
     }
 
 
-    public static function actions(){
+    public static function actions()
+    {
 
-            
-            
-            $data = json_decode(file_get_contents("php://input"),true);
 
-            
-            $inv =Inventory::find($data["id"]);
-            
 
-            if($data["action"] === "stock") $inv->setStock();
-            if($data["action"] === "delete") {
+        $data = json_decode(file_get_contents("php://input"), true);
 
-                $pers = Perifericos::filter("computer_id","=",$inv->id);
 
-                foreach($pers as $per){
-                    $per->eliminar();
-                }
+        $inv = Inventory::find($data["id"]);
+        $log = new Log();
 
-                $inv->eliminar();
+
+        if ($data["action"] === "stock") {
+            $inv->setStock();
+            $log->updateInventoryLog($data->id);
+        }
+        if ($data["action"] === "delete") {
+
+            $pers = Perifericos::filter("computer_id", "=", $inv->id);
+
+            foreach ($pers as $per) {
+                $per->eliminar();
             }
 
-            echo json_encode(["msg"=>"1"]);
-            exit;
 
+            $inv->eliminar();
 
+            $log->deleteInventoryLog($data->id);
+        }
 
-
-
+        echo json_encode(["msg" => "1"]);
+        exit;
     }
 
 
-    public static function dashboard(Router $router){
+    public static function dashboard(Router $router)
+    {
 
         $inv = Inventory::all();
-        $stock = Inventory::filter("user_id","=","0");
-        $asigned = Inventory::filter("NOT user_id","=","0");
+        $stock = Inventory::filter("user_id", "=", "0");
+        $asigned = Inventory::filter("NOT user_id", "=", "0");
 
 
-        
-        $router->render("/admin/inventario/dashboard",[
-            "inv"=>$inv,
-            "stock"=>$stock,
-            "asigned"=>$asigned
+
+        $router->render("/admin/inventario/dashboard", [
+            "inv" => $inv,
+            "stock" => $stock,
+            "asigned" => $asigned
         ]);
-
-
     }
-
-
 }

@@ -16,6 +16,7 @@ use Controllers\LAPI\API_Documentations;
 use Controllers\LAPI\API_ENTRIES;
 use Controllers\LAPI\API_Inventory;
 use Controllers\LAPI\API_ORDERS;
+use Controllers\LAPI\API_POLLS;
 use Controllers\LAPI\API_SERVERS;
 use Controllers\LAPI\API_Tickets;
 use Controllers\LAPI\API_USERS;
@@ -28,7 +29,6 @@ use Models\Encuestas;
 
 $router = new Router;
 
-Encuestas::setUncompleted();
 
 //Publicas
 $router->get("/", [PagesController::class, "index"]);
@@ -67,6 +67,7 @@ $router->get("/admin/users", [AdminController::class, "usrs"]);
 $router->post("/admin/users", [AdminController::class, "usrs"]);
 $router->get("/admin/export", [AdminController::class, "export"]);
 $router->post("/admin/export", [AdminController::class, "export"]);
+$router->get("/admin/logs", [AdminController::class, "logs"]);
 
 /* * Inventario * */
 $router->get("/admin/inventario", [InventoryController::class, "index"]);
@@ -105,7 +106,8 @@ $router->post("/admin/tickets/ticket", [TicketController::class, "ticket"]);
 /* * Encuestas * */
 $router->get("/admin/encuestas", [PollController::class, "index"]);
 $router->post("/admin/encuestas", [PollController::class, "index"]);
-$router->post("/admin/encuestas/ver", [PollController::class, "ver"]);
+$router->get("/admin/encuestas/ver", [PollController::class, "show"]);
+$router->post("/admin/encuestas/ver", [PollController::class, "show"]);
 
 /* * Entradas * */
 $router->get("/admin/entradas", [EntrieController::class, "index"]);
@@ -156,6 +158,8 @@ $router->post("/admin/entradas/set",[API_ENTRIES::class,"SETSHOWED"]);
 $router->post("/admin/entradas/find",[API_ENTRIES::class,"FIND_ENTRY"]);
 $router->post("/admin/entradas/save",[API_ENTRIES::class,"SAVE_ENTRY"]);
 $router->post("/admin/entradas/delete",[API_ENTRIES::class,"DELETE_ENTRY"]);
+
+$router->post("/admin/encuestas",[API_POLLS::class,"GET_POLLS"]);
 
 //NOTE: INDEXERS
 $router->post("/admin/tickets/indexer",[API_Tickets::class,"INDEXER"]);
