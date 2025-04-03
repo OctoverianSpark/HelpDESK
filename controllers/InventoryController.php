@@ -104,7 +104,8 @@ class InventoryController
         $id = validarID();
         $inv = Inventory::find($id);
         $perifericos = Perifericos::findGroup($id);
-        $users = Personal::all();
+        $users = Personal::separateAll();
+        
 
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -158,10 +159,11 @@ class InventoryController
             }
         }
 
+
         $router->render("admin/inventario/actualizar", [
             "inv" => $inv,
             "perifericos" => $perifericos,
-            "users" => $users
+            "users" => $users[$_GET["sede"]]
         ]);
     }
 

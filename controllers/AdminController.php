@@ -134,14 +134,9 @@ class AdminController
             } else if ($_POST["export"] === "tickets") {
                 $i = 2;
                 $spreadsheet->createSheet(1)->setTitle("Tickets");
-                $spreadsheet->createSheet(2)->setTitle("Encuestas");
                 $spreadsheet->removeSheetByIndex(0);
                 $spreadsheet->getActiveSheet()->fromArray(
                     ["ID", "FECHA", "USUARIO", "CATEGORIA", "SUBCATEGORIA", "PRIORIDAD", "DESCRIPCION", "ANYDESK", "ESTADO", "TECNICO", "FECHA ASIGNADA", "TIEMPO EN ASIGNAR", "FECHA COMPLETACION", "TIEMPO EN COMPLETAR", "FECHA PENDIENTE", "TIEMPO EN PENDIENTE"]
-                );
-                $spreadsheet->setActiveSheetIndexByName("Encuestas");
-                $spreadsheet->getActiveSheet()->fromArray(
-                    ["ID", "ID TICKET", "RESOLUCION", "ASERTIVIDAD", "RAPIDEZ", "CALIDAD", "PROMEDIO", "FECHA DE CREACION", "ESTADO"]
                 );
                 $spreadsheet->setActiveSheetIndexByName("Tickets");
 
@@ -167,19 +162,6 @@ class AdminController
                     $spreadsheet->getActiveSheet()->setCellValue("N$i", $ticket->tiempo_en_completar);
                     $spreadsheet->getActiveSheet()->setCellValue("O$i", $ticket->fecha_pendiente);
                     $spreadsheet->getActiveSheet()->setCellValue("P$i", $ticket->tiempo_en_pendiente);
-
-                    $spreadsheet->setActiveSheetIndexByName("Encuestas");
-                    $encuesta = Encuestas::findJoin($ticket->id);
-
-                    $spreadsheet->getActiveSheet()->setCellValue("A$i", $encuesta->id);
-                    $spreadsheet->getActiveSheet()->setCellValue("B$i", $encuesta->ticket_id);
-                    $spreadsheet->getActiveSheet()->setCellValue("C$i", $encuesta->resolucion);
-                    $spreadsheet->getActiveSheet()->setCellValue("D$i", $encuesta->asertividad);
-                    $spreadsheet->getActiveSheet()->setCellValue("E$i", $encuesta->rapidez);
-                    $spreadsheet->getActiveSheet()->setCellValue("F$i", $encuesta->calidad);
-                    $spreadsheet->getActiveSheet()->setCellValue("G$i", $encuesta->promedio);
-                    $spreadsheet->getActiveSheet()->setCellValue("H$i", $encuesta->creado);
-                    $spreadsheet->getActiveSheet()->setCellValue("I$i", $encuesta->estado);
 
 
 
