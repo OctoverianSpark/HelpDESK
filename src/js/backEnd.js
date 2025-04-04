@@ -240,7 +240,7 @@ async function ticketUpdate() {
           .replace("T", " ");
 
         body.tiempo_en_asignar = Math.floor(
-          calculateTime(ticket.fecha, body.fecha_asignada)
+          calculateTime(ticket.fecha, body.fecha_asignada) - 300
         );
       }
     }
@@ -317,12 +317,18 @@ function calculateTime(from, to) {
    *
    */
 
-  const fromDATE = new Date(from);
-  const toDATE = new Date(to);
+  const fromDATE = new Date(from).getTime();
+  const toDATE = new Date(to).getTime();
 
   let diff = toDATE - fromDATE;
 
+  console.log(diff / 60000);
+  
+
   diff = diff / 60000;
+
+  console.log(diff);
+  
 
   return diff;
 }

@@ -98,11 +98,12 @@ class TicketController
                         if ($tickets->estado == "sin asignar") {
 
 
+                            $_POST["tickets"]["fecha_asignada"] = date("Y-m-d H:i:s");
 
-                            $_POST["tickets"]["fecha_asignada"] = date("Y-m-d h:i:s");
-                            $asignTime = (strtotime($_POST["tickets"]["fecha_asignada"]) - (strtotime($tickets->fecha))) / 1000;
+                            $asignTime = ( (strtotime($tickets->fecha)) - strtotime($_POST["tickets"]["fecha_asignada"])) / 60;
                             $asignTime =  ($asignTime < 0) ? $asignTime * -1 : $asignTime * 1;
-                            $_POST["tickets"]["tiempo_en_asignar"] = $asignTime;
+                            $_POST["tickets"]["tiempo_en_asignar"] = $asignTime - 300;
+
                         } else {
 
 
@@ -123,13 +124,13 @@ class TicketController
                     case "pendiente":
 
                         if ($tickets->estado === "sin asignar") {
-                            $_POST["tickets"]["fecha_pendiente"] = date("Y-m-d h:i:s");
-                            $pendingTime = (strtotime($_POST["tickets"]["fecha_pendiente"]) - (strtotime($tickets->fecha))) / 1000;
+                            $_POST["tickets"]["fecha_pendiente"] = date("Y-m-d H:i:s");
+                            $pendingTime = (strtotime($_POST["tickets"]["fecha_pendiente"]) - (strtotime($tickets->fecha_asignada))) / 60;
                             $pendingTime =  ($pendingTime < 0) ? $pendingTime * -1 : $pendingTime * 1;
                             $_POST["tickets"]["tiempo_en_asignar"] = $pendingTime;
                         } else if ($tickets->estado === "en proceso") {
-                            $_POST["tickets"]["fecha_pendiente"] = date("Y-m-d h:i:s");
-                            $pendingTime = (strtotime($_POST["tickets"]["fecha_pendiente"]) - (strtotime($tickets->fecha_asignada))) / 1000;
+                            $_POST["tickets"]["fecha_pendiente"] = date("Y-m-d H:i:s");
+                            $pendingTime = (strtotime($_POST["tickets"]["fecha_pendiente"]) - (strtotime($tickets->fecha_asignada))) / 60;
                             $pendingTime = ($pendingTime < 0) ? $pendingTime * -1 : $pendingTime * 1;
                             $_POST["tickets"]["tiempo_en_pendiente"] = $pendingTime;
                         }
@@ -144,23 +145,23 @@ class TicketController
                         break;
                     case "completado":
 
-                        $_POST["tickets"]["fecha_completacion"] = date("Y-m-d h:i:s");
+                        $_POST["tickets"]["fecha_completacion"] = date("Y-m-d H:i:s");
 
                         if ($tickets->estado === "en proceso") {
-                            $completedTime = (strtotime(date("Y-m-d h:i:s")) - (strtotime($tickets->fecha_asignada))) / 1000;
-                            $completedTime = (strtotime($tickets->fecha_asignada) - strtotime(date("Y-m-d h:i:s"))) / 1000;
+                            $completedTime = (strtotime(date("Y-m-d H:i:s")) - (strtotime($tickets->fecha_asignada))) / 60;
+                            $completedTime = (strtotime($tickets->fecha_asignada) - strtotime(date("Y-m-d H:i:s"))) / 60;
                             $completedTime =  ($completedTime < 0) ? $completedTime * -1 : $completedTime * 1;
                             $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
                         } else if ($tickets->estado === "pendiente") {
 
 
-                            $completedTime = ((strtotime($tickets->fecha_asignada) - strtotime($tickets->fecha_pendiente)) - strtotime(date('Y-m-d h:i:S'))) / 1000;
+                            $completedTime = ((strtotime($tickets->fecha_asignada) - strtotime($tickets->fecha_pendiente)) - strtotime(date('Y-m-d h:i:S'))) / 60;
 
                             $completedTime =  ($completedTime < 0) ? $completedTime * -1 : $completedTime * 1;
                             $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
                         } else if ($tickets->estado === "sin asignar") {
 
-                            $completedTime = (strtotime($_POST["tickets"]["fecha_completacion"]) - (strtotime($tickets->fecha))) / 1000;
+                            $completedTime = (strtotime($_POST["tickets"]["fecha_completacion"]) - (strtotime($tickets->fecha))) / 60;
                             $completedTime =  ($completedTime < 0) ? $completedTime * -1 : $completedTime * 1;
                             $_POST["tickets"]["tiempo_en_completar"] = $completedTime;
                         }
