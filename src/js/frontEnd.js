@@ -1126,9 +1126,17 @@ async function TicketGraphicCards(query) {
   pendingCard.textContent = avgPendingTime.toFixed(2) ?? 0;
 
   const totalCompletionTime = query.reduce(
-    (acc, ticket) => acc + (Number(ticket.tiempo_en_completar) || 0),
+    (acc, ticket) =>{ 
+      
+      
+      console.log(acc,parseFloat(ticket.tiempo_en_completar));
+
+      return acc + (parseFloat(ticket.tiempo_en_completar != '' ? ticket.tiempo_en_completar : 0) || 0)
+
+    },
     0
   );
+  
   const avgCompletionTime = totalCompletionTime / query.length;
 
   const completionCard = document.querySelector(".quantificate-complete-time");
