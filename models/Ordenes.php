@@ -14,6 +14,7 @@ class Ordenes extends ActiveRecord
         "user_id",
         "computer_id",
         "nombre_equipo",
+        "mail",
         "nombre",
         "apellido",
         "description",

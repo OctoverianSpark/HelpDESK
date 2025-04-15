@@ -7,7 +7,7 @@
    <h1>GESTI&Oacute;N AUTOMATIZACI&Oacute;N, TECNOLOG&Iacute;A, E INFORMATICA <br> ORDEN DE RECEPCI&Oacute;N DE EQUIPOS <br> INFORMATICOS</h1>
    <div class="metadata">
 
-      <p><b>C&oacute;digo:</b> GATI-FT-01</p>
+      <p><b>C&oacute;digo:</b> GATI-FT-02</p>
       <p><b>Versi&oacute;n:</b> 01</p>
       <p><b>Fecha: </b><?php echo date("d / m / Y") ?></p>
       <p><b>P&aacute;gina:</b>1 de 2</p>

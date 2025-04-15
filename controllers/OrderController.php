@@ -35,8 +35,6 @@ class  OrderController
 
     public static function orden(Router $router)
     {
-
-
         $router->render("admin/inventario/ordenes/orden", []);
     }
 
@@ -49,7 +47,6 @@ class  OrderController
 
         $orders = Ordenes::filter("state", "=", "pendiente");
 
-
         $router->render("/admin/inventario/ordenes/crear", [
             "inv" => $inv,
             "users" => $users[$_GET["sede"]],
@@ -60,17 +57,11 @@ class  OrderController
 
     public static function send()
     {
-
-
-
-
-
-
         $json = json_decode(file_get_contents(__DIR__ . "/../public/build/json/orders.json"), true);
 
         $post = json_decode(file_get_contents("php://input"));
-        $html = file_get_contents(__DIR__ . "/../views/templates/mail/" . $post->type . ".html");
 
+        $html = file_get_contents(__DIR__ . "/../views/templates/mail/" . $post->type . ".html");
 
         if ($post->type === "entrega" || $post->type === "recepcion") {
 
@@ -135,7 +126,7 @@ class  OrderController
             $inv = Inventory::find($order->computer_id);
             
             echo json_encode([
-                "msg" => enviarCorreo($html, "Orden Generada", [strtolower($inv->correo_dominio)]) ?? "Message sent!!!"
+                "msg" => enviarCorreo($html, "Orden Generada", [strtolower($order->mail??$inv->correo_dominio)]) ?? "Message sent!!!"
             ]);
         }
         exit;
@@ -173,10 +164,6 @@ class  OrderController
         if (str_contains($order->order_id, "ODS")) $type = "salida";
         if (str_contains($order->order_id, "ODE")) $type = "entrega";
         if (str_contains($order->order_id, "ODR")) $type = "recepcion";
-
-
-
-
 
 
 
