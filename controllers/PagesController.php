@@ -284,7 +284,7 @@ class PagesController
 
         foreach ($usrs as $key => $value) {
             foreach ($value as $usr) {
-                $data = array_shift(Inventory::filter("user_id","=",$usr->id));
+                $data = array_shift(Inventory::filter_by_location("user_id","=",$usr->id,$key));
 
                 if(is_null($data)) continue;
 

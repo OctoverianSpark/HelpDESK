@@ -88,7 +88,7 @@ class Inventory extends ActiveRecord
 
         return $resultado;
     }
-
+    
     public static function filter($columna,$operador,$valor){
 
         $query = "SELECT * FROM ti.inv as i WHERE $columna $operador '$valor' order by id DESC";
@@ -99,6 +99,18 @@ class Inventory extends ActiveRecord
 
         return $result;
     }
+
+    public static function filter_by_location($columna,$operador,$valor,$location){
+        $query = "SELECT * FROM ti.inv as i WHERE $columna $operador '$valor' and sede = '$location' order by id DESC";
+
+        $result = self::consultarSQL($query);
+
+        $result = self::findUser($result);
+
+        return $result;
+
+    }
+
 
 
     protected static function findUser($object = []){
