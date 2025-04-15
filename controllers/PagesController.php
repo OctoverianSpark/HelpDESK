@@ -113,6 +113,7 @@ class PagesController
             "ticket" => $ticket,
         ]);
     }
+
     public static function tickets(Router $router)
     {
 
@@ -123,6 +124,7 @@ class PagesController
             "resultado" => $resultado
         ]);
     }
+
     public static function ticket(Router $router)
     {
 
@@ -232,21 +234,6 @@ class PagesController
             $poll->guardar();
 
 
-
-
-
-
-
-
-            
-            
-
-            
-
-
-
-
-
         }
 
 
@@ -291,39 +278,24 @@ class PagesController
 
 
 
-        $area = strtolower($_SESSION["area"]);
-
-        $usrs = [];
-
-        if ($area == "ati" || $area == "gerencia") $usrs = Personal::separateAll();
-
-        else $usrs = Personal::filter("area", "=", $area);
-
         $usrs = Personal::separateAll();
         $inv = [];
-
-
+        $data = [];
 
         foreach ($usrs as $key => $value) {
             foreach ($value as $usr) {
                 $data = array_shift(Inventory::filter("user_id","=",$usr->id));
+
+                if(is_null($data)) continue;
 
                 if ($data->nombre === "STOCK") continue;
                 $inv[$key][] = $data;
             }
         }
 
-
-
-
-
-
-
-
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $orden = new Ordenes($_POST);
-
             $orderCount = count(Ordenes::filter("order_id", "LIKE", "ODS#%"));
 
             $orden->order_id = "ODS#" . ($orderCount === 0 ? 1 : ++$orderCount);

@@ -99,6 +99,11 @@
 
     </fieldset>
 
+    <label class="input-group" for="mail">
+        <span>Enviar orden al correo: </span>
+        <input type="email" name="mail" id="mail" required>
+    </label>
+
     <fieldset class="no-fieldset container-input">
 
         <label for="description" class="input-group">
