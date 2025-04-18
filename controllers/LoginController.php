@@ -15,6 +15,7 @@ use Models\Users;
 class LoginController{
     
     public static function login(Router $router){
+        
         if($_SERVER["REQUEST_METHOD"] === "POST"){
 
             $ad = new ActiveDirectory($_POST);
@@ -54,6 +55,7 @@ class LoginController{
 
 
         }
+
         $router->render("login");
     }
 

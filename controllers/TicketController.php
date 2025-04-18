@@ -26,6 +26,7 @@ class TicketController
 
         $tickets = Tickets::all();
         $tecnicos = Users::filter("area", "=", "ATI");
+        
 
         $router->render("admin/tickets/index", [
             "tickets" => $tickets,

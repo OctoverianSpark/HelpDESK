@@ -277,6 +277,11 @@ textarea {
   flex-direction: column;
   text-align: center;
 
+
+  &:has(span.data-name){
+    width: 30rem;
+  }
+
   span,
   i {
     text-align: center;

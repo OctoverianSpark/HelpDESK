@@ -28,6 +28,8 @@ class  OrderController
     {
 
         $orders = Ordenes::all();
+
+
         $router->render("admin/inventario/ordenes/index", [
             "orders" => $orders,
         ]);
@@ -46,6 +48,9 @@ class  OrderController
         $users = Personal::separateAll();
 
         $orders = Ordenes::filter("state", "=", "pendiente");
+
+        
+
 
         $router->render("/admin/inventario/ordenes/crear", [
             "inv" => $inv,
