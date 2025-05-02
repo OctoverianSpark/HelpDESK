@@ -171,7 +171,7 @@ class AdminController
                 $spreadsheet->createSheet(1)->setTitle("LOGS");
                 $spreadsheet->removeSheetByIndex(0);
                 $spreadsheet->getActiveSheet()->fromArray(
-                    array_keys(['ID', 'TIPO', 'ACCION', 'DESCRIPCION', 'DATA ID'])
+                    ['ID', 'TIPO', 'ACCION', 'DESCRIPCION', 'DATA ID']
                 );
 
                 $logs = Log::all();
@@ -183,6 +183,8 @@ class AdminController
                     $spreadsheet->getActiveSheet()->setCellValue("C$i", $log->action);
                     $spreadsheet->getActiveSheet()->setCellValue("D$i", $log->description);
                     $spreadsheet->getActiveSheet()->setCellValue("E$i", $log->data_id);
+
+                    $i++;
                 }
             }
 
