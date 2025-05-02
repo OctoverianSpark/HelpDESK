@@ -23,11 +23,11 @@ class AdminController
     public static function index(Router $router)
     {
 
-        $orders=  Ordenes::filter("state","=","pendiente");
+        $orders =  Ordenes::filter("state", "=", "pendiente");
 
 
         $router->render("admin/index", [
-            "orders"=>$orders
+            "orders" => $orders
         ]);
     }
 
@@ -41,20 +41,17 @@ class AdminController
         ]);
     }
 
-    public static function logs(Router $router){
+    public static function logs(Router $router)
+    {
 
 
 
         $logs = Log::all();
 
-        $router->render("/admin/logs",["logs"=>$logs]);
-
-
-
-
+        $router->render("/admin/logs", ["logs" => $logs]);
     }
 
-    
+
 
 
     public static function export(Router $router)
@@ -169,9 +166,25 @@ class AdminController
 
                     $i++;
                 }
+            } else if ($_POST['export'] === 'logs') {
+                $i = 2;
+                $spreadsheet->createSheet(1)->setTitle("LOGS");
+                $spreadsheet->removeSheetByIndex(0);
+                $spreadsheet->getActiveSheet()->fromArray(
+                    array_keys(['ID', 'TIPO', 'ACCION', 'DESCRIPCION', 'DATA ID'])
+                );
+
+                $logs = Log::all();
+
+                foreach ($logs as $log) {
+
+                    $spreadsheet->getActiveSheet()->setCellValue("A$i", $log->id);
+                    $spreadsheet->getActiveSheet()->setCellValue("B$i", $log->type);
+                    $spreadsheet->getActiveSheet()->setCellValue("C$i", $log->action);
+                    $spreadsheet->getActiveSheet()->setCellValue("D$i", $log->description);
+                    $spreadsheet->getActiveSheet()->setCellValue("E$i", $log->data_id);
+                }
             }
-
-
 
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="' . urlencode($filename) . '"');

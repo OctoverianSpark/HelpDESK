@@ -1,5 +1,3 @@
-
-
 <h1 class="title">Administrador</h1>
 
 <form method="post" action="/admin/export" class="exports-form container-input">
@@ -9,6 +7,7 @@
         <select name="export" id="export-selector">
             <option value="inventario">Inventario</option>
             <option value="tickets">Tickets</option>
+            <option value="logs">Logs</option>
         </select>
     </label>
 
