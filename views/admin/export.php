@@ -7,6 +7,7 @@
         <select name="export" id="export-selector">
             <option value="inventario">Inventario</option>
             <option value="tickets">Tickets</option>
+            <option value="mantenimientos">Mantenimientos</option>
             <option value="logs">Logs</option>
         </select>
     </label>

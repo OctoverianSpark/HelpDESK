@@ -11,6 +11,7 @@ use Models\Inventory;
 use Models\Log;
 use Models\Perifericos;
 use Models\Personal;
+use Models\Users;
 
 class InventoryController
 {
@@ -69,11 +70,10 @@ class InventoryController
 
             $inv = new Inventory($_POST);
 
-            if(!empty(Inventory::filter("nombre_equipo","=",$inv->nombre_equipo))){
+            if (!empty(Inventory::filter("nombre_equipo", "=", $inv->nombre_equipo))) {
 
                 header("Location: /admin/inventario/crear?err=4");
                 exit;
-
             }
 
             $id = $inv->guardar();
@@ -105,7 +105,9 @@ class InventoryController
         $inv = Inventory::find($id);
         $perifericos = Perifericos::findGroup($id);
         $users = Personal::separateAll();
-        
+
+        $techs = Users::getTecnicals();
+
 
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -137,19 +139,17 @@ class InventoryController
 
                 foreach ($_POST["perifericos"] as $per) {
 
-                    if($per["id"]){
+                    if ($per["id"]) {
                         $periferico = Perifericos::find($per['id']);
                         $periferico->sync($per);
                         $log->updatePerLog(Perifericos::find($periferico->id), $periferico);
                         $periferico->guardar();
+                    } else {
 
-                    }else{
-                    
                         $periferico = new Perifericos($per);
                         $periferico->computer_id = $id;
                         $perId = $periferico->guardar();
                         $log->newPerLog($perId);
-
                     }
                 }
             }
@@ -163,7 +163,8 @@ class InventoryController
         $router->render("admin/inventario/actualizar", [
             "inv" => $inv,
             "perifericos" => $perifericos,
-            "users" => $users[$_GET["sede"]]
+            "users" => $users[$_GET["sede"]],
+            'techs' => $techs
         ]);
     }
 

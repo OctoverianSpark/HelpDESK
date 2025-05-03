@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 
@@ -8,7 +8,8 @@ namespace Models;
 
 
 
-abstract class ActiveRecord extends ObjectCreator{
+abstract class ActiveRecord extends ObjectCreator
+{
 
     protected static $columnasDB = [];
 
@@ -21,28 +22,30 @@ abstract class ActiveRecord extends ObjectCreator{
     protected static $errores = [];
 
 
-    public function __construct($args = []){
+    public function __construct($args = [])
+    {
 
         foreach (static::$columnasDB as $column) {
             $this->$column = $args[$column] ?? null;
         }
-
-
     }
 
 
 
-    public static function setDB(){
+    public static function setDB()
+    {
         self::$db = conectarDB(static::$schema);
     }
-    public static function all(){
+    public static function all()
+    {
         $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC";
         $resultado = self::consultarSQL($query);
 
         return $resultado;
     }
-    public static function get($limit){
-        $query = "SELECT * FROM " . static::$tabla . " LIMIT ". $limit;
+    public static function get($limit)
+    {
+        $query = "SELECT * FROM " . static::$tabla . " LIMIT " . $limit;
 
         $resultado = self::consultarSQL($query);
 
@@ -52,19 +55,21 @@ abstract class ActiveRecord extends ObjectCreator{
 
 
 
-    public static function find($id){
-        
-        $query = "SELECT * FROM " . static::$tabla." WHERE id = $id";
+    public static function find($id)
+    {
+
+        $query = "SELECT * FROM " . static::$tabla . " WHERE id = $id";
         $resultado = self::consultarSQL($query);
-        
-        return array_shift( $resultado );
+
+        return array_shift($resultado);
     }
 
     //Buscar un registro por su ID
 
 
 
-    public static function consultarSQL($query){
+    public static function consultarSQL($query)
+    {
         //Consultar
         $resultado = self::$db->query($query);
 
@@ -83,41 +88,38 @@ abstract class ActiveRecord extends ObjectCreator{
 
         //Retornar
         return $array;
-
-
-
     }
 
 
-    public function guardar(){
+    public function guardar()
+    {
 
         if (!$this->id) {
             $this->crear();
-            
+
             $resultado = self::$db->insert_id;
-        }else{
+        } else {
             $this->actualizar();
             $resultado = $this->id;
         }
 
         return $resultado;
-
-
     }
 
-    public function crear(){
+    public function crear()
+    {
 
         //Sanitizar
         $atributos = $this->sanitizarAtributos();
-        
- 
+
+
 
         //Insercion
-        $query = "INSERT INTO ". static::$tabla ." ("  ;
-        $query .= join(", ",array_keys($atributos));
+        $query = "INSERT INTO " . static::$tabla . " (";
+        $query .= join(", ", array_keys($atributos));
         $query .= ")VALUES ('";
-        $query .= join("' , '",array_values($atributos));
-        $query.= "')";
+        $query .= join("' , '", array_values($atributos));
+        $query .= "')";
 
 
         $query = strtolower($query);
@@ -128,26 +130,23 @@ abstract class ActiveRecord extends ObjectCreator{
     }
 
 
-    public static function getLastId(){
+    public static function getLastId()
+    {
 
 
         return self::$db->insert_id;
-
-
     }
 
-    public function eliminar(){
+    public function eliminar()
+    {
         $query = "DELETE FROM " . static::$tabla . " WHERE id = '$this->id' ";
 
 
         self::$db->query($query);
-
-
-        
-
     }
 
-    public function atributos(){
+    public function atributos()
+    {
         $atributos = [];
         foreach (static::$columnasDB as $columna) {
             if ($columna === "id") continue;
@@ -158,66 +157,65 @@ abstract class ActiveRecord extends ObjectCreator{
     }
 
 
-    public function sanitizarAtributos(){
+    public function sanitizarAtributos()
+    {
         $atributos = $this->atributos();
 
 
-        $sanitizado= [];
+        $sanitizado = [];
 
-        foreach($atributos as $key => $value){
-            
+        foreach ($atributos as $key => $value) {
+
             $sanitizado[$key] = self::$db->escape_string($value);
-          
-
         }
         return $sanitizado;
     }
 
-    public function actualizar(){
-        
+    public function actualizar()
+    {
+
         $atributos = $this->sanitizarAtributos();
 
         $valores = [];
 
-        foreach($atributos as $key=>$value){
-            if($atributos[$key] === "" || $atributos[$key] === null) continue;
-            if($key === "creado") continue;
+        foreach ($atributos as $key => $value) {
+            if ($atributos[$key] === "" || $atributos[$key] === null) continue;
+            if ($key === "creado") continue;
             $valores[] = "$key='$value'";
         }
 
-        $query = "UPDATE ". static::$tabla." SET "  ;
-        $query.= join(",",$valores);
-        $query.= " WHERE id = '". self::$db->escape_string($this->id) . "'";
-        $query.= " LIMIT 1";
+        $query = "UPDATE " . static::$tabla . " SET ";
+        $query .= join(",", $valores);
+        $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "'";
+        $query .= " LIMIT 1";
 
-        
+
         $query = strtolower($query);
 
         $resultado = self::$db->query($query);
         return $resultado;
-
-
     }
 
-    public function sync($args = []) {
+    public function sync($args = [])
+    {
 
-        foreach($args as $key=>$value){
-            
+        foreach ($args as $key => $value) {
+
             $this->$key = $value;
         }
-
-        
     }
 
     //Validacion
-    public static function getErrores(){
+    public static function getErrores()
+    {
         return static::$errores;
     }
 
-    public function validar(){
+    public function validar()
+    {
 
         static::$errores = [];
-        
+
 
 
 
@@ -225,46 +223,17 @@ abstract class ActiveRecord extends ObjectCreator{
 
 
         return static::$errores;
-
-
     }
 
 
 
-    public static function filter($column,$operator,$value){
+    public static function filter($column, $operator, $value)
+    {
 
-        $query = "SELECT * FROM ". static::$tabla . " WHERE $column $operator '$value'";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE $column $operator '$value'";
 
         $resultado = self::consultarSQL($query);
 
         return $resultado;
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-?>

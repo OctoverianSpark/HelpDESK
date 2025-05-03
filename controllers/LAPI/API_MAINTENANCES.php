@@ -1,0 +1,60 @@
+<?php
+
+
+
+
+namespace Controllers\LAPI;
+
+use Models\Maintenance;
+
+class API_MAINTENANCES
+{
+
+  public static function FIND_QUERY()
+  {
+
+
+    $post = json_decode(file_get_contents('php://input'));
+    $id = filter_var($post->id, FILTER_VALIDATE_INT);
+
+    $res = Maintenance::filter('computer', '=', $id);
+
+    if ($res) {
+      echo json_encode(array_shift($res));
+    } else {
+      echo json_encode([]);
+    }
+
+    exit;
+  }
+  public static function SAVE_QUERY()
+  {
+
+
+    $post = json_decode(file_get_contents('php://input'), true);
+
+    $id = filter_var($post['computer'], FILTER_VALIDATE_INT);
+
+    $res = Maintenance::filter('computer', '=', $id);
+
+
+    if ($res) {
+      $res = Maintenance::find($res[0]->id);
+
+      $res->sync($post);
+
+      $res->guardar();
+
+      echo json_encode($res);
+    } else {
+
+      $res = new Maintenance($post);
+
+      $res->guardar();
+
+      echo json_encode($res);
+    }
+
+    exit;
+  }
+}

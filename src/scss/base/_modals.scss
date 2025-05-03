@@ -30,6 +30,27 @@
   }
 }
 
+.maintenance-form-modal {
+  position: fixed;
+  inset: 0;
+  margin: 0 auto;
+  z-index: 1;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+
+  form {
+    width: 400px;
+    height: 400px;
+    background-color: rgba($color: v.$blanco, $alpha: 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+  }
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 .modal-errores {
   display: flex;
   gap: 2rem;
@@ -603,56 +624,43 @@
     gap: 5rem;
   }
 
-  transition: .5s;
+  transition: 0.5s;
 
-  &.hidden{
-
+  &.hidden {
     visibility: hidden;
     opacity: 0;
-
   }
 }
 
-.user-detail-modal{
-
+.user-detail-modal {
   padding: 2rem;
   top: 0;
   position: fixed;
 
-  &.hidden{
-
-
+  &.hidden {
     opacity: 0;
     visibility: 0;
     pointer-events: none;
-
-
   }
 
-  p{
+  p {
     display: flex;
     gap: 10px;
   }
-
 }
 
-
-.create-server-modal{
-
-
+.create-server-modal {
   position: absolute;
   inset: 0;
-  background-color: rgba(white,.3);
+  background-color: rgba(white, 0.3);
   backdrop-filter: blur(10px);
 
-
-  &.hidden{
+  &.hidden {
     opacity: 0;
     visibility: hidden;
   }
 
-
-  form{
+  form {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -660,29 +668,23 @@
     flex-wrap: wrap;
     width: 45%;
 
-
-    label:has(input#cost){
+    label:has(input#cost) {
       width: 100%;
     }
   }
-
 }
-.create-user-modal{
-
-
+.create-user-modal {
   position: absolute;
   inset: 0;
-  background-color: rgba(white,.3);
+  background-color: rgba(white, 0.3);
   backdrop-filter: blur(10px);
 
-
-  &.hidden{
+  &.hidden {
     opacity: 0;
     visibility: hidden;
   }
 
-
-  form{
+  form {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -690,5 +692,4 @@
     flex-wrap: wrap;
     width: 45%;
   }
-
 }

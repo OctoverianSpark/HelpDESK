@@ -9,6 +9,7 @@ use Models\Inventory;
 use Models\Perifericos;
 use Models\Encuestas;
 use Models\Log;
+use Models\Maintenance;
 use Models\Ordenes;
 use Models\Tickets;
 use Models\Users;
@@ -185,6 +186,31 @@ class AdminController
                     $spreadsheet->getActiveSheet()->setCellValue("E$i", $log->data_id);
 
                     $i++;
+                }
+            } else if ($_POST['export'] === 'mantenimientos') {
+
+                $i = 2;
+                $spreadsheet->createSheet(1)->setTitle("LOGS");
+                $spreadsheet->removeSheetByIndex(0);
+                $spreadsheet->getActiveSheet()->fromArray(
+                    ['ID', 'ENCARGADO', 'ULTIMO', 'SIGUIENTE', 'COMPUTADOR']
+                );
+
+                $mantenimientos = Maintenance::all();
+
+
+                foreach ($mantenimientos as $mantenimiento) {
+
+                    $computer = Inventory::find($mantenimiento->id);
+
+
+                    $spreadsheet->getActiveSheet()->setCellValue("A$i", $mantenimiento->id);
+                    $spreadsheet->getActiveSheet()->setCellValue("B$i", $mantenimiento->tech);
+                    $spreadsheet->getActiveSheet()->setCellValue("C$i", $mantenimiento->latest);
+                    $spreadsheet->getActiveSheet()->setCellValue("D$i", $mantenimiento->next);
+                    $spreadsheet->getActiveSheet()->setCellValue("D$i", $computer->nombre_equipo);
+
+                    $i+=1
                 }
             }
 
