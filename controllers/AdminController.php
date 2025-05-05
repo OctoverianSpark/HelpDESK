@@ -210,7 +210,7 @@ class AdminController
                     $spreadsheet->getActiveSheet()->setCellValue("D$i", $mantenimiento->next);
                     $spreadsheet->getActiveSheet()->setCellValue("D$i", $computer->nombre_equipo);
 
-                    $i+=1
+                    $i+=1;
                 }
             }
 
