@@ -78,6 +78,7 @@ class API_Inventory
             $eq->apellido = 'STOCK';
             $eq->correo = 'STOCK';
             $eq->area = 'STOCK';
+            continue;
          }
 
          $usr = Personal::PIVOTFINDER($eq->user_id, $eq->sede);
