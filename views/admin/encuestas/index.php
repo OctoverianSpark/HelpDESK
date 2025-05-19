@@ -1,5 +1,5 @@
 <h1 class="title"> Encuestas </h1>
-<div class="modal modal-poll-view">
+<div class="modal modal-poll-view hidden">
 
    <div class="modal-content">
 
