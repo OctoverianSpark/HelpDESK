@@ -163,13 +163,6 @@ class PagesController
 
     public static function encuesta(Router $router)
     {
-        if (!in_array(date("d"),["15","16","17","18","19","20"],true) || !in_array(date("d"),["30","31","01","02","03","04"])) {
-
-            $router->render("pages/tickets/poll_forbidden");  
-
-            exit;
-        };
-
         $techs = Users::filter("area", "=", "ATI");
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -180,7 +173,6 @@ class PagesController
 
             foreach($techs as $tech){
 
-                if (strtolower($tech->ad_user) === "alexander.p") continue;
 
                 $json[$tech->id] = [];
 
@@ -210,6 +202,7 @@ class PagesController
                
                     "amability"=>$_POST["individual"]["amability"][$key]
                 ];
+                header('Location: /tickets/ver?result=1');
 
 
 
@@ -232,6 +225,7 @@ class PagesController
             $poll = new Encuestas($args);
 
             $poll->guardar();
+
 
 
         }

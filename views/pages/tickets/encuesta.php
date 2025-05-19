@@ -1,7 +1,6 @@
 <h1 class="title">Encuesta de Sastisfaccion</h1>
 
 
-
 <form method="POST" class="satisfaction-form">
 
 
@@ -28,11 +27,12 @@
 
    <div class="indv-tests">
 
+
+
       <?php
       $i = 0;
 
       foreach ($techs as $tech) {
-         if (strtolower($tech->ad_user) === "alexander.p") continue;
 
       ?>
 

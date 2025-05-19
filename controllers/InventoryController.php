@@ -70,12 +70,6 @@ class InventoryController
 
             $inv = new Inventory($_POST);
 
-            if (!empty(Inventory::filter("nombre_equipo", "=", $inv->nombre_equipo))) {
-
-                header("Location: /admin/inventario/crear?err=4");
-                exit;
-            }
-
             $id = $inv->guardar();
             $log->newInventoryLog($id);
 
