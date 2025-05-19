@@ -1976,6 +1976,74 @@ async function maintenances () {
   }
 }
 
+async function pollModal () {
+  const table = document.querySelector('#polls-table')
+
+  if (!table) return
+
+  const rows = table.querySelectorAll('.table-row')
+
+  const mdl = document.querySelector('.modal-poll-view')
+
+  rows.forEach(row => {
+    row.onclick = async e => {
+      const id = row.getAttribute('data-id')
+
+      mdl.classList.remove('hidden')
+
+      const content = mdl.querySelector('.modal-content')
+
+      const query = await Information.postJSON('/admin/encuesta', {
+        id: id
+      })
+
+      const containers = mdl.querySelectorAll('.container-test')
+      containers.forEach(container => container.remove())
+
+      Object.keys(query.individual_test).forEach(key => {
+        const title = new Element(
+          'H3',
+          { class: 'title-test' },
+          { textContent: query.individual_test[key].name },
+          []
+        )
+        const amability = new Element(
+          'P',
+          {},
+          {
+            textContent: 'Amabilidad: ' + query.individual_test[key].amability
+          },
+          []
+        )
+        const quality = new Element(
+          'P',
+          {},
+          { textContent: 'Calidad: ' + query.individual_test[key].quality },
+          []
+        )
+        const response = new Element(
+          'P',
+          {},
+          {
+            textContent:
+              'Tiempo de Respuesta: ' + query.individual_test[key].response
+          },
+          []
+        )
+
+        const container = new Element('DIV', { class: 'container-test' }, {}, [
+          title,
+          amability,
+          quality,
+          response
+        ])
+
+        content.appendChild(container.render())
+      })
+    }
+  })
+}
+
 document.addEventListener('DOMContentLoaded', e => {
   addPer()
   delPer()
@@ -1998,4 +2066,5 @@ document.addEventListener('DOMContentLoaded', e => {
   InvDashboard()
   PollDashboard()
   maintenances()
+  pollModal()
 })

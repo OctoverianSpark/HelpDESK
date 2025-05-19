@@ -162,6 +162,7 @@ $router->post("/admin/entradas/save", [API_ENTRIES::class, "SAVE_ENTRY"]);
 $router->post("/admin/entradas/delete", [API_ENTRIES::class, "DELETE_ENTRY"]);
 
 $router->post("/admin/encuestas", [API_POLLS::class, "GET_POLLS"]);
+$router->post("/admin/encuesta", [API_POLLS::class, "GET_POLLS_ID"]);
 
 $router->post('/admin/mantenimientos/find', [API_MAINTENANCES::class, 'FIND_QUERY']);
 $router->post('/admin/mantenimientos/save', [API_MAINTENANCES::class, 'SAVE_QUERY']);

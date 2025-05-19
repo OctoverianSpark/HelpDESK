@@ -1,10 +1,18 @@
 <h1 class="title"> Encuestas </h1>
+<div class="modal modal-poll-view">
+
+   <div class="modal-content">
+
+   </div>
+
+
+</div>
 
 
 <div class="table-wrapper">
 
 
-   <div class="table">
+   <div class="table" id="polls-table">
 
 
       <div class="table-header">
@@ -17,19 +25,21 @@
 
       </div>
 
-      <?php foreach($polls as $poll){ ?>
+      <?php foreach ($polls as $poll) { ?>
 
 
-            <div class="table-row">
-               <div class="cell"><?php echo strtoupper( $poll->name) ?></div>
-               <div class="cell"><?php echo date("d / m / Y",strtotime($poll->date)) ?></div>
-               <div class="cell"><?php echo $poll->general_test["response_time"] ?></div>
-               <div class="cell"><?php echo strtoupper($poll->general_test["effective-explain"]) ?></div>
-               <div class="cell"><?php echo strtoupper($poll->general_test["effective-atention"]) ?></div>
-               <div class="cell"><?php echo $poll->suggestions ?></div>
-            </div>
+         <div class="table-row" data-id="<?php echo $poll->id ?>">
+            <div class="cell"><?php echo strtoupper($poll->name) ?></div>
+            <div class="cell"><?php echo date("d / m / Y", strtotime($poll->date)) ?></div>
+            <div class="cell"><?php echo $poll->general_test["response_time"] ?></div>
+            <div class="cell"><?php echo strtoupper($poll->general_test["effective-explain"]) ?></div>
+            <div class="cell"><?php echo strtoupper($poll->general_test["effective-atention"]) ?></div>
+            <div class="cell"><?php echo $poll->suggestions ?></div>
+         </div>
 
       <?php } ?>
 
    </div>
+
+
 </div>
