@@ -18,7 +18,7 @@
       <div class="table-header">
          <div class="header">Encuestado</div>
          <div class="header">Fecha de Encuesta</div>
-         <div class="header">Tiempo de Respuesta</div>
+         <div class="header">Facilidad de comunicacion</div>
          <div class="header">Explicacion Efectiva</div>
          <div class="header">Atencion Efectiva</div>
          <div class="header">Comentarios</div>

@@ -10,7 +10,7 @@ class Encuestas extends ActiveRecord
 
 
 
-    protected static $columnasDB = ["id","date", "name", "area", "tick_num", "individual_test", "general_test", "suggestions"];
+    protected static $columnasDB = ["id", "date", "name", "area", "individual_test", "general_test", "suggestions"];
 
 
     protected static $tabla = "encuestas";

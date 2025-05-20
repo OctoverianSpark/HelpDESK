@@ -1993,6 +1993,11 @@ async function pollModal () {
 
       const content = mdl.querySelector('.modal-content')
 
+      mdl.onclick = e => {
+        if (e.target === mdl) {
+          mdl.classList.add('hidden')
+        }
+      }
       const query = await Information.postJSON('/admin/encuesta', {
         id: id
       })

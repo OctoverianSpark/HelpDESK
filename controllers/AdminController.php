@@ -63,6 +63,8 @@ class AdminController
 
 
 
+
+
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $spreadsheet = new Spreadsheet();
             $writer = new Xlsx($spreadsheet);
@@ -210,7 +212,63 @@ class AdminController
                     $spreadsheet->getActiveSheet()->setCellValue("D$i", $mantenimiento->next);
                     $spreadsheet->getActiveSheet()->setCellValue("D$i", $computer->nombre_equipo);
 
-                    $i+=1;
+                    $i += 1;
+                }
+            } else if ($_POST['export'] === 'polls') {
+
+                $i = 2;
+                $spreadsheet->createSheet(1)->setTitle("Encuestas");
+                $spreadsheet->removeSheetByIndex(0);
+                $spreadsheet->getActiveSheet()->fromArray(
+                    ['ID', 'FECHA', 'NOMBRE', 'AREA', 'TIEMPO DE RESPUESTA GENERAL', 'EXPLICACION EFECTIVA', 'ATENCION EFECTIVA', 'ENCUESTA', 'RESPUESTA']
+                );
+                $encuestas = Encuestas::all();
+
+                $techs = Users::filter('area', '=', 'ATI');
+                $techLeters = [...range('H', 'Z')];
+
+                $j = 0;
+                foreach ($techs as $techs) {
+
+                    $spreadsheet->getActiveSheet()->setCellValue($techLeters[$j++] . 1, 'TECNICO');
+                    $spreadsheet->getActiveSheet()->setCellValue($techLeters[$j++] . 1, 'TIEMPO DE RESPUESTA');
+                    $spreadsheet->getActiveSheet()->setCellValue($techLeters[$j++] . 1, 'CALIDAD');
+                    $spreadsheet->getActiveSheet()->setCellValue($techLeters[$j++] . 1, 'AMABILIDAD');
+                }
+
+
+                foreach ($encuestas as $encuesta) {
+
+                    $spreadsheet->getActiveSheet()->setCellValue("A$i", $encuesta->id);
+                    $spreadsheet->getActiveSheet()->setCellValue("B$i", $encuesta->date);
+                    $spreadsheet->getActiveSheet()->setCellValue("C$i", $encuesta->name);
+                    $spreadsheet->getActiveSheet()->setCellValue("D$i", $encuesta->area);
+
+                    $general_test = json_decode($encuesta->general_test, true);
+
+                    $spreadsheet->getActiveSheet()->setCellValue("E$i", $general_test['response_time'] ?? 'No tiene resultado');
+                    $spreadsheet->getActiveSheet()->setCellValue("F$i", $general_test['effective-explain'] ?? 'No tiene resultado');
+                    $spreadsheet->getActiveSheet()->setCellValue("G$i", $general_test['effective-atention'] ?? 'No tiene resultado');
+
+
+                    $j = 0;
+                    $test = json_decode($encuesta->individual_test, true);
+
+                    foreach ($test as $key => $value) {
+                        $tech = Users::find($key);
+
+
+                        $spreadsheet->getActiveSheet()->setCellValue($techLeters[$j++] . $i, $tech->first_name);
+                        $spreadsheet->getActiveSheet()->setCellValue(
+                            $techLeters[$j++] . $i,
+                            $value["response"]
+                        );
+
+                        $spreadsheet->getActiveSheet()->setCellValue($techLeters[$j++] . $i, $value["quality"]);
+
+                        $spreadsheet->getActiveSheet()->setCellValue($techLeters[$j++] . $i, $value["amability"]);
+                    }
+                    $i++;
                 }
             }
 

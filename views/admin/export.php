@@ -9,6 +9,7 @@
             <option value="tickets">Tickets</option>
             <option value="mantenimientos">Mantenimientos</option>
             <option value="logs">Logs</option>
+            <option value="polls">Encuestas</option>
         </select>
     </label>
 

@@ -19,12 +19,6 @@
 
    </label>
 
-
-   <label for="tickets" class="input-group">
-      <span>Numero de tickets realizados</span>
-      <input type="number" name="tick_num" id="id">
-   </label>
-
    <div class="indv-tests">
 
 
@@ -45,12 +39,12 @@
                <p>Has recibido atencion de <?php echo ucwords(strtolower("$tech->first_name $tech->last_name")) ?>?</p>
                <div class="container-flex">
                   <label for="yes-ticket-<?php echo $tech->id ?>" class="yes-no-radio yes-radio">
-                     <input type="radio" name="individual[made-ticket][<?php echo $tech->id ?>]" id="yes-ticket-<?php echo $tech->id ?>" value="si">
+                     <input type="radio" name="individual[made-ticket][<?php echo $tech->id ?>]" id="yes-ticket-<?php echo $tech->id ?>" value="si" required>
                      <span><i class="bi bi-check"></i>Si</span>
 
                   </label>
                   <label for="no-ticket-<?php echo $tech->id ?>" class="yes-no-radio no-radio">
-                     <input type="radio" name="individual[made-ticket][<?php echo $tech->id ?>]" id="no-ticket-<?php echo $tech->id ?>" value="no">
+                     <input type="radio" name="individual[made-ticket][<?php echo $tech->id ?>]" id="no-ticket-<?php echo $tech->id ?>" value="no" required>
                      <span><i class="bi bi-x"></i> No</span>
 
                   </label>
@@ -63,7 +57,7 @@
                   <h3>Tiempo de Respuesta</h3>
                   <div class="range-wth-title">
                      <span class="value">Elige una Calificacion</span>
-                     <input type="range" name="individual[response][<?php echo $tech->id ?>]" min="1" max="5" value="3" disabled>
+                     <input type="range" name="individual[response][<?php echo $tech->id ?>]" min="1" max="5" value="3" disabled required>
                   </div>
 
 
@@ -73,7 +67,7 @@
                   <h3>Calidad del servicio</h3>
                   <div class="range-wth-title">
                      <span class="value">Elige una Calificacion</span>
-                     <input type="range" name="individual[quality][<?php echo $tech->id ?>]"  min="1" max="5" value="3" disabled>
+                     <input type="range" name="individual[quality][<?php echo $tech->id ?>]" min="1" max="5" value="3" disabled required>
                   </div>
 
 
@@ -83,7 +77,7 @@
                   <h3>Amabilidad y profesionalismo</h3>
                   <div class="range-wth-title">
                      <span class="value">Elige una Calificacion</span>
-                     <input type="range" name="individual[amability][<?php echo $tech->id ?>]"  min="1" max="5" value="3" disabled>
+                     <input type="range" name="individual[amability][<?php echo $tech->id ?>]" min="1" max="5" value="3" disabled required>
                   </div>
 
 
@@ -104,12 +98,12 @@
       <h3>¿Recibió una solución efectiva a sus tickets?</h3>
       <div class="container-flex">
          <label for="yes-attention" class="yes-no-radio yes-radio">
-            <input type="radio" name="general[effective-atention]" id="yes-attention" value="si">
+            <input type="radio" name="general[effective-atention]" id="yes-attention" value="si" required>
             <span><i class="bi bi-check"></i>Si</span>
 
          </label>
          <label for="no-attention" class="yes-no-radio no-radio">
-            <input type="radio" name="general[effective-atention]" id="no-attention" value="no">
+            <input type="radio" name="general[effective-atention]" id="no-attention" value="no" required>
             <span><i class="bi bi-x"></i> No</span>
 
          </label>
@@ -117,12 +111,12 @@
       <h3>¿Le brindaron una explicación clara sobre la solución aplicada?</h3>
       <div class="container-flex">
          <label for="yes-explain" class="yes-no-radio yes-radio">
-            <input type="radio" name="general[effective-explain]" id="yes-explain" value="si">
+            <input type="radio" name="general[effective-explain]" id="yes-explain" value="si" required>
             <span><i class="bi bi-check"></i>Si</span>
 
          </label>
          <label for="no-explain" class="yes-no-radio no-radio">
-            <input type="radio" name="general[effective-explain]" id="no-explain" value="no">
+            <input type="radio" name="general[effective-explain]" id="no-explain" value="no" required>
             <span><i class="bi bi-x"></i> No</span>
 
          </label>
@@ -135,7 +129,7 @@
          <h3>¿Cómo calificaría la facilidad para comunicarse con el equipo de informática?</h3>
          <div class="range-wth-title">
             <span class="value">Elige una Calificacion</span>
-            <input type="range" name="general[response_time]" id="response-time" min="1" max="5" value="1">
+            <input type="range" name="general[response_time]" id="response-time" min="1" max="5" value="1" required>
          </div>
 
       </div>
@@ -145,14 +139,14 @@
 
 
    <label for="comments" class="label-input">
-      
+
       <p>Sugerencias y comentarios</p>
-      
+
       <textarea name="suggestions" id="comments"></textarea>
    </label>
 
 
-   
+
 
    <button type="submit" class="btn btn-submit btn-purple">Enviar Encuesta</button>
 
