@@ -43,18 +43,18 @@ class  OrderController
     public static function crear(Router $router)
     {
 
-        $inv = Inventory::all();
+        $inv = Inventory::filter("state", '=', '1');
 
-        $users = Personal::separateAll();
+        $users = Personal::all();
+
 
         $orders = Ordenes::filter("state", "=", "pendiente");
 
-        
 
 
         $router->render("/admin/inventario/ordenes/crear", [
             "inv" => $inv,
-            "users" => $users[$_GET["sede"]],
+            "users" => $users,
             "orders" => $orders
         ]);
     }
@@ -76,7 +76,7 @@ class  OrderController
 
 
             $order = new Ordenes([
-                "emitted_date"=> date("Y-m-d"),
+                "emitted_date" => date("Y-m-d"),
                 "order_id" => $post->order_id,
                 "computer_id" => $post->computer_id,
                 "user_id" => $post->user_id
@@ -97,9 +97,9 @@ class  OrderController
 
             $html = str_replace("{{emission_date}}", $order->emitted_date, $html);
 
-            $return = $order->return_date == "no return"?"Sin Retorno":$order->return_date;
+            $return = $order->return_date == "no return" ? "Sin Retorno" : $order->return_date;
 
-            $html = str_replace("{{return_date}}", $return , $html);
+            $html = str_replace("{{return_date}}", $return, $html);
             $html = str_replace("{{days}}", $days, $html);
 
             $order->sync(["state" => "generada"]);
@@ -129,9 +129,9 @@ class  OrderController
         } else {
 
             $inv = Inventory::find($order->computer_id);
-            
+
             echo json_encode([
-                "msg" => enviarCorreo($html, "Orden Generada", [strtolower($order->mail??$inv->correo_dominio)]) ?? "Message sent!!!"
+                "msg" => enviarCorreo($html, "Orden Generada", [strtolower($order->mail ?? $inv->correo_dominio)]) ?? "Message sent!!!"
             ]);
         }
         exit;
@@ -187,9 +187,7 @@ class  OrderController
         foreach ($json as $key => $value) {
             if (in_array($key, ["mouse", "diademas", "monitor", "monitor-2", "teclado"])) {
                 $pers[$key] = $value;
-                
             }
-            
         }
 
 

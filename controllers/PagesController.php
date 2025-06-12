@@ -56,8 +56,7 @@ class PagesController
 
         $manager = new Manager(new Driver());
 
-        $ticket = new Tickets;
-        $inventario = ($_SESSION["log_type"] === "email") ? Inventory::filter("usuarioPC", "=", $_SESSION["username"]) : Inventory::filter("correo_dominio", "=", $_SESSION["username"]);
+        $inventario = Inventory::filter("user_id", "=", $_SESSION['user_id']);
         $inventario = array_shift($inventario);
 
 
@@ -141,7 +140,7 @@ class PagesController
     public static function equipos(Router $router)
     {
 
-        $equipos = ($_SESSION["log_type"] === "user") ? Inventory::filter("usuarioPC", "=", $_SESSION["username"]) : Inventory::filter("correo_dominio", "=", $_SESSION["username"]);
+        $equipos =  Inventory::filter("correo_dominio", "=", $_SESSION["user_id"]);
 
 
 
@@ -167,67 +166,59 @@ class PagesController
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-            
-            $json =[];
-            
 
-            foreach($techs as $tech){
+            $json = [];
+
+
+            foreach ($techs as $tech) {
 
 
                 $json[$tech->id] = [];
-
             }
 
 
-            foreach($json as $key=>$value){
+            foreach ($json as $key => $value) {
 
 
 
-                if($_POST["individual"]["made-ticket"][$key] == "no") {
-                    
+                if ($_POST["individual"]["made-ticket"][$key] == "no") {
+
                     unset($json[$key]);
                     continue;
-
-                }; 
+                };
 
 
                 $json[$key] = [
-                    
 
-                    "made-ticket"=>$_POST["individual"]["made-ticket"][$key],
 
-                    "response"=>$_POST["individual"]["response"][$key],
-                
-                    "quality"=>$_POST["individual"]["quality"][$key],
-               
-                    "amability"=>$_POST["individual"]["amability"][$key]
+                    "made-ticket" => $_POST["individual"]["made-ticket"][$key],
+
+                    "response" => $_POST["individual"]["response"][$key],
+
+                    "quality" => $_POST["individual"]["quality"][$key],
+
+                    "amability" => $_POST["individual"]["amability"][$key]
                 ];
                 header('Location: /tickets/ver?result=1');
-
-
-
             }
 
 
 
 
             $args = [
-                "date"=>date("Y-m-d"),
-                "name"=>$_SESSION["name"],
-                "tick_num"=>$_POST["tick_num"],
-                "area"=>$_POST["area"],
-                "individual_test"=>json_encode($json),
-                "general_test"=>json_encode($_POST["general"]),
-                "suggestions"=>$_POST["suggestions"]
+                "date" => date("Y-m-d"),
+                "name" => $_SESSION["name"],
+                "tick_num" => $_POST["tick_num"],
+                "area" => $_POST["area"],
+                "individual_test" => json_encode($json),
+                "general_test" => json_encode($_POST["general"]),
+                "suggestions" => $_POST["suggestions"]
             ];
 
-            
+
             $poll = new Encuestas($args);
 
             $poll->guardar();
-
-
-
         }
 
 
@@ -272,30 +263,24 @@ class PagesController
 
 
 
-        $usrs = Personal::separateAll();
-        $inv = [];
-        $data = [];
+        $usrs = Personal::all();
+        $inv = Inventory::filter('state', '=', '1');
 
-        foreach ($usrs as $key => $value) {
-            foreach ($value as $usr) {
-                $data = array_shift(Inventory::filter_by_location("user_id","=",$usr->id,$key));
-
-                if(is_null($data)) continue;
-
-                if ($data->nombre === "STOCK") continue;
-                $inv[$key][] = $data;
-            }
-        }
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
             $orden = new Ordenes($_POST);
+
             $orderCount = count(Ordenes::filter("order_id", "LIKE", "ODS#%"));
 
             $orden->order_id = "ODS#" . ($orderCount === 0 ? 1 : ++$orderCount);
             $orden->state = "pendiente";
             $orden->emitted_date = date("Y-m-d", strtotime($orden->emitted_date));
-            $orden->return_date = date("Y-m-d", strtotime($orden->return_date));
+            if ($_POST['return_date'] === 'no return') {
+                $orden->return_date = 'no return';
+            } else {
+
+                $orden->return_date = date("Y-m-d", strtotime($orden->return_date));
+            }
 
             $subject = "ORDEN DE SALIDA SOLICITADA";
             $body = file_get_contents(__DIR__ . "/../views/templates/mail/solicitud-orden.html");
@@ -326,8 +311,8 @@ class PagesController
 
 
         $router->render("pages/ordenes/index", [
-            "usrs" => $usrs[$_GET["sede"]],
-            "inv" => $inv[$_GET["sede"]]
+            "usrs" => $usrs,
+            "inv" => $inv
         ]);
     }
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 
@@ -7,97 +7,86 @@ namespace Models;
 
 
 
-class Personal extends ActiveRecord{
+class Personal extends ActiveRecord
+{
 
     protected static $schema = "rh";
 
-    protected static $tables = ["avsas","avca","ops"];
+    protected static $tabla = "personal";
 
-    protected static $columnasDB = 
+    protected static $columnasDB =
     [
         "id",
-        "nombre",
-        "apellido",
-        "tipo_documento",
-        "documento",
-        "telefono",
-        "correo",
-        "cargo",
-        "area"
+        "first_name",
+        "last_name",
+        "id_type",
+        "nat_id",
+        "phone_number",
+        "email",
+        "job_title",
+        "area",
+
     ];
 
 
-    public static function all(){
+    public static function all()
+    {
 
         $results  = [];
 
-        foreach (static::$tables as $table) {
-            
-            $query = "SELECT * FROM " . static::$schema . ".$table"  . " ORDER BY id DESC";
-            $resultado = static::consultarSQL($query);
-            
-            foreach($resultado as $r){
 
-                $results[] = $r;
-            }
+        $query = "SELECT * FROM " . static::$schema . "." . static::$tabla  . " ORDER BY id DESC";
+        $resultado = static::consultarSQL($query);
 
-            
+        foreach ($resultado as $r) {
 
+            $results[] = $r;
         }
+
+
+
 
         return $results;
-
-
     }
 
-    public static function separateAll(){
-        
+    public static function separateAll()
+    {
+
         $resultado = [];
 
-        foreach (static::$tables as $table) {
-            
-            $query = "SELECT * FROM " . static::$schema . ".$table"  . " ORDER BY id DESC";
-            $resultado[$table] = static::consultarSQL($query);
-            
-
-        }
+        $query = "SELECT * FROM " . static::$schema . "." . static::$tabla . "ORDER BY id DESC";
+        $resultado = static::consultarSQL($query);
 
         return $resultado;
-
     }
 
 
-    
-    public static function filter($column,$operator,$value){
+
+    public static function filter($column, $operator, $value)
+    {
 
 
 
-        foreach (static::$tables as $table) {
-            
-            $query = "SELECT * FROM " . static::$schema . ".$table"  . " WHERE $column $operator '$value' ORDER BY id DESC";
-    
-            $resultado[$table] = static::consultarSQL($query);
-            
 
-        }
+        $query = "SELECT * FROM " . static::$schema .  "." . static::$tabla  . " WHERE $column $operator '$value' ORDER BY id DESC";
+
+        $resultado = static::consultarSQL($query);
 
 
         return $resultado;
-
     }
-    
 
 
-    public static function PIVOTFINDER($id,$table){
 
-        $query = "SELECT * FROM " . static::$schema . ".$table" . " WHERE id = '$id'";
+    public static function PIVOTFINDER($id)
+    {
+
+        $query = "SELECT * FROM " . static::$schema . "." . static::$tabla . " WHERE id = $id";
+
         $resultado = self::consultarSQL($query);
 
-        
+
 
         return array_shift($resultado);
-
     }
-
-
 }

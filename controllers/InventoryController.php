@@ -20,16 +20,8 @@ class InventoryController
     public static function index(Router $router)
     {
 
-        if ($_GET["type"] && !$_GET["query"] == "") {
-            $equipos = Inventory::filter($_GET["type"], "=", $_GET["query"]);
-        } else {
-            $equipos = Inventory::all();
-        }
 
-
-
-
-
+        $equipos = Inventory::filter('state', '=', $_GET['state'] ?? 1);
 
 
 
@@ -62,7 +54,7 @@ class InventoryController
     {
 
 
-        $users = Personal::separateAll();
+        $users = Personal::all();
         $log = new Log();
 
 
@@ -87,7 +79,7 @@ class InventoryController
 
 
         $router->render("admin/inventario/crear", [
-            "users" => $users[$_GET["sede"]],
+            "users" => $users,
             "inv" => $inv
         ]);
     }
@@ -98,7 +90,7 @@ class InventoryController
         $id = validarID();
         $inv = Inventory::find($id);
         $perifericos = Perifericos::findGroup($id);
-        $users = Personal::separateAll();
+        $users = Personal::all();
 
         $techs = Users::getTecnicals();
 
@@ -157,7 +149,7 @@ class InventoryController
         $router->render("admin/inventario/actualizar", [
             "inv" => $inv,
             "perifericos" => $perifericos,
-            "users" => $users[$_GET["sede"]],
+            "users" => $users,
             'techs' => $techs
         ]);
     }

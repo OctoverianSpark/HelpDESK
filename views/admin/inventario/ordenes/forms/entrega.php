@@ -12,7 +12,7 @@
       <?php foreach ($users as $usr) { ?>
          <label for="usr-option-<?php echo $usr->id ?>" class="option">
             <input type="radio" name="user_id" value="<?php echo $usr->id ?>" id="usr-option-<?php echo $usr->id ?>" <?php echo ($usr->id == $inv->user_id) ? "checked" : "" ?>>
-            <span><?php echo "$usr->nombre $usr->apellido" ?></span>
+            <span><?php echo "$usr->first_name $usr->last_name" ?></span>
          </label>
       <?php } ?>
 
@@ -60,10 +60,10 @@
 
    <div class="container-input">
 
-      <?php spawnCheckbox("check-0", "features","chrome-policies", "NAVEGADOR(CHROME) Y POLÍTICAS DE GOOGLE CHROME", false) ?>
+      <?php spawnCheckbox("check-0", "features", "chrome-policies", "NAVEGADOR(CHROME) Y POLÍTICAS DE GOOGLE CHROME", false) ?>
       <?php spawnCheckbox("check-1", "features", "terms-manual", "MANUAL DE TÉRMINOS Y CONDICIONES DE USO DEL COMPUTADOR", false) ?>
       <?php spawnCheckbox("check-2", "features", "corporate-email", "CORREO CORPORATIVO", false) ?>
-      <?php spawnCheckbox("check-3", "features", "assistant-email","CORREO ASISTENTE VIRTUAL", false) ?>
+      <?php spawnCheckbox("check-3", "features", "assistant-email", "CORREO ASISTENTE VIRTUAL", false) ?>
 
    </div>
 
@@ -76,7 +76,7 @@
       <?php spawnCheckbox("check-6", "features", "optimal-computer", "FUNCIONAMIENTO ÓPTIMO DEL COMPUTADOR", false) ?>
       <?php spawnCheckbox("check-7", "features", "optimal-mouse", "FUNCIONAMIENTO ÓPTIMO DE MOUSE", false) ?>
 
-      
+
    </div>
    <div class="container-input">
 
@@ -107,4 +107,3 @@
 
 
 </fieldset>
-

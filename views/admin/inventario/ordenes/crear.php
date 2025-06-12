@@ -26,30 +26,6 @@
          </label>
 
       </fieldset>
-      <?php if ($_GET["type"] !== "salida") { ?>
-         <fieldset class="container-input-flex no-fieldset">
-            <legend>Estancia del Usuario</legend>
-
-            <label class="radio-label-card">
-               <input type="radio" name="sede" value="avsas" <?php echo ($_GET["sede"] === "avsas") ? "checked" : "" ?>>
-               <i class="bi bi-house-door"></i>
-               <span>Colombia</span>
-            </label>
-            <label class="radio-label-card">
-               <input type="radio" name="sede" value="avca" <?php echo ($_GET["sede"] === "avca") ? "checked" : "" ?>>
-               <i class="bi bi-airplane-fill"></i>
-               <span>Venezuela</span>
-            </label>
-            <label class="radio-label-card">
-               <input type="radio" name="sede" value="ops" <?php echo ($_GET["sede"] === "ops") ? "checked" : "" ?>>
-               <i class="bi bi-headphones"></i>
-               <span>OPS</span>
-            </label>
-
-         </fieldset>
-      <?php } ?>
-
-
    </form>
 
 
@@ -66,7 +42,7 @@
             <input type="hidden" name="<?php echo $key ?>" value="<?php echo $value ?>">
          <?php } ?>
 
-            
+
 
       <?php } ?>
 

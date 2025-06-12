@@ -12,7 +12,7 @@
       <?php foreach ($users as $usr) { ?>
          <label for="user-option-<?php echo $usr->id ?>" class="option">
             <input type="radio" name="user_id" value="<?php echo $usr->id ?>" id="user-option-<?php echo $usr->id ?>" <?php echo ($usr->id == $inv->user_id) ? "checked" : "" ?>>
-            <span><?php echo "$usr->nombre $usr->apellido" ?></span>
+            <span><?php echo "$usr->first_name $usr->last_name" ?></span>
          </label>
       <?php } ?>
 
@@ -50,6 +50,6 @@
 </fieldset>
 
 <label for="emission-date" class="input-group">
-         <span>Fecha de Emision</span>
-         <input type="date" name="emitted-date" id="emission-date" required>
+   <span>Fecha de Emision</span>
+   <input type="date" name="emitted-date" id="emission-date" required>
 </label>

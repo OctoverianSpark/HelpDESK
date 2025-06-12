@@ -10,6 +10,24 @@
             <?php echo $mensaje ?>
         </div>
     <?php } ?>
+    <form method="get" class="selection-form">
+
+        <div class="container-input-flex">
+
+            <label for="active" class="radio-label-card">
+                <i class="bi bi-check"></i>
+                <input type="radio" name="state" value="1" id="active" <?php echo $_GET['state'] === "1" ? 'checked' : '' ?>>
+                <span>Activo</span>
+            </label>
+
+            <label for="stock" class="radio-label-card">
+                <i class="bi bi-archive"></i>
+                <input type="radio" name="state" value="0" id="stock" <?php echo $_GET['state'] === "0" ? 'checked' : '' ?>>
+                <span>Stock</span>
+            </label>
+
+        </div>
+    </form>
 
     <form class="search-form" method="GET">
 
@@ -28,7 +46,6 @@
                         <option value="modelo">Modelo</option>
                         <option value="color">Color</option>
                         <option value="serial">Serial</option>
-                        <option value="anydesk">Anydesk</option>
                     </select>
                 </label>
 
@@ -45,53 +62,92 @@
 
     </form>
 
-    <div class="table-wrapper">
+    <?php if ($_GET['state'] === '1') { ?>
 
-        <div class="table table-inv-admin">
-            <div class="table-row table-header">
-                <div class="header">Nombre del Equipo</div>
-                <div class="header">Usuario del Equipo</div>
-                <div class="header">Marca</div>
-                <div class="header">Modelo</div>
-                <div class="header">Color</div>
-                <div class="header">Serial</div>
-                <div class="header">Anydesk</div>
-            </div>
+        <div class="table-wrapper">
 
-            <?php foreach ($equipos as $equipo) { ?>
-                <div class="table-row" cell-id="<?php echo $equipo->id ?>">
-                    <div class="cell cell-link" col="nombre_equipo">
-                        <button class="btn view-btn">
-                            <?php echo $equipo->nombre_equipo ?>
-                            <i class="bi bi-box-arrow-up-right"></i>
-                        </button>
-                    </div>
-                    <div class="cell" col="nombre">
-
-                        <?php echo "$equipo->nombre $equipo->apellido" ?>
-
-                    </div>
-                    <div class="cell" col="marca">
-
-                        <?php echo $equipo->marca ?>
-
-                    </div>
-                    <div class="cell" col="modelo">
-                        <?php echo $equipo->modelo ?>
-                    </div>
-                    <div class="cell" col="color">
-                        <?php echo $equipo->color ?>
-                    </div>
-                    <div class="cell" col="serial">
-                        <?php echo $equipo->serial ?>
-                    </div>
-                    <div class="cell" col="anydesk">
-                        <?php echo $equipo->anydesk ?>
-                    </div>
+            <div class="table table-inv-admin">
+                <div class="table-row table-header">
+                    <div class="header">Nombre del Equipo</div>
+                    <div class="header">Usuario del Equipo</div>
+                    <div class="header">Marca</div>
+                    <div class="header">Modelo</div>
+                    <div class="header">Color</div>
+                    <div class="header">Serial</div>
                 </div>
-            <?php } ?>
+
+                <?php foreach ($equipos as $equipo) { ?>
+                    <div class="table-row" cell-id="<?php echo $equipo->id ?>">
+                        <div class="cell cell-link" col="nombre_equipo">
+                            <button class="btn view-btn">
+                                <?php echo $equipo->nombre_equipo ?>
+                                <i class="bi bi-box-arrow-up-right"></i>
+                            </button>
+                        </div>
+                        <div class="cell" col="nombre">
+
+                            <?php echo "$equipo->nombre $equipo->apellido" ?>
+
+                        </div>
+                        <div class="cell" col="marca">
+
+                            <?php echo $equipo->marca ?>
+
+                        </div>
+                        <div class="cell" col="modelo">
+                            <?php echo $equipo->modelo ?>
+                        </div>
+                        <div class="cell" col="color">
+                            <?php echo $equipo->color ?>
+                        </div>
+                        <div class="cell" col="serial">
+                            <?php echo $equipo->serial ?>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
         </div>
-    </div>
+    <?php } ?>
+    <?php if ($_GET['state'] === '0') { ?>
+
+        <div class="table-wrapper">
+
+            <div class="table table-inv-admin">
+                <div class="table-row table-header">
+                    <div class="header">Nombre del Equipo</div>
+                    <div class="header">Marca</div>
+                    <div class="header">Modelo</div>
+                    <div class="header">Color</div>
+                    <div class="header">Serial</div>
+                </div>
+
+                <?php foreach ($equipos as $equipo) { ?>
+                    <div class="table-row" cell-id="<?php echo $equipo->id ?>">
+                        <div class="cell cell-link" col="nombre_equipo">
+                            <button class="btn view-btn">
+                                <?php echo $equipo->nombre_equipo ?>
+                                <i class="bi bi-box-arrow-up-right"></i>
+                            </button>
+                        </div>
+                        <div class="cell" col="marca">
+
+                            <?php echo $equipo->marca ?>
+
+                        </div>
+                        <div class="cell" col="modelo">
+                            <?php echo $equipo->modelo ?>
+                        </div>
+                        <div class="cell" col="color">
+                            <?php echo $equipo->color ?>
+                        </div>
+                        <div class="cell" col="serial">
+                            <?php echo $equipo->serial ?>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    <?php } ?>
 
     <div class="modal modal-view inv-view hidden">
 

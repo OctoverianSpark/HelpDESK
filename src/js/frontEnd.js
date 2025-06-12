@@ -446,8 +446,7 @@ async function viewAdminInv () {
         modelo: `${inv.modelo}`,
         serial: `${inv.serial}`,
         color: inv.color,
-        'nombre de equipo': inv.nombre_equipo,
-        anydesk: inv.anydesk
+        'nombre de equipo': inv.nombre_equipo
       }
 
       const ELEMENTS = []
@@ -465,7 +464,7 @@ async function viewAdminInv () {
         const P = new Element(
           'P',
           {},
-          { textContent: `${key.toUpperCase()} : ${value.toUpperCase()}` },
+          { textContent: `${key?.toUpperCase()} : ${value?.toUpperCase()}` },
           [BUTTON]
         )
         PERSONAL_INFO_ELEMENTS.push(P)
@@ -586,7 +585,7 @@ async function viewAdminTicket () {
         Fecha: ticket.fecha,
         Usuario: ticket.usuario,
         Descripcion: ticket.descripcion,
-        Anydesk: ticket.anydesk
+        Anydesk: '0'
       }
 
       let INPUT_INFO = {
