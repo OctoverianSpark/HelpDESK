@@ -270,7 +270,7 @@ class PagesController
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $orden = new Ordenes($_POST);
 
-            $orderCount = count(Ordenes::filter("order_id", "LIKE", "ODS#%"));
+            $orderCount = Ordenes::countOrders("S");
 
             $orden->order_id = "ODS#" . ($orderCount === 0 ? 1 : ++$orderCount);
             $orden->state = "pendiente";

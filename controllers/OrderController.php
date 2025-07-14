@@ -70,7 +70,7 @@ class  OrderController
 
         if ($post->type === "entrega" || $post->type === "recepcion") {
 
-            $orderCount = count(Ordenes::filter("order_id", "LIKE", "OD" . strtoupper($post->type[0]) . "#%"));
+            $orderCount = Ordenes::countOrders(strtoupper($post->type[0]));
 
             $post->order_id = "OD" . strtoupper($post->type[0]) . "#" . (($orderCount === 0) ? 1 : $orderCount);
 
@@ -177,7 +177,7 @@ class  OrderController
         $args = ["state" => "generada"];
         $order->sync($args);
         $eq = Inventory::find($order->computer_id);
-        $usr = Personal::PIVOTFINDER($order->user_id, $eq->sede);
+        $usr = Personal::PIVOTFINDER($order->user_id);
 
         $pers = [];
 

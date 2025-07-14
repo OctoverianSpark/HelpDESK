@@ -45,12 +45,6 @@
         <textarea placeholder="Coloca una descripcion detallada de tu solicitud" name="descripcion" id="descripcion" required><?php echo $ticket->descripcion ?></textarea>
     </label>
 
-    <label for="anydesk" class="label-input">
-        <p>Numero de Anydesk</p>
-        <input type="text" name="anydesk" id="anydesk" value="<?php echo $inventario->anydesk ?>">
-    </label>
-
-
 
     <label for="image" class="file-selector">
         <p><i class="bi bi-file-earmark-arrow-up-fill"></i>Agregar Imagen de referencia</p>

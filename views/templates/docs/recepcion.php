@@ -23,12 +23,12 @@
 
       <div class="container-data">
          <p>Fecha de Emisi&oacute;n: <?php echo date("d / m / Y") ?></p>
-         <p>Empresa: Asistente Virtual <?php echo $_POST["sede"] != "avca"?"S.A.S.":"C.A." ?></p>
-         <p>Cargo: <?php echo ucwords(strtolower($usr->cargo)) ?> </p>
+         <p>Empresa: Asistente Virtual <?php echo $usr->location != "colombia"?"S.A.S.":"C.A." ?></p>
+         <p>Cargo: <?php echo ucwords(strtolower($usr->job_title)) ?> </p>
       </div>
       <div class="container-data">
          <p>C&oacute;digo: <?php echo $order->order_id ?></p>
-         <p>Empleado: <?php echo ucwords(strtolower("$usr->nombre $usr->apellido")) ?></p>
+         <p>Empleado: <?php echo ucwords(strtolower("$usr->first_name $usr->last_name")) ?></p>
          <p>Departamento: <?php echo ucwords(strtolower($usr->area)) ?></p>
 
       </div>

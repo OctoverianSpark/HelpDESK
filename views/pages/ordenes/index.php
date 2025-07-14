@@ -41,7 +41,7 @@
             <?php foreach ($inv as $eq) { ?>
                 <label for="computer-option-<?php echo $eq->id ?>" class="option">
                     <input type="radio" name="computer_id" id="computer-option-<?php echo $eq->id ?>" value="<?php echo $eq->id ?>">
-                    <span title="Este computador pertenece a: <?php echo $eq->nombre . " " . $eq->apellido ?> "><?php echo $eq->nombre_equipo ?> : <?php echo $eq->first_name . " " . $eq->last_name ?></span>
+                    <span title="Este computador pertenece a: <?php echo $eq->nombre . " " . $eq->apellido ?> "><?php echo $eq->nombre_equipo ?> : <?php echo $eq->nombre . " " . $eq->apellido ?></span>
                 </label>
             <?php } ?>
 

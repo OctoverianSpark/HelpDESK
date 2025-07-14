@@ -57,6 +57,16 @@ class Ordenes extends ActiveRecord
         return $result;
     }
 
+    public static function countOrders($letter){
+
+        $query = "SELECT * FROM ti.ordenes as i WHERE order_id LIKE 'OD$letter#%'";
+
+        $result = self::consultarSQL($query);
+
+        return count($result);
+
+    }
+
     public static function all()
     {
 

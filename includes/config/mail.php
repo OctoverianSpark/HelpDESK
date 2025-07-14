@@ -5,7 +5,7 @@ function conectarCorreo(){
 
     
     $user ="helperbot@asistentevirtualsas.com";
-    $password = "dvhv mojq qqmw ihht";
+    $password = "ekeg pfnr oozx dptl";
 
     $mail = new PHPMailer();
     $mail->isSMTP();

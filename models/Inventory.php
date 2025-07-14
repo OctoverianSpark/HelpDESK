@@ -39,21 +39,6 @@ class Inventory extends ActiveRecord
     }
 
 
-
-    public static function all()
-    {
-
-        $query = "SELECT * FROM ti.inv as i ORDER BY id DESC";
-
-
-        $result = self::consultarSQL($query);
-
-        $result = self::findUser($result);
-
-        return $result;
-    }
-
-
     public function setStock()
     {
 
@@ -74,6 +59,17 @@ class Inventory extends ActiveRecord
             $atributos[$col] = $this->$col;
         }
         return $atributos;
+    }
+
+    public static function all(){
+        $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
+        FROM inv i
+        LEFT JOIN rh.personal p ON i.user_id = p.id
+        ORDER BY i.id DESC";
+        $result = self::consultarSQL($query);
+
+
+        return $result;
     }
 
 
@@ -132,7 +128,8 @@ class Inventory extends ActiveRecord
                 $data->tipo_documento = strtoupper("Sin asignar");
                 $data->documento = strtoupper("Sin asignar");
             } else {
-                $info = Personal::PIVOTFINDER($data->user_id, $data->sede);
+                debuguear($data);
+                $info = Personal::PIVOTFINDER($data->user_id);
 
                 $data->nombre = $info->nombre;
                 $data->apellido = $info->apellido;

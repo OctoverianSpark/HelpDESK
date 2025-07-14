@@ -57,13 +57,13 @@ class AdminController
 
     public static function export(Router $router)
     {
+
+
+
+
+
         $equipos = Inventory::all();
         $tickets = Tickets::all();
-
-
-
-
-
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $spreadsheet = new Spreadsheet();

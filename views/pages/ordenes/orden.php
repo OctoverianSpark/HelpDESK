@@ -40,8 +40,8 @@
          </button>
 
 
-         <p><b>Nombre: </b><span><?php echo ucwords(strtolower($usr->nombre . " " . $usr->apellido)) ?></span></p>
-         <p><b>Identificaci&oacute;n: </b> <span><?php echo $usr->tipo_documento . " " . $usr->documento ?></span></p>
+         <p><b>Nombre: </b> <span><?php echo ucwords(strtolower($usr->first_name . " " . $usr->last_name)) ?></span></p>
+         <p><b>Identificaci&oacute;n: </b> <span><?php echo $usr->id_type . " " . $usr->nat_id ?></span></p>
          <p><b>Fecha:</b> <?php echo date("d / m / Y") ?></p>
 
       </div>

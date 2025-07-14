@@ -29,11 +29,11 @@
       <div class="container-data">
          <p>Fecha de Emisi&oacute;n: <?php echo s(date("d / m / Y", strtotime($order->emitted_date))) ?></p>
          <p>Empresa: Asistente Virtual S. A. S.</p>
-         <p>Cargo:<?php echo ucwords(strtolower(s($usr->cargo))) ?> </p>
+         <p>Cargo:<?php echo ucwords(strtolower(s($usr->job_title))) ?> </p>
       </div>
       <div class="container-data">
          <p>Fecha de Retorno: <?php echo (strtolower($order->return_date) === "no return")?"Sin Retorno":date("d / m / Y", strtotime($order->return_date)) ?></p>
-         <p>Empleado: <?php echo ucwords(strtolower(s($usr->nombre . " " . $usr->apellido))) ?> </p>
+         <p>Empleado: <?php echo ucwords(strtolower(s($usr->first_name . " " . $usr->last_name))) ?> </p>
          <p>Departamento: <?php echo ucwords(strtolower(s($usr->area))) ?> </p>
 
       </div>
@@ -44,7 +44,7 @@
 
 
    <p>
-      Mediante el presente documento, Asistente Virtual S.A.S. autoriza el préstamo, salida y traslado de los siguientes equipos y accesorios informáticos descritos en el punto 1 de este documento al usuario(a) <?php echo ucwords(strtolower(s($usr->nombre . " " . $usr->apellido))) ?> por un período de <?php echo (strtolower($order->return_date) === "no return")?"tiempo indefinido":calculateDays($order->emitted_date,$order->return_date). " dia/s" ?>.
+      Mediante el presente documento, Asistente Virtual S.A.S. autoriza el préstamo, salida y traslado de los siguientes equipos y accesorios informáticos descritos en el punto 1 de este documento al usuario(a) <?php echo ucwords(strtolower(s($usr->first_name . " " . $usr->last_name))) ?> por un período de <?php echo (strtolower($order->return_date) === "no return")?"tiempo indefinido":calculateDays($order->emitted_date,$order->return_date). " dia/s" ?>.
    </p>
    
    <p>

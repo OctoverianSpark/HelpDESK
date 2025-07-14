@@ -569,7 +569,6 @@ function sendOrderInformation() {
 
     const q = await Information.postJSON(location.href, body);
     console.log(q);
-
     
     if (body.type == 'entrega' || body.type == 'recepcion' ) location.href = q.url;
 
