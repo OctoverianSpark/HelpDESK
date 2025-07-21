@@ -98,7 +98,6 @@ class LoginController
             }
             session_start();
             $userData = array_shift(Inventory::filter('correo_dominio', '=', "'$email'"));
-
             $userRole = array_shift(Users::filter("mail", "=", $email));
             $_SESSION["log_type"] = "email";
             $_SESSION["login"] = true;
