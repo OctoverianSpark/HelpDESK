@@ -143,8 +143,10 @@ $router->post("/admin/inventory/find", [API_Inventory::class, "INVENTORYSEARCH"]
 $router->post("/admin/inventory/actions", [API_Inventory::class, "actions"]);
 $router->post("/admin/inventory/get", [API_Inventory::class, "INVENTORY_GET"]);
 $router->post("/admin/orders/get", [API_ORDERS::class, "GET"]);
+$router->post("/admin/orders/actuals", [API_ORDERS::class, "ACTUALS"]);
 
 $router->post("/tickets/find", [API_Tickets::class, "TICKETSEARCH"]);
+$router->post("/tickets/actuals", [API_Tickets::class, "ACTUALTICKETS"]);
 $router->post("/tickets/get", [API_Tickets::class, "TICKETSGET"]);
 $router->post("/admin/subcats/get", [API_Tickets::class, "SUBCATSSEARCH"]);
 $router->post("/admin/cookies/get", [API_BASE::class, "COOKIESGET"]);

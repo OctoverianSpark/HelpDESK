@@ -45,6 +45,16 @@ class Ordenes extends ActiveRecord
 
         return $resultado;
     }
+    public static function actuals()
+    {
+        $query = "SELECT * FROM ti.ordenes WHERE MONTHNAME(emitted_date) = MONTHNAME(now()) AND YEAR(emitted_date) = YEAR(now())";
+
+        $result = self::consultarSQL($query);
+
+        $result = self::findConn($result);
+
+        return $result;
+    }
 
     public static function filter($columna, $operador, $valor)
     {
@@ -57,14 +67,14 @@ class Ordenes extends ActiveRecord
         return $result;
     }
 
-    public static function countOrders($letter){
+    public static function countOrders($letter)
+    {
 
         $query = "SELECT * FROM ti.ordenes as i WHERE order_id LIKE 'OD$letter#%'";
 
         $result = self::consultarSQL($query);
 
         return count($result);
-
     }
 
     public static function all()
@@ -85,11 +95,16 @@ class Ordenes extends ActiveRecord
     public static function findConn($object = [])
     {
         foreach ($object as $data) {
+            if (!$data->user_id || !$data->computer_id) continue;
             $info = Personal::PIVOTFINDER($data->user_id);
             $computer = Inventory::find($data->computer_id);
             $data->nombre = $info->first_name;
             $data->apellido = $info->last_name;
-            $data->nombre_equipo = $computer->nombre_equipo;
+            if ($computer === null) {
+                $data->nombre_equipo = "Sin equipo";
+                continue;
+            }
+            $data->nombre_equipo = $computer->getNombreEquipo();
         }
         return $object;
     }

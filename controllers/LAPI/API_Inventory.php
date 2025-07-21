@@ -52,10 +52,13 @@ class API_Inventory
 
 
       $inv = Inventory::find($id);
-      $pers = Perifericos::findGroup($inv->id);
+      $pers = Perifericos::findGroup($inv->getID());
+      $pers = array_map(function ($item) {
+         return $item->toArray();
+      }, $pers);
 
       $data = [
-         "inv" => $inv ?? [],
+         "inv" => $inv->toArray() ?? [],
          "pers" => $pers ?? []
       ];
 
@@ -73,18 +76,24 @@ class API_Inventory
 
 
 
-         if ($eq->user_id === "0") {
-            $eq->nombre = 'STOCK';
-            $eq->apellido = 'STOCK';
-            $eq->correo = 'STOCK';
-            $eq->area = 'STOCK';
+         if ($eq->getUserId() === "0") {
+            $eq->setNombre("STOCK");
+            $eq->setApellido("Sin asignar");
+            $eq->setCorreo("Sin asignar");
+            $eq->setTelefono("Sin asignar");
             continue;
          }
 
-         $usr = Personal::PIVOTFINDER($eq->user_id, $eq->sede);
+         $usr = Personal::PIVOTFINDER($eq->getUserId());
 
          $eq->area = $usr->area;
       }
+
+
+      $inv = array_map(function ($item) {
+         return $item->toArray();
+      }, $inv);
+
 
 
       echo json_encode($inv);

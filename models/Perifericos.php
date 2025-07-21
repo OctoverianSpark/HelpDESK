@@ -5,75 +5,71 @@
 namespace Models;
 
 
-class Perifericos extends ActiveRecord{
+class Perifericos extends ActiveRecord
+{
 
-    
-    protected static $columnasDB = ["id","tipo","marca","modelo","color","serial","computer_id"];
+
+    protected static $columnasDB = ["id", "tipo", "marca", "modelo", "color", "serial", "computer_id"];
 
     protected static $tabla = "perifericos";
 
 
 
-    public static function findGroup($id){
+    public static function findGroup($id)
+    {
 
         $query = "SELECT * FROM " . static::$tabla . " WHERE computer_id = '$id'";
         $resultado = self::consultarSQL($query);
-        
+
         return $resultado;
-
-
-
     }
-    
-    public function actualizar(){
-        
+
+    public function actualizar()
+    {
+
         $atributos = $this->sanitizarAtributos();
 
 
         $valores = [];
 
-        foreach($atributos as $key=>$value){
+        foreach ($atributos as $key => $value) {
             $valores[] = "$key='$value'";
         }
 
-        $query = "UPDATE ". static::$tabla." SET "  ;
-        $query.= join(",",$valores);
-        $query.= " WHERE computer_id = '". self::$db->escape_string($this->computer_id) . "' AND id = '". self::$db->escape_string($this->id) . "'";
-        $query.= " LIMIT 1";
+        $query = "UPDATE " . static::$tabla . " SET ";
+        $query .= join(",", $valores);
+        $query .= " WHERE computer_id = '" . self::$db->escape_string($this->computer_id) . "' AND id = '" . self::$db->escape_string($this->id) . "'";
+        $query .= " LIMIT 1";
 
         $resultado = self::$db->query($query);
 
         return $resultado;
-
-
     }
 
-    public function eliminar(){
+    public function eliminar()
+    {
 
-        $query = "DELETE FROM ". static::$tabla . " where id = '$this->id'";
+        $query = "DELETE FROM " . static::$tabla . " where id = '$this->id'";
 
         self::$db->query($query);
-
-
-
-
     }
-    public function deleteByGroup(){
+    public function deleteByGroup()
+    {
 
-        $query = "DELETE FROM ". static::$tabla . " where computer_id = '$this->computer_id'";
+        $query = "DELETE FROM " . static::$tabla . " where computer_id = '$this->computer_id'";
 
         self::$db->query($query);
-
-
-
-
     }
 
+    public function toArray()
+    {
 
-
-
+        $array = [];
+        foreach (static::$columnasDB as $col) {
+            if (isset($this->$col)) {
+                $array[$col] = $this->$col;
+            }
+        }
+        return $array;
+    }
 }
-
-
-
-?>

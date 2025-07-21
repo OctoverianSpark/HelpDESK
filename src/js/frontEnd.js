@@ -1417,7 +1417,7 @@ async function AdminDashBoard () {
 
   const TicketCtx = document.querySelector('#tickets-chart').getContext('2d')
 
-  const tickets = await Information.postJSON('/tickets/get')
+  const tickets = await Information.postJSON('/tickets/actuals')
 
   //NOTE: TICKETS POR MES
   //TODO: PASAR TODA LA RESPONSABILIDAD DE LAS GRAFICAS A UNA FUNCION APARTE QUE SE LLAME MAS FACIL (UNA FUNCION POR GRAFICA PARA SIMPLIFICACION DE LOGICA Y REDUCCION DE CODIGO)
@@ -1426,12 +1426,7 @@ async function AdminDashBoard () {
   const currentYear = new Date().getFullYear()
 
   const ticketCounts = tickets.reduce((acc, ticket) => {
-    const ticketMonth = new Date(ticket.fecha).getMonth()
-    const ticketYear = new Date(ticket.fecha).getFullYear()
-
-    if (ticketMonth === currentMonth && ticketYear === currentYear) {
-      acc[ticket.categoria] = (acc[ticket.categoria] || 0) + 1
-    }
+    acc[ticket.categoria] = (acc[ticket.categoria] || 0) + 1
     return acc
   }, {})
 
@@ -1491,34 +1486,14 @@ async function AdminDashBoard () {
 
   setInvTypeChart(invCTX)
 
-  const orders = await Information.postJSON('/admin/orders/get')
-
-  let orderTypes = {
-    entrega: [],
-    salida: [],
-    recepcion: []
-  }
-
-  orders.forEach(order => {
-    let type = ''
-
-    if (order.order_id.includes('ODE')) type = 'entrega'
-    if (order.order_id.includes('ODS')) type = 'salida'
-    if (order.order_id.includes('ODR')) type = 'recepcion'
-
-    const orderMonth = new Date(order.emitted_date).getMonth()
-    const orderYear = new Date(order.emitted_date).getFullYear()
-
-    if (orderMonth === currentMonth && currentYear === orderYear)
-      orderTypes[type].push(order)
-  })
+  const orders = await Information.postJSON('/admin/orders/actuals')
 
   const orderTypeData = {
-    labels: Object.keys(orderTypes).map(x => x.toUpperCase()),
+    labels: Object.keys(orders).map(x => x.toUpperCase()),
     datasets: [
       {
         label: 'Tipo',
-        data: Object.values(orderTypes).map(x => x.length),
+        data: Object.values(orders),
         borderWidth: 1
       }
     ]
@@ -1592,8 +1567,8 @@ async function AdminDashBoard () {
     monthTickets += value
   })
 
-  Object.values(orderTypes).forEach(value => {
-    totalOrders += value.length
+  Object.values(orders).forEach(value => {
+    totalOrders += value
   })
 
   briefTickets.textContent = monthTickets

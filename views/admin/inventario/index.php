@@ -77,31 +77,31 @@
                 </div>
 
                 <?php foreach ($equipos as $equipo) { ?>
-                    <div class="table-row" cell-id="<?php echo $equipo->id ?>">
+                    <div class="table-row" cell-id="<?php echo $equipo->getID() ?>">
                         <div class="cell cell-link" col="nombre_equipo">
                             <button class="btn view-btn">
-                                <?php echo $equipo->nombre_equipo ?>
+                                <?php echo $equipo->getNombreEquipo() ?>
                                 <i class="bi bi-box-arrow-up-right"></i>
                             </button>
                         </div>
                         <div class="cell" col="nombre">
 
-                            <?php echo "$equipo->nombre $equipo->apellido" ?>
+                            <?php echo $equipo->getNombre() . " " . $equipo->getApellido() ?>
 
                         </div>
                         <div class="cell" col="marca">
 
-                            <?php echo $equipo->marca ?>
+                            <?php echo $equipo->getMarca() ?>
 
                         </div>
                         <div class="cell" col="modelo">
-                            <?php echo $equipo->modelo ?>
+                            <?php echo $equipo->getModelo() ?>
                         </div>
                         <div class="cell" col="color">
-                            <?php echo $equipo->color ?>
+                            <?php echo $equipo->getColor() ?>
                         </div>
                         <div class="cell" col="serial">
-                            <?php echo $equipo->serial ?>
+                            <?php echo $equipo->getSerial() ?>
                         </div>
                     </div>
                 <?php } ?>
@@ -122,26 +122,27 @@
                 </div>
 
                 <?php foreach ($equipos as $equipo) { ?>
-                    <div class="table-row" cell-id="<?php echo $equipo->id ?>">
+                    <div class="table-row" cell-id="<?php echo $equipo->getID() ?>">
                         <div class="cell cell-link" col="nombre_equipo">
                             <button class="btn view-btn">
-                                <?php echo $equipo->nombre_equipo ?>
+                                <?php echo $equipo->getNombreEquipo() ?>
                                 <i class="bi bi-box-arrow-up-right"></i>
                             </button>
                         </div>
+
                         <div class="cell" col="marca">
 
-                            <?php echo $equipo->marca ?>
+                            <?php echo $equipo->getMarca() ?>
 
                         </div>
                         <div class="cell" col="modelo">
-                            <?php echo $equipo->modelo ?>
+                            <?php echo $equipo->getModelo() ?>
                         </div>
                         <div class="cell" col="color">
-                            <?php echo $equipo->color ?>
+                            <?php echo $equipo->getColor() ?>
                         </div>
                         <div class="cell" col="serial">
-                            <?php echo $equipo->serial ?>
+                            <?php echo $equipo->getSerial() ?>
                         </div>
                     </div>
                 <?php } ?>

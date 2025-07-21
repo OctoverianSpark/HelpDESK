@@ -194,8 +194,8 @@ class InventoryController
     {
 
         $inv = Inventory::all();
-        $stock = Inventory::filter("user_id", "=", "0");
-        $asigned = Inventory::filter("NOT user_id", "=", "0");
+        $stock = Inventory::filter("state", "=", "0");
+        $asigned = Inventory::filter("state", "=", "1");
 
 
 

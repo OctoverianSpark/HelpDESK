@@ -10,10 +10,11 @@ use Models\Subcats;
 use Models\Users;
 
 class API_Tickets
-{  
+{
 
 
-   public static function INDEXER(){
+   public static function INDEXER()
+   {
 
 
 
@@ -23,24 +24,22 @@ class API_Tickets
       $tickets = [];
       if (!$data->from || !$data->to) {
          $info = Tickets::all();
-      }else{
-         $info= Tickets::getByDate("$data->from" ,  "$data->to");
+      } else {
+         $info = Tickets::getByDate("$data->from",  "$data->to");
       }
 
-      if($data->tech){
+      if ($data->tech) {
 
-         $filter = array_filter($info, function($ticket) use ($data) {
+         $filter = array_filter($info, function ($ticket) use ($data) {
             return $ticket->tecnico_id == $data->tech;
          });
 
          $info = [];
 
-         foreach($filter as $data) {
-            
+         foreach ($filter as $data) {
+
             $info[] = $data;
-
          }
-
       }
 
 
@@ -52,20 +51,15 @@ class API_Tickets
                $tickets[] = $ticket;
             }
          }
-         
-
       }
 
 
-      
+
 
 
       echo json_encode($tickets);
 
       exit;
-
-
-
    }
 
 
@@ -96,26 +90,33 @@ class API_Tickets
       exit;
    }
 
-   public static function TICKETSGET(){
+   public static function TICKETSGET()
+   {
 
 
 
-      
+
       echo json_encode(Tickets::all());
       exit;
+   }
 
+   public static function ACTUALTICKETS()
+   {
+
+      echo json_encode(Tickets::actuals());
+      exit;
    }
 
    public static function TICKETUPDATE()
    {
 
 
-      $DATA = json_decode(file_get_contents("php://input")); 
+      $DATA = json_decode(file_get_contents("php://input"));
 
       try {
 
          $ticket = Tickets::find($DATA->id);
-   
+
          $ticket->sync($DATA);
 
          $ticket->guardar();
@@ -133,10 +134,10 @@ class API_Tickets
          str_replace("{{ id }}", $DATA->id, $body);
          str_replace("{{ tech }}", $tech->first_name . " " . $tech->last_name, $body);
 
-         $mail = enviarCorreo($body, "Ticket Asignado",["jean.pr@asistentevirtualsas.com"] );
+         $mail = enviarCorreo($body, "Ticket Asignado", ["jean.pr@asistentevirtualsas.com"]);
 
 
-         echo json_encode(["status" => "1", "message" => "Ticket actualizado correctamente","data"=>$ticket,"mail"=>$mail]);
+         echo json_encode(["status" => "1", "message" => "Ticket actualizado correctamente", "data" => $ticket, "mail" => $mail]);
       } catch (\Exception $e) {
 
          echo json_encode(["status" => "0", "message" => $e->getMessage()]);

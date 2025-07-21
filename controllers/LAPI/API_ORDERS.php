@@ -23,16 +23,16 @@ class API_ORDERS
       $post = json_decode(file_get_contents("php://input"));
 
       if (isset($_FILES["sign"])) {
-         
+
          $file = $_FILES["sign"];
-         
+
          $tempDir = sys_get_temp_dir() . "\\user_" . session_id(); // Directorio temporal único
 
          // Crear el directorio si no existe
          if (!file_exists($tempDir)) {
-             mkdir($tempDir, 0777, true);
+            mkdir($tempDir, 0777, true);
          }
-         
+
          // Ruta completa del archivo
          $tempPath = $tempDir . "\\" . basename($file["name"]);
 
@@ -40,18 +40,17 @@ class API_ORDERS
 
          $_SESSION["sign_name"] = $tempPath;
 
-         
+
 
 
 
          exit;
-
       }
       $order = Ordenes::find($post->order_id);
 
       $eq = Inventory::find($order->computer_id);
-      $usr = Personal::PIVOTFINDER($order->user_id, "avsas");
-      
+      $usr = Personal::PIVOTFINDER($order->user_id);
+
 
       $cols = [
          "tipo",
@@ -76,55 +75,66 @@ class API_ORDERS
       $name = "$order->order_id.docx";
       $objWriter->save($name);
 
-  
+
       $id = saveData($name);
 
       unlink($_SESSION["sign_name"]);
       unlink($name);
       $_SESSION["sign_name"] = null;
-      
-      echo json_encode(["msg"=>"Done!!!!","link"=>"https://docs.google.com/document/d/$id"]);
+
+      echo json_encode(["msg" => "Done!!!!", "link" => "https://docs.google.com/document/d/$id"]);
       exit;
-      
-      
    }
 
 
-   public static function GET(){
+   public static function GET()
+   {
 
       $data = json_decode(file_get_contents("php://input"));
       $orders = Ordenes::all();
 
-      if($data->mode === "graphs"){
+      if ($data->mode === "graphs") {
 
          $graph = [
-            "entrega"=>0,
-            "salida"=>0,
-            "recepcion"=>0
+            "entrega" => 0,
+            "salida" => 0,
+            "recepcion" => 0
          ];
 
-         foreach($orders as $order){
-            
-            if(str_contains($order->order_id,"ODE")) $graph["entrega"] += 1;
-            if(str_contains($order->order_id,"ODS")) $graph["salida"] += 1;
-            if(str_contains($order->order_id,"ODR")) $graph["recepcion"] += 1;
+         foreach ($orders as $order) {
 
+            if (str_contains($order->order_id, "ODE")) $graph["entrega"] += 1;
+            if (str_contains($order->order_id, "ODS")) $graph["salida"] += 1;
+            if (str_contains($order->order_id, "ODR")) $graph["recepcion"] += 1;
          }
          echo json_encode($graph);
          exit;
-
-
-      }else{
+      } else {
          echo json_encode($orders);
          exit;
-
       }
-
-
-
-
-
-
    }
 
+
+   public static function ACTUALS()
+   {
+
+      $orders = Ordenes::actuals();
+
+      $graph = [
+         "entrega" => 0,
+         "salida" => 0,
+         "recepcion" => 0
+      ];
+
+      foreach ($orders as $order) {
+
+         if (str_contains($order->order_id, "ODE")) $graph["entrega"] += 1;
+         if (str_contains($order->order_id, "ODS")) $graph["salida"] += 1;
+         if (str_contains($order->order_id, "ODR")) $graph["recepcion"] += 1;
+      }
+
+      echo json_encode($graph);
+      exit;
+   }
 }
