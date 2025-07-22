@@ -100,6 +100,8 @@ $router->post("/order/see", [OrderController::class, "sign"]);
 /* * Tickets * */
 $router->get("/admin/tickets", [TicketController::class, "index"]);
 $router->post("/admin/tickets", [TicketController::class, "index"]);
+$router->get("/admin/tickets/create", [TicketController::class, "create"]);
+$router->post("/admin/tickets/create", [TicketController::class, "create"]);
 $router->get("/admin/tickets/dashboard", [TicketController::class, "dashboard"]);
 $router->post("/admin/tickets/update", [API_Tickets::class, "TICKETUPDATE"]);
 $router->get("/admin/tickets/ticket", [TicketController::class, "ticket"]);

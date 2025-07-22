@@ -12,7 +12,12 @@ use Models\Inventario;
 use Models\Comments;
 use Models\Encuestas;
 use Models\Notificaciones;
+use Models\Personal;
 use Models\Subcats;
+
+//Libs
+use Intervention\Image\ImageManager as Manager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class TicketController
 {
@@ -26,11 +31,69 @@ class TicketController
 
         $tickets = Tickets::all();
         $tecnicos = Users::filter("area", "=", "ATI");
-        
+
 
         $router->render("admin/tickets/index", [
             "tickets" => $tickets,
             "tecnicos" => $tecnicos
+        ]);
+    }
+
+    public static function create(Router $router)
+    {
+
+        $techs = Users::filter('area', '=', 'ATI');
+
+        $employees = Personal::all();
+
+        $manager = new Manager(new Driver());
+
+
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $_POST["fecha"] = date("Y-m-d H:i:s");
+
+            $ticket = new Tickets($_POST);
+
+            $ticket->tecnico_id = 0;
+            $ticket->estado = "sin asignar";
+            if (!is_dir(CARPETA_IMAGENES)) {
+                mkdir(CARPETA_IMAGENES);
+            }
+
+
+
+            $nombreImagen = md5(uniqid(rand(), true)) . ".png";
+
+            if ($_FILES["imagen"]["tmp_name"]) {
+                $image = $manager->read($_FILES["imagen"]["tmp_name"]);
+                $image->resize(width: 300, height: 300);
+
+
+                $image->toPng()->save(CARPETA_IMAGENES . "/$nombreImagen");
+                $ticket->setImagen($nombreImagen);
+            }
+
+            $resultado = $ticket->guardar();
+
+
+            $notificacion = [
+                "titulo" => "Ticket Creado por " . $_SESSION["name"],
+                "destinatario" => "admin",
+                "url" => "/admin/tickets/ticket?id=$resultado"
+            ];
+            notificacion();
+            $notificaciones = new Notificaciones($notificacion);
+            $notificaciones->guardar();
+
+
+            header("Location: /admin/tickets");
+        }
+
+        $router->render("admin/tickets/create", [
+            "techs" => $techs,
+            "employees" => $employees
         ]);
     }
 
@@ -101,10 +164,9 @@ class TicketController
 
                             $_POST["tickets"]["fecha_asignada"] = date("Y-m-d H:i:s");
 
-                            $asignTime = ( (strtotime($tickets->fecha)) - strtotime($_POST["tickets"]["fecha_asignada"])) / 60;
+                            $asignTime = ((strtotime($tickets->fecha)) - strtotime($_POST["tickets"]["fecha_asignada"])) / 60;
                             $asignTime =  ($asignTime < 0) ? $asignTime * -1 : $asignTime * 1;
                             $_POST["tickets"]["tiempo_en_asignar"] = $asignTime - 300;
-
                         } else {
 
 

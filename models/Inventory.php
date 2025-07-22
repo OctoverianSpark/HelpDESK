@@ -34,7 +34,7 @@ class Inventory extends ActiveRecord
 
 
     protected ?int $id;
-    protected ?int $user_id;
+    protected $user_id;
     protected ?string $nombre;
     protected ?string $apellido;
     protected ?string $tipo_documento;
@@ -58,7 +58,7 @@ class Inventory extends ActiveRecord
     {
         parent::__construct($args);
 
-        $this->user_id = $args['user_id'] ?? 0;
+        $this->user_id = intval($args['user_id']) ?? 0;
     }
 
 
