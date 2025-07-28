@@ -33,24 +33,24 @@ class Inventory extends ActiveRecord
 
 
 
-    protected ?int $id;
-    protected $user_id;
-    protected ?string $nombre;
-    protected ?string $apellido;
-    protected ?string $tipo_documento;
-    protected ?string $documento;
-    protected ?string $telefono;
-    protected ?string $correo;
-    protected ?string $tipo;
-    protected ?string $marca;
-    protected ?string $modelo;
-    protected ?string $color;
-    protected ?string $nombre_equipo;
-    protected ?string $serial;
-    protected ?string $correo_dominio;
-    protected ?string $usuarioPC;
-    protected ?string $propietario;
-    protected ?int $state;
+    public ?int $id;
+    public $user_id;
+    public ?string $nombre;
+    public ?string $apellido;
+    public ?string $tipo_documento;
+    public ?string $documento;
+    public ?string $telefono;
+    public ?string $correo;
+    public ?string $tipo;
+    public ?string $marca;
+    public ?string $modelo;
+    public ?string $color;
+    public ?string $nombre_equipo;
+    public ?string $serial;
+    public ?string $correo_dominio;
+    public ?string $usuarioPC;
+    public ?string $propietario;
+    public ?int $state;
 
 
 
@@ -303,6 +303,7 @@ class Inventory extends ActiveRecord
         WHERE i.$columna $operador $valor
         ORDER BY i.id DESC";
         $result = self::consultarSQL($query);
+
 
 
         return $result;

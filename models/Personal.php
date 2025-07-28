@@ -38,15 +38,10 @@ class Personal extends ActiveRecord
         $query = "SELECT * FROM " . static::$schema . "." . static::$tabla  . " ORDER BY id DESC";
         $resultado = static::consultarSQL($query);
 
-        foreach ($resultado as $r) {
-
-            $results[] = $r;
-        }
 
 
 
-
-        return $results;
+        return $resultado;
     }
 
     public static function separateAll()
