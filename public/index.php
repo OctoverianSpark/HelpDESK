@@ -23,6 +23,8 @@ use Controllers\LAPI\API_Tickets;
 use Controllers\LAPI\API_USERS;
 use Controllers\MaintenanceController;
 use Controllers\OrderController;
+use Controllers\PersController;
+use Controllers\PersonalController;
 use Controllers\ServersController;
 use MVC\Router;
 use Models\Encuestas;
@@ -75,7 +77,17 @@ $router->get("/admin/logs", [AdminController::class, "logs"]);
 $router->get("/admin/inventario", [InventoryController::class, "index"]);
 $router->post("/admin/inventario", [InventoryController::class, "index"]);
 $router->get("/admin/inventario/dashboard", [InventoryController::class, "dashboard"]);
+$router->get("/admin/inventario", [InventoryController::class, "index"]);
+$router->post("/admin/inventario", [InventoryController::class, "index"]);
+$router->get("/admin/inventario/dashboard", [InventoryController::class, "dashboard"]);
 $router->get("/admin/mantenimientos", [MaintenanceController::class, 'index']);
+
+
+$router->get("/admin/pers", [PersController::class, "index"]);
+$router->get("/admin/pers/create", [PersController::class, "create"]);
+$router->post("/admin/pers/create", [PersController::class, "create"]);
+$router->get("/admin/pers/update", [PersController::class, "update"]);
+$router->post("/admin/pers/update", [PersController::class, "update"]);
 
 $router->get("/admin/inventario/crear", [InventoryController::class, "crear"]);
 $router->post("/admin/inventario/crear", [InventoryController::class, "crear"]);
@@ -84,6 +96,11 @@ $router->get("/admin/inventario/actualizar", [InventoryController::class, "actua
 $router->post("/admin/inventario/actualizar", [InventoryController::class, "actualizar"]);
 
 $router->get("/admin/inventario/ver", [InventoryController::class, "ver"]);
+$router->get("/admin/personal", [PersonalController::class, "index"]);
+$router->get("/admin/personal/register", [PersonalController::class, "register"]);
+$router->post("/admin/personal/register", [PersonalController::class, "register"]);
+$router->get("/admin/personal/update", [PersonalController::class, "update"]);
+$router->post("/admin/personal/update", [PersonalController::class, "update"]);
 
 $router->get("/admin/ordenes", [OrderController::class, "index"]);
 $router->post("/admin/ordenes", [OrderController::class, "index"]);
@@ -170,6 +187,11 @@ $router->post("/admin/encuesta", [API_POLLS::class, "GET_POLLS_ID"]);
 
 $router->post('/admin/mantenimientos/find', [API_MAINTENANCES::class, 'FIND_QUERY']);
 $router->post('/admin/mantenimientos/save', [API_MAINTENANCES::class, 'SAVE_QUERY']);
+
+
+
+
+$router->post('/admin/inventory/set/stock', [API_Inventory::class, 'SET_STOCK']);
 
 //NOTE: INDEXERS
 $router->post("/admin/tickets/indexer", [API_Tickets::class, "INDEXER"]);

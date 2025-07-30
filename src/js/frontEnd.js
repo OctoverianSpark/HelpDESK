@@ -823,22 +823,19 @@ function invActions () {
 }
 
 async function MOVETOSTOCK (cellId) {
-  const response = await fetch('/admin/inventario/actions', {
+  const response = await fetch('/admin/inventory/set/stock', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      id: cellId,
-      action: 'stock'
+      id: cellId
     })
   })
     .then(response => response.json())
     .catch(err => console.error(err))
 
-  if (response.msg === '1') {
-    location.reload()
-  }
+  console.log(response)
 }
 
 async function DELETECELL (cellId) {

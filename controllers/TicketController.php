@@ -4,7 +4,6 @@
 
 namespace Controllers;
 
-use Models\Apps;
 use MVC\Router;
 use Models\Tickets;
 use Models\Users;

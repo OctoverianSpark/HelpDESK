@@ -10,7 +10,7 @@ namespace Models;
 class Personal extends ActiveRecord
 {
 
-    protected static $schema = "rh";
+    protected static $schema = "ti";
 
     protected static $tabla = "personal";
 
@@ -25,6 +25,10 @@ class Personal extends ActiveRecord
         "email",
         "job_title",
         "area",
+        "mod_date",
+        "state",
+        "location",
+        "contract_type"
 
     ];
 
@@ -35,7 +39,7 @@ class Personal extends ActiveRecord
         $results  = [];
 
 
-        $query = "SELECT * FROM " . static::$schema . "." . static::$tabla  . " ORDER BY id DESC";
+        $query = "SELECT * FROM " . static::$tabla  . " ORDER BY id DESC";
         $resultado = static::consultarSQL($query);
 
 

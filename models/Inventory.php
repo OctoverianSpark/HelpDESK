@@ -28,7 +28,8 @@ class Inventory extends ActiveRecord
         "correo_dominio",
         "usuarioPC",
         "propietario",
-        "state"
+        "state",
+        "user_id"
     ];
 
 
@@ -58,8 +59,7 @@ class Inventory extends ActiveRecord
     {
         parent::__construct($args);
 
-        $this->user_id = $args['user_id'] ?? 0;
-        
+        $this->user_id = $args['user_id'] ?? null;
     }
 
 
@@ -73,9 +73,9 @@ class Inventory extends ActiveRecord
         $this->id = $id;
     }
 
-    public function getUserId(): int
+    public function getUserId(): ?int
     {
-        return $this->user_id;
+        return $this->user_id === '' ? null : (int)$this->user_id;
     }
 
     public function setUserId(int $user_id): void
@@ -247,7 +247,7 @@ class Inventory extends ActiveRecord
     {
 
 
-        $query = "UPDATE " . static::$tabla . " SET state = 0 WHERE id=$this->id";
+        $query = "UPDATE " . static::$tabla . " SET state = 0, user_id = NULL WHERE id=$this->id";
 
         static::$db->query($query);
     }
@@ -258,7 +258,7 @@ class Inventory extends ActiveRecord
         $atributos = [];
         foreach (static::$columnasDB as $col) {
 
-            if ($this->$col == null || in_array($col, ["nombre", "apellido", "tipo_documento", "documento", "telefono", "correo",])) continue;
+            if ($this->$col == null || in_array($col, ["nombre", "apellido", "tipo_documento", "documento", "telefono", "correo"])) continue;
 
             $atributos[$col] = $this->$col;
         }
@@ -269,7 +269,7 @@ class Inventory extends ActiveRecord
     {
         $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
         FROM inv i
-        LEFT JOIN rh.personal p ON i.user_id = p.id
+        LEFT JOIN personal p ON i.user_id = p.id
         ORDER BY i.id DESC";
         $result = self::consultarSQL($query);
 
@@ -283,7 +283,7 @@ class Inventory extends ActiveRecord
 
         $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
         FROM inv i
-        LEFT JOIN rh.personal p ON i.user_id = p.id
+        LEFT JOIN personal p ON i.user_id = p.id
         WHERE i.id = $id";
 
 
@@ -299,7 +299,7 @@ class Inventory extends ActiveRecord
 
         $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
         FROM inv i
-        LEFT JOIN rh.personal p ON i.user_id = p.id
+        LEFT JOIN personal p ON i.user_id = p.id
         WHERE i.$columna $operador $valor
         ORDER BY i.id DESC";
         $result = self::consultarSQL($query);
@@ -358,5 +358,28 @@ class Inventory extends ActiveRecord
             }
         }
         return $array;
+    }
+
+
+    public function actualizar()
+    {
+
+        $atributos = $this->sanitizarAtributos();
+
+        $valores = [];
+
+        foreach ($atributos as $key => $value) {
+            $valores[] = "$key='$value'";
+        }
+
+
+        $query = "UPDATE " . static::$tabla . " SET ";
+        $query .= join(",", $valores);
+        $query .= " WHERE id = " . $this->id . "";
+        $query .= " LIMIT 1";
+
+        $query = strtolower($query);
+        $resultado = self::$db->query($query);
+        return $resultado;
     }
 }

@@ -28,7 +28,7 @@
 
     <label for="computer" class="radio-label-card">
 
-        <input type="radio" name="tipo" id="computer" value="computador" required <?PHP echo (strtolower($inv->tipo) == "computer") ? "checked" : "" ?>>
+        <input type="radio" name="tipo" id="computer" value="computador" required <?PHP echo (strtolower($inv->tipo) === "computador") ? "checked" : "" ?>>
         <i class="bi bi-pc-display"></i>
         <span>Computador de Escritorio</span>
 
@@ -36,7 +36,7 @@
     </label>
     <label for="laptop" class="radio-label-card">
 
-        <input type="radio" name="tipo" id="laptop" value="laptop" required <?PHP echo (strtolower($inv->tipo) == "laptop") ? "checked" : "" ?>>
+        <input type="radio" name="tipo" id="laptop" value="laptop" required <?PHP echo (strtolower($inv->tipo) === "laptop") ? "checked" : "" ?>>
         <i class="bi bi-laptop"></i>
         <span>Laptop</span>
 

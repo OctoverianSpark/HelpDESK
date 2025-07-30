@@ -9,9 +9,19 @@ class Perifericos extends ActiveRecord
 {
 
 
-    protected static $columnasDB = ["id", "tipo", "marca", "modelo", "color", "serial", "computer_id"];
+    protected static $columnasDB = ["id", "tipo", "marca", "modelo", "color", "serial", "user_id", "state","mod_date","asign_date"];
 
     protected static $tabla = "perifericos";
+
+    public $user_id = null;
+
+
+    public function __construct($args = [])
+    {
+        parent::__construct($args);
+
+        $this->user_id = $args['user_id'] ?? null;
+    }
 
 
 
@@ -33,18 +43,39 @@ class Perifericos extends ActiveRecord
         $valores = [];
 
         foreach ($atributos as $key => $value) {
-            $valores[] = "$key='$value'";
+
+            if($key === 'mod_date') continue;
+
+            if (is_null($value) || $value === '') {
+
+                $valores[] = "$key=NULL";
+            } else {
+
+                $valores[] = "$key='$value'";
+            }
         }
 
         $query = "UPDATE " . static::$tabla . " SET ";
         $query .= join(",", $valores);
-        $query .= " WHERE computer_id = '" . self::$db->escape_string($this->computer_id) . "' AND id = '" . self::$db->escape_string($this->id) . "'";
-        $query .= " LIMIT 1";
-
+        $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "'";
         $resultado = self::$db->query($query);
-
         return $resultado;
     }
+
+
+    public function getAsignedName()
+    {
+
+
+        if ($this->user_id) {
+
+            $user = Personal::find($this->user_id);
+            return $user->first_name . " " . $user->last_name;
+        } else {
+            return "Sin Asignar";
+        }
+    }
+
 
     public function eliminar()
     {
@@ -53,14 +84,6 @@ class Perifericos extends ActiveRecord
 
         self::$db->query($query);
     }
-    public function deleteByGroup()
-    {
-
-        $query = "DELETE FROM " . static::$tabla . " where computer_id = '$this->computer_id'";
-
-        self::$db->query($query);
-    }
-
     public function toArray()
     {
 

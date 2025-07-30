@@ -35,16 +35,15 @@ class Log extends ActiveRecord
 
    public function updateInventoryLog($data_id)
    {
-
       $target = Inventory::find($data_id);
-
+      $this->id = null;
       $this->date = date("Y-m-d H:i:s");
       $this->type = "inventory";
       $this->action = "update";
       $this->description = "El usuario " . $_SESSION["name"] . " ha actualizado un computador en la base de datos con el nombre $target->nombre_equipo";
       $this->data_id = $data_id;
 
-      $this->crear();
+      $this->guardar();
    }
 
    public function deleteInventoryLog($data_id)
@@ -75,10 +74,10 @@ class Log extends ActiveRecord
       $this->crear();
    }
 
-   public function updatePerLog(Perifericos $old,Perifericos $new)
+   public function updatePerLog(Perifericos $old, Perifericos $new)
    {
-         
-      
+
+
 
       $this->date = date("Y-m-d H:i:s");
       $this->type = "peripheral";

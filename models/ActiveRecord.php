@@ -112,6 +112,9 @@ abstract class ActiveRecord extends ObjectCreator
         //Sanitizar
         $atributos = $this->sanitizarAtributos();
 
+        if (isset($atributos['id'])) {
+            unset($atributos['id']);
+        }
 
 
         //Insercion
@@ -121,10 +124,8 @@ abstract class ActiveRecord extends ObjectCreator
         $query .= join("' , '", array_values($atributos));
         $query .= "')";
 
-
         $query = strtolower($query);
         $resultado = self::$db->query($query);
-
 
         return $resultado;
     }
@@ -149,9 +150,7 @@ abstract class ActiveRecord extends ObjectCreator
     {
         $atributos = [];
         foreach (static::$columnasDB as $columna) {
-            if ($columna === "id") continue;
             $atributos[$columna] = $this->$columna;
-            # code...
         }
         return $atributos;
     }
@@ -161,11 +160,9 @@ abstract class ActiveRecord extends ObjectCreator
     {
         $atributos = $this->atributos();
 
-
         $sanitizado = [];
 
         foreach ($atributos as $key => $value) {
-
             $sanitizado[$key] = self::$db->escape_string($value);
         }
         return $sanitizado;
@@ -179,6 +176,7 @@ abstract class ActiveRecord extends ObjectCreator
         $valores = [];
 
         foreach ($atributos as $key => $value) {
+            if ($key === "id") continue;
             if ($atributos[$key] === "" || $atributos[$key] === null) continue;
             if ($key === "creado") continue;
             $valores[] = "$key='$value'";
@@ -191,7 +189,8 @@ abstract class ActiveRecord extends ObjectCreator
 
 
         $query = strtolower($query);
-
+        echo json_encode(['query' => $query]);
+        exit;
         $resultado = self::$db->query($query);
         return $resultado;
     }

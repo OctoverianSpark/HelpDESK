@@ -71,7 +71,7 @@ class InventoryController
 
                 $periferico = new Perifericos($per);
 
-                $periferico->computer_id = $id;
+                $periferico->user_id = $inv->user_id;
 
                 $periferico->guardar();
             }
@@ -89,7 +89,7 @@ class InventoryController
 
         $id = validarID();
         $inv = Inventory::find($id);
-        $perifericos = Perifericos::findGroup($id);
+        $perifericos = Perifericos::filter('user_id', '=', $inv->getUserId());
         $users = Personal::all();
 
         $techs = Users::getTecnicals();
@@ -98,7 +98,6 @@ class InventoryController
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $inv->sync($_POST);
-
 
 
             $resultado  = $inv->guardar();
@@ -113,13 +112,18 @@ class InventoryController
                 $postedPerifericos = array_column($_POST["perifericos"], 'id');
 
                 $toDelete = array_diff($existingPerifericos, $postedPerifericos);
-                $toAdd = array_diff($postedPerifericos, $existingPerifericos);
+                foreach ($toDelete as $id) {
+                    $periferico = Perifericos::find($id);
+
+                    if ($periferico) {
+                        $periferico->state = 0;
+                        $periferico->user_id = null;
+                        $periferico->asign_date = null;
 
 
-                foreach ($toDelete as $perId) {
-                    $periferico = Perifericos::find($perId);
-                    $periferico->eliminar();
-                    $log->delPerLog($periferico);
+                        $periferico->guardar();
+                        $log->updatePerLog(Perifericos::find($id), $periferico);
+                    }
                 }
 
 
@@ -133,15 +137,27 @@ class InventoryController
                     } else {
 
                         $periferico = new Perifericos($per);
-                        $periferico->computer_id = $id;
+                        $periferico->user_id = $inv->user_id;
+                        $periferico->state = 1;
+                        $per->asign_date = date('Y-m-d H:i:s');
+
                         $perId = $periferico->guardar();
                         $log->newPerLog($perId);
                     }
                 }
+            } else {
+                foreach ($perifericos as $per) {
+                    $per->state = 0;
+                    $per->user_id = null;
+                    $per->asign_date = null;
+
+                    $per->guardar();
+                    $log->updatePerLog(Perifericos::find($per->id), $per);
+                }
             }
 
             if ($resultado) {
-                header("Location: /admin/inventario?result=1");
+               header("Location: /admin/inventario?result=1");
             }
         }
 

@@ -2,7 +2,7 @@
 
 
 
-    <div class="modal maintenance-form-modal">
+    <div class="modal maintenance-form-modal hidden">
         <form method="post">
 
             <input type="hidden" name="computer" value="<?php echo $inv->id ?>">

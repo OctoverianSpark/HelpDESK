@@ -25,9 +25,11 @@ class API_Inventory
 
       $computer = Inventory::find($id);
 
-      $computer->user_id = 0;
 
-      $computer->guardar();
+      $computer->setStock();
+
+      echo json_encode(["msg" => "1"]);
+      exit;
    }
 
    public static function PERSSEARCH()
@@ -35,7 +37,7 @@ class API_Inventory
 
       $DATA = json_decode(file_get_contents("php://input"));
 
-      $id = filter_var($DATA->computer_id, FILTER_VALIDATE_INT);
+      $id = filter_var($DATA->user_id, FILTER_VALIDATE_INT);
 
       $pers = Perifericos::findGroup($id);
 
@@ -52,10 +54,19 @@ class API_Inventory
 
 
       $inv = Inventory::find($id);
-      $pers = Perifericos::findGroup($inv->getID());
-      $pers = array_map(function ($item) {
-         return $item->toArray();
-      }, $pers);
+      if (!$inv->user_id) {
+         $inv->setNombre("STOCK");
+         $inv->setApellido("Sin asignar");
+         $inv->setCorreo("Sin asignar");
+         $inv->setTelefono("Sin asignar");
+      } else {
+         $usr = Personal::PIVOTFINDER($inv->getUserId());
+         $inv->area = $usr->area;
+         $pers = Perifericos::filter('user_id', '=', $inv->getUserId());
+         $pers = array_map(function ($item) {
+            return $item->toArray();
+         }, $pers);
+      }
 
       $data = [
          "inv" => $inv->toArray() ?? [],
