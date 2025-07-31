@@ -5,7 +5,7 @@ namespace Models;
 class Inventory extends ActiveRecord
 {
 
-    protected static $schema = "ti";
+    protected static $schema = "ati";
 
     protected static $tabla = "inv";
 
