@@ -311,7 +311,7 @@ class Inventory extends ActiveRecord
 
     public static function filter_by_location($columna, $operador, $valor, $location)
     {
-        $query = "SELECT * FROM ti.inv as i WHERE $columna $operador '$valor' and sede = '$location' order by id DESC";
+        $query = "SELECT * FROM ati.inv as i WHERE $columna $operador '$valor' and sede = '$location' order by id DESC";
 
         $result = self::consultarSQL($query);
 

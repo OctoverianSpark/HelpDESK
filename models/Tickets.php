@@ -36,7 +36,7 @@ class Tickets extends ActiveRecord
     {
 
 
-        $query = "SELECT * FROM ti.tickets WHERE fecha BETWEEN '$from' AND '$to' ORDER BY id DESC";
+        $query = "SELECT * FROM ati.tickets WHERE fecha BETWEEN '$from' AND '$to' ORDER BY id DESC";
 
 
 
@@ -52,7 +52,7 @@ class Tickets extends ActiveRecord
         $query = "SELECT 
                     *
                 FROM
-                    ti.tickets
+                    ati.tickets
                 WHERE
                     MONTHNAME(fecha) = MONTHNAME(now()) AND YEAR(fecha) = YEAR(now())";
 
