@@ -22,7 +22,7 @@ use Google\Service\Drive\DriveFile;
    }
 
 
-   function saveData($file){
+   function saveData($file,$parent = '1nuTmqj-4EDISnuoAzaPhrIbWvDaPvuEk'){
 
       $service = new Drive(connect2Drive());
 
@@ -31,9 +31,10 @@ use Google\Service\Drive\DriveFile;
 
       $fileMetadata = new DriveFile([
          "name"=>$fileName,
-         "parents"=>["14JggU_YDyT1clNxpxq9WD0IRVbu_hcys"]
+         "parents"=>[$parent]
       ]);
 
+      
       $content = file_get_contents($file);
 
 

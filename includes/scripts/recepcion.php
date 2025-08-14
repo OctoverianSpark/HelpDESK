@@ -164,7 +164,7 @@ $cell->addText(
 
 $cell = $table->addCell(9688 / 2, ["valign" => "center", "align" => "center", "cellMargin" => 50]);
 $cell->addText(
-   "Empleado: " . ucwords(strtolower("$usr->nombre $usr->apellido")),
+   "Empleado: " . ucwords(strtolower("$usr->first_name $usr->last_name")),
    [
       "size" => 11
    ],
@@ -404,7 +404,7 @@ $rHeight = 1500;
 $table->addRow();
 
 $cell = $table->addCell(4350,["valign"=>"center"]);
-$cell->addImage(__DIR__ . '/../../public/build/img/sign.png', [
+$cell->addImage($_SESSION["sign_name"], [
    "width" => "100%",
    "height"=> 80,
    "alignment" => Jc::START

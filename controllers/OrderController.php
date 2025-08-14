@@ -62,12 +62,12 @@ class  OrderController
 
     public static function send()
     {
-        $json = json_decode(file_get_contents(__DIR__ . "/../public/build/json/orders.json"), true);
+
 
         $post = json_decode(file_get_contents("php://input"));
 
         $html = file_get_contents(__DIR__ . "/../views/templates/mail/" . $post->type . ".html");
-
+        
         if ($post->type === "entrega" || $post->type === "recepcion") {
 
             $orderCount = Ordenes::countOrders(strtoupper($post->type[0]));
@@ -79,7 +79,8 @@ class  OrderController
                 "emitted_date" => date("Y-m-d"),
                 "order_id" => $post->order_id,
                 "computer_id" => $post->computer_id,
-                "user_id" => $post->user_id
+                "user_id" => $post->user_id,
+                "features" => $post->features
             ]);
         } else {
 
@@ -95,40 +96,35 @@ class  OrderController
                 $days = calculateDays($order->emitted_date, $order->return_date);
             }
 
-            $html = str_replace("{{emission_date}}", $order->emitted_date, $html);
-
-            $return = $order->return_date == "no return" ? "Sin Retorno" : $order->return_date;
-
-            $html = str_replace("{{return_date}}", $return, $html);
-            $html = str_replace("{{days}}", $days, $html);
 
             $order->sync(["state" => "generada"]);
         }
 
+        $html = str_replace("{{emission_date}}", $order->emitted_date, $html);
+
+        $return = $order->return_date == "no return" ? "Sin Retorno" : $order->return_date;
+
+        $html = str_replace("{{return_date}}", $return, $html);
+        $html = str_replace("{{days}}", $days, $html);
 
 
         $id = $order->guardar();
-        foreach ($post as $key => $value) {
-
-            $json["$id"][$key] = $value;
-        }
-
-        file_put_contents(__DIR__ . "/../public/build/json/orders.json", json_encode($json));
 
         $html = str_replace("{{order_type}}", $_POST["type"], $html);
         $html = str_replace("{{order_id}}", $order->order_id, $html);
         $html = str_replace("{{id}}", $id, $html);
 
+        $inv = Inventory::find($order->computer_id);
 
-        if ($post->type === "recepcion" || $post->type === "entrega") {
+        if ($post->type === "recepcion") {
 
+            
             echo json_encode([
                 "url" => "/order/see?id=$id",
 
             ]);
         } else {
 
-            $inv = Inventory::find($order->computer_id);
 
             echo json_encode([
                 "msg" => enviarCorreo($html, "Orden Generada", [strtolower($order->mail ?? $inv->correo_dominio)]) ?? "Message sent!!!"
@@ -144,7 +140,6 @@ class  OrderController
 
         $id = validarID($_GET["id"]);
 
-        $json = json_decode(file_get_contents(__DIR__ . "/../public/build/json/orders.json"), true)[$id];
 
 
         $order = Ordenes::find($id);
@@ -181,8 +176,7 @@ class  OrderController
 
         $pers = [];
 
-        $ftrs = $json["features"];
-
+        $ftrs = json_decode($order->features);
 
         foreach ($json as $key => $value) {
             if (in_array($key, ["mouse", "diademas", "monitor", "monitor-2", "teclado"])) {

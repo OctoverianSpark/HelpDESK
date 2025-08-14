@@ -39,7 +39,7 @@
 
 
    <p>
-      Mediante el presente documento, Asistente Virtual <?php echo $_POST["sede"] != "avca"?"S.A.S.":"C.A." ?> confirma la recepción de los equipos y accesorios informáticos descritos en el punto 2 al usuario(a) <?php echo ucwords(strtolower("$usr->nombre $usr->apellido")) ?>, identificado con <?php echo $usr->tipo_documento . " " . $usr->documento ?>. Esto se debe a la finalización de su relación laboral con la empresa.
+      Mediante el presente documento, Asistente Virtual confirma la recepción de los equipos y accesorios informáticos descritos en el punto 2 al usuario(a) <?php echo ucwords(strtolower("$usr->nombre $usr->apellido")) ?>, identificado con <?php echo $usr->tipo_documento . " " . $usr->documento ?>. Esto se debe a la finalización de su relación laboral con la empresa.
    </p>
    <p>
       El Departamento de Automatización, Tecnología e Informática se encargará de la recolección de los equipos y accesorios en las instalaciones de la empresa. El técnico, junto con el usuario, se compromete a verificar que tanto el equipo como los accesos y credenciales asignados estén en correcto funcionamiento y orden.

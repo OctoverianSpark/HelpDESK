@@ -38,7 +38,7 @@
 
 
 
-   <p>Mediante el presente documento, Asistente Virtual <?php echo ($usr->location === "colombia") ? "S.A.S" : "C.A" ?> se realiza la asignación de los siguientes equipos y accesorios informáticos descritos en el punto número 2 de este documento al usuario(a) <?php echo ucwords(strtolower("$usr->nombre $usr->apellido")) ?> con el número de identificación <?php echo "$usr->tipo_documento $usr->documento" ?>, esto con el fin de realizar sus labores asignadas en la empresa. El Departamento de Automatización, Tecnología e Informática realizará el despacho de los equipos y accesorios en las instalaciones de la empresa y el usuario se compromete a utilizar los equipos exclusivamente para fines laborales y a cuidarlos de acuerdo con las normas establecidas en el reglamento interno de la empresa. El usuario se compromete a cuidar y devolver estos activos, propiedad de la empresa, en buen estado físico y de funcionamiento, tal y como fueron entregados. </p>
+   <p>Mediante el presente documento, Asistente Virtual se realiza la asignación de los siguientes equipos y accesorios informáticos descritos en el punto número 2 de este documento al usuario(a) <?php echo ucwords(strtolower("$usr->nombre $usr->apellido")) ?> con el número de identificación <?php echo "$usr->tipo_documento $usr->documento" ?>, esto con el fin de realizar sus labores asignadas en la empresa. El Departamento de Automatización, Tecnología e Informática realizará el despacho de los equipos y accesorios en las instalaciones de la empresa y el usuario se compromete a utilizar los equipos exclusivamente para fines laborales y a cuidarlos de acuerdo con las normas establecidas en el reglamento interno de la empresa. El usuario se compromete a cuidar y devolver estos activos, propiedad de la empresa, en buen estado físico y de funcionamiento, tal y como fueron entregados. </p>
 
 
 
@@ -53,7 +53,7 @@
    <?php 
       
       foreach ($ftrs as $ftr) {
-         spawnCheckbox($ftr["id"],"","",$ftr["text"],$ftr["checked"],false);
+         spawnCheckbox("","",$ftr,true,true);
       }
    
    ?>

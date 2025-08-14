@@ -419,7 +419,7 @@ async function viewAdminInv () {
       stockBTN.setAttribute('cellId', rowID)
       deleteBTN.setAttribute('cellId', rowID)
       updateBTN.href += rowID
-
+      console.log(rowID);
       const invData = await Information.postJSON('/admin/inventory/find', {
         id: rowID
       })
@@ -760,7 +760,6 @@ async function viewAdminTicket () {
     cat: categorySelector.options[categorySelector.options.selectedIndex].value
   })
 
-  console.log(subcats)
 
   subcats.forEach(subcat => {
     let sub = subcat.subcategoria.toString()
@@ -839,7 +838,7 @@ async function MOVETOSTOCK (cellId) {
 }
 
 async function DELETECELL (cellId) {
-  const response = await fetch('/admin/inventario/actions', {
+  const response = await fetch('/admin/inventory/delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

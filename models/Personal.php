@@ -10,7 +10,7 @@ namespace Models;
 class Personal extends ActiveRecord
 {
 
-    protected static $schema = "ati";
+    protected static $schema = "ti";
 
     protected static $tabla = "personal";
 

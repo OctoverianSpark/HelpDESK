@@ -24,9 +24,9 @@ abstract class ActiveRecord extends ObjectCreator
 
     public function __construct($args = [])
     {
-
+        
         foreach (static::$columnasDB as $column) {
-            $this->$column = $args[$column] ?? null;
+            $this->$column = $args[$column] ??null;
         }
     }
 
@@ -152,12 +152,14 @@ abstract class ActiveRecord extends ObjectCreator
         foreach (static::$columnasDB as $columna) {
             $atributos[$columna] = $this->$columna;
         }
+
         return $atributos;
     }
 
 
     public function sanitizarAtributos()
     {
+        
         $atributos = $this->atributos();
 
         $sanitizado = [];
@@ -189,8 +191,6 @@ abstract class ActiveRecord extends ObjectCreator
 
 
         $query = strtolower($query);
-        echo json_encode(['query' => $query]);
-        exit;
         $resultado = self::$db->query($query);
         return $resultado;
     }

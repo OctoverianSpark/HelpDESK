@@ -417,8 +417,8 @@ async function updateOrder() {
 
     const query = await Information.postJSON("/admin/ordenes/print", body);
     console.log(query);
+    location.href= ''
 
-    location.href = "/"
 
   });
 }
@@ -471,21 +471,15 @@ function sendOrderInformation() {
         serial: '',
 
       },
+      "features":formData.getAll('features')
 
     }
+
 
     formData.entries().forEach(([key, value]) => {
 
       if (key === "order_id" || key === "type") {
         body[key] = value
-      }
-
-      if (key === 'features') {
-
-        if (!body["features"]) {
-          body["features"] = []
-        }
-        return
       }
 
       if (key.includes("mouse")) {
@@ -545,36 +539,20 @@ function sendOrderInformation() {
 
     })
 
-    const ftrs = document.getElementsByName("features");
-
-    if (!body["features"]) body["features"] = [];
-
-    ftrs.forEach(ftr => {
-
-      const span = ftr.parentNode.querySelector("span");
-
-      body["features"].push({
-        "id":ftr.id,
-        "text":span.textContent,
-        "checked":ftr.checked
-      })
-
-
-
-    })
     
+
+    if (!body["features"]) body["features"] = []
+
+  
 
     body = cleanPers(body);
         
 
     const q = await Information.postJSON(location.href, body);
-    console.log(q);
+    if (body.type == 'recepcion' ) location.href = q.url;
     
-    if (body.type == 'entrega' || body.type == 'recepcion' ) location.href = q.url;
 
     TOAST("Hemos enviado un correo al firmante de la orden, espera a su firma...", "center", "#")
-
-
 
 
 

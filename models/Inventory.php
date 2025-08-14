@@ -5,7 +5,7 @@ namespace Models;
 class Inventory extends ActiveRecord
 {
 
-    protected static $schema = "ati";
+    protected static $schema = "ti";
 
     protected static $tabla = "inv";
 
@@ -51,7 +51,7 @@ class Inventory extends ActiveRecord
     public ?string $correo_dominio;
     public ?string $usuarioPC;
     public ?string $propietario;
-    public ?int $state;
+    public ?string $state;
 
 
 
@@ -298,7 +298,7 @@ class Inventory extends ActiveRecord
     {
 
         $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
-        FROM inv i
+        FROM ti.inv i
         LEFT JOIN personal p ON i.user_id = p.id
         WHERE i.$columna $operador $valor
         ORDER BY i.id DESC";
@@ -311,7 +311,7 @@ class Inventory extends ActiveRecord
 
     public static function filter_by_location($columna, $operador, $valor, $location)
     {
-        $query = "SELECT * FROM ati.inv as i WHERE $columna $operador '$valor' and sede = '$location' order by id DESC";
+        $query = "SELECT * FROM ti.inv as i WHERE $columna $operador '$valor' and sede = '$location' order by id DESC";
 
         $result = self::consultarSQL($query);
 
@@ -334,7 +334,6 @@ class Inventory extends ActiveRecord
                 $data->tipo_documento = strtoupper("Sin asignar");
                 $data->documento = strtoupper("Sin asignar");
             } else {
-                debuguear($data);
                 $info = Personal::PIVOTFINDER($data->user_id);
 
                 $data->nombre = $info->nombre;
