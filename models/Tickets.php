@@ -31,12 +31,29 @@ class Tickets extends ActiveRecord
 
         return $obj;
     }
+    public static function all($limit = null, $offset = null)
+    {
+        $query = "SELECT * FROM " . static::$tabla;
+        $query .= " ORDER BY id DESC ";
+
+        if ($limit !== null) {
+            $query .= " LIMIT " . (int)$limit;
+        }
+
+        if ($offset !== null) {
+            $query .= " OFFSET " . (int)$offset;
+        }
+
+
+
+        return self::consultarSQL($query);
+    }
 
     public static function getByDate($from, $to)
     {
 
 
-        $query = "SELECT * FROM ati.tickets WHERE fecha BETWEEN '$from' AND '$to' ORDER BY id DESC";
+        $query = "SELECT * FROM ti.tickets WHERE fecha BETWEEN '$from' AND '$to' ORDER BY id DESC";
 
 
 
@@ -52,7 +69,7 @@ class Tickets extends ActiveRecord
         $query = "SELECT 
                     *
                 FROM
-                    ati.tickets
+                    ti.tickets
                 WHERE
                     MONTHNAME(fecha) = MONTHNAME(now()) AND YEAR(fecha) = YEAR(now())";
 
@@ -63,15 +80,6 @@ class Tickets extends ActiveRecord
     }
 
 
-
-    public static function all()
-    {
-        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC";
-        $result = self::consultarSQL($query);
-        $result = static::findConn($result);
-
-        return $result;
-    }
 
     public static function find($id)
     {

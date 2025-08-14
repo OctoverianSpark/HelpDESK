@@ -36,13 +36,29 @@ abstract class ActiveRecord extends ObjectCreator
     {
         self::$db = conectarDB(static::$schema);
     }
-    public static function all()
+    public static function all($limit = null, $offset = null)
     {
-        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC";
-        $resultado = self::consultarSQL($query);
+        $query = "SELECT * FROM " . static::$tabla;
 
-        return $resultado;
+        if ($limit !== null) {
+            $query .= " LIMIT " . (int)$limit;
+        }
+
+        if ($offset !== null) {
+            $query .= " OFFSET " . (int)$offset;
+        }
+
+
+
+        return self::consultarSQL($query);
     }
+    public static function count()
+    {
+
+        return count(static::all());
+    }
+
+
     public static function get($limit)
     {
         $query = "SELECT * FROM " . static::$tabla . " LIMIT " . $limit;
@@ -89,6 +105,8 @@ abstract class ActiveRecord extends ObjectCreator
         //Retornar
         return $array;
     }
+
+
 
 
     public function guardar()

@@ -10,6 +10,7 @@ use MVC\Router;
 use Google_Client;
 use Google_Service_Oauth2;
 use Models\Inventory;
+use Models\Personal;
 use Models\Users;
 
 class LoginController
@@ -37,7 +38,7 @@ class LoginController
                 if ($auth) {
                     $_SESSION["login"] = true;
                     $_SESSION["log_type"] = "user";
-                    $_SESSION['user_id'] = $userData->getUserID();
+                    $_SESSION['user_id'] = $userData->user_id;
                     $_SESSION["name"] = $userData->getNombre() . ' ' . $userData->getApellido();
                     $_SESSION["charge"] = $userRole->area;
                     $_SESSION["role"] = $userRole->role ?? "USER";
@@ -97,12 +98,12 @@ class LoginController
                 header("Location : /login?error");
             }
             session_start();
-            $userData = array_shift(Inventory::filter('correo_dominio', '=', "'$email'"));
+            $userData = array_shift(Personal::filter('email', '=', $email));
             $userRole = array_shift(Users::filter("mail", "=", $email));
             $_SESSION["log_type"] = "email";
             $_SESSION["login"] = true;
-            $_SESSION['user_id'] = $userData->getUserID();
-            $_SESSION["name"] = $userData->getNombre() . ' ' . $userData->getApellido();
+            $_SESSION['user_id'] = $userData->id;
+            $_SESSION["name"] = $userData->first_name . ' ' . $userData->last_name;
             $_SESSION["charge"] = $userRole->area;
             $_SESSION["role"] = $userRole->role ?? "USER";
             $_SESSION["area"] = $userRole->area ?? "OPERACIONES";

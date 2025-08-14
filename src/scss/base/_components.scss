@@ -1,3 +1,6 @@
+@use "mixins" as m;
+@use "vars" as v;
+
 .container-grid-selector {
   width: 60vw;
   gap: 0.5rem;
@@ -5,11 +8,11 @@
   flex-wrap: wrap;
 }
 
-.servers{
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   margin: 2rem;
+.servers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
 }
 
 .server-info {
@@ -49,7 +52,7 @@
     padding: 0;
     margin: 0;
     font-size: 1.6rem;
-    
+
     text-align: center;
     display: flex;
     align-items: center;
@@ -57,10 +60,10 @@
     gap: 8px;
   }
 
-  .update-btn{
-   position: absolute;
-   top: 0;
-   right: 35px;
+  .update-btn {
+    position: absolute;
+    top: 0;
+    right: 35px;
   }
 
   summary {
@@ -73,10 +76,9 @@
     justify-content: center;
     cursor: pointer;
     width: 100%;
-    
+
     text-align: center;
   }
-
 
   .icono {
     height: 2.5rem;
@@ -87,67 +89,55 @@
   &[open] .icono {
     transform: rotate(270deg);
   }
-  
-
-     
-  
 
   .data,
   .users {
-   position: relative;
+    position: relative;
     display: grid;
     place-items: center;
     gap: 10px;
   }
 
-  
-
-  .usr-btn{
-
-      background-color: transparent;
-      outline: none;
-      border: none;
-      text-align: left;
-      cursor: pointer;
-      font-size: 2.4rem;
-      transition: .5s;
-      &:hover{
-         background-color: rgba(72, 145, 255, 0.815);
-         border-radius: 20px;
-      }
-      width: 80%;
-      height: 5rem;
+  .usr-btn {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 2.4rem;
+    transition: 0.5s;
+    &:hover {
+      background-color: rgba(72, 145, 255, 0.815);
+      border-radius: 20px;
+    }
+    width: 80%;
+    height: 5rem;
   }
 
-  .data{
-   p{
+  .data {
+    p {
       font-size: 2rem;
-   }
+    }
   }
-
 }
 
-
-.orders-brief{
+.orders-brief {
   display: grid;
   place-items: center;
   overflow-y: scroll;
   gap: 10px;
   position: relative;
-  .subtitle{
-    font-family: Pangram;
+  .subtitle {
+    font-family: v.$fuente_principal;
     color: white;
     font-size: 18px;
     letter-spacing: 0;
     font-weight: 700;
     margin: 0;
     padding: 0;
-
-    
   }
 
-
-  .order{
+  .order {
     background-color: white;
     border-radius: 1rem;
     display: flex;
@@ -157,31 +147,25 @@
     text-align: center;
     padding: 10px;
     width: 50%;
-
   }
-
-
-
-
 }
 
-.indv-tests{
+.indv-tests {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 2rem;
 
-
-  .indv-test{
+  .indv-test {
     width: 100%;
-    .container-info{
+    .container-info {
       width: 450px;
     }
   }
 }
 
-.general-test{
+.general-test {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -189,14 +173,12 @@
   gap: 2rem;
 
   margin: 2rem;
-
 }
 
-.indv-test{
-
+.indv-test {
   margin: 2rem;
 
-  .container-ranges{
+  .container-ranges {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -204,27 +186,22 @@
     gap: 12rem;
   }
 
-
-  .container-info{
+  .container-info {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    h3{
+    h3 {
       padding: 0;
       margin: 0;
 
       color: rgb(37, 8, 90);
       font-weight: 800;
     }
-
-
   }
-
 }
 
-
-.container-question{
+.container-question {
   display: flex;
   align-items: center;
   justify-content: center;

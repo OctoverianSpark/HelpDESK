@@ -2,62 +2,74 @@
 @use "vars" as v;
 /** Media Queries **/
 @mixin telefono {
-    @media (min-width: #{v.$telefono}) {
-        @content;
-    }
+  @media (min-width: #{v.$telefono}) {
+    @content;
+  }
 }
 
 @mixin tablet {
-    @media (min-width: #{v.$tablet}) {
-        @content;
-    }
+  @media (min-width: #{v.$tablet}) {
+    @content;
+  }
 }
-  
+
 @mixin desktop {
-    @media (min-width: #{v.$desktop}) {
-        @content;
-    }
+  @media (min-width: #{v.$desktop}) {
+    @content;
+  }
 }
-@mixin grid($columnas, $espaciado ) {
-    display: grid;
-    gap: $espaciado;
-    grid-template-columns: repeat($columnas, 1fr);
-}
-
-
-
-@mixin boton($bgColor,$display){
-    background-color: $bgColor;
-    color: v.$blanco;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 1rem 3rem;
-    text-align: center;
-    margin-top: 2.5rem;
-    border-radius: 2rem;
-    display: $display;
-    border: none;
-
-
-    &:hover{
-        background-color: color.adjust($color: $bgColor, $lightness: -5%);
-        cursor: pointer;
-    }
+@mixin grid($columnas, $espaciado) {
+  display: grid;
+  gap: $espaciado;
+  grid-template-columns: repeat($columnas, 1fr);
 }
 
+@mixin glassmorphism(
+  $blur: 16px,
+  $bg: rgba(255, 255, 255, 0.2),
+  $border-radius: 1rem,
+  $border-color: rgba(255, 255, 255, 0.3),
+  $border-width: 1px
+) {
+  --glass-bg: #{$bg};
+  --glass-blur: #{$blur};
+  --glass-border-radius: #{$border-radius};
+  --glass-border-color: #{$border-color};
+  --glass-border-width: #{$border-width};
 
-@mixin setInput(){
-    
-    outline: none;
-    border: none;
-    font-size: 1.8rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--glass-border-radius);
+  border: var(--glass-border-width) solid var(--glass-border-color);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
+@mixin boton($bgColor, $display) {
+  background-color: $bgColor;
+  color: v.$blanco;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 1rem 3rem;
+  text-align: center;
+  margin-top: 2.5rem;
+  border-radius: 2rem;
+  display: $display;
+  border: none;
 
+  &:hover {
+    background-color: color.adjust($color: $bgColor, $lightness: -5%);
+    cursor: pointer;
+  }
+}
 
-@mixin setValidations(){
-    
+@mixin setInput() {
+  outline: none;
+  border: none;
+  font-size: 18px;
+}
 
+@mixin setValidations() {
   &::placeholder {
     color: blue;
   }

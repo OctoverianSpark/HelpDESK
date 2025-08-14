@@ -166,7 +166,7 @@ $router->post("/admin/orders/actuals", [API_ORDERS::class, "ACTUALS"]);
 
 $router->post("/tickets/find", [API_Tickets::class, "TICKETSEARCH"]);
 $router->post("/tickets/actuals", [API_Tickets::class, "ACTUALTICKETS"]);
-$router->post("/tickets/get", [API_Tickets::class, "TICKETSGET"]);
+$router->get("/tickets/get", [API_Tickets::class, "TICKETSGET"]);
 $router->post("/admin/subcats/get", [API_Tickets::class, "SUBCATSSEARCH"]);
 $router->post("/admin/cookies/get", [API_BASE::class, "COOKIESGET"]);
 $router->post("/admin/documentations/find", [API_Documentations::class, "DOCUMENTATIONSEARCH"]);

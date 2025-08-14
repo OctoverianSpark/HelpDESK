@@ -353,46 +353,15 @@ function dragNdrop () {
     document.removeEventListener('mousemove', mouseMove)
   }
 }
-
 function CLIPBOARDWORK () {
   const clipBoardBTNS = document.querySelectorAll('.clipboard-btn')
   clipBoardBTNS.forEach(btn => {
     btn.addEventListener('click', async e => {
-      console.log('A')
       const clipBoard = await navigator.clipboard.writeText(
         btn.getAttribute('clipboardtxt')
       )
 
       TOAST('Texto copiado al portapapeles!!!', 'center')
-    })
-  })
-}
-function tableSearchManager () {
-  const form = document.querySelector('.search-form')
-  const table = document.querySelector('.table')
-
-  if (!(form && table)) return
-
-  const colSelector = form.querySelector('#col')
-  const valInput = form.querySelector('#val')
-
-  let colToFilter = ''
-  colSelector.addEventListener('input', e => {
-    colToFilter = e.target.value
-  })
-
-  valInput.addEventListener('input', e => {
-    const values = Array.from(
-      table.querySelectorAll(`.cell[col='${colToFilter}']`)
-    )
-    const searchTerm = e.target.value.toLowerCase()
-    values.forEach(cell => {
-      const row = cell.parentNode
-      if (cell.textContent.toLowerCase().includes(searchTerm)) {
-        row.style.display = ''
-      } else {
-        row.style.display = 'none'
-      }
     })
   })
 }
@@ -552,252 +521,6 @@ async function viewAdminInv () {
     Array.from(document.querySelectorAll('.container-info')).map(x =>
       x.remove()
     )
-  })
-}
-
-async function viewAdminTicket () {
-  const table = document.querySelector('.table-tickets-admin')
-  if (!table) return
-
-  const viewBtns = table.querySelectorAll('.view-btn')
-  const viewMdl = document.querySelector('.tickets-view')
-
-  const MdlForm = viewMdl.querySelector('.ticket-admin-form')
-  const closeMdlBtn = viewMdl.querySelector('.modal-close-btn')
-
-  viewBtns.forEach(btn => {
-    btn.addEventListener('click', async e => {
-      TOAST('Cargando informacion del ticket...', 'center')
-      const info = viewMdl.querySelector('.container-info')
-      const p = info.querySelectorAll('p')
-      p.forEach(p => p.remove())
-
-      const cellId = btn.getAttribute('cell-id')
-
-      const ticket = await Information.postJSON('/tickets/find', {
-        id: cellId
-      })
-
-      const ContainerInfo = viewMdl.querySelector('.container-info')
-
-      let INFO = {
-        ID: ticket.id,
-        Fecha: ticket.fecha,
-        Usuario: ticket.usuario,
-        Descripcion: ticket.descripcion,
-        Anydesk: '0'
-      }
-
-      let INPUT_INFO = {
-        category: ticket.categoria,
-        subcat: ticket.subcategoria,
-        status: ticket.estado,
-        asigned: ticket.tecnico_id,
-        priority: ticket.prioridad
-      }
-
-      Object.entries(INFO).forEach(([key, value]) => {
-        const I = new Element('I', { class: 'bi bi-clipboard-fill' })
-        const BUTTON = new Element(
-          'BUTTON',
-          { type: 'button', class: 'clipboard-btn', clipBoardTxt: `${value}` },
-          {},
-          [I]
-        )
-        const P = new Element(
-          'P',
-          {},
-          {
-            textContent: `${key} : ${
-              value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
-            }`
-          },
-          [BUTTON]
-        )
-
-        ContainerInfo.appendChild(P.render())
-      })
-
-      Object.entries(INPUT_INFO).forEach(async ([key, value]) => {
-        const select = MdlForm.querySelector(`#${key}`)
-        const options = select.querySelectorAll('option')
-
-        select.addEventListener('input', e => {
-          MdlForm.querySelectorAll('select').forEach(
-            element => (element.disabled = false)
-          )
-        })
-
-        options.forEach(option => {
-          if (option.value.toLowerCase() == value.toLowerCase()) {
-            option.selected = true
-          }
-        })
-
-        if (key === 'status') {
-          const solution = document.querySelector('#solution')
-
-          const completedOption = select.querySelector(
-            "option[value='completado']"
-          )
-          const pendingOption = select.querySelector(
-            "option[value='pendiente']"
-          )
-
-          if (value.toLowerCase() == 'sin asignar') {
-            pendingOption.classList.add('hidden')
-            completedOption.classList.add('hidden')
-          } else {
-            pendingOption.classList.remove('hidden')
-            completedOption.classList.remove('hidden')
-          }
-
-          let solValid = value.toLowerCase() === 'completado'
-
-          select.addEventListener('input', e => {
-            solValid = e.target.value.toLowerCase() === 'completado'
-
-            solution.required = solValid
-            solution.disabled = !solValid
-          })
-
-          solution.required = solValid
-          solution.disabled = !solValid
-        }
-
-        if (key === 'subcat') {
-          const app = document.querySelector('#app')
-          const other = document.querySelector("label[for='other']")
-          select.addEventListener('input', e => {
-            let valid =
-              e.target.value.toLowerCase() === 'instalar' ||
-              e.target.value.toLowerCase() === 'revisar'
-            app.disabled = !valid
-            app.required = valid
-
-            let otherVal = e.target.value.toLowerCase() === 'otro'
-            if (!otherVal) other.classList.add('hidden')
-            if (otherVal) other.classList.remove('hidden')
-
-            const OTHERINPUT = other.querySelector('input')
-
-            OTHERINPUT.disabled = !otherVal
-            OTHERINPUT.required = otherVal
-
-            e.target.disabled = otherVal
-          })
-
-          let valid =
-            value.toLowerCase() === 'revisar' ||
-            value.toLowerCase() === 'instalar'
-          app.disabled = !valid
-          app.required = valid
-        }
-
-        if (key === 'category') {
-          const subcats = await Information.postJSON('/admin/subcats/get', {
-            cat: value.toLowerCase()
-          })
-
-          const subcatsSelector = MdlForm.querySelector('#subcat')
-
-          const subs = subcatsSelector.querySelectorAll('.subs')
-
-          subs.forEach(sub => sub.remove())
-
-          subcats.forEach(subcat => {
-            let sub = subcat.subcategoria.toString()
-
-            sub = sub.charAt(0).toUpperCase() + sub.slice(1).toLowerCase()
-
-            const option = new Element(
-              'OPTION',
-              { value: sub, class: 'subs' },
-              { textContent: sub },
-              []
-            )
-
-            subcatsSelector.appendChild(option.render())
-          })
-        }
-      })
-
-      const HIDDEN = new Element(
-        'INPUT',
-        { type: 'hidden', name: 'id' },
-        { value: cellId },
-        []
-      )
-      MdlForm.appendChild(HIDDEN.render())
-
-      viewMdl.classList.remove('hidden')
-
-      MdlForm.onsubmit = () => {
-        viewMdl.classList.add('hidden')
-        TOAST('Cargando nueva Informacion...', 'right')
-
-        setTimeout(() => {
-          btn.click()
-        }, 2500)
-      }
-
-      CLIPBOARDWORK()
-    })
-  })
-
-  closeMdlBtn.addEventListener('click', e => {
-    const info = viewMdl.querySelector('.container-info')
-    const p = info.querySelectorAll('p')
-    p.forEach(p => p.remove())
-    viewMdl.classList.add('hidden')
-  })
-
-  const categorySelector = MdlForm.querySelector('#category')
-
-  const subcatsSelector = MdlForm.querySelector('#subcat')
-
-  const subcats = await Information.postJSON('/admin/subcats/get', {
-    cat: categorySelector.options[categorySelector.options.selectedIndex].value
-  })
-
-  console.log(subcats)
-
-  subcats.forEach(subcat => {
-    let sub = subcat.subcategoria.toString()
-
-    sub = sub.charAt(0).toUpperCase() + sub.slice(1).toLowerCase()
-
-    const option = new Element(
-      'OPTION',
-      { value: sub, class: 'subs' },
-      { textContent: sub },
-      []
-    )
-
-    subcatsSelector.appendChild(option.render())
-  })
-
-  categorySelector.addEventListener('input', async e => {
-    const subcats = await Information.postJSON('/admin/subcats/get', {
-      cat: e.target.value
-    })
-    const subsOptions = subcatsSelector.querySelectorAll('.subs')
-    subsOptions.forEach(subOption => subOption.remove())
-
-    subcats.forEach(subcat => {
-      let sub = subcat.subcategoria.toString()
-
-      sub = sub.charAt(0).toUpperCase() + sub.slice(1).toLowerCase()
-
-      const option = new Element(
-        'OPTION',
-        { value: sub, class: 'subs' },
-        { textContent: sub },
-        []
-      )
-
-      subcatsSelector.appendChild(option.render())
-    })
   })
 }
 
@@ -1112,7 +835,7 @@ function usrsCreationForm () {
 
   const viewMdl = document.querySelector('.form-usrs-view')
   const MdlForm = viewMdl.querySelector('form')
-  const close = viewMdl.querySelector('.modal-close-btn')
+  const close = viewMdl.querySelector('.close-btn')
 
   const btns = document.querySelectorAll('.view-btn')
 
@@ -1124,7 +847,7 @@ function usrsCreationForm () {
 
       const delButton = MdlForm.querySelector('.btn-red')
 
-      viewMdl.classList.remove('hidden')
+      viewMdl.classList.add('active')
 
       if (cellID) {
         const HIDDEN = new Element(
@@ -1189,11 +912,10 @@ function usrsCreationForm () {
 
         location.reload()
       })
-
-      close.addEventListener('click', e => {
-        viewMdl.classList.add('hidden')
-      })
     })
+  })
+  close.addEventListener('click', e => {
+    viewMdl.classList.remove('active')
   })
 }
 
@@ -2024,10 +1746,8 @@ document.addEventListener('DOMContentLoaded', e => {
   addPer()
   delPer()
   sign()
-  tableSearchManager()
   dragNdrop()
   viewAdminInv()
-  viewAdminTicket()
   invActions()
   viewAdminDocumentation()
   TicketGraphicsControllers()

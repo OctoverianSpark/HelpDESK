@@ -5,7 +5,7 @@ namespace Models;
 class Inventory extends ActiveRecord
 {
 
-    protected static $schema = "ati";
+    protected static $schema = "ti";
 
     protected static $tabla = "inv";
 
@@ -265,7 +265,7 @@ class Inventory extends ActiveRecord
         return $atributos;
     }
 
-    public static function all()
+    public static function all($limit = null, $offset = null)
     {
         $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
         FROM inv i
@@ -311,7 +311,7 @@ class Inventory extends ActiveRecord
 
     public static function filter_by_location($columna, $operador, $valor, $location)
     {
-        $query = "SELECT * FROM ati.inv as i WHERE $columna $operador '$valor' and sede = '$location' order by id DESC";
+        $query = "SELECT * FROM tiinv as i WHERE $columna $operador '$valor' and sede = '$location' order by id DESC";
 
         $result = self::consultarSQL($query);
 
