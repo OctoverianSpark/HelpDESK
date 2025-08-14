@@ -562,7 +562,7 @@ async function MOVETOSTOCK (cellId) {
 }
 
 async function DELETECELL (cellId) {
-  const response = await fetch('/admin/inventario/actions', {
+  const response = await fetch('/admin/inventory/delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

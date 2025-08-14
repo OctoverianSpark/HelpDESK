@@ -51,7 +51,7 @@ $cell->addText(
    ]
 );
 $cell->addText(
-   "ORDEN DE SALIDA EQUIPOS INFORMÁTICOS",
+   "ORDEN DE ENTREGA EQUIPOS INFORMÁTICOS",
    [
       "size" => 12,
       "bold" => true
@@ -61,7 +61,6 @@ $cell->addText(
       "alignment" => 'center',
    ]
 );
-
 
 $cell = $table->addCell(2320, ["valign" => 'center', 'align' => 'center', "cellMargin" => 50]);
 $textRun = $cell->addTextRun();
@@ -98,21 +97,7 @@ $cell->addPreserveText('Página: {PAGE} de {NUMPAGES}', ["bold" => true], ["spac
 $header->addText('', ['size' => 12]);
 
 
-$table = $section->addTable(["borderColor" => "00000", "borderSize" => 6, "valign" => "center", "width" => 9688]);
 
-$table->addRow(255.102);
-
-$cell = $table->addCell(9688, ["valign" => "center", "align" => "center", 'cellMargin' => 50]);
-$cell->addText(
-   "Código: " . $order->order_id,
-   [
-      "size" => 11,
-   ],
-   [
-      "spaceAfter" => 100,
-      "spaceBefore" => 100
-   ]
-);
 
 $section->addText("", ["size" => 12]);
 
@@ -133,10 +118,9 @@ $cell->addText(
       "spaceBefore" => 100
    ]
 );
-
 $cell = $table->addCell(9688 / 2, ["valign" => "center", "align" => "center", "cellMargin" => 50]);
 $cell->addText(
-   "Fecha de Retorno: " . date("d / m / Y" , strtotime($order->return_date)),
+   "Código: " . $order->order_id,
    [
       "size" => 11
    ],
@@ -145,6 +129,9 @@ $cell->addText(
       "spaceBefore" => 100
    ]
 );
+
+
+
 
 
 $table->addRow();
@@ -164,7 +151,7 @@ $cell->addText(
 
 $cell = $table->addCell(9688 / 2, ["valign" => "center", "align" => "center", "cellMargin" => 50]);
 $cell->addText(
-   "Empleado: " . ucwords(strtolower("$usr->nombre $usr->apellido")),
+   "Empleado: " . ucwords(strtolower("$usr->first_name $usr->last_name")),
    [
       "size" => 11
    ],
@@ -179,7 +166,7 @@ $table->addRow();
 
 $cell = $table->addCell(9688 / 2, ["valign" => "center", "align" => "center", "cellMargin" => 50]);
 $cell->addText(
-   "Cargo: " . ucwords(strtolower($usr->cargo)),
+   "Cargo: " . ucwords(strtolower($usr->job_title)),
    [
       "size" => 11
    ],
@@ -215,23 +202,30 @@ $textRun = $section->addTextRun([
 
 $textRun->addText("Mediante el presente documento, ");
 $textRun->addText("ASISTENTE VIRTUAL", ["bold" => true]);
-$textRun->addText(" autoriza el préstamo, salida y traslado de los siguientes equipos y accesorios informáticos descritos en el punto 1 de este documento al usuario(a) ");
-$textRun->addText(ucwords(strtolower("$usr->nombre $usr->apellido")), ["bold" => true]);
-$textRun->addText(" por un período de ");
-$textRun->addText(calculateDays($order->emitted_date, $order->return_date) . " días.");
+$textRun->addText(" realiza la asignación de los siguientes equipos y accesorios informáticos descritos en el punto número 2 de este documento al usuario(a) ");
+$textRun->addText(ucwords(strtolower("$usr->first_name $usr->last_name")), ["bold" => true]);
+$textRun->addText(" con el número de identificación ");
+$textRun->addText("$usr->id_type $usr->nat_id",["bold"=>true]);
+$textRun->addText(", esto con el fin de realizar sus labores asignadas en la empresa.");
 
 $section->addText("", ["size" => 12]);
 
-$section->addText("El Departamento de Automatización, Tecnología e Informática realizará el despacho de los equipos y accesorios en las instalaciones de la empresa  y el usuario se compromete a utilizar los equipos exclusivamente para fines laborales y a cuidarlos de acuerdo con las normas establecidas. El Usuario se compromete a cuidar y devolver estos activos, propiedad de la empresa, en buen estado físico y de funcionamiento, tal y como fueron entregados y en caso de sufrir pérdida, daño, robo o mal funcionamiento este debe verificar de manera inmediata. Al finalizar el periodo de trabajo remoto en el domicilio pautado, el usuario deberá trasladar los equipos y accesorios informáticos anteriormente mencionados en las mismas condiciones en que fueron entregados, para retomar sus actividades en las instalaciones de la empresa. ");
+$section->addText("El Departamento de Automatización, Tecnología e Informática realizará el despacho de los equipos y accesorios en las instalaciones de la empresa y el usuario se compromete a utilizar los equipos exclusivamente para fines laborales y a cuidarlos de acuerdo con las normas establecidas en el reglamento interno de la empresa. El usuario se compromete a cuidar y devolver estos activos, propiedad de la empresa, en buen estado físico y de funcionamiento, tal y como fueron entregados.");
 
-
-
+$section->addText("1.	CHECK LIST DE ENTREGA DE EQUIPO", ["bold" => true, "size" => 12]);
 $section->addText("", ["size" => 12]);
 
-$section->addText("1.	DATOS DEL COMPUTADOR Y ACCESORIOS INFORMÁTICOS", ["bold" => true, "size" => 12]);
-
+foreach (json_decode($order->features) as $feature) {
+   $section->addListItem($feature, 0, null);
+}
 
 $section->addText("", ["size" => 12]);
+$section->addText("", ["size" => 12]);
+$section->addText("\n\n\n\n", ["size" => 12]);
+
+$section->addText("2.	DATOS DEL COMPUTADOR Y ACCESORIOS INFORMÁTICOS", ["bold" => true, "size" => 12]);
+
+
 $table = $section->addTable(['borderSize' => 6, 'borderColor' => '00000', "height" => 5000, 'width' => 50000, "align" => "center"]);
 
 
@@ -245,60 +239,67 @@ $table->addRow($rowInvH);
 $cell = $table->addCell(500.522, $cellStyle);
 $cell->addText("N°", [
    "bold" => true,
+   "size"=>10
 ], [
 
    "alignment" => Jc::CENTER,
    "spaceBefore" => 100,
    "spaceAfter" => 100
 ]);
-$cell = $table->addCell($cellInvW, $cellStyle);
+$cell = $table->addCell($cellInvW -250, $cellStyle);
 $cell->addText("ITEM", [
    "bold" => true,
+   "size"=>10
 ], [
 
    "alignment" => Jc::CENTER,
    "spaceBefore" => 100,
    "spaceAfter" => 100
 ]);
-$cell = $table->addCell($cellInvW, $cellStyle);
+$cell = $table->addCell($cellInvW - 250, $cellStyle);
 $cell->addText("MARCA", [
    "bold" => true,
+   "size"=>10
 ], [
 
    "alignment" => Jc::CENTER,
    "spaceBefore" => 100,
    "spaceAfter" => 100
 ]);
-$cell = $table->addCell($cellInvW, $cellStyle);
+$cell = $table->addCell($cellInvW - 160, $cellStyle);
 $cell->addText("MODELO", [
    "bold" => true,
+   "size"=>10
 ], [
 
    "alignment" => Jc::CENTER,
    "spaceBefore" => 100,
    "spaceAfter" => 100
 ]);
-$cell = $table->addCell($cellInvW +200, $cellStyle);
+$cell = $table->addCell($cellInvW -50, $cellStyle);
 $cell->addText("SERIAL", [
    "bold" => true,
+   "size"=>10
 ], [
 
    "alignment" => Jc::CENTER,
    "spaceBefore" => 100,
    "spaceAfter" => 100
 ]);
-$cell = $table->addCell($cellInvW-50, $cellStyle);
+$cell = $table->addCell($cellInvW-150, $cellStyle);
 $cell->addText("NOMBRE", [
    "bold" => true,
+   "size"=>10
 ], [
 
    "alignment" => Jc::CENTER,
    "spaceBefore" => 100,
    "spaceAfter" => 100
 ]);
-$cell = $table->addCell($cellInvW + 800, $cellStyle);
+$cell = $table->addCell($cellInvW + 400, $cellStyle);
 $cell->addText("OBSERVACIONES", [
    "bold" => true,
+   "size"=>10
 ], [
 
    "alignment" => Jc::CENTER,
@@ -322,8 +323,8 @@ $cell->addText("1", [
 foreach ($cols as $col) {
 
 
-   $cell = $table->addCell($cellInvW, $cellStyle);
-   $cell->addText($eq->$col ?? "N / A", [], [
+   $cell = $table->addCell($cellInvW - 500, $cellStyle);
+   $cell->addText($eq->$col ?? "N / A", ["size"=>7], [
 
       "alignment" => Jc::CENTER,
       "spaceBefore" => 100,
@@ -404,7 +405,7 @@ $rHeight = 1500;
 $table->addRow();
 
 $cell = $table->addCell(4350,["valign"=>"center"]);
-$cell->addImage(__DIR__ . '/../../public/build/img/sign.png', [
+$cell->addImage($_SESSION["sign_name"], [
    "width" => "100%",
    "height"=> 80,
    "alignment" => Jc::START
@@ -424,7 +425,7 @@ $cell->addImage(__DIR__ . '/../../public/build/img/firma.png', [
 $table->addRow();
 
 $cell = $table->addCell(4841.27);
-$cell->addText("Nombre: " . ucwords(strtolower("$usr->nombre $usr->apellido")));
+$cell->addText("Nombre: " . ucwords(strtolower("$usr->first_name $usr->last_name")));
 $cell = $table->addCell(4841.27);
 
 $cell->addText("Nombre: Jeandry de Jesus Rodríguez Zerpa");
@@ -433,7 +434,7 @@ $cell->addText("Nombre: Jeandry de Jesus Rodríguez Zerpa");
 $table->addRow();
 
 $cell = $table->addCell(4841.27);
-$cell->addText("Identificacion: $usr->tipo_documento $usr->documento");
+$cell->addText("Identificacion: $usr->id_type $usr->nat_id");
 $cell = $table->addCell(4841.27);
 
 $cell->addText("Identificacion: CC 1.034.313.183");

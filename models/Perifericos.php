@@ -9,7 +9,7 @@ class Perifericos extends ActiveRecord
 {
 
 
-    protected static $columnasDB = ["id", "tipo", "marca", "modelo", "color", "serial", "user_id", "state","mod_date","asign_date"];
+    protected static $columnasDB = ["id", "tipo", "marca", "modelo", "color", "serial", "user_id", "state","asign_date"];
 
     protected static $tabla = "perifericos";
 

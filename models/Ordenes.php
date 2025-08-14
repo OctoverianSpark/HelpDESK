@@ -21,6 +21,7 @@ class Ordenes extends ActiveRecord
         "emitted_date",
         "return_date",
         "comments",
+        "features",
         "state"
     ];
 
@@ -161,8 +162,17 @@ class Ordenes extends ActiveRecord
         foreach ($atributos as $key => $value) {
 
             if ($key === "nombre_equipo" || $key === "nombre" || $key === "apellido") continue;
+            
+            if(is_string($value) ){
+                
+                $sanitizado[$key] = self::$db->escape_string($value);
+            }else if(is_array($value)){
+                $sanitizado[$key] = json_encode($value, JSON_UNESCAPED_UNICODE);
 
-            $sanitizado[$key] = self::$db->escape_string($value);
+
+            }else{
+                $sanitizado[$key] = $value;
+            }
         }
 
         return $sanitizado;
