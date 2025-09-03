@@ -141,3 +141,9 @@
     grid-column: 1/4;
   }
 }
+
+.inv-dashboard {
+  .dashboard-menu {
+    display: grid;
+  }
+}

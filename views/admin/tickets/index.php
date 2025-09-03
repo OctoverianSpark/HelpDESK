@@ -61,7 +61,7 @@
                     <span>Estado</span>
                 </p>
                 <select name="estado" id="estado">
-                    <option value="">--Selecciona una opcion--</option>
+
                     <option value="en proceso">En proceso</option>
                     <option value="pendiente">Pendiente</option>
                     <option value="completado">Completado</option>
@@ -73,6 +73,7 @@
                     <span>Tecnico asignado</span>
                 </p>
                 <select name="tecnico_id" id="tecnico_id">
+
                     <?php foreach ($techs as $tech) { ?>
                         <option value="<?php echo $tech->id ?>"><?php echo ucwords(strtolower($tech->first_name . ' ' . $tech->last_name)) ?></option>
                     <?php } ?>
@@ -84,7 +85,7 @@
                     <span>Prioridad</span>
                 </p>
                 <select name="prioridad" id="prioridad">
-                    <option value="">--Selecciona una opcion--</option>
+
                     <option value="baja">Baja</option>
                     <option value="media">Media</option>
                     <option value="alta">Alta</option>

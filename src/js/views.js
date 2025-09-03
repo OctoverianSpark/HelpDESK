@@ -46,6 +46,11 @@ export async function viewAdminTicket (callback) {
           entry.textContent = value
         } else if (entry.nodeName === 'SELECT') {
           Array.from(entry.options).forEach(option => {
+            if (key === 'tecnico_id') {
+              option.selected = value == option.value
+              return
+            }
+
             option.selected = option.value.toLowerCase() === value.toLowerCase()
             if (value.toLowerCase() === 'sin asignar') {
               option.disabled = ['pendiente', 'completado'].includes(
@@ -53,6 +58,10 @@ export async function viewAdminTicket (callback) {
               )
             }
           })
+
+          // 👇 Muy importante: notificar a Select2
+          $(entry).trigger('change')
+
           if (!label) return
           label.addEventListener('click', async e => {
             CLIPBOARDWORK(

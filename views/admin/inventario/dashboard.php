@@ -48,28 +48,32 @@
         </div>
 
 
-        <div class="container-flex">
+        <div class="dashboard-menu">
 
 
-                <div class="container-dashboard">
-                        <canvas id="inv-type-chart">
+                <div class="container-flex">
+                        <div class="chart-board">
 
-                        </canvas>
+                                <canvas id="inv-type-chart">
+
+                                </canvas>
+                        </div>
+                        <div class="chart-board">
+                                <canvas id="inv-property-chart"></canvas>
+
+                        </div>
                 </div>
-                <div class="container-dashboard">
-                        <canvas id="inv-property-chart"></canvas>
-                </div>
-                <div class="container-dashboard">
+
+
+                <div class="chart-board">
                         <canvas id="inv-area-chart"></canvas>
 
                 </div>
 
 
+
+
         </div>
-
-
-
-
 
 
 </div>

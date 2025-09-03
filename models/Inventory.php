@@ -267,7 +267,7 @@ class Inventory extends ActiveRecord
 
     public static function all($limit = null, $offset = null, $state = null)
     {
-        $query = "SELECT i.*, CONCAT(p.first_name, ' ' , p.last_name) as nombre, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
+        $query = "SELECT i.*, CONCAT(p.first_name, ' ' , p.last_name) as nombre, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo,p.area as area
         FROM inv i
         LEFT JOIN personal p ON i.user_id = p.id";
 

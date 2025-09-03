@@ -389,7 +389,7 @@ async function setUpInvDashboard () {
   // Inventario por Área
   // -------------------
   const areaData = inventory.reduce((acc, item) => {
-    const area = item.state == 1 ? 'Activo' : 'Stock'
+    const area = item.area || 'Sin asignar' // fallback si no tiene área
     acc[area] = (acc[area] || 0) + 1
     return acc
   }, {})
@@ -398,17 +398,32 @@ async function setUpInvDashboard () {
     labels: Object.keys(areaData),
     datasets: [
       {
-        label: 'Área',
+        label: 'Inventario por Área',
         data: Object.values(areaData),
+        backgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56',
+          '#4BC0C0',
+          '#9966FF',
+          '#FF9F40',
+          '#C9CBCF',
+          '#8BC34A',
+          '#E91E63',
+          '#03A9F4',
+          '#FF5722',
+          '#9C27B0'
+        ], // paleta de colores más diferenciable
         borderWidth: 1
       }
     ]
   }
 
   const areaChartConfig = {
-    type: 'pie',
+    type: 'bar', // ✅ Cambiado de 'pie' a 'bar'
     data: areaChartData,
     options: {
+      indexAxis: 'y', // ✅ Hace que las barras sean horizontales
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
@@ -419,8 +434,7 @@ async function setUpInvDashboard () {
           font: { size: 18 }
         },
         legend: {
-          position: 'top',
-          labels: { color: 'white' }
+          display: false // ✅ Ocultamos leyenda (no es necesaria en barras)
         },
         tooltip: {
           callbacks: {
@@ -428,6 +442,21 @@ async function setUpInvDashboard () {
               return tooltipItem.label + ': ' + tooltipItem.raw
             }
           }
+        }
+      },
+      scales: {
+        x: {
+          type: 'logarithmic',
+          ticks: {
+            color: 'white'
+          },
+          grid: {
+            color: 'rgba(255,255,255,0.1)'
+          }
+        },
+        y: {
+          ticks: { color: 'white' },
+          grid: { color: 'rgba(255,255,255,0.1)' }
         }
       }
     },

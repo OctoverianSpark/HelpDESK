@@ -226,7 +226,7 @@
                      <i class="bi bi-flag-fill"></i>
                   </span>
                   <div class="card-data">
-                     F <span class="card-title">Alta</span>
+                     <span class="card-title">Alta</span>
                      <span class="brief-data highPriority"></span>
                   </div>
 
