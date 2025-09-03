@@ -204,6 +204,8 @@ $url = $_SERVER["REQUEST_URI"];
                     <ul class="nav-links">
                         <div>
                             <a href="/tickets/ver"><span><i class="bi bi-table"></i>Ver mis tickets</span></a>
+
+                            <a href="/tickets/crear"><span><i class="bi bi-plus-circle"></i>Crear ticket</span></a>
                         </div>
                     </ul>
                 </div>

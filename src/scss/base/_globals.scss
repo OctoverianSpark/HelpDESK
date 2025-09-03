@@ -236,6 +236,10 @@ fieldset {
   }
 }
 
+i {
+  color: var(--text-950);
+}
+
 * {
   &::-webkit-scrollbar {
     width: 10px;
@@ -260,4 +264,12 @@ fieldset {
   /* Firefox scrollbar */
   scrollbar-width: thin;
   scrollbar-color: var(--background-400) transparent;
+}
+
+.tickets-manual {
+  li {
+    color: var(--text-950);
+    text-wrap: wrap;
+    width: 300px;
+  }
 }

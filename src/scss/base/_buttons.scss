@@ -12,6 +12,10 @@
   outline: none;
   color: var(--text-950);
   border-radius: 10px;
+
+  &.cell-btn {
+    width: auto;
+  }
 }
 
 .btn-entries {
@@ -24,7 +28,7 @@
 }
 
 .cell-btn {
-  color: var(--text-50);
+  color: var(--text-950);
   background-color: transparent;
   border: none;
   outline: none;
@@ -71,6 +75,9 @@
   padding: 10px;
   cursor: pointer;
   border-radius: 50%;
+  i {
+    color: black;
+  }
 }
 
 #pagination {
@@ -102,4 +109,7 @@
   padding: 10px;
   background-color: rgb(56, 212, 56);
   border-radius: 50%;
+  i {
+    color: black;
+  }
 }

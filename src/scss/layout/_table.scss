@@ -3,7 +3,7 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  background: var(--background-950);
+  background: var(--accent-400);
   border-radius: 0.75rem;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
@@ -12,8 +12,12 @@
     display: table-row;
     transition: background 0.2s;
 
+    .cell {
+      color: var(--text-950);
+    }
+
     &:hover {
-      background: var(--background-800);
+      background: var(--primary-300);
     }
   }
 
@@ -30,9 +34,9 @@
   }
 
   .header {
-    background: var(--background-200);
+    background: var(--primary-700);
     font-weight: 700;
-    color: var(--primary-700);
+    color: var(--primary-200);
     letter-spacing: 0.02em;
     text-transform: uppercase;
     border-bottom: 2px solid var(--primary-200);
@@ -82,7 +86,7 @@
       width: 100%;
       box-sizing: border-box;
       padding: 0.75rem;
-      border-bottom: 1px solid var(--background-300);
+      border-bottom: 1px solid var(--primary-700);
     }
   }
 }
