@@ -3,57 +3,32 @@
 
 
 
-<form method="post" class="order-query-mngr">
-    <fieldset class="selector-wrapper no-fieldset">
-        <legend>Usuario del equipo</legend>
+<form method="post" class="order-query-mngr container-grid">
+    <label for="user_id" class="input-group">
+        <span>Usuario</span>
+        <select name="user_id" id="user_id
+">
+            <?php foreach ($usrs as $user) { ?>
 
-        <label class="label-search-input" for="usr-search">
-            <div class="search">
-                <i class="bi bi-search"></i>
-                <input type="text" id="usr-search" placeholder="Busca al usuario..." class="filter" autocomplete="off" required>
-            </div>
-        </label>
-        <ul class="options">
-
-            <?php foreach ($usrs as $usr) { ?>
-                <label for="usr-option-<?php echo $usr->id ?>" class="option">
-                    <input type="radio" name="user_id" value="<?php echo $usr->id ?>" id="usr-option-<?php echo $usr->id ?>" <?php echo ($usr->id == $inv->user_id) ? "checked" : "" ?>>
-                    <span><?php echo "$usr->first_name $usr->last_name" ?></span>
-                </label>
+                <option value="<?php echo $user->id ?>"><?php echo $user->first_name . ' ' . $user->last_name ?></option>
             <?php } ?>
 
-        </ul>
+        </select>
 
+    </label>
 
-    </fieldset>
-
-
-    <fieldset class="selector-wrapper no-fieldset">
-        <legend>Computador</legend>
-
-        <label class="label-search-input" for="computer-search">
-            <div class="search">
-                <i class="bi bi-search"></i>
-                <input type="text" id="computer-search" placeholder="Computador" class="filter" name="" autocomplete="off" required>
-            </div>
-        </label>
-        <ul class="options">
+    <label for="computer_id" class="input-group">
+        <span>Computador</span>
+        <select name="computer_id" id="computer_id">
             <?php foreach ($inv as $eq) { ?>
-                <label for="computer-option-<?php echo $eq->getID() ?>" class="option">
-                    <input type="radio" name="computer_id" id="computer-option-<?php echo $eq->getID() ?>" value="<?php echo $eq->id ?>">
-                    <span><?php echo $eq->getNombreEquipo() ?> : <?php echo $eq->getNombre() . " " . $eq->getApellido() ?></span>
-                </label>
+                <option value="<?php echo $eq->id ?>"><?php echo $eq->nombre_equipo ?>:<?php echo $eq->nombre ?></option>
             <?php } ?>
-
-        </ul>
-
-
-
-    </fieldset>
+        </select>
+    </label>
 
 
 
-    <fieldset class="no-fieldset container-input-flex">
+    <fieldset class="no-fieldset container-flex">
 
         <label for="emitted" class="input-group">
             <span>Fecha de Emisi&oacute;n</span>
@@ -86,7 +61,7 @@
     </fieldset>
 
 
-    <button type="submit" class="btn btn-submit">Enviar Solicitud</button>
+    <button type="submit" class="btn primary-btn">Enviar Solicitud</button>
 
 
 

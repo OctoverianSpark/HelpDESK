@@ -267,6 +267,8 @@ function chargeInv () {
 
   radioInv.forEach(radio => {
     radio.addEventListener('input', e => {
+      console.log(e.target.value)
+
       chargeData({
         url: '/inventory/get',
         perPage: perPage,

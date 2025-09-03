@@ -81,7 +81,7 @@ class AdminController
                 $spreadsheet->createSheet(2)->setTitle("Perifericos");
                 $spreadsheet->removeSheetByIndex(0);
                 $spreadsheet->getActiveSheet()->fromArray(
-                    ["ID", "NOMBRE", "APELLIDO", "TIPO DE DOCUMENTO", "DOCUMENTO", "TELEFONO", "TIPO DE EQUIPO", "MARCA", "MODELO", "COLOR", "AREA","NOMBRE DE EQUIPO", "SERIAL", "USUARIO DE DOMINIO", "CORREO", "PROPIETARIO", "SEDE"]
+                    ["ID", "NOMBRE", "APELLIDO", "TIPO DE DOCUMENTO", "DOCUMENTO", "TELEFONO", "TIPO DE EQUIPO", "MARCA", "MODELO", "COLOR", "AREA", "NOMBRE DE EQUIPO", "SERIAL", "USUARIO DE DOMINIO", "CORREO", "PROPIETARIO", "SEDE"]
                 );
                 $spreadsheet->setActiveSheetIndexByName("Perifericos");
                 $spreadsheet->getActiveSheet()->fromArray(
@@ -116,7 +116,7 @@ class AdminController
 
 
                     $spreadsheet->setActiveSheetIndexByName("Perifericos");
-                    $perifericos = Perifericos::filter('user_id','=',$equipo->user_id);
+                    $perifericos = Perifericos::filter('user_id', '=', $equipo->user_id);
                     foreach ($perifericos as $periferico) {
 
                         $spreadsheet->getActiveSheet()->setCellValue("A$j", $equipo->nombre . ' ' . $equipo->apellido);
@@ -220,10 +220,13 @@ class AdminController
                 $spreadsheet->createSheet(1)->setTitle("Encuestas");
                 $spreadsheet->removeSheetByIndex(0);
                 $spreadsheet->getActiveSheet()->fromArray(
-                    ['ID', 'FECHA', 'NOMBRE', 'AREA', 'TIEMPO DE RESPUESTA GENERAL', 'EXPLICACION EFECTIVA', 'ATENCION EFECTIVA', 'ENCUESTA', 'RESPUESTA']
+                    ['ID', 'Fecha', 'Nombre', 'AREA', "¿Cómo calificaría el soporte técnico recibido este mes?", "¿Tiempo de respuesta adecuado?", "¿La solución fue efectiva?"]
                 );
                 $encuestas = Encuestas::all();
+                $encuestas = Encuestas::get(1);
 
+
+                debuguear($encuestas);
                 $techs = Users::filter('area', '=', 'ATI');
                 $techLeters = [...range('H', 'Z')];
 

@@ -95,26 +95,29 @@ $url = $_SERVER["REQUEST_URI"];
         </a>
         <button type="button" class="theme-btn"><i class="bi bi-sun-fill"></i></button>
         <nav class="nav-menu">
-            <div class="drop-menu">
+            <?php if ($_SESSION['role'] == 'ADMIN') { ?>
 
-                <label for="home" class="drop-btn">
-                    <input type="checkbox" id="home" name="menu">
+                <div class="drop-menu">
 
-                    <i class='bi bi-gear-fill'></i>
-                    <span>
-                        Administrador
-                    </span>
-                </label>
-                <ul class="nav-links">
-                    <div>
-                        <a href="/admin"><span><i class="bi bi-graph-up"></i>Panel de Administracion</span></a>
-                        <a href="/admin/servers"><span><i class="bi bi-pc-display-horizontal"></i>Servidores</span></a>
-                        <a href="/admin/users"><span><i class="bi bi-person-fill"></i>Usuarios</span></a>
-                        <a href="/admin/logs"><span><i class="bi bi-file-earmark-binary-fill"></i>Logs</span></a>
-                        <a href="/admin/export"><span><i class="bi bi-file-earmark-excel-fill"></i>Exportar</span></a>
-                    </div>
-                </ul>
-            </div>
+                    <label for="home" class="drop-btn">
+                        <input type="checkbox" id="home" name="menu">
+
+                        <i class='bi bi-gear-fill'></i>
+                        <span>
+                            Administrador
+                        </span>
+                    </label>
+                    <ul class="nav-links">
+                        <div>
+                            <a href="/admin"><span><i class="bi bi-graph-up"></i>Panel de Administracion</span></a>
+                            <a href="/admin/servers"><span><i class="bi bi-pc-display-horizontal"></i>Servidores</span></a>
+                            <a href="/admin/users"><span><i class="bi bi-person-fill"></i>Usuarios</span></a>
+                            <a href="/admin/logs"><span><i class="bi bi-file-earmark-binary-fill"></i>Logs</span></a>
+                            <a href="/admin/export"><span><i class="bi bi-file-earmark-excel-fill"></i>Exportar</span></a>
+                        </div>
+                    </ul>
+                </div>
+            <?php } ?>
             <?php if (str_contains($_SERVER['PATH_INFO'], 'admin')) { ?>
                 <div class="drop-menu">
 
@@ -209,6 +212,27 @@ $url = $_SERVER["REQUEST_URI"];
                         </div>
                     </ul>
                 </div>
+                <?php if ($_SESSION['role'] == 'MNGR' || $_SESSION['role'] == 'ADMIN') { ?>
+
+                    <div class="drop-menu">
+
+                        <label for="orders" class="drop-btn">
+                            <input type="checkbox" id="orders" name="menu">
+
+                            <i class='bi bi-file-earmark'></i>
+                            <span>
+                                Ordenes
+                            </span>
+                        </label>
+                        <ul class="nav-links">
+                            <div>
+                                <a href="/orden"><span><i class="bi bi-file-arrow-up"></i>Solicitar Orden</span></a>
+
+                            </div>
+                        </ul>
+                    </div>
+                <?php } ?>
+
             <?php } ?>
         </nav>
 

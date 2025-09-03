@@ -4,7 +4,7 @@
 
     <label class="input-group">
         <span>Exportar</span>
-        <select name="export" id="export-selector">
+        <select name="export">
             <option value="inventario">Inventario</option>
             <option value="tickets">Tickets</option>
             <option value="mantenimientos">Mantenimientos</option>

@@ -93,7 +93,7 @@ function notificarClickup () {
   if (!form) return
 
   form.addEventListener('submit', e => {
-    const api = 'pk_82319104_47GHX06YGVUDO4QUAIYXJAET4U5B4ZLW'
+    const api = 'pk_82319104_T6BX3F3VC93FCDSY12579HIGOR2U59BN'
 
     const listId = '901408875624'
 

@@ -166,6 +166,4 @@ class API_Inventory
 
       echo json_encode($inv);
    }
-
-
 }
