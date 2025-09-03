@@ -226,7 +226,7 @@ $url = $_SERVER["REQUEST_URI"];
                         </label>
                         <ul class="nav-links">
                             <div>
-                                <a href="/orden"><span><i class="bi bi-file-arrow-up"></i>Solicitar Orden</span></a>
+                                <a href="/ordenes/crear"><span><i class="bi bi-file-arrow-up"></i>Solicitar Orden</span></a>
 
                             </div>
                         </ul>
@@ -236,7 +236,7 @@ $url = $_SERVER["REQUEST_URI"];
             <?php } ?>
         </nav>
 
-
+        <a href="/logout"><i class="bi bi"></i></a>
     </aside>
 
     <main>
