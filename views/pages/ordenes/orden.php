@@ -53,8 +53,8 @@
          <h4>Firma del representante de la Empresa</h4>
 
          <img src="/build/img/firma.png" alt="">
-         <p><b>Nombre: </b><span>Jeandry de Jesus Rodriguez Zerpa</span></p>
-         <p><b>Identificaci&oacute;n: </b> <span>CC 1034313186</span></p>
+         <p><b>Nombre: </b><span>David Alfonzo Sierra Medina</span></p>
+         <p><b>Identificaci&oacute;n: </b> <span>PPT 6489746</span></p>
          <p><b>Fecha:</b> <?php echo date("d / m / Y") ?></p>
 
       </div>

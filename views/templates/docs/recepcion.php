@@ -138,15 +138,15 @@
    <?php
 
    $i = 2;
-   foreach ($pers as $key=>$value) {
+   foreach ($pers as $per) {
    ?>
 
       <div class="table-row">
          <div class="cell cell-no"><?php echo $i++ ?></div>
-         <div class="cell"><?php echo strtoupper($key) ?></div>
-         <div class="cell"><?php echo strtoupper($value["marca"]) ?></div>
-         <div class="cell"><?php echo strtoupper($value["modelo"]) ?></div>
-         <div class="cell"><?php echo strtoupper($value["serial"]) ?></div>
+         <div class="cell"><?php echo strtoupper($per->tipo) ?></div>
+         <div class="cell"><?php echo strtoupper($per->marca) ?></div>
+         <div class="cell"><?php echo strtoupper($per->modelo) ?></div>
+         <div class="cell"><?php echo strtoupper($per->serial) ?></div>
          <div class="cell">N / A </div>
          <div class="cell">
             <input type="text">

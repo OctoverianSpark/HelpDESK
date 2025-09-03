@@ -28,6 +28,7 @@ class Inventory extends ActiveRecord
         "usuarioPC",
         "propietario",
         "state",
+        "area",
         "user_id"
     ];
 
@@ -46,6 +47,7 @@ class Inventory extends ActiveRecord
     public ?string $color;
     public ?string $nombre_equipo;
     public ?string $serial;
+    public ?string $area;
     public ?string $correo_dominio;
     public ?string $usuarioPC;
     public ?string $propietario;
@@ -256,7 +258,7 @@ class Inventory extends ActiveRecord
         $atributos = [];
         foreach (static::$columnasDB as $col) {
 
-            if ($this->$col == null || in_array($col, ["nombre", "apellido", "tipo_documento", "documento", "telefono", "correo"])) continue;
+            if ($this->$col == null || in_array($col, ["nombre", "apellido", "area", "tipo_documento", "documento", "telefono", "correo"])) continue;
 
             $atributos[$col] = $this->$col;
         }
@@ -357,7 +359,7 @@ class Inventory extends ActiveRecord
                 $data->tipo_documento = strtoupper("Sin asignar");
                 $data->documento = strtoupper("Sin asignar");
             } else {
-                $info = Personal::PIVOTFINDER($data->user_id);
+                $info = Personal::find($data->user_id);
 
                 $data->nombre = $info->nombre;
                 $data->apellido = $info->apellido;

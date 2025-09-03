@@ -32,53 +32,34 @@
    <legend>Checklist de Caracteristicas</legend>
 
 
-
-   <div class="container-grid">
-
-      <?php spawnCheckbox("check-0", "features", "chrome-policies", "NAVEGADOR(CHROME) Y POLÍTICAS DE GOOGLE CHROME", false) ?>
-      <?php spawnCheckbox("check-1", "features", "terms-manual", "MANUAL DE TÉRMINOS Y CONDICIONES DE USO DEL COMPUTADOR", false) ?>
-      <?php spawnCheckbox("check-2", "features", "corporate-email", "CORREO CORPORATIVO", false) ?>
-      <?php spawnCheckbox("check-3", "features", "assistant-email", "CORREO ASISTENTE VIRTUAL", false) ?>
-
-   </div>
-
-
-   <div class="container-grid">
-
-
-      <?php spawnCheckbox("check-4", "features", "optimal-charger", "FUNCIONAMIENTO ÓPTIMO DE CARGADOR", false) ?>
-      <?php spawnCheckbox("check-5", "features", "optimal-headset", "FUNCIONAMIENTO ÓPTIMO DE DIADEMAS", false) ?>
-      <?php spawnCheckbox("check-6", "features", "optimal-computer", "FUNCIONAMIENTO ÓPTIMO DEL COMPUTADOR", false) ?>
-      <?php spawnCheckbox("check-7", "features", "optimal-mouse", "FUNCIONAMIENTO ÓPTIMO DE MOUSE", false) ?>
-
-
-   </div>
-   <div class="container-grid">
-
-
-
-      <?php spawnCheckbox("check-8", "features", "classroom", "CLASSROOM", false) ?>
-      <?php spawnCheckbox("check-9", "features", "wps", "WPS (OFFICE)", false) ?>
-      <?php spawnCheckbox("check-10", "features", "google-drive", "GOOGLE DRIVE", false) ?>
-
-      <?php spawnCheckbox("check-11", "features", "clowdwork", "CLOWDWORK", false) ?>
-
-
-
-   </div>
    <div class="container-input">
-
-
-
-      <?php spawnCheckbox("check-12", "features", "ring-central", "RING CENTRAL", false) ?>
-      <?php spawnCheckbox("check-13", "features", "anydesk", "ANYDESK", false) ?>
-      <?php spawnCheckbox("check-14", "features", "lightshot", "LIGHTSHOT", false) ?>
-
-      <?php spawnCheckbox("check-15", "features", "vpn", "VPN", false) ?>
-
-
-
+      <?php spawnCheckbox("check-0", "features", "NAVEGADOR(CHROME) Y POLÍTICAS DE GOOGLE CHROME", "NAVEGADOR(CHROME) Y POLÍTICAS DE GOOGLE CHROME", false) ?>
+      <?php spawnCheckbox("check-1", "features", "MANUAL DE TÉRMINOS Y CONDICIONES DE USO DEL COMPUTADOR", "MANUAL DE TÉRMINOS Y CONDICIONES DE USO DEL COMPUTADOR", false) ?>
+      <?php spawnCheckbox("check-2", "features", "CORREO CORPORATIVO", "CORREO CORPORATIVO", false) ?>
+      <?php spawnCheckbox("check-3", "features", "CORREO ASISTENTE VIRTUAL", "CORREO ASISTENTE VIRTUAL", false) ?>
    </div>
+
+   <div class="container-input">
+      <?php spawnCheckbox("check-4", "features", "FUNCIONAMIENTO ÓPTIMO DE CARGADOR", "FUNCIONAMIENTO ÓPTIMO DE CARGADOR", false) ?>
+      <?php spawnCheckbox("check-5", "features", "FUNCIONAMIENTO ÓPTIMO DE DIADEMAS", "FUNCIONAMIENTO ÓPTIMO DE DIADEMAS", false) ?>
+      <?php spawnCheckbox("check-6", "features", "FUNCIONAMIENTO ÓPTIMO DEL COMPUTADOR", "FUNCIONAMIENTO ÓPTIMO DEL COMPUTADOR", false) ?>
+      <?php spawnCheckbox("check-7", "features", "FUNCIONAMIENTO ÓPTIMO DE MOUSE", "FUNCIONAMIENTO ÓPTIMO DE MOUSE", false) ?>
+   </div>
+
+   <div class="container-input">
+      <?php spawnCheckbox("check-8", "features", "CLASSROOM", "CLASSROOM", false) ?>
+      <?php spawnCheckbox("check-9", "features", "WPS (OFFICE)", "WPS (OFFICE)", false) ?>
+      <?php spawnCheckbox("check-10", "features", "GOOGLE DRIVE", "GOOGLE DRIVE", false) ?>
+      <?php spawnCheckbox("check-11", "features", "CLOWDWORK", "CLOWDWORK", false) ?>
+   </div>
+
+   <div class="container-input">
+      <?php spawnCheckbox("check-12", "features", "RING CENTRAL", "RING CENTRAL", false) ?>
+      <?php spawnCheckbox("check-13", "features", "ANYDESK", "ANYDESK", false) ?>
+      <?php spawnCheckbox("check-14", "features", "LIGHTSHOT", "LIGHTSHOT", false) ?>
+      <?php spawnCheckbox("check-15", "features", "VPN", "VPN", false) ?>
+   </div>
+
 
 
 </fieldset>

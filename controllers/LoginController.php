@@ -39,6 +39,7 @@ class LoginController
                     $_SESSION["login"] = true;
                     $_SESSION["log_type"] = "user";
                     $_SESSION['user_id'] = $userData->user_id;
+                    $_SESSION['user_id'] = $userData->user_id;
                     $_SESSION["name"] = $userData->getNombre() . ' ' . $userData->getApellido();
                     $_SESSION["charge"] = $userRole->area;
                     $_SESSION["role"] = $userRole->role ?? "USER";
@@ -102,8 +103,8 @@ class LoginController
             $userRole = array_shift(Users::filter("mail", "=", $email));
             $_SESSION["log_type"] = "email";
             $_SESSION["login"] = true;
-            $_SESSION['user_id'] = $userData->id;
-            $_SESSION["name"] = $userData->first_name . ' ' . $userData->last_name;
+            $_SESSION['user_id'] = $userData->user_id;
+            $_SESSION["name"] = $userData->nombre . ' ' . $userData->apellido;
             $_SESSION["charge"] = $userRole->area;
             $_SESSION["role"] = $userRole->role ?? "USER";
             $_SESSION["area"] = $userRole->area ?? "OPERACIONES";

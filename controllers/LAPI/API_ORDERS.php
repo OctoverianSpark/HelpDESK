@@ -67,7 +67,11 @@ class API_ORDERS
       if (str_contains($order->order_id, "ODR")) include __DIR__ . "/../../includes/scripts/recepcion.php";
 
 
+      $parent = '';
 
+      if(str_contains($order->order_id,'ODS')) $parent = '1nuTmqj-4EDISnuoAzaPhrIbWvDaPvuEk';
+      if(str_contains($order->order_id,'ODE')) $parent = '1Fge4xth-vc0GAd8HDkUDUUbJYOW17lcj';
+      if(str_contains($order->order_id,'ODR')) $parent = '1X1sHy_OGV5tyhCnQL2dsLGwM-babMM0G';
 
 
       $phpWord->getCompatibility()->setOoxmlVersion(15);
@@ -76,7 +80,7 @@ class API_ORDERS
       $objWriter->save($name);
 
 
-      $id = saveData($name);
+      $id = saveData($name,$parent);
 
       unlink($_SESSION["sign_name"]);
       unlink($name);
