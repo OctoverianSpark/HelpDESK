@@ -63,6 +63,7 @@ class AdminController
 
 
         $equipos = Inventory::all();
+
         $tickets = Tickets::all();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -80,7 +81,7 @@ class AdminController
                 $spreadsheet->createSheet(2)->setTitle("Perifericos");
                 $spreadsheet->removeSheetByIndex(0);
                 $spreadsheet->getActiveSheet()->fromArray(
-                    ["ID", "NOMBRE", "APELLIDO", "TIPO DE DOCUMENTO", "DOCUMENTO", "TELEFONO", "ANYDESK", "CONTRASEÑA ANYDESK", "TIPO DE EQUIPO", "MARCA", "MODELO", "COLOR", "NOMBRE DE EQUIPO", "SERIAL", "USUARIO DE DOMINIO", "CORREO", "PROPIETARIO", "SEDE"]
+                    ["ID", "NOMBRE", "APELLIDO", "TIPO DE DOCUMENTO", "DOCUMENTO", "TELEFONO", "TIPO DE EQUIPO", "MARCA", "MODELO", "COLOR", "AREA","NOMBRE DE EQUIPO", "SERIAL", "USUARIO DE DOMINIO", "CORREO", "PROPIETARIO", "SEDE"]
                 );
                 $spreadsheet->setActiveSheetIndexByName("Perifericos");
                 $spreadsheet->getActiveSheet()->fromArray(
@@ -101,25 +102,24 @@ class AdminController
                     $spreadsheet->getActiveSheet()->setCellValue("D$i", $equipo->tipo_documento);
                     $spreadsheet->getActiveSheet()->setCellValue("E$i", $equipo->documento);
                     $spreadsheet->getActiveSheet()->setCellValue("F$i", $equipo->telefono);
-                    $spreadsheet->getActiveSheet()->setCellValue("G$i", $equipo->anydesk);
-                    $spreadsheet->getActiveSheet()->setCellValue("H$i", $equipo->password_anydesk);
-                    $spreadsheet->getActiveSheet()->setCellValue("I$i", $equipo->tipo);
-                    $spreadsheet->getActiveSheet()->setCellValue("J$i", $equipo->marca);
-                    $spreadsheet->getActiveSheet()->setCellValue("K$i", $equipo->modelo);
-                    $spreadsheet->getActiveSheet()->setCellValue("L$i", $equipo->color);
-                    $spreadsheet->getActiveSheet()->setCellValue("M$i", $equipo->nombre_equipo);
-                    $spreadsheet->getActiveSheet()->setCellValue("N$i", $equipo->serial);
-                    $spreadsheet->getActiveSheet()->setCellValue("O$i", $equipo->usuarioPC);
-                    $spreadsheet->getActiveSheet()->setCellValue("P$i", $equipo->correo);
-                    $spreadsheet->getActiveSheet()->setCellValue("Q$i", $equipo->propietario);
-                    $spreadsheet->getActiveSheet()->setCellValue("R$i", $equipo->sede);
+                    $spreadsheet->getActiveSheet()->setCellValue("G$i", $equipo->tipo);
+                    $spreadsheet->getActiveSheet()->setCellValue("H$i", $equipo->marca);
+                    $spreadsheet->getActiveSheet()->setCellValue("I$i", $equipo->modelo);
+                    $spreadsheet->getActiveSheet()->setCellValue("J$i", $equipo->color);
+                    $spreadsheet->getActiveSheet()->setCellValue("K$i", $equipo->area);
+                    $spreadsheet->getActiveSheet()->setCellValue("L$i", $equipo->nombre_equipo);
+                    $spreadsheet->getActiveSheet()->setCellValue("M$i", $equipo->serial);
+                    $spreadsheet->getActiveSheet()->setCellValue("N$i", $equipo->usuarioPC);
+                    $spreadsheet->getActiveSheet()->setCellValue("O$i", $equipo->correo_dominio);
+                    $spreadsheet->getActiveSheet()->setCellValue("P$i", $equipo->propietario);
+                    $spreadsheet->getActiveSheet()->setCellValue("Q$i", $equipo->location);
 
 
                     $spreadsheet->setActiveSheetIndexByName("Perifericos");
-                    $perifericos = Perifericos::findGroup($equipo->id);
+                    $perifericos = Perifericos::filter('user_id','=',$equipo->user_id);
                     foreach ($perifericos as $periferico) {
 
-                        $spreadsheet->getActiveSheet()->setCellValue("A$j", $equipo->nombre_equipo);
+                        $spreadsheet->getActiveSheet()->setCellValue("A$j", $equipo->nombre . ' ' . $equipo->apellido);
                         $spreadsheet->getActiveSheet()->setCellValue("B$j", $periferico->tipo);
                         $spreadsheet->getActiveSheet()->setCellValue("C$j", $periferico->marca);
                         $spreadsheet->getActiveSheet()->setCellValue("D$j", $periferico->modelo);

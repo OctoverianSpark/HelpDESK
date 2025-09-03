@@ -428,7 +428,7 @@ $cell = $table->addCell(4841.27);
 $cell->addText("Nombre: " . ucwords(strtolower("$usr->first_name $usr->last_name")));
 $cell = $table->addCell(4841.27);
 
-$cell->addText("Nombre: Jeandry de Jesus Rodríguez Zerpa");
+$cell->addText("Nombre: David Alfonzo Sierra Medina");
 
 
 $table->addRow();
@@ -437,7 +437,7 @@ $cell = $table->addCell(4841.27);
 $cell->addText("Identificacion: $usr->id_type $usr->nat_id");
 $cell = $table->addCell(4841.27);
 
-$cell->addText("Identificacion: CC 1.034.313.183");
+$cell->addText("Identificacion: PPT 6.489.746");
 
 $table->addRow();
 

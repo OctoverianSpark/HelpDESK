@@ -87,20 +87,24 @@
    <?php $i = 2 ?>
 
 
-   <?php foreach($pers as $key=>$value){ ?>
+   <?php
+
+   $i = 2;
+   foreach ($pers as $per) {
+   ?>
+
       <div class="table-row">
-         <div class="cell cell-no"><?php echo $i++?></div>
-         <div class="cell"><?php echo strtoupper(str_replace("-"," ",$key))?></div>
-         <div class="cell"><?php echo $pers[$key]["marca"] ?></div>
-         <div class="cell"><?php echo $pers[$key]["modelo"] ?></div>
-         <div class="cell"><?php echo "N/A" ?></div>
-         <div class="cell"><?php echo "N/A" ?></div>
+         <div class="cell cell-no"><?php echo $i++ ?></div>
+         <div class="cell"><?php echo strtoupper($per->tipo) ?></div>
+         <div class="cell"><?php echo strtoupper($per->marca) ?></div>
+         <div class="cell"><?php echo strtoupper($per->modelo) ?></div>
+         <div class="cell"><?php echo strtoupper($per->serial) ?></div>
+         <div class="cell">N / A </div>
          <div class="cell">
             <input type="text">
          </div>
       </div>
-
-   <?php }?>
+   <?php } ?>
 
 
 

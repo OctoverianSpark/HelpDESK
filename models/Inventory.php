@@ -29,6 +29,7 @@ class Inventory extends ActiveRecord
         "usuarioPC",
         "propietario",
         "state",
+        "area",
         "user_id"
     ];
 
@@ -48,6 +49,7 @@ class Inventory extends ActiveRecord
     public ?string $color;
     public ?string $nombre_equipo;
     public ?string $serial;
+    public ?string $area;
     public ?string $correo_dominio;
     public ?string $usuarioPC;
     public ?string $propietario;
@@ -258,7 +260,7 @@ class Inventory extends ActiveRecord
         $atributos = [];
         foreach (static::$columnasDB as $col) {
 
-            if ($this->$col == null || in_array($col, ["nombre", "apellido", "tipo_documento", "documento", "telefono", "correo"])) continue;
+            if ($this->$col == null || in_array($col, ["nombre", "apellido", "area","tipo_documento", "documento", "telefono", "correo"])) continue;
 
             $atributos[$col] = $this->$col;
         }
@@ -267,10 +269,11 @@ class Inventory extends ActiveRecord
 
     public static function all()
     {
-        $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
+        $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo,p.area as area
         FROM inv i
-        LEFT JOIN personal p ON i.user_id = p.id
+        LEFT JOIN ti.personal p ON i.user_id = p.id
         ORDER BY i.id DESC";
+
         $result = self::consultarSQL($query);
 
 
@@ -281,7 +284,7 @@ class Inventory extends ActiveRecord
     public static function find($id)
     {
 
-        $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
+        $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo,p.area as area
         FROM inv i
         LEFT JOIN personal p ON i.user_id = p.id
         WHERE i.id = $id";
@@ -334,7 +337,7 @@ class Inventory extends ActiveRecord
                 $data->tipo_documento = strtoupper("Sin asignar");
                 $data->documento = strtoupper("Sin asignar");
             } else {
-                $info = Personal::PIVOTFINDER($data->user_id);
+                $info = Personal::find($data->user_id);
 
                 $data->nombre = $info->nombre;
                 $data->apellido = $info->apellido;

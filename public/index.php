@@ -159,7 +159,7 @@ $router->post("/admin/inventario/actions", [InventoryController::class, "actions
 //NOTE: LAPI FUNCTIONS
 $router->post("/admin/pers/find", [API_Inventory::class, "PERSSEARCH"]);
 $router->post("/admin/inventory/find", [API_Inventory::class, "INVENTORYSEARCH"]);
-$router->post("/admin/inventory/actions", [API_Inventory::class, "actions"]);
+$router->post("/admin/inventory/delete", [API_Inventory::class, "DELETE_COMPUTER"]);
 $router->post("/admin/inventory/get", [API_Inventory::class, "INVENTORY_GET"]);
 $router->post("/admin/orders/get", [API_ORDERS::class, "GET"]);
 $router->post("/admin/orders/actuals", [API_ORDERS::class, "ACTUALS"]);

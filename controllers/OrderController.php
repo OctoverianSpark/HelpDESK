@@ -174,15 +174,9 @@ class  OrderController
         $eq = Inventory::find($order->computer_id);
         $usr = Personal::PIVOTFINDER($order->user_id);
 
-        $pers = [];
+        $pers = Perifericos::filter('user_id','=',$order->user_id);
 
         $ftrs = json_decode($order->features);
-
-        foreach ($json as $key => $value) {
-            if (in_array($key, ["mouse", "diademas", "monitor", "monitor-2", "teclado"])) {
-                $pers[$key] = $value;
-            }
-        }
 
 
         $router->render("pages/ordenes/orden", [

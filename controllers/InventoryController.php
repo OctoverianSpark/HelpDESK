@@ -24,7 +24,6 @@ class InventoryController
         $equipos = Inventory::filter('state', '=', $_GET['state'] ?? 1);
 
 
-
         $router->render("admin/inventario/index", [
             "equipos" => $equipos
         ]);
@@ -38,11 +37,6 @@ class InventoryController
         $equipo = Inventory::find($id);
 
         $perifericos = Perifericos::findGroup($id);
-
-
-
-
-
 
         $router->render("admin/inventario/equipo", [
             "equipo" => $equipo,
@@ -59,8 +53,11 @@ class InventoryController
 
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
             $inv = new Inventory($_POST);
+
+            if($inv->state == 0){
+                $inv->user_id = 0;
+            }
 
             $id = $inv->guardar();
             $log->newInventoryLog($id);
@@ -75,6 +72,8 @@ class InventoryController
 
                 $periferico->guardar();
             }
+
+            header("Location: /admin/inventario");
         }
 
 
@@ -139,8 +138,7 @@ class InventoryController
                         $periferico = new Perifericos($per);
                         $periferico->user_id = $inv->user_id;
                         $periferico->state = 1;
-                        $per->asign_date = date('Y-m-d H:i:s');
-
+                        $periferico->asign_date = date('Y-m-d H:i:s');
                         $perId = $periferico->guardar();
                         $log->newPerLog($perId);
                     }
@@ -189,16 +187,11 @@ class InventoryController
         }
         if ($data["action"] === "delete") {
 
-            $pers = Perifericos::filter("computer_id", "=", $inv->id);
-
-            foreach ($pers as $per) {
-                $per->eliminar();
-            }
+           
 
 
             $inv->eliminar();
 
-            $log->deleteInventoryLog($data->id);
         }
 
         echo json_encode(["msg" => "1"]);

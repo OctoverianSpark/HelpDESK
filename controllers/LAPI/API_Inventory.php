@@ -31,6 +31,23 @@ class API_Inventory
       echo json_encode(["msg" => "1"]);
       exit;
    }
+   public static function DELETE_COMPUTER()
+   {
+
+      $DATA = json_decode(file_get_contents("php://input"));
+
+
+      $id = filter_var($DATA->id, FILTER_VALIDATE_INT);
+
+
+      $computer = Inventory::find($id);
+
+
+      $computer->eliminar();
+
+      echo json_encode(["msg" => "1"]);
+      exit;
+   }
 
    public static function PERSSEARCH()
    {
@@ -109,4 +126,6 @@ class API_Inventory
 
       echo json_encode($inv);
    }
+
+
 }

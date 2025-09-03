@@ -115,7 +115,9 @@ abstract class ActiveRecord extends ObjectCreator
         if (isset($atributos['id'])) {
             unset($atributos['id']);
         }
-
+        if($this->state){
+            $this->state = intval($this->state);
+        }
 
         //Insercion
         $query = "INSERT INTO " . static::$tabla . " (";
