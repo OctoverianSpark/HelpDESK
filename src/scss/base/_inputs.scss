@@ -1,6 +1,6 @@
 input {
   font-size: 16px;
-  width: 300px;
+  max-width: 300px;
   height: 30px;
   border-radius: 10px;
   outline: none;
@@ -24,13 +24,21 @@ select {
 .input-group {
   display: grid;
   place-items: center;
-  min-width: 300px;
   span {
-    text-align: left;
+    text-align: center;
     width: 100%;
     font-size: 19px;
     color: var(--text-950);
     font-weight: 600;
+  }
+}
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  span {
+    color: var(--text-950);
   }
 }
 
@@ -104,6 +112,7 @@ select {
     font-weight: 700;
     letter-spacing: 1px;
     color: var(--text-950);
+    cursor: pointer;
   }
 }
 
@@ -117,5 +126,50 @@ textarea {
 
   &:read-only {
     cursor: default;
+  }
+}
+
+.radio-btn {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-950);
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.5s;
+
+  input {
+    cursor: pointer;
+    display: none;
+  }
+
+  &:hover {
+    background-color: var(--accent-700);
+    color: var(--text-50);
+  }
+
+  &:has(:checked) {
+    background-color: var(--accent-400);
+    color: var(--text-950);
+  }
+}
+
+.file-selector {
+  display: flex;
+  padding: 5px;
+  background-color: var(--secondary-300);
+  input {
+    display: none;
+  }
+  color: var(--text-950);
+  gap: 10px;
+  p {
+    font-size: 20px;
+  }
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.5s;
+  &:hover {
+    background-color: var(--secondary-500);
   }
 }

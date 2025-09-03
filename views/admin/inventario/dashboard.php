@@ -1,7 +1,7 @@
 <h1 class="title">Panel de Inventario</h1>
 
 
-<div class="inv-dashboard">
+<div class="inv-dashboard container-grid">
 
         <div class="container-brief-cards">
                 <div class="brief-card">
@@ -48,7 +48,7 @@
         </div>
 
 
-        <div class="dashboard-pie-data">
+        <div class="container-flex">
 
 
                 <div class="container-dashboard">
@@ -58,10 +58,6 @@
                 </div>
                 <div class="container-dashboard">
                         <canvas id="inv-property-chart"></canvas>
-                </div>
-                <div class="container-dashboard">
-                        <canvas id="inv-location-chart"></canvas>
-
                 </div>
                 <div class="container-dashboard">
                         <canvas id="inv-area-chart"></canvas>

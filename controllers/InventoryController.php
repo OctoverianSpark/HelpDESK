@@ -61,20 +61,20 @@ class InventoryController
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $inv = new Inventory($_POST);
-
             $id = $inv->guardar();
             $log->newInventoryLog($id);
 
 
 
             foreach ($_POST["perifericos"] as $per) {
-
                 $periferico = new Perifericos($per);
 
                 $periferico->user_id = $inv->user_id;
-
+                $periferico->state = 1;
                 $periferico->guardar();
             }
+            header('Location: /admin/inventario');
+            exit;
         }
 
 
@@ -157,7 +157,7 @@ class InventoryController
             }
 
             if ($resultado) {
-               header("Location: /admin/inventario?result=1");
+                header("Location: /admin/inventario?result=1");
             }
         }
 
@@ -212,6 +212,7 @@ class InventoryController
         $inv = Inventory::all();
         $stock = Inventory::filter("state", "=", "0");
         $asigned = Inventory::filter("state", "=", "1");
+
 
 
 

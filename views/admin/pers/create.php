@@ -1,6 +1,6 @@
-<form method="post">
+<form method="post" class="container-grid">
   <input type="hidden" name="perifericos[<?php echo $i - 1 ?>][id]" value="<?php echo $per->id ?>">
-  <div class="container-input-flex">
+  <div class="container-flex">
     <label for="mouse-<?php echo $i; ?>" class="radio-label-card">
       <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="mouse-<?php echo $i; ?>" type="radio" value="mouse" <?php echo ($per->tipo == "MOUSE") ? "checked" : ""; ?>>
       <i class="bi bi-mouse-fill"></i>
@@ -32,7 +32,7 @@
       <span>Camara</span>
     </label>
   </div>
-  <div class="container-input-flex">
+  <div class="container-flex">
 
     <label for="marca" class="input-group">
       <span>Marca</span>
@@ -43,7 +43,7 @@
       <input id="modelo" type="text" placeholder="SMU, DX-120, S2412..." name="modelo" value="<?php echo $per->modelo; ?>">
     </label>
   </div>
-  <div class="container-input-flex">
+  <div class="container-flex">
 
     <label for="color" class="input-group">
       <span>Color</span>
@@ -54,33 +54,18 @@
       <input id="serial" type="text" placeholder="EJ: BK2SD994KJS..." name="serial" value="<?php echo $per->serial; ?>">
     </label>
   </div>
-
-
-  <fieldset class="selector-wrapper no-fieldset">
-    <legend>Usuario del equipo</legend>
-
-    <label class="label-search-input" for="search">
-      <div class="search">
-        <i class="bi bi-search"></i>
-        <input type="text" id="search" placeholder="Busca al usuario..." class="filter" value="<?php echo $per->getAsignedName() ?>" autocomplete="off">
-      </div>
-    </label>
-    <ul class="options">
-      <?php foreach ($users as $usr) { ?>
-        <label for="option-<?php echo $usr->id ?>" class="option">
-          <input type="radio" name="user_id" value="<?php echo $usr->id ?>" id="option-<?php echo $usr->id ?>" <?php echo ($usr->id == $inv->user_id) ? "checked" : "" ?>>
-          <span><?php echo "$usr->first_name $usr->last_name" ?></span>
-        </label>
+  <label for="user_id" class="input-group">
+    <span>Usuario</span>
+    <select name="user_id" id="user_id">
+      <?php foreach ($users as $user) { ?>
+        <option value="<?php echo $user->id ?>"><?php echo $user->first_name . ' ' . $user->last_name ?></option>
       <?php } ?>
-
-    </ul>
-
-
-  </fieldset>
+    </select>
+  </label>
 
   <br>
 
-  <button type="submit" class="btn btn-submit">Guardar Periferico</button>
+  <button type="submit" class="btn primary-btn">Guardar Periferico</button>
 
 
 

@@ -1,181 +1,102 @@
-<main>
+<h1 class="title">Control de Inventario</h1>
 
+<?php $mensaje = mostrarNotificacion($_GET["resultado"]) ?>
 
-    <h1 class="title">Control de Inventario</h1>
+<?php if ($mensaje) { ?>
+    <div class="alerta exito">
+        <?php echo $mensaje ?>
+    </div>
+<?php } ?>
+<form method="get" class="selection-form">
 
-    <?php $mensaje = mostrarNotificacion($_GET["resultado"]) ?>
+    <div class="container-flex">
 
-    <?php if ($mensaje) { ?>
-        <div class="alerta exito">
-            <?php echo $mensaje ?>
-        </div>
-    <?php } ?>
-    <form method="get" class="selection-form">
+        <label for="active" class="radio-label-card">
+            <i class="bi bi-check"></i>
+            <input type="radio" name="state" value="1" id="active" />
+            <span>Activo</span>
+        </label>
 
-        <div class="container-input-flex">
+        <label for="stock" class="radio-label-card">
+            <i class="bi bi-archive"></i>
+            <input type="radio" name="state" value="0" id="stock" />
+            <span>Stock</span>
+        </label>
 
-            <label for="active" class="radio-label-card">
-                <i class="bi bi-check"></i>
-                <input type="radio" name="state" value="1" id="active" <?php echo $_GET['state'] === "1" ? 'checked' : '' ?>>
-                <span>Activo</span>
+    </div>
+</form>
+
+<form class="search-form" method="GET">
+
+    <div class="container-grid">
+
+        <div class="container-flex">
+
+            <label for="col" class="input-group" direction="column">
+                <span>Buscar por:</span>
+
+                <select name="col" id="col">
+                    <option value="" disabled selected>Elige una opcion</option>
+                    <option value="nombre_equipo">Nombre del Equipo</option>
+                    <option value="nombre">Nombre del Usuario</option>
+                    <option value="marca">Marca</option>
+                    <option value="modelo">Modelo</option>
+                    <option value="color">Color</option>
+                    <option value="serial">Serial</option>
+                </select>
             </label>
 
-            <label for="stock" class="radio-label-card">
-                <i class="bi bi-archive"></i>
-                <input type="radio" name="state" value="0" id="stock" <?php echo $_GET['state'] === "0" ? 'checked' : '' ?>>
-                <span>Stock</span>
+            <label for="val" class="input-group" direction="column">
+                <span>Valor</span>
+
+                <input type="text" name="val" id="val" placeholder="Buscar..." autocomplete="off">
+
             </label>
-
         </div>
-    </form>
+    </div>
 
-    <form class="search-form" method="GET">
 
-        <div class="container-input">
 
-            <div class="container-input-flex">
+</form>
 
-                <label for="col" class="input-group" direction="column">
-                    <span>Buscar por:</span>
+<div class="table-wrapper">
 
-                    <select name="col" id="col">
-                        <option value="" disabled selected>Elige una opcion</option>
-                        <option value="nombre_equipo">Nombre del Equipo</option>
-                        <option value="nombre">Nombre del Usuario</option>
-                        <option value="marca">Marca</option>
-                        <option value="modelo">Modelo</option>
-                        <option value="color">Color</option>
-                        <option value="serial">Serial</option>
-                    </select>
-                </label>
+    <div class="table table-inv-admin">
 
-                <label for="val" class="input-group" direction="column">
-                    <span>Valor</span>
-
-                    <input type="text" name="val" id="val" placeholder="Buscar..." autocomplete="off">
-
-                </label>
-            </div>
+        <div class="table-row table-header">
+            <div class="header">Nombre del Equipo</div>
+            <div class="header">Usuario del Equipo</div>
+            <div class="header">Marca</div>
+            <div class="header">Modelo</div>
+            <div class="header">Color</div>
+            <div class="header">Serial</div>
         </div>
-
-
-
-    </form>
-
-    <?php if ($_GET['state'] === '1') { ?>
-
-        <div class="table-wrapper">
-
-            <div class="table table-inv-admin">
-                <div class="table-row table-header">
-                    <div class="header">Nombre del Equipo</div>
-                    <div class="header">Usuario del Equipo</div>
-                    <div class="header">Marca</div>
-                    <div class="header">Modelo</div>
-                    <div class="header">Color</div>
-                    <div class="header">Serial</div>
-                </div>
-
-                <?php foreach ($equipos as $equipo) { ?>
-                    <div class="table-row" cell-id="<?php echo $equipo->getID() ?>">
-                        <div class="cell cell-link" col="nombre_equipo">
-                            <button class="btn view-btn">
-                                <?php echo $equipo->getNombreEquipo() ?>
-                                <i class="bi bi-box-arrow-up-right"></i>
-                            </button>
-                        </div>
-                        <div class="cell" col="nombre">
-
-                            <?php echo $equipo->getNombre() . " " . $equipo->getApellido() ?>
-
-                        </div>
-                        <div class="cell" col="marca">
-
-                            <?php echo $equipo->getMarca() ?>
-
-                        </div>
-                        <div class="cell" col="modelo">
-                            <?php echo $equipo->getModelo() ?>
-                        </div>
-                        <div class="cell" col="color">
-                            <?php echo $equipo->getColor() ?>
-                        </div>
-                        <div class="cell" col="serial">
-                            <?php echo $equipo->getSerial() ?>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-        </div>
-    <?php } ?>
-    <?php if ($_GET['state'] === '0') { ?>
-
-        <div class="table-wrapper">
-
-            <div class="table table-inv-admin">
-                <div class="table-row table-header">
-                    <div class="header">Nombre del Equipo</div>
-                    <div class="header">Marca</div>
-                    <div class="header">Modelo</div>
-                    <div class="header">Color</div>
-                    <div class="header">Serial</div>
-                </div>
-
-                <?php foreach ($equipos as $equipo) { ?>
-                    <div class="table-row" cell-id="<?php echo $equipo->getID() ?>">
-                        <div class="cell cell-link" col="nombre_equipo">
-                            <button class="btn view-btn">
-                                <?php echo $equipo->getNombreEquipo() ?>
-                                <i class="bi bi-box-arrow-up-right"></i>
-                            </button>
-                        </div>
-
-                        <div class="cell" col="marca">
-
-                            <?php echo $equipo->getMarca() ?>
-
-                        </div>
-                        <div class="cell" col="modelo">
-                            <?php echo $equipo->getModelo() ?>
-                        </div>
-                        <div class="cell" col="color">
-                            <?php echo $equipo->getColor() ?>
-                        </div>
-                        <div class="cell" col="serial">
-                            <?php echo $equipo->getSerial() ?>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-        </div>
-    <?php } ?>
-
-    <div class="modal modal-view inv-view hidden">
-
-
-
-
-        <div class="container-actions">
-            <button class="modal-close-btn btn top-btn" title="Cerrar">
-                Cerrar
-                <i class="bi bi-x-circle-fill"></i>
-            </button>
-            <button class="btn stock-btn top-btn" cellId="">
-                Mover a Stock
-                <i class="bi bi-archive-fill"></i>
-            </button>
-            <button class="btn delete-btn top-btn" cellId="">
-                Eliminar
-                <i class="bi bi-trash-fill"></i>
-            </button>
-            <a class="btn update-btn top-btn">
-                Actualizar
-                <i class="bi bi-pen-fill"></i>
-            </a>
-        </div>
-        <br>
 
 
     </div>
 
-</main>
+</div>
+<div id="pagination"></div>
+
+
+<div class="modal inv-view">
+
+
+
+    <div class="inv-content">
+        <div class="computer">
+            <h1 id="computer-nombre">Nombre</h1>
+
+            <p><span id="computer-nombre_equipo"></span></p>
+            <p><span id="computer-tipo"></span></p>
+            <p><span id="computer-marca"></span></p>
+            <p><span id="computer-modelo"></span></p>
+            <p><span id="computer-color"></span></p>
+            <p><span id="computer-serial"></span></p>
+
+        </div>
+        <div class="pers">
+
+        </div>
+
+    </div>

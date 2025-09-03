@@ -3,14 +3,12 @@
         <?php echo $error ?>
     </div>
 <?php endforeach  ?>
+<h1 class="title">Registro de Inventario</h1>
 
-<main>
+<form method="post" class="inv-form container-grid">
 
-    <form method="post" class="inv-form">
-        <input type="hidden" name="sede" value="<?php echo $_GET["sede"] ?>">
-        <?php include "formulario.php" ?>
+    <?php include "formulario.php" ?>
 
 
-        <button class="btn btn-submit">Enviar <i class="bi bi-floppy2-fill"></i></button>
-    </form>
-</main>
+    <button class="btn primary-btn">Enviar <i class="bi bi-floppy2-fill"></i></button>
+</form>

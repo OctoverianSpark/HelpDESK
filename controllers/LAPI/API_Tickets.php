@@ -96,7 +96,6 @@ class API_Tickets
       $pagina = isset($_GET['page']) ? (int) $_GET['page'] : 1;
       if ($pagina < 1) $pagina = 1;
 
-
       // Total de tickets para calcular las páginas
       $totalTickets = Tickets::count();
       $totalPaginas = ceil($totalTickets / $porPagina);
@@ -106,15 +105,192 @@ class API_Tickets
       // Obtener los tickets de la página actual
       $tickets = Tickets::all($porPagina, $offset);
 
+      if (count($tickets) < $porPagina && $pagina > 1) {
+         $totalPaginas = $pagina;
+      }
+      if (count($tickets) == 0 && $pagina > 1) {
+         $offset = ($pagina - 2) * $porPagina;
+         $tickets = Tickets::all($porPagina, $offset);
+      }
+
 
       echo json_encode([
-         'tickets' => $tickets,
+         'data' => $tickets,
          'total' => $totalTickets,
          'pages' => $totalPaginas,
          'page' => $pagina
       ]);
       exit;
    }
+
+   public static function GRAPH_CONFIG()
+   {
+      $byTech = [];
+      $byCategory = [];
+      $byPriority = [];
+      $byStatus = [];
+      $ticketsByDate = [];
+      $resolutionTimeByDate = [];
+      $resolutionTimeByTech = []; // NUEVO: promedio de resolución por técnico
+      $ticketCycle = []; // NUEVO: estados por técnico (stacked bar)
+      $closedWithBreaks = 0;
+      $firstContactClosed = 0;
+      $tickets = empty($_GET) ? Tickets::all() : Tickets::filterByGraph($_GET['from'], $_GET['to'], $_GET['tech']);
+      $totalTickets = count($tickets);
+      $openTickets = 0;
+      $pendingTickets = 0;
+      $avgCompletionTime = 0;
+      $avgPendingTime = 0;
+      $avgAsignedTime = 0;
+      $lowPriority = 0;
+      $mediumPriority = 0;
+      $highPriority = 0;
+
+      foreach ($tickets as $ticket) {
+
+         // ---- Por técnico ----
+         if ($ticket->tecnico != 'SIN ASIGNAR') {
+            if (!isset($byTech[$ticket->tecnico])) {
+               $byTech[$ticket->tecnico] = 0;
+            }
+            $byTech[$ticket->tecnico]++;
+         }
+
+         // ---- Por categoría ----
+         if ($ticket->categoria != '') {
+            if (!isset($byCategory[$ticket->categoria])) {
+               $byCategory[$ticket->categoria] = 0;
+            }
+            $byCategory[$ticket->categoria]++;
+         }
+
+         // ---- Por prioridad ----
+         if ($ticket->prioridad != '') {
+            if (!isset($byPriority[$ticket->prioridad])) {
+               $byPriority[$ticket->prioridad] = 0;
+            }
+            $byPriority[$ticket->prioridad]++;
+         }
+
+         // ---- Por estado ----
+         if ($ticket->estado != '') {
+            if (!isset($byStatus[$ticket->estado])) {
+               $byStatus[$ticket->estado] = 0;
+            }
+            $byStatus[$ticket->estado]++;
+         }
+
+         // ---- Tickets por fecha ----
+         if (!empty($ticket->fecha)) {
+            $date = date('Y-m-d', strtotime($ticket->fecha));
+            if (!isset($ticketsByDate[$date])) {
+               $ticketsByDate[$date] = 0;
+            }
+            $ticketsByDate[$date]++;
+         }
+
+         // ---- Tiempo promedio de resolución por fecha ----
+         if (!empty($ticket->fecha) && !empty($ticket->fecha_completacion)) {
+            $date = date('Y-m-d', strtotime($ticket->fecha));
+
+            $start = strtotime($ticket->fecha);
+            $end = strtotime($ticket->fecha_completacion);
+            $diffHours = ($end - $start) / 3600;
+
+            if (!isset($resolutionTimeByDate[$date])) {
+               $resolutionTimeByDate[$date] = ['total' => 0, 'count' => 0];
+            }
+            $resolutionTimeByDate[$date]['total'] += $diffHours;
+            $resolutionTimeByDate[$date]['count']++;
+
+            // ---- Tiempo promedio por técnico ----
+            if ($ticket->tecnico != 'SIN ASIGNAR') {
+               if (!isset($resolutionTimeByTech[$ticket->tecnico])) {
+                  $resolutionTimeByTech[$ticket->tecnico] = ['total' => 0, 'count' => 0];
+               }
+               $resolutionTimeByTech[$ticket->tecnico]['total'] += $diffHours;
+               $resolutionTimeByTech[$ticket->tecnico]['count']++;
+            }
+         }
+
+         if (strtolower($ticket->estado) === 'pendiente') {
+            $pendingTickets++;
+         }
+         if (strtolower($ticket->estado) === 'completado' && $ticket->fecha_pendiente) {
+            $closedWithBreaks++;
+         }
+         if (strtolower($ticket->estado) === 'completado' && !$ticket->fecha_pendiente) {
+            $firstContactClosed++;
+         }
+         if (strtolower($ticket->estado) === 'sin asignar' || strtolower($ticket->estado) === 'en proceso') {
+            $openTickets++;
+         }
+
+         $avgCompletionTime += abs(floatval($ticket->ep_c) - floatval($ticket->p_c));
+         $avgPendingTime += floatval($ticket->ep_p);
+         $avgAsignedTime += floatval($ticket->sa_ep);
+
+         switch (strtolower($ticket->prioridad)) {
+            case 'baja':
+               $lowPriority++;
+               break;
+            case 'media':
+               $mediumPriority++;
+               break;
+            case 'alta':
+               $highPriority++;
+               break;
+         }
+      }
+
+      $avgCompletionTime = $avgCompletionTime / max($totalTickets, 1);
+      $avgPendingTime = $avgPendingTime / max($totalTickets, 1);
+      $avgAsignedTime = $avgAsignedTime / max($totalTickets, 1);
+
+      // Promedios finales
+      $avgResolutionByDate = [];
+      foreach ($resolutionTimeByDate as $date => $values) {
+         $avgResolutionByDate[$date] = $values['count'] > 0
+            ? round($values['total'] / $values['count'], 2)
+            : 0;
+      }
+
+      $avgResolutionByTech = [];
+      foreach ($resolutionTimeByTech as $tech => $values) {
+         $avgResolutionByTech[$tech] = $values['count'] > 0
+            ? round($values['total'] / $values['count'], 2)
+            : 0;
+      }
+
+
+      echo json_encode([
+         'byTech' => $byTech,
+         'byCategory' => $byCategory,
+         'byPriority' => $byPriority,
+         'byStatus' => $byStatus,
+         'ticketsByDate' => $ticketsByDate,
+         'avgResolutionByDate' => $avgResolutionByDate,
+         'avgResolutionByTech' => $avgResolutionByTech,
+         'ticketCycle' => $ticketCycle,
+         'briefData' => [
+            'totalTickets' => $totalTickets,
+            'openTickets' => $byStatus['sin asignar'] + $byStatus['en proceso'],
+            'pendingTickets' => $pendingTickets,
+            'closedWithBreaks' => $closedWithBreaks,
+            'firstContactClosed' => $firstContactClosed,
+            'avgCompletionTime' => round($avgCompletionTime, 2),
+            'avgPendingTime' => round($avgPendingTime, 2),
+            'avgAsignedTime' => round($avgAsignedTime, 2),
+            'lowPriority' => $lowPriority,
+            'mediumPriority' => $mediumPriority,
+            'highPriority' => $highPriority
+         ]
+
+      ]);
+      exit;
+   }
+
+
 
 
    public static function ACTUALTICKETS()
@@ -132,29 +308,29 @@ class API_Tickets
 
       try {
 
+
          $ticket = Tickets::find($DATA->id);
 
          $ticket->sync($DATA);
 
+         if ($ticket->estado === "completado" && !$ticket->fecha_completacion) {
+            $ticket->fecha_completacion = date("Y-m-d H:i:s");
+         }
+         if ($ticket->estado === "pendiente" && !$ticket->fecha_pendiente) {
+            $ticket->fecha_pendiente = date("Y-m-d H:i:s");
+         }
+         if ($ticket->estado === "en proceso" && !$ticket->fecha_asignada) {
+            $ticket->fecha_asignada = date("Y-m-d H:i:s");
+         }
+
+
          $ticket->guardar();
 
 
-         $ticket = Tickets::find($DATA->id);
 
 
-         $tech = Users::filter("id", "=", $ticket->tecnico_id);
-         $tech = array_shift($tech);
 
-
-         $body = file_get_contents(__DIR__ . "/../../views/templates/mail/asignacion-ticket-usuario.html");
-
-         str_replace("{{ id }}", $DATA->id, $body);
-         str_replace("{{ tech }}", $tech->first_name . " " . $tech->last_name, $body);
-
-         $mail = enviarCorreo($body, "Ticket Asignado", ["jean.pr@asistentevirtualsas.com"]);
-
-
-         echo json_encode(["status" => "1", "message" => "Ticket actualizado correctamente", "data" => $ticket, "mail" => $mail]);
+         echo json_encode(["status" => "1", "message" => "Ticket actualizado correctamente", "data" => $ticket]);
       } catch (\Exception $e) {
 
          echo json_encode(["status" => "0", "message" => $e->getMessage()]);

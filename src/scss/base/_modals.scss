@@ -2,7 +2,6 @@
 
 .modal {
   background-color: rgba(0, 0, 0, 0.5);
-  display: none;
   .modal-content {
     background-color: white;
     padding: 2rem;
@@ -45,7 +44,6 @@
   }
 
   form {
-    background-color: var(--accent-300);
     position: absolute;
     top: 0;
     right: 0;
@@ -66,14 +64,14 @@
 }
 
 .ticket-detail-view {
+  display: none;
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.3);
 
   .ticket-details {
     position: fixed;
     height: 100vh;
-    background-color: var(--accent-500);
+    background-color: var(--primary-500);
     right: 0;
     top: 0;
     display: grid;
@@ -83,9 +81,159 @@
     border-top-left-radius: 10px;
   }
 
+  &.active {
+    display: block;
+    .ticket-details {
+      animation: warpfromright 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+  }
+
   .container-info {
     display: grid;
     gap: 10px;
     place-items: center;
+  }
+}
+
+.documentation-view {
+  display: none;
+  position: absolute;
+  inset: 0;
+
+  .documentation-form {
+    height: 95vh;
+    width: 500px;
+    position: fixed;
+    right: 2.5vw;
+    top: 2.5vh;
+    background-color: var(--primary-400);
+    border-radius: 25px;
+
+    fieldset {
+      position: absolute;
+      bottom: 0;
+      border: none;
+      display: flex;
+      width: 100%;
+    }
+  }
+
+  &.active {
+    display: block;
+
+    .documentation-form {
+      animation: warpfromright 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+  }
+}
+
+.img-view {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 500;
+
+  img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .active {
+    display: grid;
+  }
+}
+
+.inv-view {
+  display: none;
+  position: fixed;
+  inset: 0;
+
+  .inv-content {
+    background-color: var(--accent-600);
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    width: 800px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .computer {
+    background-color: var(--primary-500);
+    border-radius: 15px;
+    width: 450px;
+    padding: 10px;
+    p {
+      font-size: 20px;
+      color: var(--text-950);
+      text-align: center;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    h1 {
+      text-align: center;
+    }
+  }
+  .pers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+
+    .per {
+      background-color: var(--primary-500);
+      border-radius: 15px;
+      width: 300px;
+      p {
+        font-size: 20px;
+        color: var(--text-950);
+        cursor: pointer;
+        font-weight: 700;
+      }
+    }
+  }
+
+  &.active {
+    display: block;
+
+    .inv-content {
+      animation: warpfromright 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+  }
+}
+
+.maintenance-form-modal {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+  place-items: center;
+
+  &.active {
+    display: grid;
+  }
+
+  form {
+    display: grid;
+    border-radius: 15px;
+    place-items: center;
+    gap: 20px;
+    height: 400px;
+    width: 500px;
+    background-color: var(--accent-500);
   }
 }

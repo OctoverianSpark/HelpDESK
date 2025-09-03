@@ -45,12 +45,46 @@ class API_Inventory
       exit;
    }
 
+   public static function GET_PERS()
+   {
+
+      $porPagina = 20; // cantidad de tickets por página
+      $state = $_GET['state'] ?? 1;
+      $pagina = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+      if ($pagina < 1) $pagina = 1;
+
+      // Total de tickets para calcular las páginas
+      $totalPerifericos = Perifericos::count($state);
+      $totalPaginas = ceil($totalPerifericos / $porPagina);
+      // Calcular offset
+      $offset = ($pagina - 1) * $porPagina;
+
+      // Obtener los tickets de la página actual
+      $perifericos = Perifericos::all($porPagina, $offset, $state);
+
+      if (count($perifericos) < $porPagina && $pagina > 1) {
+         $totalPaginas = $pagina;
+      }
+      if (count($perifericos) == 0 && $pagina > 1) {
+         $offset = ($pagina - 2) * $porPagina;
+         $perifericos = Perifericos::all($porPagina, $offset);
+      }
+
+
+      echo json_encode([
+         'data' => $perifericos,
+         'total' => $totalPerifericos,
+         'pages' => $totalPaginas,
+         'page' => $pagina
+      ]);
+      exit;
+   }
+
    public static function INVENTORYSEARCH()
    {
 
-      $DATA = json_decode(file_get_contents("php://input"));
 
-      $id = filter_var($DATA->id, FILTER_VALIDATE_INT);
+      $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
 
 
       $inv = Inventory::find($id);
@@ -60,8 +94,6 @@ class API_Inventory
          $inv->setCorreo("Sin asignar");
          $inv->setTelefono("Sin asignar");
       } else {
-         $usr = Personal::PIVOTFINDER($inv->getUserId());
-         $inv->area = $usr->area;
          $pers = Perifericos::filter('user_id', '=', $inv->getUserId());
          $pers = array_map(function ($item) {
             return $item->toArray();
@@ -69,7 +101,7 @@ class API_Inventory
       }
 
       $data = [
-         "inv" => $inv->toArray() ?? [],
+         "computer" => $inv->toArray() ?? [],
          "pers" => $pers ?? []
       ];
 
@@ -79,33 +111,41 @@ class API_Inventory
 
    public static function INVENTORY_GET()
    {
+      $porPagina = 20; // cantidad de tickets por página
+      $state = $_GET['state'] ?? 1;
+      $pagina = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+      if ($pagina < 1) $pagina = 1;
 
+      // Total de tickets para calcular las páginas
+      $totalInventory = Inventory::count($state);
+      $totalPaginas = ceil($totalInventory / $porPagina);
+      // Calcular offset
+      $offset = ($pagina - 1) * $porPagina;
 
-      $inv = Inventory::all();
+      // Obtener los tickets de la página actual
+      $inventory = Inventory::all($porPagina, $offset, $state);
 
-      foreach ($inv as $eq) {
-
-
-
-         if ($eq->getUserId() === "0") {
-            $eq->setNombre("STOCK");
-            $eq->setApellido("Sin asignar");
-            $eq->setCorreo("Sin asignar");
-            $eq->setTelefono("Sin asignar");
-            continue;
-         }
-
-         $usr = Personal::PIVOTFINDER($eq->getUserId());
-
-         $eq->area = $usr->area;
+      if (count($inventory) < $porPagina && $pagina > 1) {
+         $totalPaginas = $pagina;
+      }
+      if (count($inventory) == 0 && $pagina > 1) {
+         $offset = ($pagina - 2) * $porPagina;
+         $inventory = Inventory::all($porPagina, $offset);
       }
 
 
-      $inv = array_map(function ($item) {
-         return $item->toArray();
-      }, $inv);
+      echo json_encode([
+         'data' => $inventory,
+         'total' => $totalInventory,
+         'pages' => $totalPaginas,
+         'page' => $pagina
+      ]);
+      exit;
+   }
 
-
+   public static function INVENTORY_ALL()
+   {
+      $inv = Inventory::all();
 
       echo json_encode($inv);
    }

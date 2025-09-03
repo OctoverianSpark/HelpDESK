@@ -7,38 +7,9 @@ import {
   randomColor
 } from './GLOBALS.js'
 
-import {
-  setInvTypeChart,
-  PerTypeGraphic,
-  TechnicalPodium,
-  metricTime,
-  circleChart,
-  barChart
-} from './graphics.js'
-
 //NOTE:CLASS FOLDER IMPORTATIONS
 import { Element } from './Class/Element.js'
 import { Information } from './Class/Information.js'
-import { Chart } from 'chart.js'
-
-Chart.defaults.font.family = 'Pangram'
-Chart.defaults.backgroundColor = [
-  'rgba(255, 99, 132, 1)',
-  'rgb(93, 95, 226)',
-  'rgba(255, 206, 86, 1)',
-  'rgba(75, 192, 192, 1)',
-  'rgba(153, 102, 255,1)',
-  'rgba(255, 159, 64, 1)'
-]
-
-Chart.defaults.borderColor = [
-  'rgba(255, 99, 132, 1)',
-  'rgb(36, 81, 110)',
-  'rgba(255, 206, 86, 1)',
-  'rgb(39, 88, 88)',
-  'rgba(153, 102, 255, 1)',
-  'rgba(255, 159, 64, 1)'
-]
 
 console.log('FrontEnd.js loaded')
 
@@ -154,7 +125,7 @@ function addPer () {
       [new Element('I', { class: 'bi bi-x' }, {}, [])]
     )
 
-    const CARDSCONTAINER = GENCONTAINER('DIV', 'container-input-flex', [
+    const CARDSCONTAINER = GENCONTAINER('DIV', 'container-flex', [
       MOUSECARD,
       KEYBOARDCARD,
       HEADPHONECARD,
@@ -191,7 +162,7 @@ function addPer () {
       'EJ: BK2SD994KJS...'
     )
 
-    const CONTAINERINPUTS = GENCONTAINER('DIV', 'container-input', [
+    const CONTAINERINPUTS = GENCONTAINER('DIV', 'container-grid', [
       BRANDINPUT,
       MODELINPUT,
       COLORINPUT,
@@ -580,148 +551,6 @@ async function DELETECELL (cellId) {
   }
 }
 
-async function viewAdminDocumentation () {
-  const table = document.querySelector('.table-tickets-admin')
-  if (!table) return
-
-  const viewBtns = table.querySelectorAll('.documentate')
-
-  const viewMdl = document.querySelector('.documentation-view')
-
-  const containerComments = viewMdl.querySelector('.container-documentations')
-  const closeMdlBtn = viewMdl.querySelector('.modal-close-btn')
-
-  viewBtns.forEach(btn => {
-    btn.addEventListener('click', async e => {
-      viewMdl.classList.toggle('hidden')
-
-      const rowID = btn.getAttribute('cell-id')
-
-      const query = await Information.postJSON('/admin/documentations/find', {
-        id: rowID
-      })
-
-      const comments = viewMdl.querySelectorAll('.comment')
-
-      comments.forEach(comment => comment.remove())
-      query.forEach(body => {
-        const DATESPAN = new Element(
-          'SPAN',
-          {},
-          { textContent: body.fecha },
-          []
-        )
-        const DATELEGEND = new Element(
-          'LEGEND',
-          {},
-          { textContent: 'Fecha: ' },
-          [DATESPAN]
-        )
-
-        const AUTHORSPAN = new Element(
-          'SPAN',
-          {},
-          { textContent: body.cargado_por },
-          []
-        )
-        const AUTHORLEGEND = new Element(
-          'LEGEND',
-          {},
-          { textContent: 'Generado por:' },
-          [AUTHORSPAN]
-        )
-
-        const COMMENTP = new Element(
-          'P',
-          {},
-          { textContent: body.comentario },
-          []
-        )
-
-        const CONTAINER = new Element('FIELDSET', { class: 'comment' }, {}, [
-          DATELEGEND,
-          AUTHORLEGEND,
-          COMMENTP
-        ])
-
-        containerComments.appendChild(CONTAINER.render())
-      })
-
-      const form = viewMdl.querySelector('.comment-form')
-
-      form.addEventListener('submit', async e => {
-        e.preventDefault()
-
-        const formData = new FormData(form)
-
-        const body = {}
-
-        formData.entries().forEach(([key, value]) => {
-          body[key] = value
-        })
-
-        body['ticket_id'] = rowID
-        body['fecha'] = new Date().toISOString()
-
-        body['fecha'] = body['fecha']
-          .replace(/T/, ' ')
-          .replace(/\..+/, '')
-          .replace(/Z/, '')
-
-        const payload = await Information.postJSON(
-          '/admin/documentations/create',
-          body
-        )
-
-        const DATESPAN = new Element(
-          'SPAN',
-          {},
-          { textContent: body.fecha },
-          []
-        )
-        const DATELEGEND = new Element(
-          'LEGEND',
-          {},
-          { textContent: 'Fecha: ' },
-          [DATESPAN]
-        )
-
-        const AUTHORSPAN = new Element(
-          'SPAN',
-          {},
-          { textContent: payload.data.cargado_por },
-          []
-        )
-        const AUTHORLEGEND = new Element(
-          'LEGEND',
-          {},
-          { textContent: 'Generado por:' },
-          [AUTHORSPAN]
-        )
-
-        const COMMENTP = new Element(
-          'P',
-          {},
-          { textContent: body.comentario },
-          []
-        )
-
-        const CONTAINER = new Element('FIELDSET', { class: 'comment' }, {}, [
-          DATELEGEND,
-          AUTHORLEGEND,
-          COMMENTP
-        ])
-
-        containerComments.appendChild(CONTAINER.render())
-      })
-    })
-  })
-
-  closeMdlBtn.addEventListener('click', e => {
-    viewMdl.classList.add('hidden')
-  })
-}
-
 function imageViewer () {
   const ImgMdl = document.querySelector('.img-view')
 
@@ -815,17 +644,7 @@ async function TicketGraphicsControllers () {
       body[key] = value
     })
     query = await Information.postJSON('/admin/tickets/indexer', body)
-
-    TechnicalPodium(query)
-    PerTypeGraphic(query)
-    TicketGraphicCards(query)
-    metricTime(query)
   })
-
-  TechnicalPodium(query)
-  PerTypeGraphic(query)
-  TicketGraphicCards(query)
-  metricTime(query)
 }
 
 function usrsCreationForm () {
@@ -1130,367 +949,6 @@ function UserForm () {
   })
 }
 
-async function AdminDashBoard () {
-  const dashboard = document.querySelector('.admin-dashboard')
-  if (!dashboard) return
-
-  const TicketCtx = document.querySelector('#tickets-chart').getContext('2d')
-
-  const tickets = await Information.postJSON('/tickets/actuals')
-
-  //NOTE: TICKETS POR MES
-  //TODO: PASAR TODA LA RESPONSABILIDAD DE LAS GRAFICAS A UNA FUNCION APARTE QUE SE LLAME MAS FACIL (UNA FUNCION POR GRAFICA PARA SIMPLIFICACION DE LOGICA Y REDUCCION DE CODIGO)
-
-  const currentMonth = new Date().getMonth()
-  const currentYear = new Date().getFullYear()
-
-  const ticketCounts = tickets.reduce((acc, ticket) => {
-    acc[ticket.categoria] = (acc[ticket.categoria] || 0) + 1
-    return acc
-  }, {})
-
-  const data = {
-    labels: Object.keys(ticketCounts),
-    datasets: [
-      {
-        label: 'Tickets',
-        data: Object.values(ticketCounts),
-        borderWidth: 1
-      }
-    ]
-  }
-
-  const config = {
-    type: 'pie',
-    data: data,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: 'Resumen de tickets de este mes',
-          color: 'white',
-          font: {
-            size: 18
-          }
-        },
-        legend: {
-          position: 'top',
-          labels: {
-            color: 'white'
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function (tooltipItem) {
-              return tooltipItem.label + ': ' + tooltipItem.raw + ' tickets'
-            }
-          }
-        }
-      }
-    },
-    layout: {
-      padding: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10
-      }
-    }
-  }
-
-  const TChart = new Chart(TicketCtx, config)
-  const invCTX = document.querySelector('#inv-chart').getContext('2d')
-
-  setInvTypeChart(invCTX)
-
-  const orders = await Information.postJSON('/admin/orders/actuals')
-
-  const orderTypeData = {
-    labels: Object.keys(orders).map(x => x.toUpperCase()),
-    datasets: [
-      {
-        label: 'Tipo',
-        data: Object.values(orders),
-        borderWidth: 1
-      }
-    ]
-  }
-
-  const orderTypeConfig = {
-    type: 'pie',
-    data: orderTypeData,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: 'Resumen de Ordenes',
-          color: 'white',
-          font: {
-            size: 18
-          }
-        },
-        legend: {
-          position: 'top',
-          labels: {
-            color: 'white'
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function (tooltipItem) {
-              return tooltipItem.raw
-            }
-          }
-        },
-        datalabels: {
-          color: 'white',
-          formatter: (value, context) => {
-            return value
-          }
-        }
-      }
-    },
-    layout: {
-      padding: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10
-      }
-    }
-  }
-
-  const orderTypeCTX = document
-    .getElementById('orders-type-chart')
-    .getContext('2d')
-
-  const orderTypeChart = new Chart(orderTypeCTX, orderTypeConfig)
-
-  const briefCards = document.querySelector('.container-brief-cards')
-
-  const briefTickets = briefCards.querySelector('.month-total-tickets')
-  const briefINV = briefCards.querySelector('.total-inventory')
-  const briefOrders = briefCards.querySelector('.month-total-orders')
-
-  const inventory = await Information.postJSON('/admin/inventory/get')
-
-  let monthTickets = 0
-  let totalinv = inventory.length
-  let totalOrders = 0
-
-  Object.values(ticketCounts).forEach(value => {
-    monthTickets += value
-  })
-
-  Object.values(orders).forEach(value => {
-    totalOrders += value
-  })
-
-  briefTickets.textContent = monthTickets
-  briefINV.textContent = totalinv
-  briefOrders.textContent = totalOrders
-}
-
-async function InvDashboard () {
-  const dashboard = document.querySelector('.inv-dashboard')
-  const inventory = await Information.postJSON('/admin/inventory/get')
-
-  if (!dashboard) return
-
-  const typeCTX = document.querySelector('#inv-type-chart').getContext('2d')
-
-  setInvTypeChart(typeCTX)
-
-  const propertyCTX = document
-    .querySelector('#inv-property-chart')
-    .getContext('2d')
-
-  const propertyData = inventory.reduce((acc, item) => {
-    const propietario = item.propietario || 'Desconocido'
-    acc[propietario] = (acc[propietario] || 0) + 1
-    return acc
-  }, {})
-
-  const areaData = inventory.reduce((acc, item) => {
-    const area = item.area || 'Stock'
-    acc[area] = (acc[area] || 0) + 1
-    return acc
-  }, {})
-
-  const areaChartData = {
-    labels: Object.keys(areaData),
-    datasets: [
-      {
-        label: 'Área',
-        data: Object.values(areaData),
-        borderWidth: 1
-      }
-    ]
-  }
-
-  const areaChartConfig = {
-    type: 'pie',
-    data: areaChartData,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: 'Inventario por Área',
-          color: 'white',
-          font: {
-            size: 18
-          }
-        },
-        legend: {
-          position: 'top',
-          labels: {
-            color: 'white'
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function (tooltipItem) {
-              return tooltipItem.label + ': ' + tooltipItem.raw
-            }
-          }
-        }
-      }
-    },
-    layout: {
-      padding: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10
-      }
-    }
-  }
-
-  const areaCTX = document.querySelector('#inv-area-chart').getContext('2d')
-  const areaChart = new Chart(areaCTX, areaChartConfig)
-
-  const propertyChartData = {
-    labels: Object.keys(propertyData),
-    datasets: [
-      {
-        label: 'Propietario',
-        data: Object.values(propertyData),
-        borderWidth: 1
-      }
-    ]
-  }
-
-  const propertyChartConfig = {
-    type: 'pie',
-    data: propertyChartData,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: 'Inventario por Propietario',
-          color: 'white',
-          font: {
-            size: 18
-          }
-        },
-        legend: {
-          position: 'top',
-          labels: {
-            color: 'white'
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function (tooltipItem) {
-              return tooltipItem.label + ': ' + tooltipItem.raw
-            }
-          }
-        }
-      }
-    },
-    layout: {
-      padding: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10
-      }
-    }
-  }
-
-  const propertyChart = new Chart(propertyCTX, propertyChartConfig)
-
-  const locationData = inventory.reduce((acc, item) => {
-    const sede = item.sede || 'Desconocido'
-    acc[sede] = (acc[sede] || 0) + 1
-    return acc
-  }, {})
-
-  const locationChartData = {
-    labels: Object.keys(locationData),
-    datasets: [
-      {
-        label: 'Sede',
-        data: Object.values(locationData),
-        borderWidth: 1
-      }
-    ]
-  }
-
-  const locationChartConfig = {
-    type: 'pie',
-    data: locationChartData,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: 'Inventario por Sede',
-          color: 'white',
-          font: {
-            size: 18
-          }
-        },
-        legend: {
-          position: 'top',
-          labels: {
-            color: 'white'
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function (tooltipItem) {
-              return tooltipItem.label + ': ' + tooltipItem.raw
-            }
-          }
-        }
-      }
-    },
-    layout: {
-      padding: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10
-      }
-    }
-  }
-
-  const locationCTX = document
-    .querySelector('#inv-location-chart')
-    .getContext('2d')
-  const locationChart = new Chart(locationCTX, locationChartConfig)
-}
-
 async function PollDashboard () {
   const polls = await Information.postJSON('/admin/encuestas')
 
@@ -1606,7 +1064,7 @@ async function maintenances () {
   const btn = document.querySelector('.open-mdl')
 
   btn.onclick = e => {
-    Mdl.classList.remove('hidden')
+    Mdl.classList.add('active')
   }
 
   const params = new URLSearchParams(location.search)
@@ -1641,11 +1099,6 @@ async function maintenances () {
     }`
   }
   const select = Mdl.querySelector('#tech')
-  const inputOther = Mdl.querySelector('#other')
-
-  select.oninput = e => {
-    inputOther.disabled = !e.target.value === 'other'
-  }
 
   const form = Mdl.querySelector('form')
 
@@ -1747,9 +1200,6 @@ document.addEventListener('DOMContentLoaded', e => {
   delPer()
   sign()
   dragNdrop()
-  viewAdminInv()
-  invActions()
-  viewAdminDocumentation()
   TicketGraphicsControllers()
   imageViewer()
   usrsCreationForm()
@@ -1758,9 +1208,6 @@ document.addEventListener('DOMContentLoaded', e => {
   results()
   ServerForm()
   UserForm()
-  AdminDashBoard()
-  InvDashboard()
-  PollDashboard()
   maintenances()
   pollModal()
 })

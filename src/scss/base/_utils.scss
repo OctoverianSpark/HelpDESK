@@ -17,34 +17,6 @@
   display: none;
 }
 
-.comment {
-  border: 1.5px solid #b4b3b3;
-  border-radius: 3rem 3rem 3rem 0;
-  legend,
-  p,
-  span {
-    color: v.$negro;
-    font-size: 1.5rem;
-  }
-  transition: 0.5s;
-
-  &:hover {
-    border: 1.5px solid v.$morado;
-  }
-
-  legend {
-    font-weight: 800;
-    text-align: left;
-    span {
-      color: v.$morado;
-    }
-  }
-  display: flex;
-  justify-content: center;
-  align-items: left;
-  flex-direction: column;
-}
-
 .w-100 {
   width: 100%;
 }

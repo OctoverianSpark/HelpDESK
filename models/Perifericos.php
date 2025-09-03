@@ -9,11 +9,13 @@ class Perifericos extends ActiveRecord
 {
 
 
-    protected static $columnasDB = ["id", "tipo", "marca", "modelo", "color", "serial", "user_id", "state","asign_date"];
+    protected static $columnasDB = ["id", "tipo", "marca", "modelo", "color", "serial", "user_id", "state", "asign_date", 'mod_date'];
 
     protected static $tabla = "perifericos";
 
     public $user_id = null;
+    public $asign_date = null;
+    public $name = '';
 
 
     public function __construct($args = [])
@@ -21,6 +23,7 @@ class Perifericos extends ActiveRecord
         parent::__construct($args);
 
         $this->user_id = $args['user_id'] ?? null;
+        $this->asign_date = !is_null($args['user_id']) ? date('Y-m-d H:i:s') : null;
     }
 
 
@@ -28,12 +31,29 @@ class Perifericos extends ActiveRecord
     public static function findGroup($id)
     {
 
-        $query = "SELECT * FROM " . static::$tabla . " WHERE computer_id = '$id'";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE user_id = '$id'";
         $resultado = self::consultarSQL($query);
 
         return $resultado;
     }
+    public static function all($limit = null, $offset = null, $state = null)
+    {
+        $query = "SELECT p.*, COALESCE(CONCAT(personal.first_name, ' ', personal.last_name), 'sin asignar') AS name FROM perifericos p LEFT JOIN personal ON p.user_id = personal.id";
 
+        if ($state !== null) {
+            $query .= " WHERE p.state =" . (int)$state;
+        }
+        if ($limit !== null) {
+            $query .= " LIMIT " . (int)$limit;
+        }
+        if ($offset !== null) {
+            $query .= " OFFSET " . (int)$offset;
+        }
+
+
+
+        return self::consultarSQL($query);
+    }
     public function actualizar()
     {
 
@@ -44,7 +64,7 @@ class Perifericos extends ActiveRecord
 
         foreach ($atributos as $key => $value) {
 
-            if($key === 'mod_date') continue;
+            if ($key === 'mod_date') continue;
 
             if (is_null($value) || $value === '') {
 
@@ -59,6 +79,7 @@ class Perifericos extends ActiveRecord
         $query .= join(",", $valores);
         $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "'";
         $resultado = self::$db->query($query);
+
         return $resultado;
     }
 
@@ -92,6 +113,7 @@ class Perifericos extends ActiveRecord
             if (isset($this->$col)) {
                 $array[$col] = $this->$col;
             }
+            $array['name'] = $this->getAsignedName();
         }
         return $array;
     }

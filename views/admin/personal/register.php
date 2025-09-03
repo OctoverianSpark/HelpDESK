@@ -1,6 +1,6 @@
-<form method="post">
+<form method="post" class="container-grid">
 
-  <div class="container-input-flex">
+  <div class="container-flex">
 
     <label for="first_name" class="input-group">
       <span>Nombre</span>
@@ -14,7 +14,7 @@
     </label>
   </div>
 
-  <div class="container-input-flex">
+  <div class="container-flex container-flex--wrap">
 
     <label for="id_type" class="input-group">
       <span>Tipo de Documento</span>
@@ -32,7 +32,7 @@
         value="<?= isset($personal->nat_id) ? s($personal->nat_id) : '' ?>">
     </label>
   </div>
-  <div class="container-input-flex">
+  <div class="container-flex">
 
     <label for="phone_number" class="input-group">
       <span>Telefono</span>
@@ -45,7 +45,7 @@
         value="<?= isset($personal->email) ? s($personal->email) : '' ?>">
     </label>
   </div>
-  <div class="container-input-flex">
+  <div class="container-flex">
     <label for="job_title" class="input-group">
       <span>Cargo</span>
       <input type="text" name="job_title" id="job_title" required placeholder="Cargo"
@@ -68,7 +68,7 @@
     </label>
   </div>
 
-  <div class="container-input-flex">
+  <div class="container-flex">
     <label for="state" class="input-group">
       <span>Estado</span>
       <select name="state" id="state">
@@ -89,6 +89,6 @@
 
   <br>
 
-  <button type="submit" class="btn btn-submit">Cargar Datos</button>
+  <button type="submit" class="btn primary-btn">Cargar Datos</button>
 
 </form>

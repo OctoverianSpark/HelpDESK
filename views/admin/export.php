@@ -1,6 +1,6 @@
 <h1 class="title">Administrador</h1>
 
-<form method="post" action="/admin/export" class="exports-form container-input">
+<form method="post" action="/admin/export" class="exports-form container-grid">
 
     <label class="input-group">
         <span>Exportar</span>
@@ -13,5 +13,5 @@
         </select>
     </label>
 
-    <button type="submit" class="btn btn-submit">Exportar <i class="bi bi-file-earmark-arrow-down"></i></button>
+    <button type="submit" class="btn primary-btn">Exportar <i class="bi bi-file-earmark-arrow-down"></i></button>
 </form>

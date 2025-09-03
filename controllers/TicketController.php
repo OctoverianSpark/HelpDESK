@@ -31,6 +31,7 @@ class TicketController
 
 
 
+
         $router->render("admin/tickets/index", [
             "techs" => $techs
         ]);
@@ -71,7 +72,6 @@ class TicketController
                 $image->toPng()->save(CARPETA_IMAGENES . "/$nombreImagen");
                 $ticket->setImagen($nombreImagen);
             }
-
             $resultado = $ticket->guardar();
 
 

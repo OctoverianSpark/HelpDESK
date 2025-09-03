@@ -75,7 +75,11 @@ $url = $_SERVER["REQUEST_URI"];
     <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" href="/build/css/app.css">
 
 
@@ -125,7 +129,11 @@ $url = $_SERVER["REQUEST_URI"];
                     <ul class="nav-links">
                         <div>
                             <a href="/admin/inventario/dashboard"><span><i class="bi bi-bar-chart-fill"></i>Panel de Inventario</span></a>
-                            <a href="/admin/inventario/"><span><i class="bi bi-table"></i>Ver Inventario</span></a>
+                            <a href="/admin/inventario"><span><i class="bi bi-table"></i>Ver Inventario</span></a>
+                            <a href="/admin/inventario/crear"><span><i class="bi bi-plus-circle"></i>Añadir Equipo</span></a>
+                            <a href="/admin/pers"><span><i class="bi bi-table"></i>Ver Perifericos</span></a>
+                            <a href="/admin/pers/create"><span><i class="bi bi-plus-circle"></i>Agregar Perifericos</span></a>
+                            <a href="/admin/mantenimientos"><span><i class="bi bi-calendar"></i>Mantenimientos</span></a>
                         </div>
                     </ul>
                 </div>

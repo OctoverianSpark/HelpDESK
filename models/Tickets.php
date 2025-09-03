@@ -6,12 +6,56 @@ namespace Models;
 class Tickets extends ActiveRecord
 {
 
-    protected static $columnasDB = ["id", "fecha", "usuario", "categoria", "subcategoria", "descripcion", "anydesk", "imagen", "estado", "tecnico_id", "tecnico", "prioridad", "fecha_asignada", "fecha_pendiente", "fecha_completacion", "tiempo_en_asignar", "tiempo_en_pendiente", "tiempo_en_completar", "solucion"];
+    protected static $columnasDB = ["id", "fecha", "usuario", "categoria", "subcategoria", "descripcion", "imagen", "estado", "tecnico_id", "tecnico", "prioridad", "fecha_asignada", "fecha_pendiente", "fecha_completacion", "solucion"];
+
 
 
     protected static $tabla = "tickets";
 
+    public ?int $id;
+    public string $fecha;
+    public string $usuario;
+    public string $categoria;
+    public string $subcategoria;
+    public string $descripcion;
+    public string $imagen;
+    public string $estado;
+    public int $tecnico_id;
+    public string $tecnico;
+    public string $prioridad;
+    public ?string $fecha_asignada;
+    public ?string $fecha_pendiente;
+    public ?string $fecha_completacion;
+    public string $solucion;
 
+    public string $sa_ep; //Suma de sin asignar a pendiente
+    public string $ep_c; //Suma de en proceso a completado
+    public string $p_c; //Suma de pendiente a completado
+    public string $ep_p; //Suma de en proceso a pendiente
+
+
+    public function __construct($args = [])
+    {
+        $this->id = $args['id'] ?? null;
+        $this->fecha = $args['fecha'] ?? date('Y-m-d H:i:s');
+        $this->usuario = $args['usuario'] ?? '';
+        $this->categoria = $args['categoria'] ?? '';
+        $this->subcategoria = $args['subcategoria'] ?? '';
+        $this->descripcion = $args['descripcion'] ?? '';
+        $this->imagen = $args['imagen'] ?? '';
+        $this->estado = $args['estado'] ?? 'Pendiente';
+        $this->tecnico_id = $args['tecnico_id'] ?? 0;
+        $this->prioridad = $args['prioridad'] ?? 'Baja';
+        $this->fecha_asignada = $args['fecha_asignada'] ?? null;
+        $this->fecha_pendiente = $args['fecha_pendiente'] ?? null;
+        $this->fecha_completacion = $args['fecha_completacion'] ?? null;
+        $this->tecnico = $args['tecnico'] ?? '';
+        $this->solucion = $args['solucion'] ?? '';
+        $this->sa_ep = $args['sa_ep'] ?? 0;
+        $this->ep_c = $args['ep_c'] ?? 0;
+        $this->p_c = $args['p_c'] ?? 0;
+        $this->ep_p = $args['ep_p'] ?? 0;
+    }
 
     protected static function findConn($obj = [])
     {
@@ -33,7 +77,10 @@ class Tickets extends ActiveRecord
     }
     public static function all($limit = null, $offset = null)
     {
-        $query = "SELECT * FROM " . static::$tabla;
+        $query = "SELECT tickets.*,ABS(TIMESTAMPDIFF(MINUTE, fecha_asignada, fecha)) AS sa_ep,
+                ABS(TIMESTAMPDIFF(MINUTE, fecha_completacion, fecha_asignada)) AS ep_c,
+                ABS(TIMESTAMPDIFF(MINUTE, fecha_completacion, fecha_pendiente)) AS p_c,
+                ABS(TIMESTAMPDIFF(MINUTE, fecha_pendiente, fecha_asignada)) AS ep_p, CONCAT(users.first_name,' ' , users.last_name) as tecnico FROM " . static::$tabla . " LEFT JOIN users on tickets.tecnico_id = users.id";
         $query .= " ORDER BY id DESC ";
 
         if ($limit !== null) {
@@ -45,20 +92,34 @@ class Tickets extends ActiveRecord
         }
 
 
-
         return self::consultarSQL($query);
     }
 
-    public static function getByDate($from, $to)
+    public static function filterByGraph($from = null, $to = null, $tech = null)
     {
 
+        $query = "SELECT tickets.*,ABS(TIMESTAMPDIFF(MINUTE, fecha_asignada, fecha)) AS sa_ep,
+                ABS(TIMESTAMPDIFF(MINUTE, fecha_completacion, fecha_asignada)) AS ep_c,
+                ABS(TIMESTAMPDIFF(MINUTE, fecha_completacion, fecha_pendiente)) AS p_c,
+                ABS(TIMESTAMPDIFF(MINUTE, fecha_pendiente, fecha_asignada)) AS ep_p, CONCAT(users.first_name,' ' , users.last_name) as tecnico FROM " . static::$tabla . " LEFT JOIN users on tickets.tecnico_id = users.id";
 
-        $query = "SELECT * FROM ti.tickets WHERE fecha BETWEEN '$from' AND '$to' ORDER BY id DESC";
-
-
+        if ($from && $to && $tech) {
+            $query .= " WHERE fecha BETWEEN '$from' AND '$to' AND tecnico_id = $tech";
+        } elseif ($from && $to) {
+            $query .= " WHERE fecha BETWEEN '$from 00:00:00' AND '$to 23:59:59'";
+        } elseif ($from && $tech) {
+            $query .= " WHERE fecha >= '$from 00:00:00' AND tecnico_id = $tech";
+        } elseif ($to && $tech) {
+            $query .= " WHERE fecha <= '$to 23:59:59' AND tecnico_id = $tech";
+        } elseif ($from) {
+            $query .= " WHERE fecha >= '$from 00:00:00'";
+        } elseif ($to) {
+            $query .= " WHERE fecha <= '$to 23:59:59'";
+        } elseif ($tech) {
+            $query .= " WHERE tecnico_id = $tech";
+        }
 
         $result = self::consultarSQL($query);
-        $result = static::findConn($result);
 
         return $result;
     }
@@ -78,6 +139,8 @@ class Tickets extends ActiveRecord
 
         return $result;
     }
+
+
 
 
 
@@ -141,7 +204,6 @@ class Tickets extends ActiveRecord
 
         return $resultado;
     }
-
 
 
     public function actualizar()

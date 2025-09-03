@@ -92,11 +92,12 @@ $router->post("/admin/pers/update", [PersController::class, "update"]);
 $router->get("/admin/inventario/crear", [InventoryController::class, "crear"]);
 $router->post("/admin/inventario/crear", [InventoryController::class, "crear"]);
 
-$router->get("/admin/inventario/actualizar", [InventoryController::class, "actualizar"]);
-$router->post("/admin/inventario/actualizar", [InventoryController::class, "actualizar"]);
+$router->get("/admin/inventario/update", [InventoryController::class, "actualizar"]);
+$router->post("/admin/inventario/update", [InventoryController::class, "actualizar"]);
 
 $router->get("/admin/inventario/ver", [InventoryController::class, "ver"]);
 $router->get("/admin/personal", [PersonalController::class, "index"]);
+$router->post("/admin/personal", [PersonalController::class, "index"]);
 $router->get("/admin/personal/register", [PersonalController::class, "register"]);
 $router->post("/admin/personal/register", [PersonalController::class, "register"]);
 $router->get("/admin/personal/update", [PersonalController::class, "update"]);
@@ -152,19 +153,17 @@ $router->post("/admin/inventario/actions", [InventoryController::class, "actions
 
 
 
-
-
-
-
 //NOTE: LAPI FUNCTIONS
 $router->post("/admin/pers/find", [API_Inventory::class, "PERSSEARCH"]);
-$router->post("/admin/inventory/find", [API_Inventory::class, "INVENTORYSEARCH"]);
+$router->get("/inventory/find", [API_Inventory::class, "INVENTORYSEARCH"]);
 $router->post("/admin/inventory/actions", [API_Inventory::class, "actions"]);
-$router->post("/admin/inventory/get", [API_Inventory::class, "INVENTORY_GET"]);
+$router->get("/inventory/get", [API_Inventory::class, "INVENTORY_GET"]);
+$router->get("/inventory/get/all", [API_Inventory::class, "INVENTORY_ALL"]);
 $router->post("/admin/orders/get", [API_ORDERS::class, "GET"]);
 $router->post("/admin/orders/actuals", [API_ORDERS::class, "ACTUALS"]);
-
+$router->get('/admin/pers/get', [API_Inventory::class, "GET_PERS"]);
 $router->post("/tickets/find", [API_Tickets::class, "TICKETSEARCH"]);
+$router->get("/tickets/graph", [API_Tickets::class, "GRAPH_CONFIG"]);
 $router->post("/tickets/actuals", [API_Tickets::class, "ACTUALTICKETS"]);
 $router->get("/tickets/get", [API_Tickets::class, "TICKETSGET"]);
 $router->post("/admin/subcats/get", [API_Tickets::class, "SUBCATSSEARCH"]);

@@ -8,7 +8,7 @@
 <div class="table-wrapper">
 
    <div class="table">
-      <div class="table-header">
+      <div class="table-row table-header">
          <div class="header">Fecha</div>
          <div class="header">Tipo</div>
          <div class="header">Accion</div>

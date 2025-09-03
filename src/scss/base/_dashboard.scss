@@ -1,0 +1,143 @@
+@use "mixins" as *;
+
+.container-brief-cards {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.brief-card {
+  width: 250px;
+  background-color: var(--primary-600);
+  border-radius: 10px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px var(--background-200);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+  }
+  .avatar {
+    background-color: var(--primary-400);
+    font-size: 25px;
+    padding: 10px;
+    border-radius: 50%;
+    width: 32px;
+    color: var(--text-950);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 18px;
+    color: var(--text-50);
+    font-weight: 700;
+  }
+}
+
+.drop-card {
+  width: 250px;
+  background-color: var(--primary-600);
+  border-radius: 10px;
+  padding: 6px;
+  .avatar {
+    background-color: var(--primary-400);
+    font-size: 15px;
+    padding: 6px;
+    border-radius: 50%;
+    width: 16px;
+    color: var(--text-950);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-data {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    font-size: 15px;
+    color: var(--text-50);
+    font-weight: 700;
+  }
+}
+
+.cards-dropdown {
+  position: relative;
+
+  .cards-drop {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: 0.5s;
+    position: absolute;
+    > div {
+      display: grid;
+      place-items: center;
+
+      gap: 10px;
+      overflow: hidden;
+      margin: 0;
+    }
+  }
+
+  .drop-opener {
+    .open-cards {
+      cursor: pointer;
+      transition: 0.5s;
+      input {
+        display: none;
+      }
+    }
+  }
+
+  .drop-opener:has(input:checked) {
+    ~ .cards-drop {
+      grid-template-rows: 1fr;
+    }
+
+    .open-cards {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.dashboard-menu {
+  display: grid;
+  place-items: center;
+  width: 90%;
+
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.dashboard-card {
+  width: 90%;
+
+  .chart-board {
+    height: 300px;
+    width: 100%;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.tickets-dashboard-card {
+  display: grid;
+  place-items: center;
+  gap: 30px;
+
+  &.--row-3 {
+    grid-column: 1/4;
+  }
+}

@@ -43,7 +43,7 @@ class  OrderController
     public static function crear(Router $router)
     {
 
-        $inv = Inventory::filter("state", '=', '1');
+        $inv = Inventory::all(null, null, 1);
 
         $users = Personal::all();
 
@@ -67,7 +67,7 @@ class  OrderController
         $post = json_decode(file_get_contents("php://input"));
 
         $html = file_get_contents(__DIR__ . "/../views/templates/mail/" . $post->type . ".html");
-        
+
         if ($post->type === "entrega" || $post->type === "recepcion") {
 
             $orderCount = Ordenes::countOrders(strtoupper($post->type[0]));
@@ -118,7 +118,7 @@ class  OrderController
 
         if ($post->type === "recepcion") {
 
-            
+
             echo json_encode([
                 "url" => "/order/see?id=$id",
 

@@ -1,7 +1,26 @@
 import { Information } from './Class/Information.js'
 import Particle from './Class/Particle.js'
 import { TOAST } from './GLOBALS.js'
+import { Chart } from 'chart.js'
 
+Chart.defaults.font.family = 'Athiti'
+Chart.defaults.backgroundColor = [
+  'rgba(255, 99, 132, 1)',
+  'rgb(93, 95, 226)',
+  'rgba(255, 206, 86, 1)',
+  'rgba(75, 192, 192, 1)',
+  'rgba(153, 102, 255,1)',
+  'rgba(255, 159, 64, 1)'
+]
+
+Chart.defaults.borderColor = [
+  'rgba(255, 99, 132, 1)',
+  'rgb(36, 81, 110)',
+  'rgba(255, 206, 86, 1)',
+  'rgb(39, 88, 88)',
+  'rgba(153, 102, 255, 1)',
+  'rgba(255, 159, 64, 1)'
+]
 console.log('App.js loaded')
 
 function loginBackground () {
@@ -93,15 +112,23 @@ function notificarClickup () {
 }
 
 function modalKEY () {
+  const modals = document.querySelectorAll('.modal')
+  if (!modals.length > 0) return
+  console.log(modals)
+
   document.addEventListener('keydown', e => {
-    const modal = document.querySelectorAll('.modal')
     if (e.key.toLowerCase() === 'escape') {
-      modal.forEach(modalElement => {
-        if (!modalElement.classList.contains('active')) {
+      modals.forEach(modalElement => {
+        if (modalElement.classList.contains('active')) {
           modalElement.classList.remove('active')
         }
       })
     }
+  })
+  modals.forEach(modal => {
+    modal.addEventListener('click', e => {
+      if (e.target === modal) modal.classList.remove('active')
+    })
   })
 }
 

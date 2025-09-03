@@ -3,9 +3,9 @@
 
 <div class="container-topbar">
 
-  <form method="get" class="selection-form">
+  <form method="get" class="per-type-form">
 
-    <div class="container-input-flex">
+    <div class="container-flex">
 
       <label for="active" class="radio-label-card">
         <i class="bi bi-check"></i>
@@ -24,9 +24,9 @@
 
   <form class="search-form" method="GET">
 
-    <div class="container-input">
+    <div class="container-grid">
 
-      <div class="container-input-flex">
+      <div class="container-flex">
 
         <label for="col" class="input-group" direction="column">
           <span>Buscar por:</span>
@@ -57,8 +57,8 @@
 
 
 <div class="table-wrapper">
-  <div class="table">
-    <div class="table-header">
+  <div class="table table-per-admin">
+    <div class="table-row table-header">
       <div class="header">ID</div>
       <div class="header">Fecha de Modificacion</div>
       <div class="header">Tipo</div>
@@ -67,25 +67,9 @@
       <div class="header">Modelo</div>
       <div class="header">Color</div>
       <div class="header">Serial</div>
-      <?php if($_GET['state'] === '1'){ ?>
-        <div class="header">Fecha de Asignacion</div>
-        <?php }?>
+      <div class="header">Fecha de Asignacion</div>
     </div>
-    <?php foreach ($pers as $per): ?>
-      <div class="table-row">
-        <div class="cell"><a href="/admin/pers/update?id=<?php echo $per->id ?>"><?php echo s($per->id); ?></a></div>
-        <div class="cell" col='serial'><?php echo s($per->mod_date); ?></div>
-        <div class="cell" col='tipo'><?php echo s($per->tipo); ?></div>
-        <div class="cell" col='nombre'><?php echo s($per->getAsignedName()); ?></div>
-        <div class="cell" col='marca'><?php echo s($per->marca); ?></div>
-        <div class="cell" col='modelo'><?php echo s($per->modelo); ?></div>
-        <div class="cell" col='color'><?php echo s($per->color); ?></div>
-        <div class="cell" col='serial'><?php echo s($per->serial); ?></div>
-        <?php if($_GET['state'] === '1'){ ?>
-          <div class="header"><?php echo s($per->asign_date) ?></div>
-
-        <?php }?>
-      </div>
-    <?php endforeach; ?>
   </div>
 </div>
+
+<div id="pagination"></div>

@@ -1,112 +1,15 @@
-import { viewAdminTicket } from './views.js'
+import {
+  openDocumentationView,
+  viewAdminTicket,
+  ticketImgModal,
+  openInventoryView
+} from './views.js'
+
+console.log('SCRIPT Tables.js LOADED')
 
 /* Tables */
-let currentPage = 1
 const perPage = 50
 
-function chargeTickets (page = 1) {
-  fetch(`/tickets/get?page=${page}&limit=${perPage}`)
-    .then(res => res.json())
-    .then(json => {
-      const tabla = document.querySelector('.table.table-tickets-admin')
-
-      // Elimina todas las filas excepto la cabecera
-      tabla
-        .querySelectorAll('.table-row:not(.table-header)')
-        .forEach(row => row.remove())
-
-      json.tickets.forEach(ticket => {
-        const row = document.createElement('div')
-        row.classList.add('table-row')
-        row.dataset.id = ticket.id
-
-        // ----- ID -----
-        const cellId = document.createElement('div')
-        cellId.className = 'cell'
-        cellId.setAttribute('col', 'id')
-
-        const viewBtn = document.createElement('button')
-        viewBtn.className = 'cell-btn view-mdl-btn'
-        viewBtn.title = 'Ver Ticket'
-        viewBtn.setAttribute('cell-id', ticket.id)
-        viewBtn.textContent = ticket.id + ' '
-        const iconView = document.createElement('i')
-        iconView.className = 'bi bi-box-arrow-up-right'
-        viewBtn.appendChild(iconView)
-
-        const docBtn = document.createElement('button')
-        docBtn.className = 'cell-btn documentate'
-        docBtn.title = 'Documentar Ticket'
-        docBtn.setAttribute('cell-id', ticket.id)
-        const iconDoc = document.createElement('i')
-        iconDoc.className = 'bi bi-file-earmark-plus-fill'
-        docBtn.appendChild(iconDoc)
-
-        const imgBtn = document.createElement('button')
-        imgBtn.className = 'cell-btn img-btn'
-        imgBtn.title = 'Mostrar Imagen'
-        imgBtn.setAttribute('cell-id', ticket.id)
-        const iconImg = document.createElement('i')
-        iconImg.className = 'bi bi-image-fill'
-        imgBtn.appendChild(iconImg)
-
-        cellId.append(viewBtn, docBtn, imgBtn)
-        row.appendChild(cellId)
-
-        // ----- FECHA -----
-        const cellFecha = document.createElement('div')
-        cellFecha.className = 'cell'
-        cellFecha.setAttribute('col', 'fecha')
-        cellFecha.textContent = new Date(ticket.fecha).toLocaleString('es-CO')
-        row.appendChild(cellFecha)
-
-        // ----- CATEGORIA -----
-        const cellCategoria = document.createElement('div')
-        cellCategoria.className = 'cell'
-        cellCategoria.setAttribute('col', 'categoria')
-        cellCategoria.dataset.col = 'categoria'
-        cellCategoria.textContent = ticket.categoria
-        row.appendChild(cellCategoria)
-
-        // ----- USUARIO -----
-        const cellUsuario = document.createElement('div')
-        cellUsuario.className = 'cell'
-        cellUsuario.setAttribute('col', 'usuario')
-        cellUsuario.textContent = ticket.usuario
-        row.appendChild(cellUsuario)
-
-        // ----- ESTADO -----
-        const cellEstado = document.createElement('div')
-        cellEstado.className = 'cell'
-        cellEstado.setAttribute('col', 'estado')
-        cellEstado.dataset.col = 'estado'
-        cellEstado.textContent = ticket.estado
-        row.appendChild(cellEstado)
-
-        // ----- PRIORIDAD -----
-        const cellPrioridad = document.createElement('div')
-        cellPrioridad.className = 'cell'
-        cellPrioridad.setAttribute('col', 'prioridad')
-        cellPrioridad.dataset.col = 'prioridad'
-        cellPrioridad.textContent = ticket.prioridad
-        row.appendChild(cellPrioridad)
-
-        // ----- TECNICO -----
-        const cellTecnico = document.createElement('div')
-        cellTecnico.className = 'cell'
-        cellTecnico.setAttribute('col', 'tecnico')
-        cellTecnico.dataset.col = 'tecnico'
-        cellTecnico.textContent = ticket.tecnico
-        row.appendChild(cellTecnico)
-
-        // Agregar la fila a la tabla
-        tabla.appendChild(row)
-      })
-
-      renderPagination(json.page, json.pages, chargeTickets)
-      viewAdminTicket()
-    })
-}
 function renderPagination (actual, total, onPageChange) {
   const contenedor = document.getElementById('pagination')
   contenedor.innerHTML = ''
@@ -144,6 +47,269 @@ function renderPagination (actual, total, onPageChange) {
     btnNext.onclick = () => onPageChange(actual + 1)
     contenedor.appendChild(btnNext)
   }
+}
+
+function chargeData ({
+  url,
+  page = 1,
+  perPage = 20,
+  containerSelector,
+  renderRow,
+  query,
+  onRendered = () => {}
+}) {
+  const params = new URLSearchParams(query).toString()
+
+  fetch(
+    `${url}?page=${page}&limit=${perPage}${params != '' ? '&' + params : ''}`
+  )
+    .then(res => res.json())
+    .then(json => {
+      const container = document.querySelector(containerSelector)
+      if (!container) return
+
+      // Limpia las filas existentes (excepto cabecera)
+      container
+        .querySelectorAll('.table-row:not(.table-header)')
+        .forEach(row => row.remove())
+
+      // Renderiza cada fila usando el callback
+      json.data.forEach(data => {
+        const row = renderRow(data)
+        container.appendChild(row)
+      })
+
+      // Renderiza la paginación
+      renderPagination(json.page, json.pages, newPage => {
+        chargeData({
+          url,
+          page: newPage,
+          perPage,
+          containerSelector,
+          renderRow,
+          onRendered
+        })
+      })
+
+      // Ejecuta lógica extra (eventos, modales, etc.)
+      onRendered(json)
+    })
+}
+
+function renderTicketRow (
+  ticket,
+  columns = ['categoria', 'usuario', 'estado', 'prioridad', 'tecnico']
+) {
+  const row = document.createElement('div')
+  row.classList.add('table-row')
+  row.dataset.id = ticket.id
+
+  // --- ID con botones ---
+  const cellId = document.createElement('div')
+  cellId.className = 'cell'
+
+  const actions = [
+    {
+      class: 'view-mdl-btn',
+      title: 'Ver Ticket',
+      icon: 'bi-box-arrow-up-right'
+    },
+    {
+      class: 'documentate',
+      title: 'Documentar Ticket',
+      icon: 'bi-file-earmark-plus-fill'
+    },
+    { class: 'img-btn', title: 'Mostrar Imagen', icon: 'bi-image-fill' }
+  ]
+
+  actions.forEach(({ class: cls, title, icon }) => {
+    const btn = document.createElement('button')
+    btn.className = `cell-btn ${cls}`
+    btn.title = title
+    btn.setAttribute('cell-id', ticket.id)
+
+    const iconElem = document.createElement('i')
+    iconElem.className = `bi ${icon}`
+    btn.appendChild(
+      document.createTextNode(cls === 'view-mdl-btn' ? `${ticket.id} ` : '')
+    )
+    btn.appendChild(iconElem)
+
+    cellId.appendChild(btn)
+  })
+
+  row.appendChild(cellId)
+
+  // --- Fecha ---
+  const cellFecha = document.createElement('div')
+  cellFecha.className = 'cell'
+  cellFecha.setAttribute('col', 'fecha')
+  cellFecha.textContent = new Date(ticket.fecha).toLocaleString('es-CO')
+  row.appendChild(cellFecha)
+
+  // --- Columnas dinámicas ---
+  columns.forEach(col => {
+    const cell = document.createElement('div')
+    cell.className = 'cell'
+    cell.setAttribute('col', col)
+    cell.dataset.col = col
+    cell.textContent = ticket[col] ?? ''
+    row.appendChild(cell)
+  })
+
+  return row
+}
+
+function renderInvRow (inv) {
+  const row = document.createElement('div')
+
+  row.classList.add('table-row')
+  row.dataset.id = inv.id
+
+  const cellId = document.createElement('div')
+  cellId.className = 'cell'
+
+  const actions = [
+    {
+      class: 'view-mdl-btn',
+      title: 'Ver Equipo',
+      icon: 'bi-box-arrow-up-right'
+    },
+    {
+      class: 'cell-btn',
+      title: 'Actualizar',
+      icon: 'bi-pencil-fill',
+      onclick: () => (location.href = '/admin/inventario/update?id=' + inv.id)
+    }
+  ]
+
+  const cols = ['nombre', 'marca', 'modelo', 'color', 'serial']
+
+  actions.forEach(({ class: cls, title, icon, onclick }) => {
+    const btn = document.createElement('button')
+    btn.className = `cell-btn ${cls}`
+    btn.title = title
+    btn.setAttribute('cell-id', inv.id)
+
+    const iconElem = document.createElement('i')
+    iconElem.className = `bi ${icon}`
+    btn.appendChild(
+      document.createTextNode(
+        cls === 'view-mdl-btn' ? `${inv.nombre_equipo} ` : ''
+      )
+    )
+    btn.appendChild(iconElem)
+    btn.onclick = onclick
+
+    cellId.appendChild(btn)
+  })
+
+  row.appendChild(cellId)
+
+  cols.forEach(col => {
+    const cell = document.createElement('div')
+    cell.className = 'cell'
+    cell.setAttribute('col', col)
+    cell.dataset.col = col
+    cell.textContent = inv[col] ?? ''
+    row.appendChild(cell)
+  })
+
+  return row
+}
+function renderPerRow (per) {
+  const row = document.createElement('div')
+
+  row.classList.add('table-row')
+  row.dataset.id = per.id
+
+  // ID con enlace
+  const cellId = document.createElement('div')
+  cellId.className = 'cell'
+  const link = document.createElement('a')
+  link.href = '/admin/pers/update?id=' + per.id
+  link.textContent = per.id
+  cellId.appendChild(link)
+  row.appendChild(cellId)
+
+  // Columnas fijas
+  const cols = [
+    { key: 'mod_date', label: 'Fecha de Modificación' },
+    { key: 'tipo', label: 'Tipo' },
+    { key: 'name', label: 'Asignado a', fn: () => per.name },
+    { key: 'marca', label: 'Marca' },
+    { key: 'modelo', label: 'Modelo' },
+    { key: 'color', label: 'Color' },
+    { key: 'serial', label: 'Serial' }
+  ]
+
+  cols.forEach(({ key, fn }) => {
+    const cell = document.createElement('div')
+    cell.className = 'cell'
+    cell.setAttribute('col', key)
+    cell.textContent = fn ? fn() : per[key] ?? ''
+    row.appendChild(cell)
+  })
+
+  // Condicional -> Fecha de asignación si state === 1
+  if (per.state == 1) {
+    const asignCell = document.createElement('div')
+    asignCell.className = 'cell'
+    asignCell.textContent = per.asign_date ?? ''
+    row.appendChild(asignCell)
+  }
+
+  return row
+}
+
+function chargeInv () {
+  const radioInv = document.querySelectorAll('input[name="state"]')
+
+  radioInv.forEach(radio => {
+    radio.addEventListener('input', e => {
+      chargeData({
+        url: '/inventory/get',
+        perPage: perPage,
+        containerSelector: '.table.table-inv-admin',
+        renderRow: renderInvRow,
+        onRendered: () => {
+          openInventoryView()
+        },
+        query: { state: e.target.value }
+      })
+    })
+  })
+
+  chargeData({
+    url: '/inventory/get',
+    perPage: perPage,
+    containerSelector: '.table.table-inv-admin',
+    renderRow: renderInvRow,
+    onRendered: () => {
+      openInventoryView()
+    }
+  })
+}
+function chargePers () {
+  const radioPer = document.querySelectorAll('input[name="state"]')
+
+  radioPer.forEach(radio => {
+    radio.addEventListener('input', e => {
+      chargeData({
+        url: '/admin/pers/get',
+        perPage: perPage,
+        containerSelector: '.table.table-per-admin',
+        renderRow: renderPerRow,
+        query: { state: e.target.value }
+      })
+    })
+  })
+  chargeData({
+    url: '/admin/pers/get',
+    perPage: perPage,
+    containerSelector: '.table.table-per-admin',
+    renderRow: renderPerRow
+  })
 }
 
 function tableSearchManager () {
@@ -191,5 +357,18 @@ function tableSearchManager () {
   })
 }
 
+chargeData({
+  url: '/tickets/get',
+  perPage: perPage,
+  containerSelector: '.table.table-tickets-admin',
+  renderRow: renderTicketRow,
+  onRendered: () => {
+    viewAdminTicket()
+    openDocumentationView()
+    ticketImgModal()
+  }
+})
+
+chargeInv()
+chargePers()
 tableSearchManager()
-chargeTickets()

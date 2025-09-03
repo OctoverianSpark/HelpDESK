@@ -3,30 +3,11 @@
 
 <div class="container-top-bar">
 
-  <form method="get" class="selection-form">
-
-    <div class="container-input-flex">
-
-      <label for="active" class="radio-label-card">
-        <i class="bi bi-check"></i>
-        <input type="radio" name="state" value="1" id="active" <?php echo $_GET['state'] === "1" ? 'checked' : '' ?>>
-        <span>Activo</span>
-      </label>
-
-      <label for="stock" class="radio-label-card">
-        <i class="bi bi-archive"></i>
-        <input type="radio" name="state" value="0" id="stock" <?php echo $_GET['state'] === "0" ? 'checked' : '' ?>>
-        <span>Stock</span>
-      </label>
-
-    </div>
-  </form>
-
   <form class="search-form" method="GET">
 
     <div class="container-input">
 
-      <div class="container-input-flex">
+      <div class="container-flex">
 
         <label for="col" class="input-group" direction="column">
           <span>Buscar por:</span>
@@ -55,7 +36,7 @@
 </div>
 <div class="table-wrapper">
   <div class="table">
-    <div class="table-header">
+    <div class="table-header table-row">
       <div class="header">Nombre</div>
       <div class="header">Correo</div>
       <div class="header">Telefono</div>
@@ -72,7 +53,15 @@
         <div class="cell" col='nat_id'><?php echo $person->id_type . " " . $person->nat_id; ?></div>
         <div class="cell"><?php echo $person->contract_type; ?></div>
         <div class="cell" col='job_title'><?php echo $person->job_title . " DE " . $person->area; ?></div>
-        <div class="cell"><a href="/admin/personal/update?id=<?php echo $person->id ?>"><i class="bi bi-pencil-fill"></i></a></div>
+        <div class="cell">
+          <div class="container-flex">
+            <a href="/admin/personal/update?id=<?php echo $person->id ?>"><i class="bi bi-pencil-fill"></i></a>
+            <form method="post">
+              <input type="hidden" name="id" value="<?php echo $person->id ?>">
+              <button type="submit" class="cell-btn"><i class="bi bi-trash-fill"></i></button>
+            </form>
+          </div>
+        </div>
       </div>
     <?php endforeach; ?>
   </div>

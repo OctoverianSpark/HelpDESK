@@ -24,9 +24,9 @@ abstract class ActiveRecord extends ObjectCreator
 
     public function __construct($args = [])
     {
-        
+
         foreach (static::$columnasDB as $column) {
-            $this->$column = $args[$column] ??null;
+            $this->$column = $args[$column] ?? null;
         }
     }
 
@@ -52,10 +52,13 @@ abstract class ActiveRecord extends ObjectCreator
 
         return self::consultarSQL($query);
     }
+
     public static function count()
     {
-
-        return count(static::all());
+        $query = "SELECT COUNT(*) as total FROM " . static::$tabla;
+        $resultado = self::$db->query($query);
+        $row = $resultado->fetch_assoc();
+        return (int)$row['total'];
     }
 
 
@@ -177,7 +180,7 @@ abstract class ActiveRecord extends ObjectCreator
 
     public function sanitizarAtributos()
     {
-        
+
         $atributos = $this->atributos();
 
         $sanitizado = [];

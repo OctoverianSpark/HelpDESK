@@ -1,107 +1,132 @@
-import { Element } from "./Class/Element.js";
-import { Information } from "./Class/Information.js"
+import { Element } from './Class/Element.js'
+import { Information } from './Class/Information.js'
 
+function RADIOCARD (name, id, text, icon, value = '') {
+  const INPUT = new Element('INPUT', {
+    name: name,
+    id: id,
+    type: 'radio',
+    value: value
+  })
 
-function RADIOCARD(name, id, text, icon,value = "") {
-  const INPUT = new Element("INPUT", { name: name, id: id, type: "radio",value:value });
+  const I = new Element('I', { class: icon })
 
-  const I = new Element("I", { class: icon });
-
-  const SPAN = new Element("SPAN", {}, { textContent: text });
+  const SPAN = new Element('SPAN', {}, { textContent: text })
 
   const LABEL = new Element(
-    "LABEL",
-    { for: id, class: "radio-label-card" },
+    'LABEL',
+    { for: id, class: 'radio-label-card --smaller' },
     {},
     [INPUT, I, SPAN]
-  );
+  )
 
-  return LABEL;
+  return LABEL
 }
 
-function INPUTGROUP(name, id, text, placeholder, type = "text") {
-  const SPAN = new Element("SPAN", {}, { textContent: text }, []);
+function INPUTGROUP (name, id, text, placeholder, type = 'text') {
+  const SPAN = new Element('SPAN', {}, { textContent: text }, [])
   const INPUT = new Element(
-    "INPUT",
+    'INPUT',
     { id: id, type: type, placeholder: placeholder, name: name },
     []
-  );
-  const LABEL = new Element("LABEL", { for: id, class: "input-group" }, {}, [
+  )
+  const LABEL = new Element('LABEL', { for: id, class: 'input-group' }, {}, [
     SPAN,
-    INPUT,
-  ]);
+    INPUT
+  ])
 
-  return LABEL;
+  return LABEL
 }
 
-function GENCONTAINER(tag, className, childs = []) {
-  const CONTAINER = new Element(tag, { class: className }, {}, childs);
+function GENCONTAINER (tag, className, childs = []) {
+  const CONTAINER = new Element(tag, { class: className }, {}, childs)
 
-  return CONTAINER;
+  return CONTAINER
 }
-
 
 /**
  * Create a Toast Notificaction
- * 
+ *
  * @param {String} text The text displayed in the Toast
  * @param {String} pos The position ("left","center","right") where the Toast is displayed
  * @param {String} dest The destination page for the toast
- * 
- * 
+ *
+ *
  */
-function TOAST(text,pos,dest=""){
-  
+function TOAST (text, pos, dest = '', bg = 'var(--primary-600)') {
   Toastify({
     text: text,
     duration: 1500,
     close: true,
-    gravity: "top",
-    margin:"10",
+    gravity: 'top',
+    margin: '10',
     position: pos,
-    backgroundColor: "linear-gradient(to right,rgb(89, 74, 177),rgb(47, 66, 107))",
+    backgroundColor: bg,
     destination: dest,
-    width:1200
-  }).showToast();
+    width: 1200
+  }).showToast()
 }
 
-async function GETCOOKIES(){
-  const cookies = await Information.postJSON("/admin/cookies/get")
-  
-  return cookies;
+async function GETCOOKIES () {
+  const cookies = await Information.postJSON('/admin/cookies/get')
+
+  return cookies
 }
 
-
-function randomColor() {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
+function randomColor () {
+  const letters = '0123456789ABCDEF'
+  let color = '#'
   for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
+    color += letters[Math.floor(Math.random() * 16)]
   }
-  return color;
+  return color
 }
 
-function cleanPers(obj){
+function cleanPers (obj) {
+  let res = {}
 
-  
-  let res = {};
+  Object.entries(obj).forEach(([key, value]) => {
+    let ev = Object.values(value).every(
+      val => val === '' || val === undefined || val === null
+    )
 
-
-  Object.entries(obj).forEach(([key,value])=>{
-
-
-    
-    let ev= Object.values(value).every(val=>val===""||val === undefined||val===null)
-
-    if (ev) return;
-    res[key] = value;
+    if (ev) return
+    res[key] = value
   })
 
-  return res;
-
-
+  return res
 }
 
+const fetchTicketsData = async (query = {}) => {
+  try {
+    let response
+    if (Object.keys(query).length > 0) {
+      const params = new URLSearchParams(query).toString()
+      console.log(params)
 
+      response = await fetch(`/tickets/graph?${params}`)
+    } else {
+      response = await fetch(`/tickets/graph`)
+    }
 
-export  { GENCONTAINER, RADIOCARD, INPUTGROUP,TOAST, GETCOOKIES,randomColor,cleanPers };
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error fetching graph data:', error)
+    return null
+  }
+}
+
+export {
+  GENCONTAINER,
+  RADIOCARD,
+  INPUTGROUP,
+  TOAST,
+  GETCOOKIES,
+  randomColor,
+  cleanPers,
+  fetchTicketsData
+}

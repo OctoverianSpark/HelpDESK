@@ -1,15 +1,11 @@
-<main class="tickets-admin-dashboard">
-
-
-
    <div class="top-bar-filter">
 
 
-      <form class="graphics-filter-form container-input-flex">
+      <form class="dashboard-filter container-flex">
 
 
 
-         <fieldset class="no-fieldset container-input-flex">
+         <fieldset class="no-fieldset container-flex">
 
             <legend>Desde / Hasta</legend>
 
@@ -27,10 +23,10 @@
 
 
 
-         <fieldset class="no-fieldset container-input-flex">
+         <fieldset class="no-fieldset container-flex">
             <legend>Tecnico Asignado</legend>
             <?php foreach ($usrs as $usr) { ?>
-               <label for="technical-<?php echo $usr->id ?>" class="radio-label">
+               <label for="technical-<?php echo $usr->id ?>" class="radio-btn">
                   <input type="radio" name="tech" id="technical-<?php echo $usr->id ?>" value="<?php echo $usr->id ?>">
                   <span><?php echo $usr->first_name . " " . $usr->last_name ?></span>
                </label>
@@ -48,89 +44,267 @@
 
    <div class="container-brief-cards">
 
+      <div class="cards-dropdown">
 
-      <div class="brief-card">
-         <span class="avatar">
+         <div class="brief-card drop-opener">
+            <span class="avatar">
 
-            <i class="bi bi-ticket-detailed"></i>
+               <i class="bi bi-ticket"></i>
 
-         </span>
-         <div class="card-data">
+            </span>
+            <div class="card-data">
 
-            <span class="card-title">Total de tickets</span>
-            <span class="quantificate-total card-result"></span>
+               <span class="card-title">Tickets</span>
+               <label for="tickets-data" class="open-cards">
+                  <span><i class="bi bi-chevron-down"></i></span>
+                  <input type="checkbox" name="open" id="tickets-data" checked>
+               </label>
 
+
+
+
+            </div>
+
+         </div>
+
+         <div class="cards-drop">
+            <div>
+               <br>
+
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-ticket-perforated"></i>
+
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Total</span>
+                     <span class="brief-data totalTickets"></span>
+                  </div>
+               </div>
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-ticket-perforated"></i>
+
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Abiertos</span>
+                     <span class="brief-data openTickets"></span>
+                  </div>
+               </div>
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-ticket-perforated"></i>
+
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Pendientes</span>
+                     <span class="brief-data pendingTickets"></span>
+                  </div>
+               </div>
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-ticket-perforated"></i>
+
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Cerrados al primer contacto</span>
+                     <span class="brief-data firstContactClosed"></span>
+                  </div>
+               </div>
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-ticket-perforated"></i>
+
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Cerrados con pausas</span>
+                     <span class="brief-data closedWithBreaks"></span>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
-      <div class="brief-card">
-         <span class="avatar">
+      <div class="cards-dropdown">
 
-            <i class="bi bi-clock"></i>
+         <div class="brief-card drop-opener">
+            <span class="avatar">
 
-         </span>
-         <div class="card-data">
+               <i class="bi bi-clock"></i>
 
-            <span class="card-title">Tiempo de asignacion</span>
-            <span class="quantificate-asign-time card-result"></span>
+            </span>
+            <div class="card-data">
+
+               <span class="card-title">Tiempos</span>
+               <label for="times" class="open-cards">
+                  <span><i class="bi bi-chevron-down"></i></span>
+                  <input type="checkbox" name="open" id="times" checked>
+               </label>
+
+
+
+
+            </div>
+
          </div>
 
+         <div class="cards-drop">
+            <div>
+               <br>
+
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-clock-history"></i>
+
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Tiempo en completar</span>
+                     <span class="brief-data avgCompletionTime"></span>
+
+                  </div>
+               </div>
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-clock-history"></i>
+
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Tiempo en pendiente</span>
+                     <span class="brief-data avgPendingTime"></span>
+
+                  </div>
+               </div>
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-clock-history"></i>
+
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Tiempo promedio sin asignar</span>
+                     <span class="brief-data avgAsignedTime"></span>
+
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
-      <div class="brief-card">
-         <span class="avatar">
+      <div class="cards-dropdown">
 
-            <i class="bi bi-clock"></i>
+         <div class="brief-card drop-opener">
+            <span class="avatar">
 
-         </span>
-         <div class="card-data">
-            <span class="card-title">Tiempo de suspension</span>
-            <span class="quantificate-pending-time card-result"></span>
+               <i class="bi bi-flag-fill"></i>
 
-         </div>
+            </span>
+            <div class="card-data">
+               <span class="card-title">Prioridades</span>
+               <label for="priorities" class="open-cards">
+                  <span><i class="bi bi-chevron-down"></i></span>
+                  <input type="checkbox" name="open" id="priorities" checked>
+               </label>
 
-      </div>
-      <div class="brief-card">
-         <span class="avatar">
-
-            <i class="bi bi-clock"></i>
-
-         </span>
-         <div class="card-data">
-            <span class="card-title">Tiempo de completacion</span>
-            <span class="quantificate-complete-time card-result"></span>
+            </div>
 
          </div>
 
+
+         <div class="cards-drop">
+
+            <div>
+               <br>
+
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-flag-fill"></i>
+                  </span>
+                  <div class="card-data">
+                     F <span class="card-title">Alta</span>
+                     <span class="brief-data highPriority"></span>
+                  </div>
+
+               </div>
+
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-flag-fill"></i>
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Media</span>
+                     <span class="brief-data mediumPriority"></span>
+                  </div>
+
+               </div>
+
+               <div class="drop-card">
+                  <span class="avatar">
+
+                     <i class="bi bi-flag-fill"></i>
+                  </span>
+                  <div class="card-data">
+                     <span class="card-title">Baja</span>
+                     <span class="brief-data lowPriority"></span>
+                  </div>
+
+               </div>
+
+            </div>
+         </div>
       </div>
 
    </div>
 
+   <div class="dashboard-menu">
 
 
-   <div class="dashboard">
 
+      <fieldset class="dashboard-card tickets-dashboard-card --row-1">
+         <legend>Estados</legend>
+         <div class="container-flex">
 
-      <div class="dashboard-info">
+            <div class="chart-board">
+               <canvas id="status-chart"></canvas>
 
-         <canvas class="chart-per-type"></canvas>
+            </div>
+            <div class="chart-board">
+               <canvas id="priority-chart"></canvas>
+            </div>
+         </div>
 
-      </div>
+         <div class="chart-board">
 
+            <canvas id="category-chart"></canvas>
+         </div>
 
-      <div class="dashboard-info bar-chart">
+      </fieldset>
 
-         <canvas class="chart-per-asign"></canvas>
+      <fieldset class="dashboard-card tickets-dashboard-card --row-2">
+         <legend>Promedio de tiempos y Tickets por fecha</legend>
 
-      </div>
+         <div class="chart-board">
+            <canvas id="ticketsByDate"></canvas>
 
-      <div class="dashboard-info line-chart">
-         <canvas class="chart-per-time"></canvas>
-      </div>
+         </div>
+         <div class="chart-board">
+            <canvas id="avgResolutionByDate"></canvas>
+         </div>
 
+      </fieldset>
+
+      <fieldset class="dashboard-card tickets-dashboard-card --row-3">
+         <legend>Tiempo promedio de resolucion</legend>
+
+         <div class="chart-board">
+            <canvas id="avgResolutionByTech"></canvas>
+         </div>
+
+      </fieldset>
    </div>
-
-
-
-
-
-
-</main>

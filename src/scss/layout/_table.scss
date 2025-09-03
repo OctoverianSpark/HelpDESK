@@ -64,29 +64,6 @@
   margin: 1rem 0;
   border-radius: 0.75rem;
   /* Custom scrollbar styles */
-  &::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--background-400);
-    border-radius: 0.75rem;
-    transition: background 0.2s;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-300);
-  }
-
-  &::-webkit-scrollbar-corner {
-    background: transparent;
-  }
-
-  /* Firefox scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: var(--background-400) transparent;
 
   @media (max-width: 768px) {
     .table {

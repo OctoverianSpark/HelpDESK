@@ -25,6 +25,10 @@
 
 .cell-btn {
   color: var(--text-50);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }
 
 .primary-btn {
@@ -34,6 +38,15 @@
   &:hover {
     background-color: var(--primary-200);
   }
+}
+
+.chat-btn {
+  font-size: 32px;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-950);
 }
 
 .theme-btn {
@@ -51,8 +64,13 @@
   }
 }
 
-.btn-red {
-  background: red;
+.red-btn {
+  outline: none;
+  border: none;
+  background-color: rgb(241, 53, 53);
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
 }
 
 #pagination {
@@ -75,4 +93,13 @@
   cursor: pointer;
   transition: 0.5s;
   color: var(--text-950);
+}
+
+.green-btn {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  background-color: rgb(56, 212, 56);
+  border-radius: 50%;
 }

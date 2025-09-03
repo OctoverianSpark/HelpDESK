@@ -6,7 +6,6 @@ class Inventory extends ActiveRecord
 {
 
     protected static $schema = "ti";
-    protected static $schema = "ti";
 
     protected static $tabla = "inv";
 
@@ -15,7 +14,6 @@ class Inventory extends ActiveRecord
         "id",
         "user_id",
         "nombre",
-        "apellido",
         "tipo_documento",
         "documento",
         "telefono",
@@ -38,7 +36,6 @@ class Inventory extends ActiveRecord
     public ?int $id;
     public $user_id;
     public ?string $nombre;
-    public ?string $apellido;
     public ?string $tipo_documento;
     public ?string $documento;
     public ?string $telefono;
@@ -266,23 +263,48 @@ class Inventory extends ActiveRecord
         return $atributos;
     }
 
-    public static function all($limit = null, $offset = null)
+    public static function all($limit = null, $offset = null, $state = null)
     {
-        $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
+        $query = "SELECT i.*, CONCAT(p.first_name, ' ' , p.last_name) as nombre, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
         FROM inv i
-        LEFT JOIN personal p ON i.user_id = p.id
-        ORDER BY i.id DESC";
+        LEFT JOIN personal p ON i.user_id = p.id";
+
+        if ($state) {
+            $query .= " WHERE i.state = $state";
+        }
+
+        $query .= " ORDER BY i.id DESC";
+
+        if ($limit) {
+            $query .= " LIMIT $limit";
+        }
+
+        if ($offset) {
+            $query .= " OFFSET $offset";
+        }
+
+
         $result = self::consultarSQL($query);
 
 
         return $result;
     }
 
+    public static function count($state = 1)
+    {
+
+        $query = "SELECT count(*) as total FROM ti.inv WHERE state = $state";
+
+        $resultado = self::$db->query($query);
+        $row = $resultado->fetch_assoc();
+        return (int)$row['total'];
+    }
+
 
     public static function find($id)
     {
 
-        $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
+        $query = "SELECT i.*, CONCAT(p.first_name, ' ' , p.last_name) as nombre, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
         FROM inv i
         LEFT JOIN personal p ON i.user_id = p.id
         WHERE i.id = $id";

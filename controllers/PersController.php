@@ -36,8 +36,10 @@ class PersController
   public static function create(Router $router)
   {
 
+    $users = Personal::all();
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $periferico = new Perifericos($_POST);
+      $periferico->state = 1;
       $periferico->guardar();
       header('Location: /admin/pers');
     } else {
@@ -45,7 +47,8 @@ class PersController
     }
 
     $router->render("admin/pers/create", [
-      "periferico" => $periferico
+      "periferico" => $periferico,
+      "users" => $users
     ]);
   }
 

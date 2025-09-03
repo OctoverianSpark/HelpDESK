@@ -23,7 +23,7 @@ use Models\Inventory;
         <div class="cell"><?php echo $mantenimiento->tech ?></div>
         <div class="cell"><?php echo $mantenimiento->latest ?></div>
         <div class="cell"><?php echo $mantenimiento->next ?></div>
-        <div class="cell"><?php echo Inventory::find($mantenimiento->computer)->getNombreEquipo() ?></div>
+        <div class="cell"><?php echo $mantenimiento->computer ?></div>
       </div>
 
 

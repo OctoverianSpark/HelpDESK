@@ -20,6 +20,15 @@ class PersonalController
       $personal = Personal::all();
     }
 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $usr = Personal::find($_POST['id']);
+      if ($usr) {
+
+        $usr->eliminar();
+      }
+      header('Location: /admin/personal');
+    }
+
     $router->render('admin/personal/index', [
       'personal' => $personal,
     ]);

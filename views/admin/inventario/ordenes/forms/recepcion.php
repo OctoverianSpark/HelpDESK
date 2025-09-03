@@ -1,53 +1,24 @@
-<fieldset class="selector-wrapper no-fieldset">
-   <legend>Usuario del equipo</legend>
+<label for="user_id" class="input-group">
+   <span>Usuario</span>
+   <select name="user_id" id="user_id
+">
+      <?php foreach ($users as $user) { ?>
 
-   <label class="label-search-input" for="search">
-      <div class="search">
-         <i class="bi bi-search"></i>
-         <input type="text" id="search" placeholder="Busca al usuario..." class="filter" autocomplete="off" required>
-      </div>
-   </label>
-   <ul class="options">
-
-      <?php foreach ($users as $usr) { ?>
-         <label for="user-option-<?php echo $usr->id ?>" class="option">
-            <input type="radio" name="user_id" value="<?php echo $usr->id ?>" id="user-option-<?php echo $usr->id ?>" <?php echo ($usr->id == $inv->user_id) ? "checked" : "" ?>>
-            <span><?php echo "$usr->first_name $usr->last_name" ?></span>
-         </label>
+         <option value="<?php echo $user->id ?>"><?php echo $user->first_name . ' ' . $user->last_name ?></option>
       <?php } ?>
 
-   </ul>
+   </select>
 
+</label>
 
-</fieldset>
-
-
-<fieldset class="selector-wrapper no-fieldset">
-   <legend>Computador</legend>
-
-   <label class="label-search-input" for="search">
-      <div class="search">
-         <i class="bi bi-search"></i>
-         <input type="text" id="search" placeholder="Computador" class="filter" name="" autocomplete="off" required>
-      </div>
-   </label>
-   <ul class="options">
-      <label for="same-computer" class="option">
-         <input type="radio" name="computer" id="same-computer" value="same">
-         <span>MISMO EQUIPO DEL USUARIO</span>
-      </label>
+<label for="computer_id" class="input-group">
+   <span>Computador</span>
+   <select name="computer_id" id="computer_id">
       <?php foreach ($inv as $eq) { ?>
-         <label for="computer-option-<?php echo $eq->id ?>" class="option">
-            <input computer-id="<?php echo $eq->id ?>" type="radio" name="computer_id" id="computer-option-<?php echo $eq->id ?>" value="<?php echo $eq->id ?>">
-            <span title="Este computador pertenece a: <?php echo $eq->nombre . " " . $eq->apellido ?> "><?php echo $eq->nombre_equipo ?> : <?php echo $eq->nombre . " " . $eq->apellido ?></span>
-         </label>
+         <option value="<?php echo $eq->id ?>"><?php echo $eq->nombre_equipo ?>:<?php echo $eq->nombre ?></option>
       <?php } ?>
-
-   </ul>
-
-
-
-</fieldset>
+   </select>
+</label>
 
 <label for="emission-date" class="input-group">
    <span>Fecha de Emision</span>

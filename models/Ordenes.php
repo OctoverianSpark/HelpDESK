@@ -78,7 +78,7 @@ class Ordenes extends ActiveRecord
         return count($result);
     }
 
-    public static function all()
+    public static function all($offset = null, $limit = null)
     {
 
         $query = "SELECT * FROM ti.ordenes as i ORDER BY id DESC";
@@ -162,15 +162,13 @@ class Ordenes extends ActiveRecord
         foreach ($atributos as $key => $value) {
 
             if ($key === "nombre_equipo" || $key === "nombre" || $key === "apellido") continue;
-            
-            if(is_string($value) ){
-                
+
+            if (is_string($value)) {
+
                 $sanitizado[$key] = self::$db->escape_string($value);
-            }else if(is_array($value)){
+            } else if (is_array($value)) {
                 $sanitizado[$key] = json_encode($value, JSON_UNESCAPED_UNICODE);
-
-
-            }else{
+            } else {
                 $sanitizado[$key] = $value;
             }
         }

@@ -1,73 +1,65 @@
-<fieldset class="selector-wrapper no-fieldset">
-    <legend>Usuario del equipo</legend>
-
-    <label class="label-search-input" for="search">
-        <div class="search">
-            <i class="bi bi-search"></i>
-            <input type="text" id="search" placeholder="Busca al usuario..." class="filter" value="<?php echo "$inv->nombre $inv->apellido" ?>" autocomplete="off">
-        </div>
-    </label>
-    <ul class="options">
+<label class="input-group" for="user">
+    <span>Usuario</span>
+    <select id="user" name="user_id">
         <?php foreach ($users as $usr) { ?>
-            <label for="option-<?php echo $usr->id ?>" class="option">
-                <input type="radio" name="user_id" value="<?php echo $usr->id ?>" id="option-<?php echo $usr->id ?>" <?php echo ($usr->id == $inv->user_id) ? "checked" : "" ?>>
-                <span><?php echo "$usr->first_name $usr->last_name" ?></span>
-            </label>
+            <option value="<?php echo $usr->id ?>"><?php echo $usr->first_name . ' ' . $usr->last_name ?></option>
         <?php } ?>
 
-    </ul>
-
-
-</fieldset>
+    </select>
+</label>
 
 
 
-<fieldset class="container-input-flex no-fieldset">
-    <legend>Tipo de Equipo</legend>
+<div class="container-flex">
 
 
-    <label for="computer" class="radio-label-card">
-
-        <input type="radio" name="tipo" id="computer" value="computador" required <?PHP echo (strtolower($inv->tipo) === "computador") ? "checked" : "" ?>>
-        <i class="bi bi-pc-display"></i>
-        <span>Computador de Escritorio</span>
+    <fieldset class="container-flex no-fieldset">
+        <legend>Tipo de Equipo</legend>
 
 
-    </label>
-    <label for="laptop" class="radio-label-card">
+        <label for="computer" class="radio-label-card">
 
-        <input type="radio" name="tipo" id="laptop" value="laptop" required <?PHP echo (strtolower($inv->tipo) === "laptop") ? "checked" : "" ?>>
-        <i class="bi bi-laptop"></i>
-        <span>Laptop</span>
-
-
-    </label>
-
-</fieldset>
-<fieldset class="container-input-flex no-fieldset">
-    <legend>Estado</legend>
+            <input type="radio" name="tipo" id="computer" value="computador" required <?PHP echo (strtolower($inv->tipo) === "computador") ? "checked" : "" ?>>
+            <i class="bi bi-pc-display"></i>
+            <span>Computador de Escritorio</span>
 
 
-    <label for="active" class="radio-label-card">
+        </label>
+        <label for="laptop" class="radio-label-card">
 
-        <input type="radio" name="state" id="active" value="1" required <?PHP echo (strtolower($inv->state) == "1") ? "checked" : "" ?>>
-        <i class="bi bi-check"></i>
-        <span>Activo</span>
-
-
-    </label>
-    <label for="stock" class="radio-label-card">
-
-        <input type="radio" name="state" id="stock" value="0" required <?PHP echo (strtolower($inv->state) == "0") ? "checked" : "" ?>>
-        <i class="bi bi-archive"></i>
-        <span>Stock</span>
+            <input type="radio" name="tipo" id="laptop" value="laptop" required <?PHP echo (strtolower($inv->tipo) === "laptop") ? "checked" : "" ?>>
+            <i class="bi bi-laptop"></i>
+            <span>Laptop</span>
 
 
-    </label>
+        </label>
 
-</fieldset>
+    </fieldset>
+    <fieldset class="container-flex no-fieldset">
+        <legend>Estado</legend>
 
-<div class="container-input-flex">
+
+        <label for="active" class="radio-label-card">
+
+            <input type="radio" name="state" id="active" value="1" required <?PHP echo (strtolower($inv->state) == "1") ? "checked" : "" ?>>
+            <i class="bi bi-check"></i>
+            <span>Activo</span>
+
+
+        </label>
+        <label for="stock" class="radio-label-card">
+
+            <input type="radio" name="state" id="stock" value="0" required <?PHP echo (strtolower($inv->state) == "0") ? "checked" : "" ?>>
+            <i class="bi bi-archive"></i>
+            <span>Stock</span>
+
+
+        </label>
+
+    </fieldset>
+</div>
+
+<div class="container-flex">
 
     <fieldset>
         <legend>Informacion del computador</legend>
@@ -102,7 +94,7 @@
 
     </fieldset>
 
-    <fieldset class="container-input-flex">
+    <fieldset class="container-flex">
 
         <legend>Usuario y Correo</legend>
 
@@ -118,9 +110,9 @@
     </fieldset>
 </div>
 
-<div class="container-input-flex">
+<div class="container-flex">
 
-    <fieldset class="container-input-flex no-fieldset">
+    <fieldset class="container-flex no-fieldset">
         <legend>Propietario</legend>
 
         <label class="radio-label-card" for="avsas">
@@ -147,15 +139,15 @@
 
 <div class="container-actions">
 
-    <button type="button" class="btn btn-green add-btn"><i class="bi bi-plus-circle-fill" title="Agregar Periferico"></i></button>
-    <button type="button" class="btn btn-red remove-btn"><i class="bi bi-dash-circle-fill" title="Eliminar Periferico"></i></button>
+    <button type="button" class="green-btn add-btn"><i class="bi bi-plus-circle-fill" title="Agregar Periferico"></i></button>
+    <button type="button" class="red-btn remove-btn"><i class="bi bi-dash-circle-fill" title="Eliminar Periferico"></i></button>
 
 </div>
 
 
 
 
-<div class="container-peripherals">
+<div class="container-peripherals container-grid">
     <?php $i = 1 ?>
     <?php foreach ($perifericos as $per) { ?>
 
@@ -164,33 +156,33 @@
 
             <button type="button" class="btn cell-btn"><i class="bi bi-x"></i></button>
             <input type="hidden" name="perifericos[<?php echo $i - 1 ?>][id]" value="<?php echo $per->id ?>">
-            <div class="container-input-flex">
-                <label for="mouse-<?php echo $i; ?>" class="radio-label-card">
+            <div class="container-flex">
+                <label for="mouse-<?php echo $i; ?>" class="radio-label-card --smaller">
                     <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="mouse-<?php echo $i; ?>" type="radio" value="mouse" <?php echo ($per->tipo == "MOUSE") ? "checked" : ""; ?>>
                     <i class="bi bi-mouse-fill"></i>
                     <span>Mouse</span>
                 </label>
-                <label for="teclado-<?php echo $i; ?>" class="radio-label-card">
+                <label for="teclado-<?php echo $i; ?>" class="radio-label-card --smaller">
                     <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="teclado-<?php echo $i; ?>" type="radio" value="teclado" <?php echo ($per->tipo == "TECLADO") ? "checked" : ""; ?>>
                     <i class="bi bi-keyboard-fill"></i>
                     <span>Teclado</span>
                 </label>
-                <label for="audifono-<?php echo $i; ?>" class="radio-label-card">
+                <label for="audifono-<?php echo $i; ?>" class="radio-label-card --smaller">
                     <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="audifono-<?php echo $i; ?>" type="radio" value="diademas" <?php echo ($per->tipo == "DIADEMAS") ? "checked" : ""; ?>>
                     <i class="bi bi-headphones"></i>
                     <span>Audifonos</span>
                 </label>
-                <label for="monitor-<?php echo $i; ?>" class="radio-label-card">
+                <label for="monitor-<?php echo $i; ?>" class="radio-label-card --smaller">
                     <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="monitor-<?php echo $i; ?>" type="radio" value="monitor" <?php echo ($per->tipo == "MONITOR") ? "checked" : ""; ?>>
                     <i class="bi bi-display"></i>
                     <span>Monitor</span>
                 </label>
-                <label for="adaptador-<?php echo $i; ?>" class="radio-label-card">
+                <label for="adaptador-<?php echo $i; ?>" class="radio-label-card --smaller">
                     <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="adaptador-<?php echo $i; ?>" type="radio" value="adaptador" <?php echo ($per->tipo == "ADAPTADOR") ? "checked" : ""; ?>>
                     <i class="bi bi-usb-symbol"></i>
                     <span>Adaptador</span>
                 </label>
-                <label for="camara-<?php echo $i; ?>" class="radio-label-card">
+                <label for="camara-<?php echo $i; ?>" class="radio-label-card --smaller">
                     <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="camara-<?php echo $i; ?>" type="radio" value="camara" <?php echo ($per->tipo == "CAMARA") ? "checked" : ""; ?>>
                     <i class="bi bi-webcam-fill"></i>
                     <span>Camara</span>
