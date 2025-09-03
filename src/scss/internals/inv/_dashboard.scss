@@ -28,7 +28,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-   
+
     margin: 1rem;
 
     .brief-card {
@@ -79,11 +79,11 @@
           text-align: left;
           margin: 0;
           padding: 0;
-          font-family: Pangram;
+          font-family: v.$fuente_principal;
         }
 
         .card-title {
-          font-family: Pangram-Black;
+          font-family: v.$fuente_principal;
           font-size: 2rem;
           background: linear-gradient(to right, v.$azul, v.$azulFuerte);
           background-clip: text;

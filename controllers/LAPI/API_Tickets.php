@@ -92,13 +92,30 @@ class API_Tickets
 
    public static function TICKETSGET()
    {
+      $porPagina = 50; // cantidad de tickets por página
+      $pagina = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+      if ($pagina < 1) $pagina = 1;
 
 
+      // Total de tickets para calcular las páginas
+      $totalTickets = Tickets::count();
+      $totalPaginas = ceil($totalTickets / $porPagina);
+      // Calcular offset
+      $offset = ($pagina - 1) * $porPagina;
+
+      // Obtener los tickets de la página actual
+      $tickets = Tickets::all($porPagina, $offset);
 
 
-      echo json_encode(Tickets::all());
+      echo json_encode([
+         'tickets' => $tickets,
+         'total' => $totalTickets,
+         'pages' => $totalPaginas,
+         'page' => $pagina
+      ]);
       exit;
    }
+
 
    public static function ACTUALTICKETS()
    {

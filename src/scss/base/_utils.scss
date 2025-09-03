@@ -2,108 +2,100 @@
 @use "vars" as v;
 
 .seccion {
-    margin-top: calc(v.$separacion / 2);
-    margin-bottom: calc(v.$separacion / 2);
+  margin-top: calc(v.$separacion / 2);
+  margin-bottom: calc(v.$separacion / 2);
 }
 .contenido-centrado {
-    max-width: 700px;
+  max-width: 700px;
 }
 
-.alinear-derecha{
-    display: flex;
-    justify-content: flex-end;
+.alinear-derecha {
+  display: flex;
+  justify-content: flex-end;
 }
-.hidden{
-    display: none;
-
+.hidden {
+  display: none;
 }
 
-.comment{
-    border: 1.5px solid #b4b3b3;
-    border-radius: 3rem 3rem 3rem 0 ;
-    legend,p,span{
-        color: v.$negro;
-        font-size: 1.5rem;
-        
+.comment {
+  border: 1.5px solid #b4b3b3;
+  border-radius: 3rem 3rem 3rem 0;
+  legend,
+  p,
+  span {
+    color: v.$negro;
+    font-size: 1.5rem;
+  }
+  transition: 0.5s;
 
+  &:hover {
+    border: 1.5px solid v.$morado;
+  }
 
+  legend {
+    font-weight: 800;
+    text-align: left;
+    span {
+      color: v.$morado;
     }
-    transition: .5s;
-
-    &:hover{
-        border: 1.5px solid v.$morado;
-    }
-
-    legend{
-        font-weight: 800;
-        text-align: left;
-        span{
-            color: v.$morado;
-        }
-        
-    }
-    display: flex;
-    justify-content: center;
-    align-items: left;
-    flex-direction: column;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: left;
+  flex-direction: column;
 }
 
-.w-100{
-    width: 100%;
+.w-100 {
+  width: 100%;
 }
 
-.appear{
-    opacity: 1;
-    transition: .8s opacity;
+.appear {
+  opacity: 1;
+  transition: 0.8s opacity;
 }
 
-.transparent{
-    background-color: transparent;
+.transparent {
+  background-color: transparent;
 }
 
-.title{
-    font-size: 6rem;
-    font-family: Pangram-Black;
-    background: linear-gradient(to right, v.$morado, v.$azulFuerte);
-    background-clip: text;
-    color: transparent;
-    letter-spacing: 3px;
+.title {
+  font-size: 6rem;
+  text-align: center;
+  font-family: v.$fuente_principal;
+  background: linear-gradient(to right, var(--accent-400), var(--accent-700));
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 3px;
 }
 
-
-.subtitle{
-    
-    font-size: 3.8rem;
-    font-family: Pangram-Black;
-    color: color.adjust(v.$morado,$lightness: 1% * -20);
-    letter-spacing: 3px;
+.subtitle {
+  font-size: 3.8rem;
+  font-family: v.$fuente_principal;
+  color: var(--accent-400);
+  letter-spacing: 3px;
 }
 
+.clipboard-button {
+  background: none;
+  color: v.$morado;
+  border: none;
+  i {
+    font-size: 2.8rem;
 
-.clipboard-button{
-    background: none;
-    color: v.$morado;
-    border: none;
-    i{  
-        font-size: 2.8rem;
-        
-         font-weight: 800;
+    font-weight: 800;
+  }
+  transition: 0.2s transform;
 
-    }
-    transition: .2s transform;
+  cursor: pointer;
 
-    cursor: pointer;
-
-    &:active{
-        transform: scale(.6);
-    }
-
+  &:active {
+    transform: scale(0.6);
+  }
 }
 
-
-.container-actions{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+.container-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }

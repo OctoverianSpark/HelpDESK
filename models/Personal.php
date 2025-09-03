@@ -33,20 +33,7 @@ class Personal extends ActiveRecord
     ];
 
 
-    public static function all()
-    {
 
-        $results  = [];
-
-
-        $query = "SELECT * FROM " . static::$tabla  . " ORDER BY id DESC";
-        $resultado = static::consultarSQL($query);
-
-
-
-
-        return $resultado;
-    }
 
     public static function separateAll()
     {
@@ -68,7 +55,6 @@ class Personal extends ActiveRecord
 
 
         $query = "SELECT * FROM " . static::$schema .  "." . static::$tabla  . " WHERE $column $operator '$value' ORDER BY id DESC";
-
         $resultado = static::consultarSQL($query);
 
 

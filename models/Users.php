@@ -28,13 +28,6 @@ class Users extends ActiveRecord
         return array_shift($resultado);
     }
 
-    public static function all()
-    {
-        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC";
-        $resultado = self::consultarSQL($query);
-
-        return $resultado;
-    }
     public static function getTecnicals()
     {
         $query = "SELECT * FROM " . static::$tabla . " where area = 'ATI' ORDER BY id DESC";

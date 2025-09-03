@@ -19,7 +19,7 @@ $url = $_SERVER["REQUEST_URI"];
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme='light'>
 
 <head>
     <meta charset="UTF-8">
@@ -84,115 +84,131 @@ $url = $_SERVER["REQUEST_URI"];
 </head>
 
 <body class="mainBody">
-    <?php if ($_SERVER["PATH_INFO"] != "/order/see") { ?>
-        <header class="header">
-            <?php if ($auth) { ?>
-                <div class="barra">
-                    <a href="/" class="logo">
-                        <h1 class="logo-title">HELP<span>DESK</span></h1>
-                    </a>
-                    <nav class="navegacion">
-                        <ul class="nav_links">
-                            <?php if ($_SESSION["role"] == "ADMIN") { ?>
 
+    <aside class="menu-sidebar">
+        <a href="/" class="logo sidebar-title">
+            HelpDesk
+        </a>
+        <button type="button" class="theme-btn"><i class="bi bi-sun-fill"></i></button>
+        <nav class="nav-menu">
+            <div class="drop-menu">
 
-                                <div class="container-nav-link">
-                                    <button class="nav_link">Administrador</button>
+                <label for="home" class="drop-btn">
+                    <input type="checkbox" id="home" name="menu">
 
-
-                                    <?php include "../includes/templates/drop/admin/admin.php" ?>
-                                </div>
-
-                            <?php } ?>
-
-
-
-
-                            <?php if (str_contains($url, "/admin")) { ?>
-
-
-
-                                <div class="container-nav-link">
-
-                                    <button class="nav_link">Inventario</button>
-
-                                    <?php include "../includes/templates/drop/admin/inventory.php" ?>
-
-                                </div>
-                                <div class="container-nav-link">
-
-                                    <button class="nav_link">Tickets</button>
-
-
-                                    <?php include "../includes/templates/drop/admin/tickets.php" ?>
-
-
-                                </div>
-                                <div class="container-nav-link">
-
-                                    <a href="/admin/entradas" class="nav_link">Entradas</a>
-
-
-                                </div>
-                                <div class="container-nav-link">
-
-                                    <a href="/logout" class="nav_link">Cerrar Sesion</a>
-
-                                </div>
-
-
-                            <?php } else {  ?>
-                                <div class="container-nav-link">
-                                    <a href="/tickets/crear" class="nav_link">Crear un Ticket</a>
-
-                                </div>
-                                <div class="container-nav-link">
-                                    <button class="nav_link">Sobre mi</button>
-
-                                    <?php include "../includes/templates/drop/user/about-me.php" ?>
-                                </div>
-                                <?php if ($_SESSION["role"] == "MNGR" || $_SESSION["role"] == "ADMIN") { ?>
-                                    <div class="container-nav-link">
-
-                                        <a href="/ordenes/crear" class="nav_link">SOLICITAR ORDENES</a>
-
-                                    </div>
-                                <?php } ?>
-                                <div class="container-nav-link">
-                                    <a href="/logout" class="nav_link">Cerrar Sesion</a>
-
-                                </div>
-                            <?php } ?>
-
-
-                        </ul>
-                    </nav>
-
-                    <div class="boton-notificaciones">
-                        <button class="btn btn-nots"><i id="bell" class="bx bxs-bell"></i><i id="quantity" class="bi"></i></button>
-                        <?php include "../includes/templates/notifications.php" ?>
+                    <i class='bi bi-gear-fill'></i>
+                    <span>
+                        Administrador
+                    </span>
+                </label>
+                <ul class="nav-links">
+                    <div>
+                        <a href="/admin"><span><i class="bi bi-graph-up"></i>Panel de Administracion</span></a>
+                        <a href="/admin/servers"><span><i class="bi bi-pc-display-horizontal"></i>Servidores</span></a>
+                        <a href="/admin/users"><span><i class="bi bi-person-fill"></i>Usuarios</span></a>
+                        <a href="/admin/logs"><span><i class="bi bi-file-earmark-binary-fill"></i>Logs</span></a>
+                        <a href="/admin/export"><span><i class="bi bi-file-earmark-excel-fill"></i>Exportar</span></a>
                     </div>
+                </ul>
+            </div>
+            <?php if (str_contains($_SERVER['PATH_INFO'], 'admin')) { ?>
+                <div class="drop-menu">
+
+                    <label for="inventario" class="drop-btn">
+                        <input type="checkbox" id="inventario" name="menu">
+
+                        <i class='bi bi-pc-display'></i>
+                        <span>
+                            Inventario
+                        </span>
+                    </label>
+                    <ul class="nav-links">
+                        <div>
+                            <a href="/admin/inventario/dashboard"><span><i class="bi bi-bar-chart-fill"></i>Panel de Inventario</span></a>
+                            <a href="/admin/inventario/"><span><i class="bi bi-table"></i>Ver Inventario</span></a>
+                        </div>
+                    </ul>
+                </div>
+                <div class="drop-menu">
+
+                    <label for="tickets" class="drop-btn">
+                        <input type="checkbox" id="tickets" name="menu">
+
+                        <i class='bi bi-ticket'></i>
+                        <span>
+                            Tickets
+                        </span>
+                    </label>
+                    <ul class="nav-links">
+                        <div>
+                            <a href="/admin/tickets/dashboard"><span><i class="bi bi-bar-chart-fill"></i>Panel de tickets</span></a>
+                            <a href="/admin/tickets"><span><i class="bi bi-table"></i>Ver tickets</span></a>
+                            <a href="/admin/tickets/create"><span><i class="bi bi-plus-circle"></i>Crear ticket</span></a>
+                        </div>
+                    </ul>
+                </div>
+                <div class="drop-menu">
+
+                    <label for="personal" class="drop-btn">
+                        <input type="checkbox" id="personal" name="menu">
+
+                        <i class='bi bi-person-fill'></i>
+                        <span>
+                            Personal
+                        </span>
+                    </label>
+                    <ul class="nav-links">
+                        <div>
+                            <a href="/admin/personal"><span><i class="bi bi-table"></i>Ver Personal</span></a>
+                            <a href="/admin/personal/register"><span><i class="bi bi-plus-circle"></i>Registrar Personal</span></a>
+                        </div>
+                    </ul>
+                </div>
+                <div class="drop-menu">
+
+                    <label for="ordenes" class="drop-btn">
+                        <input type="checkbox" id="ordenes" name="menu">
+
+                        <i class='bi bi-door-open'></i>
+                        <span>
+                            Ordenes
+                        </span>
+                    </label>
+                    <ul class="nav-links">
+                        <div>
+                            <a href="/admin/ordenes"><span><i class="bi bi-table"></i>Ver Ordenes</span></a>
+                            <a href="/admin/ordenes/crear"><span><i class="bi bi-plus-circle"></i>Generar Orden</span></a>
+                        </div>
+                    </ul>
                 </div>
 
+            <?php } else { ?>
+                <div class="drop-menu">
+
+                    <label for="tickets" class="drop-btn">
+                        <input type="checkbox" id="tickets" name="menu">
+
+                        <i class='bi bi-ticket'></i>
+                        <span>
+                            Tickets
+                        </span>
+                    </label>
+                    <ul class="nav-links">
+                        <div>
+                            <a href="/tickets/ver"><span><i class="bi bi-table"></i>Ver mis tickets</span></a>
+                        </div>
+                    </ul>
+                </div>
             <?php } ?>
+        </nav>
 
 
+    </aside>
 
+    <main>
+        <?php echo $contenido ?>
+    </main>
 
-        </header>
-    <?php } ?>
-
-
-    <?php echo $contenido; ?>
-
-    <?php if ($_SERVER["PATH_INFO"] != "/order/see" && $auth) { ?>
-        <footer class="footer">
-            <a href="/" class="logo">
-                <h1 class="logo-title">HELP<span>DESK</span></h1>
-            </a>
-            <p>ASISTENTE VIRTUAL S.A.S &copy;</p>
-        </footer>
-    <?php } ?>
 </body>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

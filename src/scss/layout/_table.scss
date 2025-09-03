@@ -1,0 +1,111 @@
+.table {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--background-950);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+  .table-row {
+    display: table-row;
+    transition: background 0.2s;
+
+    &:hover {
+      background: var(--background-800);
+    }
+  }
+
+  .cell,
+  .header {
+    display: table-cell;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--background-300);
+    vertical-align: middle;
+    font-size: 1rem;
+    color: var(--text-50);
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .header {
+    background: var(--background-200);
+    font-weight: 700;
+    color: var(--primary-700);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--primary-200);
+  }
+
+  .table-row:last-child .cell {
+    border-bottom: none;
+  }
+
+  .header:first-child {
+    border-top-left-radius: 0.75rem;
+  }
+  .header:last-child {
+    border-top-right-radius: 0.75rem;
+  }
+  .table-row:last-child .cell:first-child {
+    border-bottom-left-radius: 0.75rem;
+  }
+  .table-row:last-child .cell:last-child {
+    border-bottom-right-radius: 0.75rem;
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  max-height: 500px;
+  margin: 1rem 0;
+  border-radius: 0.75rem;
+  /* Custom scrollbar styles */
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--background-400);
+    border-radius: 0.75rem;
+    transition: background 0.2s;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-300);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--background-400) transparent;
+
+  @media (max-width: 768px) {
+    .table {
+      display: block;
+      width: 100%;
+    }
+
+    .table-row {
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .cell,
+    .header {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--background-300);
+    }
+  }
+}

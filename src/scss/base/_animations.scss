@@ -1,31 +1,114 @@
 @keyframes show {
-    2%{
-        opacity: 0;
-    }
-    100%{
-        opacity: 1;
-    }
+  2% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
-
 
 @keyframes end {
-    to{
-        width: 100%;
-    }
+  to {
+    width: 100%;
+  }
 }
 
-
-
 @keyframes float {
-    0% {
-      transform: translateY(0px);
-    }
-  
-    50% {
-      transform: translateY(-20px);
-    }
-  
-    100% {
-      transform: translateY(0px);
-    }
+  0% {
+    transform: translateY(0px);
   }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes warpfromright {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes sidebarGlitchEnhanced {
+  0% {
+    transform: translateX(100%) translateY(0px) skewX(0deg);
+    opacity: 0;
+    filter: hue-rotate(0deg) saturate(100%) contrast(100%);
+    clip-path: inset(0 0 0 0);
+  }
+  5% {
+    transform: translateX(85%) translateY(-15px) skewX(-5deg);
+    opacity: 0.1;
+    filter: hue-rotate(60deg) saturate(200%) contrast(150%);
+    clip-path: inset(10% 0 80% 0);
+  }
+  10% {
+    transform: translateX(75%) translateY(20px) skewX(3deg);
+    opacity: 0.2;
+    filter: hue-rotate(120deg) saturate(300%) contrast(200%);
+    clip-path: inset(60% 0 30% 0);
+  }
+  15% {
+    transform: translateX(65%) translateY(-8px) skewX(-2deg);
+    opacity: 0.3;
+    filter: hue-rotate(180deg) saturate(150%) contrast(120%);
+    clip-path: inset(20% 0 70% 0);
+  }
+  25% {
+    transform: translateX(50%) translateY(12px) skewX(4deg);
+    opacity: 0.5;
+    filter: hue-rotate(240deg) saturate(250%) contrast(180%);
+    clip-path: inset(40% 0 50% 0);
+  }
+  35% {
+    transform: translateX(40%) translateY(-6px) skewX(-3deg);
+    opacity: 0.6;
+    filter: hue-rotate(300deg) saturate(180%) contrast(140%);
+    clip-path: inset(0% 0 90% 0);
+  }
+  45% {
+    transform: translateX(25%) translateY(18px) skewX(2deg);
+    opacity: 0.7;
+    filter: hue-rotate(360deg) saturate(220%) contrast(160%);
+    clip-path: inset(70% 0 20% 0);
+  }
+  60% {
+    transform: translateX(15%) translateY(-10px) skewX(-1deg);
+    opacity: 0.8;
+    filter: hue-rotate(45deg) saturate(160%) contrast(130%);
+    clip-path: inset(30% 0 60% 0);
+  }
+  75% {
+    transform: translateX(8%) translateY(5px) skewX(1deg);
+    opacity: 0.9;
+    filter: hue-rotate(15deg) saturate(120%) contrast(110%);
+    clip-path: inset(5% 0 85% 0);
+  }
+  85% {
+    transform: translateX(3%) translateY(-3px) skewX(-0.5deg);
+    opacity: 0.95;
+    filter: hue-rotate(5deg) saturate(110%) contrast(105%);
+    clip-path: inset(0% 0 95% 0);
+  }
+  95% {
+    transform: translateX(1%) translateY(1px) skewX(0.2deg);
+    opacity: 0.98;
+    filter: hue-rotate(2deg) saturate(105%) contrast(102%);
+    clip-path: inset(0 0 0 0);
+  }
+  100% {
+    transform: translateX(0%) translateY(0px) skewX(0deg);
+    opacity: 1;
+    filter: hue-rotate(0deg) saturate(100%) contrast(100%);
+    clip-path: inset(0 0 0 0);
+  }
+}

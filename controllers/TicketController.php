@@ -27,14 +27,12 @@ class TicketController
     public static function index(Router $router)
     {
 
+        $techs = Users::filter('area', '=', 'ATI');
 
-        $tickets = Tickets::all();
-        $tecnicos = Users::filter("area", "=", "ATI");
 
 
         $router->render("admin/tickets/index", [
-            "tickets" => $tickets,
-            "tecnicos" => $tecnicos
+            "techs" => $techs
         ]);
     }
 
