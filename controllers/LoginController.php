@@ -104,10 +104,8 @@ class LoginController
             $_SESSION["log_type"] = "email";
             $_SESSION["login"] = true;
             $_SESSION['user_id'] = $userData->user_id;
-            $_SESSION["name"] = $userData->nombre . ' ' . $userData->apellido;
+            $_SESSION["name"] = $name;
             $_SESSION["charge"] = $userRole->area;
-            $_SESSION["role"] = $userRole->role ?? "USER";
-            $_SESSION["area"] = $userRole->area ?? "OPERACIONES";
             $_SESSION["role"] = $userRole->role ?? "USER";
             $_SESSION["area"] = $userRole->area ?? "OPERACIONES";
 

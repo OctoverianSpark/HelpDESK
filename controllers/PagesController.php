@@ -56,9 +56,6 @@ class PagesController
 
         $manager = new Manager(new Driver());
 
-        $inventario = Inventory::filter("user_id", "=", $_SESSION['user_id']);
-        $inventario = array_shift($inventario);
-
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

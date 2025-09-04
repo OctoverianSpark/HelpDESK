@@ -12,6 +12,16 @@ aside {
   transition: width 0.5s ease-in-out;
   z-index: 200;
 
+  .logout-link {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    margin-top: 20px;
+    margin: 15px;
+  }
+
   &.active {
     width: var(--sidebar-width);
     .sidebar-title {

@@ -174,3 +174,9 @@ textarea {
     background-color: var(--secondary-500);
   }
 }
+
+.password-group {
+  .container-psswrd-input {
+    display: flex;
+  }
+}
