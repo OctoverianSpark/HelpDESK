@@ -129,7 +129,7 @@ class API_Inventory
    public static function INVENTORY_GET()
    {
       $porPagina = 20; // cantidad de tickets por página
-      $state = (int) $_GET['state'] ?? 1;
+      $state = $_GET['state'] ?? 1;
       $pagina = isset($_GET['page']) ? (int) $_GET['page'] : 1;
       if ($pagina < 1) $pagina = 1;
 
