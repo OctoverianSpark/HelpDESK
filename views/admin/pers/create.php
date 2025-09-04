@@ -2,27 +2,27 @@
   <input type="hidden" name="perifericos[<?php echo $i - 1 ?>][id]" value="<?php echo $per->id ?>">
   <div class="container-flex">
     <label for="mouse-<?php echo $i; ?>" class="radio-label-card">
-      <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="mouse-<?php echo $i; ?>" type="radio" value="mouse" <?php echo ($per->tipo == "MOUSE") ? "checked" : ""; ?>>
+      <input name="tipo" id="mouse-<?php echo $i; ?>" type="radio" value="mouse" <?php echo ($per->tipo == "MOUSE") ? "checked" : ""; ?>>
       <i class="bi bi-mouse-fill"></i>
       <span>Mouse</span>
     </label>
     <label for="teclado-<?php echo $i; ?>" class="radio-label-card">
-      <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="teclado-<?php echo $i; ?>" type="radio" value="teclado" <?php echo ($per->tipo == "TECLADO") ? "checked" : ""; ?>>
+      <input name="tipo" id="teclado-<?php echo $i; ?>" type="radio" value="teclado" <?php echo ($per->tipo == "TECLADO") ? "checked" : ""; ?>>
       <i class="bi bi-keyboard-fill"></i>
       <span>Teclado</span>
     </label>
     <label for="audifono-<?php echo $i; ?>" class="radio-label-card">
-      <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="audifono-<?php echo $i; ?>" type="radio" value="diademas" <?php echo ($per->tipo == "DIADEMAS") ? "checked" : ""; ?>>
+      <input name="tipo" id="audifono-<?php echo $i; ?>" type="radio" value="diademas" <?php echo ($per->tipo == "DIADEMAS") ? "checked" : ""; ?>>
       <i class="bi bi-headphones"></i>
       <span>Audifonos</span>
     </label>
     <label for="monitor-<?php echo $i; ?>" class="radio-label-card">
-      <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="monitor-<?php echo $i; ?>" type="radio" value="monitor" <?php echo ($per->tipo == "MONITOR") ? "checked" : ""; ?>>
+      <input name="tipo" id="monitor-<?php echo $i; ?>" type="radio" value="monitor" <?php echo ($per->tipo == "MONITOR") ? "checked" : ""; ?>>
       <i class="bi bi-display"></i>
       <span>Monitor</span>
     </label>
     <label for="adaptador-<?php echo $i; ?>" class="radio-label-card">
-      <input name="perifericos[<?php echo $i - 1; ?>][tipo]" id="adaptador-<?php echo $i; ?>" type="radio" value="adaptador" <?php echo ($per->tipo == "ADAPTADOR") ? "checked" : ""; ?>>
+      <input name="tipo" id="adaptador-<?php echo $i; ?>" type="radio" value="adaptador" <?php echo ($per->tipo == "ADAPTADOR") ? "checked" : ""; ?>>
       <i class="bi bi-usb-symbol"></i>
       <span>Adaptador</span>
     </label>

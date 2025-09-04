@@ -38,6 +38,7 @@ class PersController
 
     $users = Personal::all();
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
       $periferico = new Perifericos($_POST);
       $periferico->state = 1;
       $periferico->guardar();

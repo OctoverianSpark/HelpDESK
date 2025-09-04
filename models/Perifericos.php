@@ -45,6 +45,8 @@ class Perifericos extends ActiveRecord
         if ($state !== null) {
             $query .= " WHERE p.state =" . (int)$state;
         }
+
+        $query .= " ORDER BY p.id DESC ";
         if ($limit !== null) {
             $query .= " LIMIT " . (int)$limit;
         }
