@@ -15,6 +15,7 @@ class Perifericos extends ActiveRecord
 
     public $user_id = null;
     public $asign_date = null;
+    public $mod_date;
     public $name = '';
 
 
@@ -22,6 +23,7 @@ class Perifericos extends ActiveRecord
     {
         parent::__construct($args);
 
+        $this->mod_date = date('Y-m-d H:i:s');
         $this->user_id = $args['user_id'] ?? null;
         $this->asign_date = !is_null($args['user_id']) ? date('Y-m-d H:i:s') : null;
     }
