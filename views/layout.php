@@ -19,7 +19,7 @@ $url = $_SERVER["REQUEST_URI"];
 
 
 <!DOCTYPE html>
-<html lang="en" data-theme='light'>
+<html lang="en" data-theme='dark'>
 
 <head>
     <meta charset="UTF-8">
@@ -94,7 +94,6 @@ $url = $_SERVER["REQUEST_URI"];
             <a href="/" class="logo sidebar-title">
                 HelpDesk
             </a>
-            <button type="button" class="theme-btn"><i class="bi bi-sun-fill"></i></button>
 
             <nav class="nav-menu">
 
@@ -124,7 +123,7 @@ $url = $_SERVER["REQUEST_URI"];
                 <?php if (str_contains($_SERVER['PATH_INFO'], 'admin')) { ?>
                     <div class="drop-menu">
 
-                        <label for="inventario" class="drop-btn">
+                        <label for="inventario" class="drop-btn" title="Inventario">
                             <input type="checkbox" id="inventario" name="menu">
 
                             <i class='bi bi-pc-display'></i>
@@ -145,10 +144,10 @@ $url = $_SERVER["REQUEST_URI"];
                     </div>
                     <div class="drop-menu">
 
-                        <label for="tickets" class="drop-btn">
+                        <label for="tickets" class="drop-btn" title="Tickets">
                             <input type="checkbox" id="tickets" name="menu">
 
-                            <i class='bi bi-ticket'></i>
+                            <i class='bi bi-ticket-fill'></i>
                             <span>
                                 Tickets
                             </span>
@@ -163,10 +162,10 @@ $url = $_SERVER["REQUEST_URI"];
                     </div>
                     <div class="drop-menu">
 
-                        <label for="personal" class="drop-btn">
+                        <label for="personal" class="drop-btn" title="Personal">
                             <input type="checkbox" id="personal" name="menu">
 
-                            <i class='bi bi-person-fill'></i>
+                            <i class='bi bi-person-rolodex'></i>
                             <span>
                                 Personal
                             </span>
@@ -180,10 +179,10 @@ $url = $_SERVER["REQUEST_URI"];
                     </div>
                     <div class="drop-menu">
 
-                        <label for="ordenes" class="drop-btn">
+                        <label for="ordenes" class="drop-btn" title="Ordenes">
                             <input type="checkbox" id="ordenes" name="menu">
 
-                            <i class='bi bi-door-open'></i>
+                            <i class='bi bi-file-earmark-fill'></i>
                             <span>
                                 Ordenes
                             </span>
@@ -236,23 +235,23 @@ $url = $_SERVER["REQUEST_URI"];
                         </div>
                     <?php } ?>
 
-                    <div class="drop-menu">
-
-                        <label for="options" class="drop-btn" title='Opciones'>
-                            <input type="checkbox" id="options" name="menu">
-
-                            <i class='bi bi-gear-fill'></i>
-                            <span>
-                                Opciones
-                            </span>
-                        </label>
-                        <ul class="nav-links">
-                            <div>
-                                <a href="/logout"><span><i class="bi bi-door-open"></i>Cerrar Sesion</span></a>
-                            </div>
-                        </ul>
-                    </div>
                 <?php } ?>
+                <div class="drop-menu">
+
+                    <label for="options" class="drop-btn" title='Opciones'>
+                        <input type="checkbox" id="options" name="menu">
+
+                        <i class='bi bi-gear-fill'></i>
+                        <span>
+                            Opciones
+                        </span>
+                    </label>
+                    <ul class="nav-links">
+                        <div>
+                            <a href="/logout"><span><i class="bi bi-door-open"></i>Cerrar Sesion</span></a>
+                        </div>
+                    </ul>
+                </div>
             </nav>
 
 
