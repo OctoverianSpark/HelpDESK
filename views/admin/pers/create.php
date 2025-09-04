@@ -58,7 +58,7 @@
     <span>Usuario</span>
     <select name="user_id" id="user_id">
       <?php foreach ($users as $user) { ?>
-        <option value="<?php echo $user->id ?>"><?php echo $user->first_name . ' ' . $user->last_name ?></option>
+        <option <?php echo $user->id === $per->user_id ? 'selected' : '' ?> value="<?php echo $user->id ?>"><?php echo $user->first_name . ' ' . $user->last_name ?></option>
       <?php } ?>
     </select>
   </label>

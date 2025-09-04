@@ -270,8 +270,7 @@ class Inventory extends ActiveRecord
         $query = "SELECT i.*, CONCAT(p.first_name, ' ' , p.last_name) as nombre, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo,p.area as area
         FROM inv i
         LEFT JOIN personal p ON i.user_id = p.id";
-
-        if ($state) {
+        if (!is_null($state)) {
             $query .= " WHERE i.state = $state";
         }
 
@@ -284,6 +283,7 @@ class Inventory extends ActiveRecord
         if ($offset) {
             $query .= " OFFSET $offset";
         }
+
 
 
         $result = self::consultarSQL($query);
