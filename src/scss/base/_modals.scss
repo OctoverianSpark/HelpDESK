@@ -239,35 +239,28 @@
   }
 }
 
-// .info-modal {
-//   position: fixed;
-//   inset: 0;
-//   display: grid;
-//   place-items: center;
+.data-form {
+  position: fixed;
+  inset: 0;
 
-//   .content {
-//     width: 600px;
-//     height: 500px;
-//     border-radius: 15px;
-//     display: grid;
-//     place-items: center;
-//     padding: 6px;
-//     background-color: var(--background-800);
-//     li {
-//       color: var(--text-50);
-//     }
-//     .close-modal {
-//       display: flex;
-//       justify-content: center;
-//       align-items: center;
-//       p {
-//         font-size: 20px;
-//         font-weight: 800;
-//       }
+  form {
+    background-color: white;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    canvas {
+      border: 1px solid black;
+      border-radius: 10px;
+    }
 
-//       input {
-//         display: none;
-//       }
-//     }
-//   }
-// }
+    .sign-section {
+      input {
+        width: 500px;
+      }
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

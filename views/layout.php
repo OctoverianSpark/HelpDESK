@@ -87,8 +87,9 @@ $url = $_SERVER["REQUEST_URI"];
 
 </head>
 
-<body class="mainBody">
-    <?php if (!empty($_SESSION)) { ?>
+<body class="mainBody <?php echo $_SERVER['PATH_INFO'] == '/order/see' ? 'doc-order' : '' ?>">
+
+    <?php if (!empty($_SESSION) && $_SERVER['PATH_INFO'] != '/order/see') { ?>
 
         <aside class="menu-sidebar">
             <a href="/" class="logo sidebar-title">

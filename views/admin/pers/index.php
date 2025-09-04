@@ -33,7 +33,7 @@
 
           <select name="col" id="col">
             <option value="" disabled selected>Elige una opcion</option>
-            <option value="nombre">Nombre del Usuario</option>
+            <option value="name">Nombre del Usuario</option>
             <option value="marca">Marca</option>
             <option value="modelo">Modelo</option>
             <option value="color">Color</option>

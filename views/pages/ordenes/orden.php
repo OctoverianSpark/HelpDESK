@@ -8,10 +8,10 @@
             <h2>Coloca tu firma</h2>
             <canvas class="sign-canvas-replica" width="1200px" height="400px"></canvas>
 
-            <div class="container-input-flex">
+            <div class="container-flex sign-section">
 
                <input type="text" name="sign" id="sign" placeholder="Firmar como: <?php echo ucwords(strtolower($_SESSION["name"])) ?>" autocomplete="off" required>
-               <button type="submit" class="btn btn-send">Firmar <i class="bi bi-feather"></i></button>
+               <button type="submit" class="btn btn-send primary-btn">Firmar <i class="bi bi-feather"></i></button>
             </div>
          </label>
 
@@ -33,9 +33,9 @@
 
          <h4>Firma del Usuario</h4>
 
-         <button type="button" class="sign-button" id="sign-button">
+         <button type="button" class="sign-button primary-btn btn" id="sign-button">
 
-            Firma aqui <i class="bi bi-arrow-down"></i>
+            Firma aqui <i class="bi bi-arrow-bar-down"></i>
 
          </button>
 

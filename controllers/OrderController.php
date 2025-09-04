@@ -118,11 +118,11 @@ class  OrderController
 
         if ($post->type === "recepcion") {
 
+            include "../includes/scripts/convert/recepcion.php";
+            // echo json_encode([
+            //     "url" => "/order/see?id=$id",
 
-            echo json_encode([
-                "url" => "/order/see?id=$id",
-
-            ]);
+            // ]);
         } else {
 
 
@@ -144,7 +144,7 @@ class  OrderController
 
         $order = Ordenes::find($id);
 
-        if ($order->state == "firmada") header("Location:/");
+        if ($order->state == "firmada") header("Location: /");
 
         $computer_id = filter_var($order->computer_id, FILTER_VALIDATE_INT);
         $user_id = filter_var($order->computer_id, FILTER_VALIDATE_INT);
@@ -174,7 +174,7 @@ class  OrderController
         $eq = Inventory::find($order->computer_id);
         $usr = Personal::PIVOTFINDER($order->user_id);
 
-        $pers = Perifericos::filter('user_id','=',$order->user_id);
+        $pers = Perifericos::filter('user_id', '=', $order->user_id);
 
         $ftrs = json_decode($order->features);
 
