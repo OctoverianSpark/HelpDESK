@@ -490,14 +490,26 @@ function sendOrderInformation () {
 
     body = cleanPers(body)
 
-    const q = await Information.postJSON(location.href, body)
-    if (body.type == 'recepcion') location.href = q.url
+    const q = await fetch(location.href, {
+      method: 'POST',
+      body: JSON.stringify(body)
+    })
+    if (formData.get('type') === 'recepcion') {
+      const blob = await q.blob()
+      const url = URL.createObjectURL(blob)
 
-    TOAST(
-      'Hemos enviado un correo al firmante de la orden, espera a su firma...',
-      'center',
-      '#'
-    )
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'documento.docx'
+      a.click()
+    } else {
+      console.log(await q.json())
+      TOAST(
+        'Hemos enviado un correo al firmante de la orden, espera a su firma...',
+        'center',
+        '#'
+      )
+    }
   })
 }
 

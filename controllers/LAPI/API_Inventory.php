@@ -130,7 +130,7 @@ class API_Inventory
    {
       $porPagina = 20; // cantidad de tickets por página
       $state = $_GET['state'] ?? 1;
-      $pagina = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+      $$pagina = isset($_GET['page']) ? (int) $_GET['page'] : 1;
       if ($pagina < 1) $pagina = 1;
 
       // Total de tickets para calcular las páginas

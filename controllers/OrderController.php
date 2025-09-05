@@ -115,19 +115,17 @@ class  OrderController
         $html = str_replace("{{id}}", $id, $html);
 
         $inv = Inventory::find($order->computer_id);
+        $usr = Personal::find($order->user_id);
+        $pers = Perifericos::findGroup($order->user_id);
 
         if ($post->type === "recepcion") {
 
             include "../includes/scripts/convert/recepcion.php";
-            // echo json_encode([
-            //     "url" => "/order/see?id=$id",
-
-            // ]);
         } else {
 
 
             echo json_encode([
-                "msg" => enviarCorreo($html, "Orden Generada", [strtolower($order->mail ?? $inv->correo_dominio)]) ?? "Message sent!!!"
+                "msg" => enviarCorreo($html, "Orden Generada", [strtolower('jean.pr@goxpert.net')]) ?? "Message sent!!!"
             ]);
         }
         exit;

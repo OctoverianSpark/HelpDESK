@@ -106,29 +106,25 @@ $cell->addPreserveText('Página: {PAGE} de {NUMPAGES}', ["bold" => true], ["spac
 $header->addText('', ['size' => 12]);
 
 
-$table = $section->addTable(["borderColor" => "00000", "borderSize" => 6, "valign" => "center", "width" => 9688]);
-
-$table->addRow(255.102);
-
-$cell = $table->addCell(9688, ["valign" => "center", "align" => "center", 'cellMargin' => 50]);
-$cell->addText(
-  "Código: " . $order->order_id,
-  [
-    "size" => 11,
-  ],
-  [
-    "spaceAfter" => 100,
-    "spaceBefore" => 100
-  ]
-);
-
-$section->addText("", ["size" => 12]);
 
 
 $table = $section->addTable(["borderColor" => "00000", "borderSize" => 6, "valign" => "center", "width" => 9688]);
 
 $table->addRow();
 
+
+
+$cell = $table->addCell(9688 / 2, ["valign" => "center", "align" => "center", "cellMargin" => 50]);
+$cell->addText(
+  "Código: " . $order->order_id,
+  [
+    "size" => 11
+  ],
+  [
+    "spaceAfter" => 100,
+    "spaceBefore" => 100
+  ]
+);
 
 $cell = $table->addCell(9688 / 2, ["valign" => "center", "align" => "center", "cellMargin" => 50]);
 $cell->addText(
@@ -141,19 +137,6 @@ $cell->addText(
     "spaceBefore" => 100
   ]
 );
-
-$cell = $table->addCell(9688 / 2, ["valign" => "center", "align" => "center", "cellMargin" => 50]);
-$cell->addText(
-  "Fecha de Retorno: " . date("d / m / Y", strtotime($order->return_date)),
-  [
-    "size" => 11
-  ],
-  [
-    "spaceAfter" => 100,
-    "spaceBefore" => 100
-  ]
-);
-
 
 $table->addRow();
 
@@ -172,7 +155,7 @@ $cell->addText(
 
 $cell = $table->addCell(9688 / 2, ["valign" => "center", "align" => "center", "cellMargin" => 50]);
 $cell->addText(
-  "Empleado: " . ucwords(strtolower("$usr->first_name $usr->last_name")),
+  "Empleado: " . ucwords(strtolower($inv->nombre)),
   [
     "size" => 11
   ],
@@ -187,7 +170,7 @@ $table->addRow();
 
 $cell = $table->addCell(9688 / 2, ["valign" => "center", "align" => "center", "cellMargin" => 50]);
 $cell->addText(
-  "Cargo: " . ucwords(strtolower($usr->cargo)),
+  "Cargo: " . ucwords(strtolower($usr->job_title)),
   [
     "size" => 11
   ],
@@ -223,7 +206,7 @@ $textRun = $section->addTextRun([
 
 $textRun->addText("Mediante el presente documento, ");
 $textRun->addText("ASISTENTE VIRTUAL", ["bold" => true]);
-$textRun->addText(" autoriza el préstamo, salida y traslado de los siguientes equipos y accesorios informáticos descritos en el punto 1 de este documento al usuario(a) ");
+$textRun->addText(" Mediante el presente documento,  GoXpert SAS confirma la recepción de los equipos y accesorios informáticos descritos en el punto 1 al usuario(a) ");
 $textRun->addText(ucwords(strtolower("$usr->nombre $usr->apellido")), ["bold" => true]);
 $textRun->addText(' identificado con ');
 $textRun->addText($usr->id_type . ' ' . $usr->nat_id, ['bold' => true]);
@@ -232,10 +215,17 @@ $section->addText("", ["size" => 12]);
 $section->addText("El Departamento de Automatización, Tecnología e Informática se encargará de la recolección de los equipos y accesorios en las instalaciones de la empresa. El técnico, junto con el usuario, se compromete a verificar que tanto el equipo como los accesos y credenciales asignados estén en correcto funcionamiento y orden. ");
 
 
+$section->addText("1. CHECK	LIST DE RECEPCIÓN DE EQUIPO", ["bold" => true, "size" => 12]);
+
+$section->addListItem('FUNCIONAMIENTO ÓPTIMO DEL COMPUTADOR', 0, null);
+$section->addListItem('FUNCIONAMIENTO ÓPTIMO DE DIADEMAS', 0, null);
+$section->addListItem('FUNCIONAMIENTO ÓPTIMO DE MOUSE', 0, null);
+$section->addListItem('FUNCIONAMIENTO ÓPTIMO DE CARGADOR', 0, null);
 
 $section->addText("", ["size" => 12]);
+$section->addText("", ["size" => 12]);
 
-$section->addText("1.	DATOS DEL COMPUTADOR Y ACCESORIOS INFORMÁTICOS", ["bold" => true, "size" => 12]);
+$section->addText("2.	DATOS DEL COMPUTADOR Y ACCESORIOS INFORMÁTICOS", ["bold" => true, "size" => 12]);
 
 
 $section->addText("", ["size" => 12]);
@@ -326,17 +316,57 @@ $cell->addText("1", [
 ]);
 
 
-foreach ($cols as $col) {
 
 
-  $cell = $table->addCell($cellInvW, $cellStyle);
-  $cell->addText($eq->$col ?? "N / A", [], [
+$cell = $table->addCell($cellInvW, $cellStyle);
+$cell->addText($inv->tipo ?? "N / A", [], [
 
-    "alignment" => Jc::CENTER,
-    "spaceBefore" => 100,
-    "spaceAfter" => 100
-  ]);
-}
+  "alignment" => Jc::CENTER,
+  "spaceBefore" => 100,
+  "spaceAfter" => 100
+]);
+
+
+$cell = $table->addCell($cellInvW, $cellStyle);
+$cell->addText($inv->marca ?? "N / A", [], [
+
+  "alignment" => Jc::CENTER,
+  "spaceBefore" => 100,
+  "spaceAfter" => 100
+]);
+
+
+$cell = $table->addCell($cellInvW, $cellStyle);
+$cell->addText($inv->modelo ?? "N / A", [], [
+
+  "alignment" => Jc::CENTER,
+  "spaceBefore" => 100,
+  "spaceAfter" => 100
+]);
+
+
+$cell = $table->addCell($cellInvW, $cellStyle);
+$cell->addText($inv->serial ?? "N / A", [], [
+
+  "alignment" => Jc::CENTER,
+  "spaceBefore" => 100,
+  "spaceAfter" => 100
+]);
+
+$cell = $table->addCell($cellInvW, $cellStyle);
+$cell->addText($inv->nombre_equipo ?? "N / A", [], [
+
+  "alignment" => Jc::CENTER,
+  "spaceBefore" => 100,
+  "spaceAfter" => 100
+]);
+$cell = $table->addCell($cellInvW, $cellStyle);
+$cell->addText("", [], [
+
+  "alignment" => Jc::CENTER,
+  "spaceBefore" => 100,
+  "spaceAfter" => 100
+]);
 
 $n = 2;
 foreach ($pers as $per) {
@@ -354,18 +384,57 @@ foreach ($pers as $per) {
   ]);
 
 
-  foreach ($cols as $col) {
 
 
-    $cell = $table->addCell(470.522, $cellStyle);
+  $cell = $table->addCell($cellInvW, $cellStyle);
+  $cell->addText($per->tipo ?? "N / A", [], [
 
-    $cell->addText(strtoupper($pers->$col ?? "N / A"), [], [
+    "alignment" => Jc::CENTER,
+    "spaceBefore" => 100,
+    "spaceAfter" => 100
+  ]);
 
-      "alignment" => Jc::CENTER,
-      "spaceBefore" => 100,
-      "spaceAfter" => 100
-    ]);
-  }
+
+  $cell = $table->addCell($cellInvW, $cellStyle);
+  $cell->addText($per->marca ?? "N / A", [], [
+
+    "alignment" => Jc::CENTER,
+    "spaceBefore" => 100,
+    "spaceAfter" => 100
+  ]);
+
+
+  $cell = $table->addCell($cellInvW, $cellStyle);
+  $cell->addText($per->modelo ?? "N / A", [], [
+
+    "alignment" => Jc::CENTER,
+    "spaceBefore" => 100,
+    "spaceAfter" => 100
+  ]);
+
+
+  $cell = $table->addCell($cellInvW, $cellStyle);
+  $cell->addText($per->serial ?? "N / A", [], [
+
+    "alignment" => Jc::CENTER,
+    "spaceBefore" => 100,
+    "spaceAfter" => 100
+  ]);
+
+  $cell = $table->addCell($cellInvW, $cellStyle);
+  $cell->addText($per->nombre_equipo ?? "N / A", [], [
+
+    "alignment" => Jc::CENTER,
+    "spaceBefore" => 100,
+    "spaceAfter" => 100
+  ]);
+  $cell = $table->addCell($cellInvW, $cellStyle);
+  $cell->addText("", [], [
+
+    "alignment" => Jc::CENTER,
+    "spaceBefore" => 100,
+    "spaceAfter" => 100
+  ]);
 }
 
 
@@ -373,9 +442,10 @@ foreach ($pers as $per) {
 
 
 $section->addText("", ["size" => 12]);
+$section->addText("", ["size" => 12]);
 
 
-$section->addText("2. RESPONSABILIDAD DEL EMPLEADO:", ["bold" => true, "size" => 12]);
+$section->addText("3. RESPONSABILIDAD DEL EMPLEADO:", ["bold" => true, "size" => 12]);
 
 
 $section->addText("", ["size" => 12]);
@@ -454,17 +524,18 @@ $cell = $table->addCell(4841.27);
 
 $phpWord->getCompatibility()->setOoxmlVersion(15);
 $objWriter = new Word2007($phpWord);
-$name = "$order->order_id.docx";
-$objWriter->save($name);
+// Guardar en disco
+$fileName = "recepcion_" . time() . ".docx";
+$tempFile = sys_get_temp_dir() . "/" . $fileName;
 
-// Guardar como PDF
-$pdfWriter = IOFactory::createWriter($phpWord, 'PDF');
-$pdfName = "$order->order_id.pdf";
-$pdfWriter->save($pdfName);
+$writer = IOFactory::createWriter($phpWord, "Word2007");
+$writer->save($tempFile);
 
-// Descargar el PDF directamente
-header("Content-Description: File Transfer");
-header("Content-Disposition: attachment; filename=" . basename($pdfName));
-header("Content-Type: application/pdf");
-readfile($pdfName);
+// Forzar descarga al navegador
+header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+header("Content-Disposition: attachment; filename=\"$fileName\"");
+header("Content-Length: " . filesize($tempFile));
+
+readfile($tempFile);
+unlink($tempFile); // opcional: eliminar después
 exit;
