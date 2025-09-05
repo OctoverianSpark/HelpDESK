@@ -12,8 +12,6 @@ $phpWord = new PhpWord();
 
 
 // Configurar renderizador PDF (puede ser Dompdf, mPDF o TCPDF)
-Settings::setPdfRendererName(Settings::PDF_RENDERER_DOMPDF);
-Settings::setPdfRendererPath(__DIR__ . '/../../../vendor/dompdf/dompdf');
 
 
 
@@ -481,11 +479,7 @@ $rHeight = 1500;
 $table->addRow();
 
 $cell = $table->addCell(4350, ["valign" => "center"]);
-$cell->addImage($_SESSION["sign_name"], [
-  "width" => "100%",
-  "height" => 80,
-  "alignment" => Jc::START
-]);
+$cell->addText('',['size'=>12]);
 
 
 
@@ -501,7 +495,7 @@ $cell->addImage(__DIR__ . '/../../../public/build/img/firma.png', [
 $table->addRow();
 
 $cell = $table->addCell(4841.27);
-$cell->addText("Nombre: " . ucwords(strtolower("$usr->nombre $usr->apellido")));
+$cell->addText("Nombre: " . ucwords(strtolower("$usr->first_name $usr->last_name")));
 $cell = $table->addCell(4841.27);
 
 $cell->addText("Nombre: David Alfonzo Sierra Medina");
@@ -510,7 +504,7 @@ $cell->addText("Nombre: David Alfonzo Sierra Medina");
 $table->addRow();
 
 $cell = $table->addCell(4841.27);
-$cell->addText("Identificacion: $usr->tipo_documento $usr->documento");
+$cell->addText("Identificacion: $usr->id_type $usr->nat_id");
 $cell = $table->addCell(4841.27);
 
 $cell->addText("Identificacion: PPT 6.489.746");
