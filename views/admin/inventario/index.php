@@ -26,7 +26,7 @@
     </div>
 </form>
 
-<form class="search-form" method="GET">
+<form class="inv-filter-form" method="GET">
 
     <div class="container-grid">
 

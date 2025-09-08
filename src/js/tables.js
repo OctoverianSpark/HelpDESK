@@ -1,3 +1,4 @@
+import { TOAST } from './GLOBALS.js'
 import {
   openDocumentationView,
   viewAdminTicket,
@@ -67,6 +68,7 @@ function chargeData ({
     .then(json => {
       const container = document.querySelector(containerSelector)
       if (!container) return
+      console.log(json)
 
       // Limpia las filas existentes (excepto cabecera)
       container
@@ -261,37 +263,59 @@ function renderPerRow (per) {
 
   return row
 }
-
 function chargeInv () {
   const radioInv = document.querySelectorAll('input[name="state"]')
+  const form = document.querySelector('.inv-filter-form')
+  const col = document.querySelector('#col')
 
+  let state = 1
+  let colValue = col?.value || null
+  let debounceTimer
+
+  // Escucha cambios en los radios (estado)
   radioInv.forEach(radio => {
     radio.addEventListener('input', e => {
-      console.log(e.target.value)
-
-      chargeData({
-        url: '/inventory/get',
-        perPage: perPage,
-        containerSelector: '.table.table-inv-admin',
-        renderRow: renderInvRow,
-        onRendered: () => {
-          openInventoryView()
-        },
-        query: { state: e.target.value }
-      })
+      state = e.target.value
+      reloadData({ state })
     })
   })
 
-  chargeData({
-    url: '/inventory/get',
-    perPage: perPage,
-    containerSelector: '.table.table-inv-admin',
-    renderRow: renderInvRow,
-    onRendered: () => {
-      openInventoryView()
-    }
+  // Escucha cambios en el select de columnas
+  col.addEventListener('input', e => {
+    colValue = e.target.value
   })
+
+  // Escucha cambios en los filtros del formulario
+  form.addEventListener('input', e => {
+    if (e.target.id === 'col') return
+
+    const value = e.target.value
+
+    clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => {
+      TOAST('Realizando búsqueda...')
+      reloadData({ state, col: colValue, value })
+    }, 800) // espera 800ms desde la última tecla
+  })
+
+  // Inicial
+  reloadData({})
+
+  // Helper
+  function reloadData (extraQuery = {}) {
+    chargeData({
+      url: '/inventory/get',
+      perPage,
+      containerSelector: '.table.table-inv-admin',
+      renderRow: renderInvRow,
+      onRendered: () => {
+        openInventoryView()
+      },
+      query: extraQuery
+    })
+  }
 }
+
 function chargePers () {
   const radioPer = document.querySelectorAll('input[name="state"]')
 
@@ -314,8 +338,8 @@ function chargePers () {
   })
 }
 
-function tableSearchManager () {
-  const form = document.querySelector('.search-form')
+function tableSearchManager (className) {
+  const form = document.querySelector(className)
   const table = document.querySelector('.table')
 
   if (!(form && table)) return
@@ -373,4 +397,4 @@ chargeData({
 
 chargeInv()
 chargePers()
-tableSearchManager()
+tableSearchManager('.search-form')

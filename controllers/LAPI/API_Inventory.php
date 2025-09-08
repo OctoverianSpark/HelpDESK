@@ -130,7 +130,7 @@ class API_Inventory
    {
       $porPagina = 20; // cantidad de tickets por página
       $state = $_GET['state'] ?? 1;
-      $$pagina = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+      $pagina = isset($_GET['page']) ? (int) $_GET['page'] : 1;
       if ($pagina < 1) $pagina = 1;
 
       // Total de tickets para calcular las páginas
@@ -138,9 +138,21 @@ class API_Inventory
       $totalPaginas = ceil($totalInventory / $porPagina);
       // Calcular offset
       $offset = ($pagina - 1) * $porPagina;
+      $allowedCols = ['tipo', 'marca', 'modelo', 'serial', 'nombre_equipo', 'nombre'];
+      $col = $_GET['col'] ?? null;
+      $value = $_GET['value'] ?? null;
 
-      // Obtener los tickets de la página actual
-      $inventory = Inventory::all($porPagina, $offset, $state);
+      if ($col && $value) {
+         if (in_array($col, $allowedCols)) {
+            $inventory = Inventory::filter($col, 'LIKE', "$value%", $state);
+         } else {
+            // si mandan col inválida, ignoro o devuelvo error
+            $inventory = [];
+         }
+      } else {
+         $inventory = Inventory::all($porPagina, $pagina, $state);
+      }
+
       if (count($inventory) < $porPagina && $pagina > 1) {
          $totalPaginas = $pagina;
       }

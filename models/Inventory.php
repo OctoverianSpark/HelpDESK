@@ -318,25 +318,58 @@ class Inventory extends ActiveRecord
 
         return $resultado;
     }
-
-    public static function filter($columna, $operador, $valor)
+    public static function filter($columna, $operador, $valor, $state = 1)
     {
+        // Mapeo de alias válidos a expresiones SQL reales
+        $map = [
+            'nombre' => "CONCAT(p.first_name, ' ', p.last_name)",
+            'tipo_documento' => 'p.id_type',
+            'documento' => 'p.nat_id',
+            'telefono' => 'p.phone_number',
+            'correo' => 'p.email',
+            'id' => 'i.id',
+            'state' => 'i.state',
+            // puedes añadir más columnas reales aquí
+        ];
 
-        $query = "SELECT i.*, p.first_name as nombre, p.last_name as apellido, p.id_type as tipo_documento, p.nat_id as documento, p.phone_number as telefono, p.email as correo
+        // Si la columna no está en el mapa, usamos la que venga (validar que exista en DB si quieres más seguridad)
+        $col = $map[$columna] ?? $columna;
+
+        // Asegurar el operador permitido
+        $allowedOps = ['=', '!=', 'LIKE', '>', '<', '>=', '<='];
+        if (!in_array(strtoupper($operador), $allowedOps)) {
+            $operador = 'LIKE';
+        }
+
+        // Escapar valor (si es LIKE, envolver en %)
+        $valor = addslashes($valor);
+        if (strtoupper($operador) === 'LIKE' && strpos($valor, '%') === false) {
+            $valor = "%$valor%";
+        }
+        $valor = "'$valor'";
+
+        $query = "
+        SELECT 
+            i.*, 
+            CONCAT(p.first_name , ' ' , p.last_name) AS nombre, 
+            p.id_type AS tipo_documento, 
+            p.nat_id AS documento, 
+            p.phone_number AS telefono, 
+            p.email AS correo
         FROM ti.inv i
         LEFT JOIN personal p ON i.user_id = p.id
-        WHERE i.$columna $operador $valor
-        ORDER BY i.id DESC";
-        $result = self::consultarSQL($query);
+        WHERE $col $operador $valor 
+          AND i.state = $state
+        ORDER BY i.id DESC
+    ";
 
 
-
-        return $result;
+        return self::consultarSQL($query);
     }
 
     public static function filter_by_location($columna, $operador, $valor, $location)
     {
-        $query = "SELECT * FROM tiinv as i WHERE $columna $operador '$valor' and sede = '$location' order by id DESC";
+        $query = "SELECT * FROM ti.inv as i WHERE $columna $operador '$valor' and sede = '$location' order by id DESC";
 
         $result = self::consultarSQL($query);
 
