@@ -267,6 +267,7 @@ function chargeInv () {
   const radioInv = document.querySelectorAll('input[name="state"]')
   const form = document.querySelector('.inv-filter-form')
   const col = document.querySelector('#col')
+  if (!form) return
 
   let state = 1
   let colValue = col?.value || null
@@ -338,8 +339,8 @@ function chargePers () {
   })
 }
 
-function tableSearchManager (className) {
-  const form = document.querySelector(className)
+function tableSearchManager () {
+  const form = document.querySelector('.search-form')
   const table = document.querySelector('.table')
 
   if (!(form && table)) return
@@ -397,4 +398,4 @@ chargeData({
 
 chargeInv()
 chargePers()
-tableSearchManager('.search-form')
+tableSearchManager()
