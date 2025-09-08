@@ -4,7 +4,8 @@ import { Chart, registerables } from 'chart.js'
 import { fetchTicketsData } from './GLOBALS.js'
 import zoomPlugin from 'chartjs-plugin-zoom'
 import { Information } from './Class/Information.js'
-Chart.register(...registerables, zoomPlugin)
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+Chart.register(...registerables, zoomPlugin, ChartDataLabels)
 
 async function setUpTicketsDashboard () {
   const info = await fetchTicketsData()
@@ -400,20 +401,7 @@ async function setUpInvDashboard () {
       {
         label: 'Inventario por Área',
         data: Object.values(areaData),
-        backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40',
-          '#C9CBCF',
-          '#8BC34A',
-          '#E91E63',
-          '#03A9F4',
-          '#FF5722',
-          '#9C27B0'
-        ], // paleta de colores más diferenciable
+        backgroundColor: ['#FF6384'], // paleta de colores más diferenciable
         borderWidth: 1
       }
     ]
@@ -427,6 +415,15 @@ async function setUpInvDashboard () {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
+        datalabels: {
+          color: 'white',
+          anchor: 'center',
+          align: 'right',
+          font: {
+            weight: 'bold'
+          },
+          formatter: value => value // muestra el número tal cual
+        },
         title: {
           display: true,
           text: 'Inventario por Área',
@@ -463,7 +460,8 @@ async function setUpInvDashboard () {
         }
       }
     },
-    layout: { padding: 10 }
+    layout: { padding: 10 },
+    plugins: [ChartDataLabels]
   }
 
   const areaCTX = document.querySelector('#inv-area-chart').getContext('2d')
