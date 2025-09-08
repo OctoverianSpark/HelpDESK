@@ -65,7 +65,7 @@
                 </div>
 
 
-                <div class="chart-board">
+                <div class="chart-board-full">
                         <canvas id="inv-area-chart"></canvas>
 
                 </div>

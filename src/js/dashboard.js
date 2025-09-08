@@ -420,10 +420,10 @@ async function setUpInvDashboard () {
   }
 
   const areaChartConfig = {
-    type: 'bar', // ✅ Cambiado de 'pie' a 'bar'
+    type: 'bar',
     data: areaChartData,
     options: {
-      indexAxis: 'y', // ✅ Hace que las barras sean horizontales
+      indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
@@ -433,29 +433,32 @@ async function setUpInvDashboard () {
           color: 'white',
           font: { size: 18 }
         },
-        legend: {
-          display: false // ✅ Ocultamos leyenda (no es necesaria en barras)
-        },
+        legend: { display: false },
         tooltip: {
           callbacks: {
+            title: function (tooltipItems) {
+              return tooltipItems[0].label // muestra el área completa
+            },
             label: function (tooltipItem) {
-              return tooltipItem.label + ': ' + tooltipItem.raw
+              const value = tooltipItem.raw
+              const total = tooltipItem.chart.data.datasets[0].data.reduce(
+                (a, b) => a + b,
+                0
+              )
+              const porcentaje = ((value / total) * 100).toFixed(1) + '%'
+              return `${value} (${porcentaje})`
             }
           }
         }
       },
       scales: {
         x: {
-          type: 'logarithmic',
-          ticks: {
-            color: 'white'
-          },
-          grid: {
-            color: 'rgba(255,255,255,0.1)'
-          }
+          type: 'linear', // ← más natural si los valores no varían tanto
+          ticks: { color: 'white' },
+          grid: { color: 'rgba(255,255,255,0.1)' }
         },
         y: {
-          ticks: { color: 'white' },
+          ticks: { color: 'white', autoSkip: false },
           grid: { color: 'rgba(255,255,255,0.1)' }
         }
       }
