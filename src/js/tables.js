@@ -182,6 +182,15 @@ function renderInvRow (inv) {
       title: 'Actualizar',
       icon: 'bi-pencil-fill',
       onclick: () => (location.href = '/admin/inventario/update?id=' + inv.id)
+    },
+    {
+      class: 'cell-btn',
+      title: 'Eliminar',
+      icon: 'bi-trash-fill',
+      onclick: async () => {
+        const q = await fetch('/inventory/delete?id=' + inv.id)
+        location.reload()
+      }
     }
   ]
 

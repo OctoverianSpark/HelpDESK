@@ -34,10 +34,9 @@ class API_Inventory
    public static function DELETE_COMPUTER()
    {
 
-      $DATA = json_decode(file_get_contents("php://input"));
 
 
-      $id = filter_var($DATA->id, FILTER_VALIDATE_INT);
+      $id = validarID();
 
 
       $computer = Inventory::find($id);
@@ -144,7 +143,7 @@ class API_Inventory
 
       if ($col && $value) {
          if (in_array($col, $allowedCols)) {
-            $inventory = Inventory::filter($col, 'LIKE', "$value%", $state, $limit,$offset);
+            $inventory = Inventory::filter($col, 'LIKE', "$value%", $state, $limit, $offset);
          } else {
             // si mandan col inválida, ignoro o devuelvo error
             $inventory = [];

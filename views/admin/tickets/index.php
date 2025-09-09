@@ -1,3 +1,5 @@
+<h1 class="title">Administraci&oacute;n de Tickets</h1>
+
 <form class="search-form container-flex">
 
     <label for="col" class="input-group">
