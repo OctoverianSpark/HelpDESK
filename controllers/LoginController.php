@@ -39,7 +39,6 @@ class LoginController
                     $_SESSION["login"] = true;
                     $_SESSION["log_type"] = "user";
                     $_SESSION['user_id'] = $userData->user_id;
-                    $_SESSION['user_id'] = $userData->user_id;
                     $_SESSION["name"] = $adData['displayname'];
                     $_SESSION["charge"] = $userRole->area;
                     $_SESSION["role"] = $userRole->role ?? "USER";
