@@ -63,7 +63,6 @@ class PagesController
             $_POST["fecha"] = date("Y-m-d H:i:s");
 
             $ticket = new Tickets($_POST);
-
             $ticket->tecnico_id = 0;
             $ticket->estado = "sin asignar";
 

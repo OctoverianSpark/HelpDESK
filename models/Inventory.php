@@ -318,7 +318,7 @@ class Inventory extends ActiveRecord
 
         return $resultado;
     }
-    public static function filter($columna, $operador, $valor, $state = 1)
+    public static function filter($columna, $operador, $valor, $state = 1,$limit = null,$offset = null)
     {
         // Mapeo de alias válidos a expresiones SQL reales
         $map = [
@@ -362,6 +362,14 @@ class Inventory extends ActiveRecord
           AND i.state = $state
         ORDER BY i.id DESC
     ";
+
+    if($limit){
+        $query .=  " LIMIT $limit";
+    }
+
+    if($offset){
+        $query .= " OFFSET $offset";
+    }
 
 
         return self::consultarSQL($query);

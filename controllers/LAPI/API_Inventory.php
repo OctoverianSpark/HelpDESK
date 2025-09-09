@@ -139,18 +139,18 @@ class API_Inventory
       // Calcular offset
       $offset = ($pagina - 1) * $porPagina;
       $allowedCols = ['tipo', 'marca', 'modelo', 'serial', 'nombre_equipo', 'nombre'];
-      $col = $_GET['col'] ?? null;
+      $col = $_GET['col'] === 'null' ? 'nombre' : $_GET['col'];
       $value = $_GET['value'] ?? null;
 
       if ($col && $value) {
          if (in_array($col, $allowedCols)) {
-            $inventory = Inventory::filter($col, 'LIKE', "$value%", $state);
+            $inventory = Inventory::filter($col, 'LIKE', "$value%", $state, $limit,$offset);
          } else {
             // si mandan col inválida, ignoro o devuelvo error
             $inventory = [];
          }
       } else {
-         $inventory = Inventory::all($porPagina, $pagina, $state);
+         $inventory = Inventory::all($porPagina, $offset, $state);
       }
 
       if (count($inventory) < $porPagina && $pagina > 1) {

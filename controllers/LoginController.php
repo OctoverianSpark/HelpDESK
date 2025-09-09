@@ -40,7 +40,7 @@ class LoginController
                     $_SESSION["log_type"] = "user";
                     $_SESSION['user_id'] = $userData->user_id;
                     $_SESSION['user_id'] = $userData->user_id;
-                    $_SESSION["name"] = $userData->getNombre() . ' ' . $userData->getApellido();
+                    $_SESSION["name"] = $adData['displayname'];
                     $_SESSION["charge"] = $userRole->area;
                     $_SESSION["role"] = $userRole->role ?? "USER";
                     $_SESSION["area"] = $userRole->area ?? "OPERACIONES";
