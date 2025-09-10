@@ -46,6 +46,9 @@ class MaintenanceController
       $maintenance->sync($_POST);
 
       $maintenance->guardar();
+      $computer = Inventory::find($maintenance->computer);
+
+
 
       header('Location: /admin/mantenimientos');
     }
