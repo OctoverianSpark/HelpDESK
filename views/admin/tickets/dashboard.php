@@ -1,3 +1,5 @@
+   <h1 class="title">Panel de Tickets</h1>
+   
    <div class="top-bar-filter">
 
 

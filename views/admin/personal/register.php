@@ -1,3 +1,4 @@
+<h1 class="title">Registrar personal</h1>
 <form method="post" class="container-grid">
 
   <div class="container-flex">

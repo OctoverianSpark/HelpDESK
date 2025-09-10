@@ -1,5 +1,4 @@
-<main class="orders-generator-index">
-
+<h1 class='title'>Ordenes</h1>
    <form method="GET" class="search-form">
 
       <fieldset class="no-fieldset container-input-flex">
@@ -92,5 +91,3 @@
    </div>
 
 
-
-</main>

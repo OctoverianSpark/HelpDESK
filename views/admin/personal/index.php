@@ -1,4 +1,4 @@
-<h1>Personal</h1>
+<h1 class='title'>Administracion de Personal</h1>
 
 
 <div class="container-top-bar">

@@ -1,4 +1,4 @@
-<h1>Crear</h1>
+<h1 class="title">Crear Ticket</h1>
 
 
 

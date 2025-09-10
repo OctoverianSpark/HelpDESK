@@ -1,3 +1,5 @@
+   <h1 class="title">Generar Orden</h1>
+   
    <form method="get" class="order-type-form">
 
       <fieldset class="container-flex no-fieldset container-flex--wrap">
@@ -24,7 +26,7 @@
 
       </fieldset>
    </form>
-
+   <br>
 
    <form method="post" class="ord-form container-grid">
 
