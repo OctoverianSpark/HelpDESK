@@ -61,7 +61,7 @@ function TOAST (text, pos, dest = '', bg = 'var(--primary-600)') {
     gravity: 'top',
     margin: '10',
     position: pos,
-    backgroundColor: bg,
+    background: bg,
     destination: dest,
     width: 1200
   }).showToast()
