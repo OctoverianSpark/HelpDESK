@@ -343,8 +343,8 @@ function inventorySync () {
     )
       .then(res => res.json())
       .catch(err => console.error(err))
-    const avsasList = '901412828228'
-    const rentList = '901412828239'
+    const avsasList = '901409638503'
+    const rentList = '901409644778'
 
     TOAST('Sincronizando la equipos de AVSAS')
 
