@@ -81,6 +81,9 @@ $router->get("/admin/inventario", [InventoryController::class, "index"]);
 $router->post("/admin/inventario", [InventoryController::class, "index"]);
 $router->get("/admin/inventario/dashboard", [InventoryController::class, "dashboard"]);
 $router->get("/admin/mantenimientos", [MaintenanceController::class, 'index']);
+$router->post("/admin/mantenimientos", [MaintenanceController::class, 'index']);
+$router->get("/admin/mantenimientos/update", [MaintenanceController::class, 'update']);
+$router->post("/admin/mantenimientos/update", [MaintenanceController::class, 'update']);
 
 
 $router->get("/admin/pers", [PersController::class, "index"]);
