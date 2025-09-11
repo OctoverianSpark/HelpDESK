@@ -11,6 +11,7 @@ use Models\Encuestas;
 use Models\Log;
 use Models\Maintenance;
 use Models\Ordenes;
+use Models\Personal;
 use Models\Tickets;
 use Models\Users;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -272,6 +273,50 @@ class AdminController
                         $spreadsheet->getActiveSheet()->setCellValue($techLeters[$j++] . $i, $value["amability"]);
                     }
                     $i++;
+                }
+            } else if ($_POST['export'] === 'personal') {
+
+                $employees = Personal::all();
+
+                $spreadsheet->createSheet(1)->setTitle("COLOMBIA");
+                $spreadsheet->createSheet(2)->setTitle("VENEZUELA");
+                $spreadsheet->removeSheetByIndex(0);
+
+                $headers = ["NOMBRE", "APELLIDO", "TIPO DE DOCUMENTO", "DOCUMENTO", "EMAIL", "TELEFONO", "CARGO", "AREA", "TIPO DE CONTRATO", "ESTADO"];
+
+                // Escribir encabezados en cada hoja
+                $spreadsheet->setActiveSheetIndexByName('COLOMBIA')
+                    ->fromArray($headers, null, 'A1');
+
+                $spreadsheet->setActiveSheetIndexByName('VENEZUELA')
+                    ->fromArray($headers, null, 'A1');
+
+                $a = 2; // fila inicial para Colombia
+                $b = 2; // fila inicial para Venezuela
+
+                foreach ($employees as $employee) {
+                    $rowData = [
+                        $employee->first_name,
+                        $employee->last_name,
+                        $employee->doc_type,
+                        $employee->nat_id,
+                        $employee->email,
+                        $employee->phone_number,
+                        $employee->job_title,
+                        $employee->area,
+                        $employee->contract_type,
+                        $employee->state === 0 ? 'RETIRADO' : 'ACTIVO'
+                    ];
+
+                    if (strtoupper($employee->location) === 'VENEZUELA') {
+                        $spreadsheet->setActiveSheetIndexByName('VENEZUELA')
+                            ->fromArray($rowData, null, "A$b");
+                        $b++;
+                    } else {
+                        $spreadsheet->setActiveSheetIndexByName('COLOMBIA')
+                            ->fromArray($rowData, null, "A$a");
+                        $a++;
+                    }
                 }
             }
 
