@@ -2,6 +2,7 @@ import { Information } from './Class/Information.js'
 import Particle from './Class/Particle.js'
 import { TOAST } from './GLOBALS.js'
 import { Chart } from 'chart.js'
+import { safeFetch, sleep } from './GLOBALS.js'
 
 Chart.defaults.font.family = 'Athiti'
 Chart.defaults.backgroundColor = [
@@ -308,76 +309,83 @@ function inventorySync () {
   syncBTN.addEventListener('click', async e => {
     TOAST('Sincronizando...')
 
-    const toFind = ['marca', 'modelo', 'color', 'serial', 'propietario']
+    const toFind = {
+      marca: 'MARCA',
+      modelo: 'MODELO',
+      color: 'COLOR',
+      serial: 'SERIAL',
+      correo_dominio: 'CORREO',
+      propietario: 'PROPIETARIO',
+      area: 'DEPARTAMENTO'
+    }
+    const listId = '901409642306'
 
-    let inventoryDB = await fetch('/inventory/get/all')
-    inventoryDB = await inventoryDB.json()
+    let DB = await fetch('/inventory/get/all')
+    DB = await DB.json()
+    let allTasks = []
+    let page = 0
+    let lastPage = false
 
-    const rentDB = inventoryDB.filter(
-      computer => computer.propietario === 'RENTADVISOR'
-    )
-    const avsasDB = inventoryDB.filter(
-      computer => computer.propietario === 'AVSAS'
-    )
-
-    const avsasCU = await fetch(
-      'https://api.clickup.com/api/v2/list/901412828228/task',
-      {
-        headers: {
-          accept: 'application/json',
-          Authorization: api
-        }
-      }
-    )
-      .then(res => res.json())
-      .catch(err => console.error(err))
-
-    const rentCU = await fetch(
-      'https://api.clickup.com/api/v2/list/901412828239/task',
-      {
-        headers: {
-          accept: 'application/json',
-          Authorization: api
-        }
-      }
-    )
-      .then(res => res.json())
-      .catch(err => console.error(err))
-    const avsasList = '901409638503'
-    const rentList = '901409644778'
-
-    TOAST('Sincronizando la equipos de AVSAS')
-
-    for (const dbItem of avsasDB) {
-      const task = avsasCU.tasks.find(
-        cuItem => cuItem.name === dbItem.nombre_equipo
+    while (!lastPage) {
+      const res = await safeFetch(
+        `https://api.clickup.com/api/v2/list/${listId}/task?page=${page}`,
+        { headers: { accept: 'application/json', Authorization: api } }
       )
+      const data = await res.json()
+      allTasks.push(...data.tasks)
+      lastPage = data.last_page
+      page++
+      await sleep(300) // pausa entre páginas
+    }
+    const CU = { tasks: allTasks }
 
+    TOAST(
+      'Sincronizando equipos, no salgas de esta zona hasta acabar la sincronizacion'
+    )
+    for (const dbItem of DB) {
+      const task = CU.tasks.find(cuItem => cuItem.name === dbItem.nombre_equipo)
       if (!task) {
         console.log(`➕ Creando nuevo Task para: ${dbItem.nombre_equipo}`)
 
         // Determinar status según state
         const statusDB = dbItem.state === 0 ? 'STOCK' : 'ASIGNADO'
 
-        // Preparar custom fields
-        const customFields = toFind
-          .map(key => {
-            const cuField = avsasCU.tasks[0]?.custom_fields.find(
-              field => field.name === '🖥️ ' + key.toUpperCase()
+        // Preparar custom fields usando el objeto toFind
+        const customFields = Object.entries(toFind)
+          .map(([dbKey, cuName]) => {
+            const cuField = CU.tasks[0]?.custom_fields.find(
+              field => field.name === '🖥️ ' + cuName
             )
             if (!cuField) return null
-            return { id: cuField.id, value: dbItem[key.toUpperCase()] }
+
+            let newValue = dbItem[dbKey]
+
+            if (cuField.type === 'drop_down') {
+              const options = cuField.type_config?.options || []
+              const option = options.find(
+                opt => opt.name.toLowerCase() === String(newValue).toLowerCase()
+              )
+              if (!option) {
+                console.log(
+                  `⚠️ No se encontró opción "${newValue}" para el drop_down "${cuField.name}"`
+                )
+                return null
+              }
+              newValue = option.id // 👈 UUID requerido por ClickUp
+            }
+
+            return { id: cuField.id, value: newValue }
           })
           .filter(Boolean)
 
-        await fetch(`https://api.clickup.com/api/v2/list/${avsasList}/task`, {
+        await fetch(`https://api.clickup.com/api/v2/list/${listId}/task`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: api
           },
           body: JSON.stringify({
-            name: dbItem.nombre_equipo, // 👈 Ajusta el campo del nombre
+            name: dbItem.nombre_equipo,
             status: statusDB,
             custom_fields: customFields
           })
@@ -386,28 +394,52 @@ function inventorySync () {
           .then(r => console.log('✅ Task creado:', r))
           .catch(err => console.error('❌ Error creando task:', err))
 
+        await sleep(300)
         continue
       }
 
       console.log(`✅ Coincidencia encontrada: ${task.name}`)
 
       // 1. Actualizar custom fields
-      for (const [key, value] of Object.entries(dbItem)) {
-        if (!toFind.includes(key)) continue
+      for (const [dbKey, cuName] of Object.entries(toFind)) {
+        const value = dbItem[dbKey]
 
         const cf = task.custom_fields.find(
-          field => field.name === '🖥️ ' + key.toUpperCase()
+          field => field.name === '🖥️ ' + cuName
         )
         if (!cf) {
           console.log(
-            `⚠️ Task ${task.id} no tiene el campo personalizado "${key}"`
+            `⚠️ Task ${task.id} no tiene el campo personalizado "${cuName}"`
           )
           continue
         }
 
-        if (cf.value != value) {
+        let newValue = value
+
+        if (cf.type === 'drop_down') {
+          const options = cf.type_config?.options || []
+
+          // Buscar opción por nombre
+          const option = options.find(opt => {
+            const optName = opt.name
+
+            return optName.toLowerCase() == value.toLowerCase()
+          })
+          console.log(option)
+
+          if (!option) {
+            console.log(
+              `⚠️ No se encontró opción "${value}" en el drop_down de "${cf.name}"`
+            )
+            continue
+          }
+
+          newValue = option.id // 👈 usar UUID de la opción
+        }
+
+        if (cf.value != newValue) {
           console.log(
-            `🔄 Actualizando Task ${task.id} → Campo "${cf.name}" de "${cf.value}" a "${value}"`
+            `🔄 Actualizando Task ${task.id} → Campo "${cf.name}" de "${cf.value}" a "${value}" (interno enviado: ${newValue})`
           )
 
           await fetch(
@@ -418,141 +450,18 @@ function inventorySync () {
                 'Content-Type': 'application/json',
                 Authorization: api
               },
-              body: JSON.stringify({ value })
+              body: JSON.stringify({ value: newValue })
             }
           )
             .then(r => r.json())
             .then(r => console.log('✅ Campo actualizado:', r))
             .catch(err => console.error('❌ Error actualizando campo:', err))
+          await sleep(300)
         }
-      }
-
-      // 2. Actualizar status según state
-      const statusDB = dbItem.state === 0 ? 'STOCK' : 'ASIGNADO'
-
-      if (task.status.status.toUpperCase() !== statusDB.toUpperCase()) {
-        console.log(
-          `🔄 Actualizando Task ${task.id} → Status de "${task.status.status}" a "${statusDB}"`
-        )
-
-        await fetch(`https://api.clickup.com/api/v2/task/${task.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: api
-          },
-          body: JSON.stringify({ status: statusDB })
-        })
-          .then(r => r.json())
-          .then(r => console.log('✅ Status actualizado:', r))
-          .catch(err => console.error('❌ Error actualizando status:', err))
       }
     }
-    TOAST('Sincronizando la equipos de Rentadvisor')
 
-    for (const dbItem of rentDB) {
-      const task = rentCU.tasks.find(
-        cuItem => cuItem.name === dbItem.nombre_equipo
-      )
-
-      if (!task) {
-        console.log(`➕ Creando nuevo Task para: ${dbItem.nombre_equipo}`)
-
-        // Determinar status según state
-        const statusDB = dbItem.state === 0 ? 'STOCK' : 'ASIGNADO'
-
-        // Preparar custom fields
-        const customFields = toFind
-          .map(key => {
-            const cuField = rentCU.tasks[0]?.custom_fields.find(
-              field => field.name === '🖥️ ' + key.toUpperCase()
-            )
-            if (!cuField) return null
-            return { id: cuField.id, value: dbItem[key.toUpperCase()] }
-          })
-          .filter(Boolean)
-
-        await fetch(`https://api.clickup.com/api/v2/list/${rentList}/task`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: api
-          },
-          body: JSON.stringify({
-            name: dbItem.nombre_equipo, // 👈 Ajusta el campo del nombre
-            status: statusDB,
-            custom_fields: customFields
-          })
-        })
-          .then(r => r.json())
-          .then(r => console.log('✅ Task creado:', r))
-          .catch(err => console.error('❌ Error creando task:', err))
-
-        continue
-      }
-
-      console.log(`✅ Coincidencia encontrada: ${task.name}`)
-
-      // 1. Actualizar custom fields
-      for (const [key, value] of Object.entries(dbItem)) {
-        if (!toFind.includes(key)) continue
-
-        const cf = task.custom_fields.find(
-          field => field.name === '🖥️ ' + key.toUpperCase()
-        )
-        if (!cf) {
-          console.log(
-            `⚠️ Task ${task.id} no tiene el campo personalizado "${key}"`
-          )
-          continue
-        }
-
-        if (cf.value != value) {
-          console.log(
-            `🔄 Actualizando Task ${task.id} → Campo "${cf.name}" de "${cf.value}" a "${value}"`
-          )
-
-          await fetch(
-            `https://api.clickup.com/api/v2/task/${task.id}/field/${cf.id}`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: api
-              },
-              body: JSON.stringify({ value })
-            }
-          )
-            .then(r => r.json())
-            .then(r => console.log('✅ Campo actualizado:', r))
-            .catch(err => console.error('❌ Error actualizando campo:', err))
-        }
-      }
-
-      // 2. Actualizar status según state
-      const statusDB = dbItem.state === 0 ? 'STOCK' : 'ASIGNADO'
-
-      if (task.status.status.toUpperCase() !== statusDB.toUpperCase()) {
-        console.log(
-          `🔄 Actualizando Task ${task.id} → Status de "${task.status.status}" a "${statusDB}"`
-        )
-
-        await fetch(`https://api.clickup.com/api/v2/task/${task.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: api
-          },
-          body: JSON.stringify({ status: statusDB })
-        })
-          .then(r => r.json())
-          .then(r => console.log('✅ Status actualizado:', r))
-          .catch(err => console.error('❌ Error actualizando status:', err))
-      }
-    }
-    TOAST('Validando equipos dados de baja')
-
-    for (const task of rentCU.tasks) {
+    for (const task of CU.tasks) {
       const existeEnDB = rentDB.some(
         dbItem => dbItem.nombre_equipo === task.name
       )
@@ -574,6 +483,7 @@ function inventorySync () {
           .then(r => console.log('✅ Task marcado como DADO DE BAJA:', r))
           .catch(err => console.error('❌ Error actualizando status:', err))
       }
+      await sleep(300)
     }
     setTimeout(() => {
       TOAST('Sincronizacion Completada')

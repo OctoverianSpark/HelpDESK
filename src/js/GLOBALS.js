@@ -66,6 +66,9 @@ function TOAST (text, pos, dest = '', bg = 'var(--primary-600)') {
     width: 1200
   }).showToast()
 }
+function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 
 async function GETCOOKIES () {
   const cookies = await Information.postJSON('/admin/cookies/get')
@@ -119,7 +122,18 @@ const fetchTicketsData = async (query = {}) => {
     return null
   }
 }
+async function safeFetch (url, options) {
+  let res = await fetch(url, options)
 
+  if (res.status === 429) {
+    const retryAfter = res.headers.get('Retry-After') || 5
+    console.warn(`⏳ Rate limit alcanzado. Esperando ${retryAfter} seg...`)
+    await sleep(retryAfter * 1000)
+    return safeFetch(url, options) // reintento
+  }
+
+  return res
+}
 export {
   GENCONTAINER,
   RADIOCARD,
@@ -128,5 +142,7 @@ export {
   GETCOOKIES,
   randomColor,
   cleanPers,
-  fetchTicketsData
+  fetchTicketsData,
+  sleep,
+  safeFetch
 }
