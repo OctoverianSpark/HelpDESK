@@ -3,6 +3,7 @@
 
 namespace Controllers;
 
+use Models\AgentTicket;
 use MVC\Router;
 
 use Models\Inventory;
@@ -317,6 +318,44 @@ class AdminController
                             ->fromArray($rowData, null, "A$a");
                         $a++;
                     }
+                }
+            } else if ($_POST["export"] === "agent_tickets") {
+                $tickets = AgentTicket::all();
+
+                $i = 2;
+                $spreadsheet->createSheet(1)->setTitle("Tickets");
+                $spreadsheet->removeSheetByIndex(0);
+                $spreadsheet->getActiveSheet()->fromArray(
+                    ["ID", "FECHA", "USUARIO",  "ASUNTO", "PRIORIDAD", "DESCRIPCION", "ESTADO", "TECNICO", "FECHA ASIGNADA", "TIEMPO EN ASIGNAR", "FECHA COMPLETACION", "TIEMPO EN COMPLETAR", "FECHA PENDIENTE", "TIEMPO EN PENDIENTE"]
+                );
+                $spreadsheet->setActiveSheetIndexByName("Tickets");
+
+
+                foreach ($tickets as $ticket) {
+                    $spreadsheet->setActiveSheetIndexByName("Tickets");
+
+
+
+                    $spreadsheet->getActiveSheet()->setCellValue("A$i", $ticket->id);
+                    $spreadsheet->getActiveSheet()->setCellValue("B$i", $ticket->fecha);
+                    $spreadsheet->getActiveSheet()->setCellValue("C$i", $ticket->name);
+                    $spreadsheet->getActiveSheet()->setCellValue("D$i", $ticket->subcategoria);
+                    $spreadsheet->getActiveSheet()->setCellValue("E$i", $ticket->prioridad);
+                    $spreadsheet->getActiveSheet()->setCellValue("F$i", $ticket->descripcion);
+                    $spreadsheet->getActiveSheet()->setCellValue("G$i", $ticket->estado);
+                    $spreadsheet->getActiveSheet()->setCellValue("H$i", $ticket->tecnico ?? 'Sin Asignar');
+                    $spreadsheet->getActiveSheet()->setCellValue("I$i", $ticket->fecha_asignada);
+                    $spreadsheet->getActiveSheet()->setCellValue("J$i", $ticket->sa_ep);
+                    $spreadsheet->getActiveSheet()->setCellValue("K$i", $ticket->fecha_completacion);
+                    $spreadsheet->getActiveSheet()->setCellValue("L$i", $ticket->ep_c);
+                    $spreadsheet->getActiveSheet()->setCellValue("M$i", $ticket->fecha_pendiente);
+                    $spreadsheet->getActiveSheet()->setCellValue("N$i", $ticket->ep_p);
+
+
+
+
+
+                    $i++;
                 }
             }
 

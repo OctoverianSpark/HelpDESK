@@ -279,3 +279,47 @@ function createCommentBox (comment) {
 
   return box
 }
+
+function openCreateAgentModal () {
+  const btn = document.getElementById('open-agent-creator')
+  const updateBTN = document.querySelectorAll('.update-agent-btn')
+
+  if (!btn) return
+
+  const Mdl = document.querySelector('.agent-modal')
+
+  const form = Mdl.querySelector('form')
+
+  btn.addEventListener('click', e => {
+    Mdl.classList.add('active')
+  })
+
+  updateBTN.forEach(btn => {
+    btn.addEventListener('click', async e => {
+      const input = document.querySelector('input[name="action"]')
+      input.value = 'update'
+
+      const inputID = document.createElement('input')
+      inputID.type = 'hidden'
+      inputID.setAttribute('name', 'id')
+      inputID.value = btn.getAttribute('cell-id')
+
+      const name = document.querySelector('input[name="name"]')
+
+      const agent = await fetch(
+        '/admin/agents/find?id=' + btn.getAttribute('cell-id')
+      ).then(res => res.json())
+
+      name.value = agent.name
+
+      form.appendChild(inputID)
+
+      Mdl.classList.add('active')
+    })
+  })
+
+  Mdl.addEventListener('click', e => {
+    if (e.target === Mdl) Mdl.classList.remove('active')
+  })
+}
+openCreateAgentModal()

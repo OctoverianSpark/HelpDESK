@@ -4,6 +4,7 @@ require_once  __DIR__ . "/../includes/app.php";
 date_default_timezone_set("America/Bogota");
 
 use Controllers\AdminController;
+use Controllers\AgentController;
 use Controllers\LoginController;
 use Controllers\PagesController;
 use Controllers\InventoryController;
@@ -27,7 +28,6 @@ use Controllers\PersController;
 use Controllers\PersonalController;
 use Controllers\ServersController;
 use MVC\Router;
-use Models\Encuestas;
 
 
 
@@ -84,6 +84,19 @@ $router->get("/admin/mantenimientos", [MaintenanceController::class, 'index']);
 $router->post("/admin/mantenimientos", [MaintenanceController::class, 'index']);
 $router->get("/admin/mantenimientos/update", [MaintenanceController::class, 'update']);
 $router->post("/admin/mantenimientos/update", [MaintenanceController::class, 'update']);
+
+
+/* Agentes */
+
+$router->get('/admin/agents', [AgentController::class, 'index']);
+$router->post('/admin/agents', [AgentController::class, 'index']);
+$router->get('/admin/agents/tickets', [AgentController::class, 'tickets']);
+$router->post('/admin/agents/tickets', [AgentController::class, 'tickets']);
+$router->get('/admin/agents/tickets/create', [AgentController::class, 'ticket_create']);
+$router->post('/admin/agents/tickets/create', [AgentController::class, 'ticket_create']);
+$router->get('/admin/agents/tickets/update', [AgentController::class, 'ticket_update']);
+$router->post('/admin/agents/tickets/update', [AgentController::class, 'ticket_update']);
+$router->get('/admin/agents/find', [AgentController::class, 'find_agent']);
 
 
 $router->get("/admin/pers", [PersController::class, "index"]);

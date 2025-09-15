@@ -3,13 +3,9 @@ import './backEnd.js'
 import './frontEnd.js'
 import './tables.js'
 import './dashboard.js'
-
 function initSelect2 () {
-  $('select:not(#col,[name="export"])').each(function () {
-    if (!$(this).data('select2')) {
-      $(this).select2({})
-    }
-  })
+  $('select').not('.select2-hidden-accessible').select2()
 }
-
-initSelect2()
+$(document).ready(function () {
+  initSelect2()
+})

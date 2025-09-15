@@ -10,6 +10,7 @@
             <option value="mantenimientos">Mantenimientos</option>
             <option value="logs">Logs</option>
             <option value="personal">Personal</option>
+            <option value="agent_tickets">Tickets de Agente</option>
         </select>
     </label>
 

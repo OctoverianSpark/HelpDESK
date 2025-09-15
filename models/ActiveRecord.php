@@ -136,7 +136,7 @@ abstract class ActiveRecord extends ObjectCreator
         if (isset($atributos['id'])) {
             unset($atributos['id']);
         }
-        if($this->state){
+        if ($this->state) {
             $this->state = intval($this->state);
         }
 

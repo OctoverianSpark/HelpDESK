@@ -195,6 +195,31 @@ $url = $_SERVER["REQUEST_URI"];
                             </div>
                         </ul>
                     </div>
+                    <div class="drop-menu">
+                        <label for="agents" class="drop-btn" for='agents'>
+                            <i class="bi bi-person-fill-check"></i>
+                            <span>Agentes</span>
+
+                            <input type="checkbox" name="menu" id="agents">
+                        </label>
+
+                        <ul class="nav-links">
+                            <div>
+                                <a href="/admin/agents"><span>
+                                        <i class="bi bi-table"></i>
+                                        Ver Agentes
+                                    </span></a>
+                                <a href="/admin/agents/tickets"><span>
+                                        <i class="bi bi-table"></i>
+                                        Ver Tickets
+                                    </span></a>
+                                <a href="/admin/agents/tickets/create"><span>
+                                        <i class="bi bi-plus-circle"></i>
+                                        Crear Ticket
+                                    </span></a>
+                            </div>
+                        </ul>
+                    </div>
 
                 <?php } else { ?>
                     <div class="drop-menu">
