@@ -82,7 +82,6 @@ class Tickets extends ActiveRecord
                 ABS(TIMESTAMPDIFF(MINUTE, fecha_completacion, fecha_pendiente)) AS p_c,
                 ABS(TIMESTAMPDIFF(MINUTE, fecha_pendiente, fecha_asignada)) AS ep_p, CONCAT(users.first_name,' ' , users.last_name) as tecnico FROM " . static::$tabla . " LEFT JOIN users on tickets.tecnico_id = users.id";
         $query .= " ORDER BY id DESC ";
-
         if ($limit !== null) {
             $query .= " LIMIT " . (int)$limit;
         }

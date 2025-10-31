@@ -159,11 +159,11 @@ class AdminController
                     $spreadsheet->getActiveSheet()->setCellValue("I$i", $ticket->estado);
                     $spreadsheet->getActiveSheet()->setCellValue("J$i", $ticket->tecnico);
                     $spreadsheet->getActiveSheet()->setCellValue("K$i", $ticket->fecha_asignada);
-                    $spreadsheet->getActiveSheet()->setCellValue("L$i", $ticket->tiempo_en_asignar);
+                    $spreadsheet->getActiveSheet()->setCellValue("L$i", $ticket->sa_ep);
                     $spreadsheet->getActiveSheet()->setCellValue("M$i", $ticket->fecha_completacion);
-                    $spreadsheet->getActiveSheet()->setCellValue("N$i", $ticket->tiempo_en_completar);
+                    $spreadsheet->getActiveSheet()->setCellValue("N$i", $ticket->ep_c);
                     $spreadsheet->getActiveSheet()->setCellValue("O$i", $ticket->fecha_pendiente);
-                    $spreadsheet->getActiveSheet()->setCellValue("P$i", $ticket->tiempo_en_pendiente);
+                    $spreadsheet->getActiveSheet()->setCellValue("P$i", $ticket->p_c);
 
 
 

@@ -33,31 +33,31 @@
 
 
    <div class="container-input">
-      <?php spawnCheckbox("check-0", "features", "NAVEGADOR(CHROME) Y POLÍTICAS DE GOOGLE CHROME", "NAVEGADOR(CHROME) Y POLÍTICAS DE GOOGLE CHROME", false) ?>
-      <?php spawnCheckbox("check-1", "features", "MANUAL DE TÉRMINOS Y CONDICIONES DE USO DEL COMPUTADOR", "MANUAL DE TÉRMINOS Y CONDICIONES DE USO DEL COMPUTADOR", false) ?>
-      <?php spawnCheckbox("check-2", "features", "CORREO CORPORATIVO", "CORREO CORPORATIVO", false) ?>
-      <?php spawnCheckbox("check-3", "features", "CORREO ASISTENTE VIRTUAL", "CORREO ASISTENTE VIRTUAL", false) ?>
+      <?php spawnCheckbox("check-0", "features", "NAVEGADOR(CHROME) Y POLÍTICAS DE GOOGLE CHROME", "NAVEGADOR(CHROME) Y POLÍTICAS DE GOOGLE CHROME", true) ?>
+      <?php spawnCheckbox("check-1", "features", "MANUAL DE TÉRMINOS Y CONDICIONES DE USO DEL COMPUTADOR", "MANUAL DE TÉRMINOS Y CONDICIONES DE USO DEL COMPUTADOR", true) ?>
+      <?php spawnCheckbox("check-2", "features", "CORREO CORPORATIVO", "CORREO CORPORATIVO", true) ?>
+      <?php spawnCheckbox("check-3", "features", "CORREO ASISTENTE VIRTUAL", "CORREO ASISTENTE VIRTUAL", true) ?>
    </div>
 
    <div class="container-input">
-      <?php spawnCheckbox("check-4", "features", "FUNCIONAMIENTO ÓPTIMO DE CARGADOR", "FUNCIONAMIENTO ÓPTIMO DE CARGADOR", false) ?>
-      <?php spawnCheckbox("check-5", "features", "FUNCIONAMIENTO ÓPTIMO DE DIADEMAS", "FUNCIONAMIENTO ÓPTIMO DE DIADEMAS", false) ?>
-      <?php spawnCheckbox("check-6", "features", "FUNCIONAMIENTO ÓPTIMO DEL COMPUTADOR", "FUNCIONAMIENTO ÓPTIMO DEL COMPUTADOR", false) ?>
-      <?php spawnCheckbox("check-7", "features", "FUNCIONAMIENTO ÓPTIMO DE MOUSE", "FUNCIONAMIENTO ÓPTIMO DE MOUSE", false) ?>
+      <?php spawnCheckbox("check-4", "features", "FUNCIONAMIENTO ÓPTIMO DE CARGADOR", "FUNCIONAMIENTO ÓPTIMO DE CARGADOR", true) ?>
+      <?php spawnCheckbox("check-5", "features", "FUNCIONAMIENTO ÓPTIMO DE DIADEMAS", "FUNCIONAMIENTO ÓPTIMO DE DIADEMAS", true) ?>
+      <?php spawnCheckbox("check-6", "features", "FUNCIONAMIENTO ÓPTIMO DEL COMPUTADOR", "FUNCIONAMIENTO ÓPTIMO DEL COMPUTADOR", true) ?>
+      <?php spawnCheckbox("check-7", "features", "FUNCIONAMIENTO ÓPTIMO DE MOUSE", "FUNCIONAMIENTO ÓPTIMO DE MOUSE", true) ?>
    </div>
 
    <div class="container-input">
-      <?php spawnCheckbox("check-8", "features", "CLASSROOM", "CLASSROOM", false) ?>
-      <?php spawnCheckbox("check-9", "features", "WPS (OFFICE)", "WPS (OFFICE)", false) ?>
-      <?php spawnCheckbox("check-10", "features", "GOOGLE DRIVE", "GOOGLE DRIVE", false) ?>
-      <?php spawnCheckbox("check-11", "features", "CLOWDWORK", "CLOWDWORK", false) ?>
+      <?php spawnCheckbox("check-8", "features", "CLASSROOM", "CLASSROOM", true) ?>
+      <?php spawnCheckbox("check-9", "features", "WPS (OFFICE)", "WPS (OFFICE)", true) ?>
+      <?php spawnCheckbox("check-10", "features", "GOOGLE DRIVE", "GOOGLE DRIVE", true) ?>
+      <?php spawnCheckbox("check-11", "features", "CLOWDWORK", "CLOWDWORK", true) ?>
    </div>
 
    <div class="container-input">
-      <?php spawnCheckbox("check-12", "features", "RING CENTRAL", "RING CENTRAL", false) ?>
-      <?php spawnCheckbox("check-13", "features", "ANYDESK", "ANYDESK", false) ?>
-      <?php spawnCheckbox("check-14", "features", "LIGHTSHOT", "LIGHTSHOT", false) ?>
-      <?php spawnCheckbox("check-15", "features", "VPN", "VPN", false) ?>
+      <?php spawnCheckbox("check-12", "features", "RING CENTRAL", "RING CENTRAL", true) ?>
+      <?php spawnCheckbox("check-13", "features", "ANYDESK", "ANYDESK", true) ?>
+      <?php spawnCheckbox("check-14", "features", "LIGHTSHOT", "LIGHTSHOT", true) ?>
+      <?php spawnCheckbox("check-15", "features", "VPN", "VPN", true) ?>
    </div>
 
 

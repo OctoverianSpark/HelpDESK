@@ -47,13 +47,13 @@
 
 <h2><b>1. CHECK LIST DE ENTREGA DE EQUIPO</b></h2>
 <p>A continuaci&oacute;n, se describen los items que deben tener instalados y configurados y el estado en que est&aacute; siendo entregado el computador: </p>
-<div class="container-doc-checks">
+<div class="container-doc-checks container-flex --wrap">
 
 
    <?php 
       
       foreach ($ftrs as $ftr) {
-         spawnCheckbox("","",$ftr,true,true);
+         spawnCheckbox("","",$ftr,$ftr,true,true);
       }
    
    ?>

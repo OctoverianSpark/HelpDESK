@@ -87,6 +87,11 @@
     <textarea placeholder="Coloca una descripcion detallada de tu solicitud" name="descripcion" id="descripcion" required><?php echo $ticket->descripcion ?></textarea>
   </label>
 
+  <label for="solucion" class="input-group">
+    <span>Comentario </span>
+    <textarea name="solucion" id="solucion" required><?php echo $ticket->solucion ?></textarea>
+  </label>
+
 
   <button class="btn primary-btn">Enviar</button>
 

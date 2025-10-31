@@ -125,7 +125,7 @@ class  OrderController
 
 
             echo json_encode([
-                "msg" => enviarCorreo($html, "Orden Generada", [strtolower('jean.pr@goxpert.net')]) ?? "Message sent!!!"
+                "msg" => enviarCorreo($html, "Orden Generada", [strtolower($inv->correo_dominio)]) ?? "Message sent!!!"
             ]);
         }
         exit;
