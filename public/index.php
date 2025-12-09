@@ -215,9 +215,6 @@ $router->post("/admin/convert", [API_BASE::class, "CONVERT"]);
 
 
 //NOTE: HTTP REQUESTS
-$router->get('/api/tickets', [API_Tickets::class, 'tickets_api']);
-$router->post('/api/tickets', [API_Tickets::class, 'tickets_api']);
-$router->get('/api/ordenes', [API_ORDERS::class, 'orders_api']);
-$router->post('/api/ordenes', [API_ORDERS::class, 'orders_api']);
+$router->post('/api/tickets', [API_Tickets::class, 'TICKET_CREATE_BY_API']);
 
 $router->comprobarRutas();

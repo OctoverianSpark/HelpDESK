@@ -32,7 +32,7 @@ class Router
 
         $rutas_admin = ["/admin", "/admin/inventario", "/admin/inventario/crear", "/admin/inventario/actualizar", "/admin/inventario/eliminar", "/admin/tickets", "/admin/tickets/ver", "/admin/encuestas", "/admin/encuestas/ver", "/admin/entradas", "/admin/entradas/ver", "/admin/entradas/crear"];
 
-        $rutas_api = ["/api/tickets", "/api/agents_tickets"];
+        $rutas_api = ["/api/tickets"];
 
 
 
@@ -97,7 +97,7 @@ class Router
         $type = $_GET['auth_type'] ?? $_POST['auth_type'];
         $user = $_GET['user'] ?? $_POST['user'];
 
-        $data = Users::filter($type == 'ad' ? 'ad_user' : 'mail', '=', $user);
+        $data = Users::filter($type, '=', $user);
 
 
         return array_shift($data);

@@ -123,15 +123,16 @@ class API_Tickets
       exit;
    }
 
-   public static function tickets_api()
+   public static function TICKET_CREATE_BY_API()
    {
 
 
 
-      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-         echo json_encode($_POST);
-         exit;
-      }
+      $ticket = new Tickets($_POST);
+
+      $ticket->guardar();
+      echo json_encode($ticket);
+      exit;
    }
 
    public static function GRAPH_CONFIG()
