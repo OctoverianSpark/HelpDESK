@@ -73,7 +73,7 @@ class AgentTicket extends ActiveRecord
     $query = "SELECT at.*,a.name,CONCAT(t.first_name,' ', t.last_name) as tecnico, ABS(TIMESTAMPDIFF(MINUTE, fecha_asignada, fecha)) AS sa_ep,
                 ABS(TIMESTAMPDIFF(MINUTE, fecha_completacion, fecha_asignada)) AS ep_c,
                 ABS(TIMESTAMPDIFF(MINUTE, fecha_completacion, fecha_pendiente)) AS p_c,
-                ABS(TIMESTAMPDIFF(MINUTE, fecha_pendiente, fecha_asignada)) AS ep_p FROM " . static::$tabla . " at INNER JOIN agents a ON at.agent_id = a.id LEFT JOIN users t ON at.tecnico_id = t.id;";
+                ABS(TIMESTAMPDIFF(MINUTE, fecha_pendiente, fecha_asignada)) AS ep_p FROM " . static::$tabla . " at INNER JOIN agents a ON at.agent_id = a.id LEFT JOIN users t ON at.tecnico_id = t.id ORDER BY id DESC;";
 
     if ($limit !== null) {
       $query .= " LIMIT " . (int)$limit;
