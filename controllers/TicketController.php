@@ -74,6 +74,9 @@ class TicketController
             }
             $resultado = $ticket->guardar();
 
+            notifyToWebhook($ticket, 'ticket_create');
+
+
 
             $notificacion = [
                 "titulo" => "Ticket Creado por " . $_SESSION["name"],
@@ -133,6 +136,8 @@ class TicketController
                 ];
                 $notificaciones = new Notificaciones($notificacion);
                 $notificaciones->guardar();
+
+
 
                 header("Location: /admin/tickets/ticket?id=" . $tickets->id, true);
             }

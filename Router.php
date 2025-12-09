@@ -3,47 +3,56 @@
 
 namespace MVC;
 
+use Models\ActiveDirectory;
+use Models\Users;
 
-
-class Router{
+class Router
+{
 
     public $rutasGET = [];
     public $rutasPOST = [];
 
-    public function get($url,$fn){
+    public function get($url, $fn)
+    {
         $this->rutasGET[$url] = $fn;
     }
-    public function post($url,$fn){
+    public function post($url, $fn)
+    {
         $this->rutasPOST[$url] = $fn;
     }
 
-    public function comprobarRutas(){
+    public function comprobarRutas()
+    {
 
         session_start();
         $auth = $_SESSION["login"] ?? null;
         $admin = $_SESSION["role"] === "ADMIN" ?? null;
 
-        $rutas_protegidas = ["/","/tickets/crear","/ticket","tickets/ver","/equipos",];
+        $rutas_protegidas = ["/", "/tickets/crear", "/ticket", "tickets/ver", "/equipos",];
 
-        $rutas_admin = ["/admin","/admin/inventario","/admin/inventario/crear","/admin/inventario/actualizar","/admin/inventario/eliminar","/admin/tickets","/admin/tickets/ver","/admin/encuestas","/admin/encuestas/ver","/admin/entradas","/admin/entradas/ver","/admin/entradas/crear"];
+        $rutas_admin = ["/admin", "/admin/inventario", "/admin/inventario/crear", "/admin/inventario/actualizar", "/admin/inventario/eliminar", "/admin/tickets", "/admin/tickets/ver", "/admin/encuestas", "/admin/encuestas/ver", "/admin/entradas", "/admin/entradas/ver", "/admin/entradas/crear"];
+
+        $rutas_api = ["/api/tickets", "/api/agents_tickets"];
 
 
-        
 
         $urlActual = $_SERVER["PATH_INFO"] ?? "/";
         $metodo = $_SERVER["REQUEST_METHOD"];
-        
-        if(!$auth && !str_contains($urlActual,"/login") ){
-            if(!str_contains($urlActual,"/redirect")){
-                header("Location: /login");
 
+        if (!$auth && in_array($urlActual, $rutas_api)) {
+            $auth = !is_null($this->validateApi());
+        }
+
+        if (!$auth && !str_contains($urlActual, "/login")) {
+            if (!str_contains($urlActual, "/redirect")) {
+                header("Location: /login");
             }
         }
-        if(in_array($urlActual,$rutas_protegidas) && !$auth){
+        if (in_array($urlActual, $rutas_protegidas) && !$auth) {
             header("Location: /login");
         }
 
-        if(in_array($urlActual,$rutas_admin)&& !$admin){
+        if (in_array($urlActual, $rutas_admin) && !$admin) {
             header("Location: /login");
         }
 
@@ -51,28 +60,25 @@ class Router{
 
         if ($metodo === "GET") {
             $fn = $this->rutasGET[$urlActual] ?? null;
-        }else{
-            
+        } else {
+
             $fn = $this->rutasPOST[$urlActual] ?? null;
         }
 
 
 
         if ($fn) {
-            call_user_func($fn,$this);
-        }else{
+            call_user_func($fn, $this);
+        } else {
             echo "Pagina no Encontrada";
         }
-
-
-        
-
-    }   
+    }
 
 
 
 
-    public function render($view,$datos =[]){
+    public function render($view, $datos = [])
+    {
 
 
 
@@ -80,21 +86,20 @@ class Router{
             $$key = $value;
         }
         ob_start();
-        include __DIR__ ."/views/$view.php";
+        include __DIR__ . "/views/$view.php";
         $contenido = ob_get_clean();
-        include __DIR__ ."/views/layout.php";
+        include __DIR__ . "/views/layout.php";
+    }
 
+    public function validateApi()
+    {
+
+        $type = $_GET['auth_type'] ?? $_POST['auth_type'];
+        $user = $_GET['user'] ?? $_POST['user'];
+
+        $data = Users::filter($type == 'ad' ? 'ad_user' : 'mail', '=', $user);
+
+
+        return array_shift($data);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-?>

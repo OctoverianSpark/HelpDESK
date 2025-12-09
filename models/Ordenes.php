@@ -44,6 +44,7 @@ class Ordenes extends ActiveRecord
 
         $resultado = array_shift($resultado);
 
+
         return $resultado;
     }
     public static function actuals()

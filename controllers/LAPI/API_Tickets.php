@@ -123,6 +123,17 @@ class API_Tickets
       exit;
    }
 
+   public static function tickets_api()
+   {
+
+
+
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+         echo json_encode($_POST);
+         exit;
+      }
+   }
+
    public static function GRAPH_CONFIG()
    {
       $byTech = [];
@@ -325,6 +336,10 @@ class API_Tickets
 
 
          $ticket->guardar();
+
+         if ($ticket->estado == 'completado') {
+            notifyToWebhook(Tickets::find($ticket->id), 'ticket_closed');
+         }
 
 
 

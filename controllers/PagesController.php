@@ -85,6 +85,10 @@ class PagesController
 
             $resultado = $ticket->guardar();
 
+            notifyToWebhook(Tickets::find($resultado), 'ticket_create');
+
+
+
 
             $notificacion = [
                 "titulo" => "Ticket Creado por " . $_SESSION["name"],
@@ -289,7 +293,7 @@ class PagesController
 
 
 
-            $orden->guardar();
+            $res = $orden->guardar();
 
             // Send email logic here
             enviarCorreo(
@@ -298,6 +302,9 @@ class PagesController
                 ["ati@asistentevirtualsas.com"]
 
             );
+
+            notifyToWebhook(Ordenes::find($res), 'order_request');
+
 
 
             header("Location: /ordenes/crear?result=1");

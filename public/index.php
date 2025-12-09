@@ -214,4 +214,10 @@ $router->post("/admin/tickets/indexer", [API_Tickets::class, "INDEXER"]);
 $router->post("/admin/convert", [API_BASE::class, "CONVERT"]);
 
 
+//NOTE: HTTP REQUESTS
+$router->get('/api/tickets', [API_Tickets::class, 'tickets_api']);
+$router->post('/api/tickets', [API_Tickets::class, 'tickets_api']);
+$router->get('/api/ordenes', [API_ORDERS::class, 'orders_api']);
+$router->post('/api/ordenes', [API_ORDERS::class, 'orders_api']);
+
 $router->comprobarRutas();
