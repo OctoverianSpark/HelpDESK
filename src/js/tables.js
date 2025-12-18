@@ -290,9 +290,9 @@ function chargeInv () {
     })
   })
 
-  // Escucha cambios en el select de columnas
-  col.addEventListener('input', e => {
-    colValue = e.target.value
+  $(col).on('select2:select select2:clear', function (e) {
+    colValue = $(this).val()
+    console.log(colValue)
   })
 
   // Escucha cambios en los filtros del formulario
@@ -300,6 +300,7 @@ function chargeInv () {
     if (e.target.id === 'col') return
 
     const value = e.target.value
+    console.log(e.target.value)
 
     clearTimeout(debounceTimer)
     debounceTimer = setTimeout(() => {
