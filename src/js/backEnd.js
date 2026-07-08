@@ -196,105 +196,100 @@ function persGET () {
   })
 }
 
-async function ticketUpdate () {
+async function ticketUpdate() {
+  try {
+    
   const viewMdl = document.querySelector('.tickets-view')
   if (!viewMdl) return
+
   const form = viewMdl.querySelector('.ticket-admin-form')
 
   form.addEventListener('submit', async e => {
-    TOAST('Actualizando ticket...', 'right')
     e.preventDefault()
+    TOAST('Actualizando ticket...', 'right')
+    const body = buildFormBody(form)
 
-    const formData = new FormData(form)
+    const ticket = await Information.postJSON('/tickets/find', { id: body.id })
 
-    const body = {}
-    const app = document.querySelector('#app')
-
-    formData.entries().forEach(([key, value]) => {
-      body[key] = value
-
-      if (key === 'subcategoria' && !app.disabled)
-        body[key] = `${value}(${app.value})`
-    })
-
-    const ticket = await Information.postJSON('/tickets/find', {
-      id: body.id
-    })
-
-    if (ticket.estado.toLowerCase() == 'sin asignar') {
-      if (body.estado == 'en proceso') {
-        body.fecha_asignada = new Date()
-
-        body.fecha_asignada = body.fecha_asignada
-          .toISOString()
-          .split('.')[0]
-          .replace('T', ' ')
-
-        body.tiempo_en_asignar = Math.floor(
-          calculateTime(ticket.fecha, body.fecha_asignada) - 300
-        )
-      }
-    }
-
-    if (ticket.estado.toLowerCase() == 'en proceso') {
-      if (body.estado == 'completado') {
-        body.fecha_completacion = new Date()
-        body.fecha_completacion = body.fecha_completacion
-          .toISOString()
-          .split('.')[0]
-          .replace('T', ' ')
-
-        body.tiempo_en_completar = Math.floor(
-          calculateTime(ticket.fecha_asignada, body.fecha_completacion)
-        )
-      }
-
-      if (body.estado == 'pendiente') {
-        body.fecha_pendiente = new Date()
-        body.fecha_pendiente = body.fecha_pendiente
-          .toISOString()
-          .split('.')[0]
-          .replace('T', ' ')
-
-        body.tiempo_en_pendiente = Math.floor(
-          calculateTime(ticket.fecha_asignada, body.fecha_pendiente)
-        )
-      }
-    }
-    if (ticket.estado.toLowerCase() == 'pendiente') {
-      if (body.estado == 'completado') {
-        body.fecha_completacion = new Date()
-        body.fecha_completacion = body.fecha_completacion
-          .toISOString()
-          .split('.')[0]
-          .replace('T', ' ')
-
-        body.tiempo_en_completar = Math.floor(
-          calculateTime(ticket.fecha_pendiente, body.fecha_completacion)
-        )
-      }
-    }
+    applyStateTransitionTimestamps(body, ticket)
 
     const query = await Information.postJSON('/admin/tickets/update', body)
 
     TOAST('Recibiendo informacion...', 'right')
 
-    const row = document.querySelector(".table-row[data-id='" + body.id + "']")
-
-    Object.entries(query.data).forEach(([key, value]) => {
-      if (key === 'id') return
-
-      const cell = row.querySelector(".cell[data-col='" + key + "']")
-
-      if (cell) {
-        cell.textContent = value.toUpperCase()
-      }
-    })
+    updateTableRow(body.id, query.data)
 
     TOAST(query.message, 'right')
   })
+  } catch (error) {
+    console.log(error);
+  }
 }
 
+function buildFormBody(form) {
+  const app = document.querySelector('#app')
+  const body = {}
+  new FormData(form).forEach((value, key) => {
+    body[key] = key === 'subcategoria' && !app.disabled
+      ? `${value}(${app.value})`
+      : value
+  })
+
+  body.solucion = document.querySelector('#solucion').textContent
+
+  return body
+}
+
+function toISOLocalString(date) {
+  return date.toISOString().split('.')[0].replace('T', ' ')
+}
+
+function applyStateTransitionTimestamps(body, ticket) {
+  const currentState = ticket.estado.toLowerCase()
+  const nextState = body.estado
+
+  const transitions = {
+    'sin asignar': {
+      'en proceso': () => {
+        const now = toISOLocalString(new Date())
+        body.fecha_asignada = now
+        body.tiempo_en_asignar = Math.floor(calculateTime(ticket.fecha, now) - 300)
+      }
+    },
+    'en proceso': {
+      'completado': () => {
+        const now = toISOLocalString(new Date())
+        body.fecha_completacion = now
+        body.tiempo_en_completar = Math.floor(calculateTime(ticket.fecha_asignada, now))
+      },
+      'pendiente': () => {
+        const now = toISOLocalString(new Date())
+        body.fecha_pendiente = now
+        body.tiempo_en_pendiente = Math.floor(calculateTime(ticket.fecha_asignada, now))
+      }
+    },
+    'pendiente': {
+      'completado': () => {
+        const now = toISOLocalString(new Date())
+        body.fecha_completacion = now
+        body.tiempo_en_completar = Math.floor(calculateTime(ticket.fecha_pendiente, now))
+      }
+    }
+  }
+
+  transitions[currentState]?.[nextState]?.()
+}
+
+function updateTableRow(id, data) {
+  const row = document.querySelector(`.table-row[data-id='${id}']`)
+  if (!row) return
+
+  Object.entries(data).forEach(([key, value]) => {
+    if (key === 'id') return
+    const cell = row.querySelector(`.cell[data-col='${key}']`)
+    if (cell) cell.textContent = value.toUpperCase()
+  })
+}
 function calculateTime (from, to) {
   /**
    * Calculates the time in minutes between two dates

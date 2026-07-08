@@ -31,5 +31,4 @@ function notifyToWebhook($info, $event)
 
   $response = file_get_contents($url, false, $context);
 
-  echo $response;
 }

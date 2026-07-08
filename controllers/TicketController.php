@@ -103,6 +103,9 @@ class TicketController
 
     public static function ticket(Router $router)
     {
+
+
+        
         $id = validarID();
 
         $tickets = Tickets::find($id);

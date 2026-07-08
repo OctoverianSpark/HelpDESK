@@ -102,7 +102,7 @@
             </label>
             <label for="solucion" class="detail-group">
                 <p><i class="bi bi-check2-circle"></i>Solucion</p>
-                <textarea id="solucion"></textarea>
+                <textarea id="solucion" name="solucion"></textarea>
             </label>
         </div>
 

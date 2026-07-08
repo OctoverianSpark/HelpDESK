@@ -64,6 +64,28 @@ class API_Tickets
 
 
 
+   public static function TICKETSCREATE(){
+      
+      $DATA = json_decode(file_get_contents("php://input"),TRUE);
+      $DATA["fecha"] = date("Y-m-d H:i:s");
+
+      $ticket = new Tickets($DATA);
+
+      $ticket->tecnico_id = 0;
+      $ticket->estado = "sin asignar";
+
+
+      $resultado = $ticket->guardar();
+
+      notifyToWebhook($ticket, 'ticket_create');
+
+
+      echo "Ticket creado!";
+      exit;
+   }
+
+
+
    public static function TICKETSEARCH()
    {
 
@@ -131,6 +153,8 @@ class API_Tickets
       $ticket = new Tickets($_POST);
 
       $ticket->guardar();
+      notifyToWebhook($ticket, 'ticket_create');
+
       echo json_encode($ticket);
       exit;
    }

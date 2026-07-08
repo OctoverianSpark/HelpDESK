@@ -178,6 +178,7 @@ $router->get("/inventory/get/all", [API_Inventory::class, "INVENTORY_ALL"]);
 $router->post("/admin/orders/get", [API_ORDERS::class, "GET"]);
 $router->post("/admin/orders/actuals", [API_ORDERS::class, "ACTUALS"]);
 $router->get('/admin/pers/get', [API_Inventory::class, "GET_PERS"]);
+$router->post('/api/tickets/create',[API_Tickets::class,"TICKETSCREATE"]);
 $router->post("/tickets/find", [API_Tickets::class, "TICKETSEARCH"]);
 $router->get("/tickets/graph", [API_Tickets::class, "GRAPH_CONFIG"]);
 $router->post("/tickets/actuals", [API_Tickets::class, "ACTUALTICKETS"]);
@@ -216,5 +217,6 @@ $router->post("/admin/convert", [API_BASE::class, "CONVERT"]);
 
 //NOTE: HTTP REQUESTS
 $router->post('/api/tickets', [API_Tickets::class, 'TICKET_CREATE_BY_API']);
+$router->post('/api/tickets/create', [API_Tickets::class, 'TICKETSCREATE']);
 
 $router->comprobarRutas();
