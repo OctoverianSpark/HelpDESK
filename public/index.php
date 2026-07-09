@@ -176,6 +176,7 @@ $router->get("/inventory/find", [API_Inventory::class, "INVENTORYSEARCH"]);
 $router->get("/inventory/delete", [API_Inventory::class, "DELETE_COMPUTER"]);
 $router->get("/inventory/get", [API_Inventory::class, "INVENTORY_GET"]);
 $router->get("/inventory/get/all", [API_Inventory::class, "INVENTORY_ALL"]);
+$router->post("/admin/inventario/bulk", [API_Inventory::class, "BULK_ACTION"]);
 $router->post("/admin/orders/get", [API_ORDERS::class, "GET"]);
 $router->post("/admin/orders/actuals", [API_ORDERS::class, "ACTUALS"]);
 $router->get('/admin/pers/get', [API_Inventory::class, "GET_PERS"]);

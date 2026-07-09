@@ -6,13 +6,80 @@
 namespace Controllers\LAPI;
 
 use Models\Inventory;
+use Models\Log;
 use Models\Perifericos;
 use Models\Personal;
 
 class API_Inventory
 {
 
+   // Campos de "inv" seguros para editar en bloque. Se excluyen a proposito nombre_equipo/serial
+   // (identifican a un equipo puntual, aplicarlos a varios equipos corromperia los datos) y
+   // user_id/state (esos ya tienen sus propias acciones: stock/eliminar).
+   private static $BULK_EDITABLE_FIELDS = ['tipo', 'marca', 'modelo', 'color', 'propietario', 'correo_dominio'];
 
+   // POST /admin/inventario/bulk
+   // Body: { "ids": [1,2,3], "action": "stock" | "delete" | "update", "fields": { ... } }
+   public static function BULK_ACTION()
+   {
+      $DATA = json_decode(file_get_contents("php://input"), true);
+
+      $ids = array_values(array_unique(array_filter(array_map('intval', $DATA['ids'] ?? []))));
+      $action = $DATA['action'] ?? null;
+
+      if (empty($ids) || !in_array($action, ['stock', 'delete', 'update'], true)) {
+         http_response_code(400);
+         echo json_encode(["ok" => false, "error" => "Faltan ids o la accion no es valida"]);
+         exit;
+      }
+
+      $campos = [];
+      if ($action === 'update') {
+         $campos = array_intersect_key($DATA['fields'] ?? [], array_flip(self::$BULK_EDITABLE_FIELDS));
+         $campos = array_filter($campos, function ($valor) {
+            return $valor !== null && trim((string)$valor) !== '';
+         });
+
+         if (empty($campos)) {
+            http_response_code(400);
+            echo json_encode(["ok" => false, "error" => "No se envio ningun campo valido para actualizar"]);
+            exit;
+         }
+      }
+
+      $log = new Log();
+      $resultados = [];
+
+      foreach ($ids as $id) {
+         $inv = Inventory::find($id);
+
+         if (!$inv) {
+            $resultados[] = ["id" => $id, "ok" => false, "error" => "No encontrado"];
+            continue;
+         }
+
+         if ($action === 'stock') {
+            $inv->setStock();
+            $log->updateInventoryLog($id);
+         } elseif ($action === 'delete') {
+            $inv->eliminar();
+            $log->deleteInventoryLog($id);
+         } else {
+            $inv->sync($campos);
+            $inv->actualizar();
+            $log->updateInventoryLog($id);
+         }
+
+         $resultados[] = ["id" => $id, "ok" => true];
+      }
+
+      echo json_encode([
+         "ok" => true,
+         "total" => count($resultados),
+         "results" => $resultados
+      ]);
+      exit;
+   }
 
    public static function SET_STOCK()
    {

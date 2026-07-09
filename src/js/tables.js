@@ -168,6 +168,15 @@ function renderInvRow (inv) {
   row.classList.add('table-row')
   row.dataset.id = inv.id
 
+  const cellCheck = document.createElement('div')
+  cellCheck.className = 'cell'
+  const checkbox = document.createElement('input')
+  checkbox.type = 'checkbox'
+  checkbox.className = 'bulk-select-row'
+  checkbox.setAttribute('cell-id', inv.id)
+  cellCheck.appendChild(checkbox)
+  row.appendChild(cellCheck)
+
   const cellId = document.createElement('div')
   cellId.className = 'cell'
 

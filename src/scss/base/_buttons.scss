@@ -68,6 +68,15 @@
   }
 }
 
+.danger-btn {
+  background-color: rgb(241, 53, 53);
+  color: white;
+
+  &:hover {
+    background-color: rgb(200, 30, 30);
+  }
+}
+
 .red-btn {
   outline: none;
   border: none;
