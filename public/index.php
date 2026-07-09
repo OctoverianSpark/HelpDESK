@@ -119,6 +119,9 @@ $router->get("/admin/personal/register", [PersonalController::class, "register"]
 $router->post("/admin/personal/register", [PersonalController::class, "register"]);
 $router->get("/admin/personal/update", [PersonalController::class, "update"]);
 $router->post("/admin/personal/update", [PersonalController::class, "update"]);
+$router->get("/admin/personal/import", [PersonalController::class, "import"]);
+$router->post("/admin/personal/import", [PersonalController::class, "import"]);
+$router->get("/admin/personal/import/template", [PersonalController::class, "downloadTemplate"]);
 
 $router->get("/admin/ordenes", [OrderController::class, "index"]);
 $router->post("/admin/ordenes", [OrderController::class, "index"]);

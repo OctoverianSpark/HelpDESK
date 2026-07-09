@@ -494,10 +494,8 @@ function bulkInventoryActions () {
   const table = document.querySelector('.table-inv-admin')
   const bar = document.querySelector('#bulk-actions-bar')
   const selectAll = document.querySelector('#bulk-select-all')
-  const modal = document.querySelector('.bulk-edit-modal')
-  const form = document.querySelector('#bulk-edit-form')
 
-  if (!table || !bar || !modal || !form) return
+  if (!table || !bar) return
 
   const selected = new Set()
 
@@ -528,11 +526,11 @@ function bulkInventoryActions () {
     })
   }
 
-  async function runBulk (action, fields) {
+  async function runBulk (action) {
     const res = await fetch('/admin/inventario/bulk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ids: Array.from(selected), action, fields })
+      body: JSON.stringify({ ids: Array.from(selected), action })
     })
     const data = await res.json()
     if (!data.ok) {
@@ -551,28 +549,6 @@ function bulkInventoryActions () {
   document.querySelector('#bulk-delete-btn').addEventListener('click', () => {
     if (!confirm(`¿Eliminar ${selected.size} equipo(s)? Esta accion no se puede deshacer.`)) return
     runBulk('delete')
-  })
-
-  document.querySelector('#bulk-edit-btn').addEventListener('click', () => {
-    document.querySelector('#bulk-edit-count').textContent = selected.size
-    modal.classList.add('active')
-  })
-
-  document.querySelector('#bulk-edit-cancel').addEventListener('click', () => {
-    modal.classList.remove('active')
-  })
-
-  form.addEventListener('submit', e => {
-    e.preventDefault()
-    const fields = {}
-    new FormData(form).forEach((value, key) => {
-      if (value.trim() !== '') fields[key] = value.trim()
-    })
-    if (Object.keys(fields).length === 0) {
-      TOAST('Llena al menos un campo para aplicar')
-      return
-    }
-    runBulk('update', fields)
   })
 }
 function tracerSync () {

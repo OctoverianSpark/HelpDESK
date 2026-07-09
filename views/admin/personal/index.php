@@ -1,5 +1,9 @@
 <h1 class='title'>Administracion de Personal</h1>
 
+<p>
+    <a href="/admin/personal/register" class="btn primary-btn">Registrar personal <i class="bi bi-person-plus-fill"></i></a>
+    <a href="/admin/personal/import" class="btn primary-btn">Importar desde Excel <i class="bi bi-file-earmark-excel-fill"></i></a>
+</p>
 
 <div class="container-top-bar">
 

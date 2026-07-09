@@ -63,6 +63,17 @@ class Personal extends ActiveRecord
 
 
 
+    public static function findByDocumento($nat_id)
+    {
+        $nat_id = self::$db->escape_string($nat_id);
+
+        $query = "SELECT * FROM " . static::$schema . "." . static::$tabla . " WHERE nat_id = '$nat_id' LIMIT 1";
+
+        $resultado = self::consultarSQL($query);
+
+        return array_shift($resultado);
+    }
+
     public static function PIVOTFINDER($id)
     {
 
