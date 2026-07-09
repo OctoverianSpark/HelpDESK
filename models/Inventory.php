@@ -318,6 +318,17 @@ class Inventory extends ActiveRecord
 
         return $resultado;
     }
+    public static function findBySerial($serial)
+    {
+        $serial = self::$db->escape_string(strtolower($serial));
+
+        $query = "SELECT * FROM " . static::$tabla . " WHERE serial = '$serial' LIMIT 1";
+
+        $resultado = self::consultarSQL($query);
+
+        return array_shift($resultado);
+    }
+
     public static function filter($columna, $operador, $valor, $state = 1,$limit = null,$offset = null)
     {
         // Mapeo de alias válidos a expresiones SQL reales

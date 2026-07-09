@@ -10,6 +10,7 @@
 
 
 <button type="button" class="btn primary-btn" id="sync-btn">Sincronizar con clickup <i class="bi bi-arrow-left-right"></i></button>
+<button type="button" class="btn primary-btn" id="tracer-sync-btn">Sincronizar con Tracer <i class="bi bi-arrow-left-right"></i></button>
 
 <form method="get" class="selection-form">
 

@@ -21,6 +21,7 @@ use Controllers\LAPI\API_ORDERS;
 use Controllers\LAPI\API_POLLS;
 use Controllers\LAPI\API_SERVERS;
 use Controllers\LAPI\API_Tickets;
+use Controllers\LAPI\API_TracerSync;
 use Controllers\LAPI\API_USERS;
 use Controllers\MaintenanceController;
 use Controllers\OrderController;
@@ -208,6 +209,10 @@ $router->post('/admin/mantenimientos/save', [API_MAINTENANCES::class, 'SAVE_QUER
 
 
 $router->post('/admin/inventory/set/stock', [API_Inventory::class, 'SET_STOCK']);
+
+//NOTE: TRACER SYNC
+$router->post('/api/tracer/sync', [API_TracerSync::class, 'PUSH']);
+$router->post('/admin/inventario/sync/tracer', [API_TracerSync::class, 'PULL']);
 
 //NOTE: INDEXERS
 $router->post("/admin/tickets/indexer", [API_Tickets::class, "INDEXER"]);

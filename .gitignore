@@ -1,6 +1,7 @@
 composer.phar
 /vendor/
 /node_modules/
+/.env
 /public/referencias/
 /public/blog/
 /orders.json/

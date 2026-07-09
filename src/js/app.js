@@ -490,8 +490,38 @@ function inventorySync () {
     }, 1000)
   })
 }
+function tracerSync () {
+  const btn = document.querySelector('#tracer-sync-btn')
+  if (!btn) return
+
+  btn.addEventListener('click', async e => {
+    btn.disabled = true
+    TOAST('Sincronizando con Tracer...')
+
+    try {
+      const res = await fetch('/admin/inventario/sync/tracer', { method: 'POST' })
+      const data = await res.json()
+
+      if (!data.ok) {
+        TOAST(data.error || 'Error al sincronizar con Tracer')
+        return
+      }
+
+      TOAST(
+        `Sincronizacion completada: ${data.created} nuevos, ${data.updated} actualizados` +
+          (data.errors ? `, ${data.errors} con error` : '')
+      )
+    } catch (err) {
+      console.error('❌ Error sincronizando con Tracer:', err)
+      TOAST('No se pudo contactar al servidor')
+    } finally {
+      btn.disabled = false
+    }
+  })
+}
 document.addEventListener('DOMContentLoaded', e => {
   inventorySync()
+  tracerSync()
   loginBackground()
   showPswrd()
   notificarClickup()

@@ -28,7 +28,7 @@ class Router
     
         $rutas_protegidas = ["/", "/tickets/crear", "/ticket", "tickets/ver", "/equipos"];
         $rutas_admin = ["/admin", "/admin/inventario", "/admin/inventario/crear", "/admin/inventario/actualizar", "/admin/inventario/eliminar", "/admin/tickets", "/admin/tickets/ver", "/admin/encuestas", "/admin/encuestas/ver", "/admin/entradas", "/admin/entradas/ver", "/admin/entradas/crear"];
-        $rutas_api = ["/api/tickets", "/api/tickets/create"]; // ← slash corregido
+        $rutas_api = ["/api/tickets", "/api/tickets/create", "/api/tracer/sync"]; // ← slash corregido
     
         $urlActual = $_SERVER["PATH_INFO"] ?? "/";
         $metodo = $_SERVER["REQUEST_METHOD"];
