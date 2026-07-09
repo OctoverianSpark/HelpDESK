@@ -33,6 +33,7 @@ class API_TracerSync
          'nombre_equipo' => $machine['hostname'] ?? null,
          'marca'         => $machine['machineBrand'] ?? null,
          'modelo'        => $machine['machineModel'] ?? null,
+         'usuarioPC'     => $machine['username'] ?? null,
       ], function ($valor) {
          return $valor !== null && $valor !== '';
       });
@@ -46,7 +47,21 @@ class API_TracerSync
          return ["ok" => true, "action" => "updated", "id" => $existente->id, "serial" => $serial];
       }
 
-      $datos['tipo'] = $datos['tipo'] ?? 'COMPUTADOR';
+      // "inv" tiene columnas varchar NOT NULL sin default (tipo, marca, modelo, color,
+      // usuarioPC, etc.); si tracer no trae el dato hay que mandar algo igual o el INSERT
+      // truena en modo estricto de MySQL. $datos ya tiene prioridad sobre estos defaults.
+      // OJO: Inventory::atributos() usa "== null" para decidir que omitir, y en PHP
+      // '' == null es true, asi que el relleno NO puede ser string vacio o se descarta.
+      $datos += [
+         'tipo'           => 'COMPUTADOR',
+         'marca'          => 'SIN DATO',
+         'modelo'         => 'SIN DATO',
+         'color'          => 'SIN DATO',
+         'usuarioPC'      => 'SIN ASIGNAR',
+         'correo_dominio' => 'SIN ASIGNAR',
+         'propietario'    => 'SIN ASIGNAR',
+         'area'           => 'SIN ASIGNAR',
+      ];
       $datos['state'] = 1;
 
       $nuevo = new Inventory($datos);
